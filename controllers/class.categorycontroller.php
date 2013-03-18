@@ -62,7 +62,7 @@ class CategoryController extends APIController {
             endforeach;
         endif;
 
-        $this->RenderData($Data);
+        $this->RenderData(parent::Sanitize($Data));
 
     }
 
