@@ -1,0 +1,5 @@
+{
+    "require": {
+        "zircote/swagger-php": "master-dev"
+    }
+}
