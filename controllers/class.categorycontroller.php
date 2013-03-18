@@ -40,26 +40,26 @@ class CategoryController extends APIController {
 
         if ($CategoryID):
 
-            $Categories = $CategoryModel->GetFull($CategoryID)->ResultArray();
+            $Categories = $CategoryModel->GetID($CategoryID);
 
         elseif (is_null($Limit) && is_null($Offset)):
 
-            $Categories = $CategoryModel->GetFull()->ResultArray();
+            $Categories = $CategoryModel->GetFull()->Result();
 
         else:
 
-            $Categories = array_slice($CategoryModel->GetFull($CategoryID)->ResultArray(), $Offset, $Limit);
+            $Categories = array_slice($CategoryModel->GetFull($CategoryID)->Result(), $Offset, $Limit);
         
         endif;
 
         $Data = array();
 
-        foreach ($Categories as $Category):
-            $Data[] = $Category;
-        endforeach;
-
         if ($CategoryID):
-            $Data = array_shift($Categories);
+            $Data = $Categories;
+        else:
+            foreach ($Categories as $Category):
+                $Data[] = $Category;
+            endforeach;
         endif;
 
         $this->RenderData($Data);
