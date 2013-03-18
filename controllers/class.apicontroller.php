@@ -99,7 +99,12 @@ class APIController extends Gdn_Controller {
             $this->Head = new HeadModule($this);
             $this->Title(T('API Documentation'));
 
-            Gdn_Theme::Section('ApiDocumentation');
+            /**
+             * For later implementation in API v2
+             *
+             * Gdn_Theme::Section('ApiDocumentation');
+             */
+
             $this->Menu->HighlightRoute('/api');
             $this->SetData('Breadcrumbs',array(
                 array(

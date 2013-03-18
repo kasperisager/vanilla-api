@@ -749,7 +749,7 @@
 
 $(function () {
     window.swaggerUi = new SwaggerUi({
-        discoveryUrl:"http://vanilla/api/resources",
+        discoveryUrl: $("#WebRoot").val() + 'api/resources',
         //apiKey:"special-key",
         dom_id:"swagger-ui-container",
         supportHeaderParams: false,
