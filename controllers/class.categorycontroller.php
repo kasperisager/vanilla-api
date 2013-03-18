@@ -54,11 +54,23 @@ class CategoryController extends APIController {
 
         $Data = array();
 
-        if ($CategoryID):
+        // If a category ID has been passed, simply parse the category as-is
+        // Don't parse the category if the category ID is 0 or less
+        if ($CategoryID && $CategoryID > 0):
             $Data = $Categories;
         else:
+
+            // Do a little filtering of the categories
             foreach ($Categories as $Category):
-                $Data[] = $Category;
+
+                // Don't add the category tree root
+                if (!is_null($Category->ParentCategoryID)):
+
+                    // Add each entry in the object to the data array
+                    $Data[] = $Category;
+
+                endif;
+
             endforeach;
         endif;
 
