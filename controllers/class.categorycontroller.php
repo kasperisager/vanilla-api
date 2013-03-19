@@ -59,12 +59,8 @@ class CategoryController extends APIController
             default:
                 
                 $Response = array(
-                    'errorResponses' => array(
-                        array(
-                            'code' => 501,
-                            'reason' => 'Not Implemented'
-                        )
-                    )
+                    'Cpde' => 501,
+                    'Exception' => T('Not Implemented')
                 );
 
                 $this->RenderData(UtilityController::SendResponse(501, $Response));
@@ -172,12 +168,8 @@ class CategoryController extends APIController
 
                 $Code = 409;
                 $Response = array(
-                    'errorResponses' => array(
-                        array(
-                            'code' => $Code,
-                            'reason' => 'Conflict'
-                        )
-                    )
+                    'Code' => $Code,
+                    'Exception' => 'Conflict'
                 );
 
             endif;
@@ -186,8 +178,8 @@ class CategoryController extends APIController
 
             $Code = 401;
             $Response = array(
-                'code' => $Code,
-                'reason' => 'Unauthorized'
+                'Code' => $Code,
+                'Exception' => 'Unauthorized'
             );
 
             $this->RenderData(UtilityController::SendResponse(401, $Response));

@@ -46,12 +46,8 @@ class SessionController extends APIController
             default:
                 
                 $Response = array(
-                    'errorResponses' => array(
-                        array(
-                            'code' => 501,
-                            'reason' => 'Not Implemented'
-                        )
-                    )
+                    'Code' => 501,
+                    'Exception' => T('Not Implemented')
                 );
 
                 $this->RenderData(UtilityController::SendResponse(501, $Response));
@@ -78,12 +74,8 @@ class SessionController extends APIController
         if (!Gdn::Session()->IsValid()):
 
             $Response = array(
-                'errorResponses' => array(
-                    array(
-                        'code' => 401,
-                        'reason' => T('Unauthorized')
-                    )
-                )
+                'Code' => 401,
+                'Exception' => T('Unauthorized')
             );
 
             $this->RenderData(UtilityController::SendResponse(401, $Response));

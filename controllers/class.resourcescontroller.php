@@ -48,12 +48,8 @@ class ResourcesController extends APIController
             default:
                 
                 $Response = array(
-                    'errorResponses' => array(
-                        array(
-                            'code' => 501,
-                            'reason' => 'Not Implemented'
-                        )
-                    )
+                    'Code' => 501,
+                    'Exception' => T('Not Implemented')
                 );
 
                 $this->RenderData(UtilityController::SendResponse(501, $Response));
@@ -100,12 +96,8 @@ class ResourcesController extends APIController
             else:
 
                 $Response = array(
-                    'errorResponses' => array(
-                        array(
-                            'code' => 404,
-                            'reason' => T('Not Found')
-                        )
-                    )
+                    'Code' => 404,
+                    'Exception' => T('Not Found')
                 );
 
                 $this->RenderData(UtilityController::SendResponse(200, $Response));
