@@ -132,25 +132,74 @@ class CategoryController extends APIController
         $this->RenderData(UtilityController::SendResponse(200, $Data));
     }
 
+    /**
+     * To be written
+     * 
+     * POST /category { "Category/Name": name, "Category/UrlCode": url }
+     * 
+     * @param   int $CategoryID
+     * @since   0.1.0
+     * @access  public
+     */
     protected function _Post($Request)
     {
 
+        // Security
         $Session = Gdn::Session();
+        $TransientKey = $Session->TransientKey();
 
-        $CategoryModel = $this->CategoryModel;
+        // Prep models
+        $RoleModel = new RoleModel();
+        $PermissionModel = Gdn::PermissionModel();
 
-        //$this->Form->Open();
-        $this->Form->SetModel($CategoryModel);
-        $this->Form->SetValue('Category/TransientKey', $Session->TransientKey());
-        $FormValues = $this->Form->FormValues();
+        $this->Form->SetModel($this->CategoryModel);
+        //$this->Form->AddHidden('Category/TransientKey', $Session->TransientKey());
 
-        $CategoryModel->Save($FormValues);
+        // Load all roles with editable permissions.
+        $this->RoleArray = $RoleModel->GetArray();
 
-        $Response = array(
-            'success' => true
-        );
+        if ($Session->ValidateTransientKey($TransientKey)):
 
-        $this->RenderData(UtilityController::SendResponse(200, $FormValues));
+            // Form was validly submitted
+            $Response = $this->Form->FormValues();
+
+            $CategoryID = $this->Form->Save();
+
+            // If no category was created due to ID conflict
+            if (!$CategoryID):  
+
+                unset($CategoryID);
+
+                $Code = 409;
+                $Response = array(
+                    'errorResponses' => array(
+                        array(
+                            'code' => $Code,
+                            'reason' => 'Conflict'
+                        )
+                    )
+                );
+
+            endif;
+
+        else:
+
+            $Code = 401;
+            $Response = array(
+                'code' => $Code,
+                'reason' => 'Unauthorized'
+            );
+
+            $this->RenderData(UtilityController::SendResponse(401, $Response));
+
+        endif;
+
+        // Get all of the currently selected role/permission combinations for this junction.
+        $Permissions = $PermissionModel->GetJunctionPermissions(array('JunctionID' => isset($CategoryID) ? $CategoryID : 0), 'Category');
+        $Permissions = $PermissionModel->UnpivotPermissions($Permissions, TRUE);
+
+        $this->RenderData(UtilityController::SendResponse($Code, $Response));
+
     }
 
     /**
