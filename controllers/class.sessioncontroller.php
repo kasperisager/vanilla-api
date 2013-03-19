@@ -68,7 +68,7 @@ class SessionController extends APIController
      * @since   0.1.0
      * @access  public
      */
-    public function Get()
+    protected function Get()
     {
 
         $Session = Gdn::Session();
@@ -101,7 +101,7 @@ class SessionController extends APIController
      * @since   0.1.0
      * @access  public
      */
-    public function Resource()
+    public static function Resource()
     {
 
         return array(

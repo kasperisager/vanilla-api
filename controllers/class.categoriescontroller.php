@@ -78,7 +78,7 @@ class CategoriesController extends APIController
      * @since   0.1.0
      * @access  public
      */
-    public function Get($CategoryID = NULL)
+    protected function Get($CategoryID = NULL)
     {
         $Limit = GetIncomingValue('limit', null);
         $Offset = GetIncomingValue('offset', null);
@@ -131,7 +131,7 @@ class CategoriesController extends APIController
      * @since   0.1.0
      * @access  public
      */
-    public function Resource()
+    public static function Resource()
     {
         return array(
             'resourcePath' => '/categories',
