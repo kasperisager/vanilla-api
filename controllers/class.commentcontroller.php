@@ -9,7 +9,7 @@
  * @copyright Copyright © 2013
  * @license http://opensource.org/licenses/MIT MIT
  */
-class CommentsController extends APIController
+class CommentController extends APIController
 {
 
     /**
