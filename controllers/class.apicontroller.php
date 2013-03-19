@@ -136,7 +136,7 @@ class UtilityController extends APIController
         $Accept = self::ProcessRequest()->HttpAccept;
 
         // Only serve XML if specifically requested to
-        if ($Accept == 'application/xml' || $Query == 'xml'):
+        if ($Accept == 'application/xml' || $Accept != 'application/json' && $Query == 'xml'):
             $this->DeliveryMethod(DELIVERY_METHOD_XML);
             $this->SetHeader('Content-Type', 'application/xml; charset=utf-8');
         endif;
