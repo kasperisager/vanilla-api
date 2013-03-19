@@ -9,7 +9,7 @@
  * @copyright   Copyright © 2013
  * @license     http://opensource.org/licenses/MIT MIT
  */
-class CategoriesController extends APIController
+class CategoryController extends APIController
 {
 
     /**
@@ -18,7 +18,7 @@ class CategoriesController extends APIController
      * @since   0.1.0
      * @access  public
      */
-    public $Uses = array('CategoryModel');
+    public $Uses = array('CategoryModel', 'Form');
 
     /**
      * To be written
@@ -39,13 +39,19 @@ class CategoriesController extends APIController
      */
     public function Index($CategoryID)
     {
-        $Request = UtilityController::ProcessRequest();  
+        $Request = UtilityController::ProcessRequest();
   
         switch($Request->Method):
 
-            case 'get':  
+            case 'get':
                 
                 self::_Get($CategoryID);
+
+                break;
+
+            case 'post':
+                
+                self::_Post($Request);
 
                 break;
 
@@ -69,10 +75,12 @@ class CategoriesController extends APIController
     }
 
     /**
-     * Build the category API and render it
+     * To be written
      * 
      * GET /category
      * GET /category/:id
+     *
+     * TODO: Return error when Category ID isn't found
      * 
      * @param   int $CategoryID
      * @since   0.1.0
@@ -122,6 +130,27 @@ class CategoriesController extends APIController
         endif;
 
         $this->RenderData(UtilityController::SendResponse(200, $Data));
+    }
+
+    protected function _Post($Request)
+    {
+
+        $Session = Gdn::Session();
+
+        $CategoryModel = $this->CategoryModel;
+
+        //$this->Form->Open();
+        $this->Form->SetModel($CategoryModel);
+        $this->Form->SetValue('Category/TransientKey', $Session->TransientKey());
+        $FormValues = $this->Form->FormValues();
+
+        $CategoryModel->Save($FormValues);
+
+        $Response = array(
+            'success' => true
+        );
+
+        $this->RenderData(UtilityController::SendResponse(200, $FormValues));
     }
 
     /**

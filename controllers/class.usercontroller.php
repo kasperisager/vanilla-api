@@ -9,7 +9,7 @@
  * @copyright Copyright © 2013
  * @license http://opensource.org/licenses/MIT MIT
  */
-class DiscussionsController extends APIController
+class UserController extends APIController
 {
 
     /**
