@@ -47,7 +47,7 @@ class ResourcesController extends APIController
             // TODO: There's probable a better way to do a 501 by default
             default:
                 
-                $Errors = array(
+                $Response = array(
                     'errorResponses' => array(
                         array(
                             'code' => 501,
@@ -56,7 +56,7 @@ class ResourcesController extends APIController
                     )
                 );
 
-                $this->RenderData(UtilityController::SendResponse(501, $Errors));
+                $this->RenderData(UtilityController::SendResponse(501, $Response));
 
                 break;
 
@@ -99,7 +99,7 @@ class ResourcesController extends APIController
 
             else:
 
-                $Errors = array(
+                $Response = array(
                     'errorResponses' => array(
                         array(
                             'code' => 404,
@@ -108,12 +108,12 @@ class ResourcesController extends APIController
                     )
                 );
 
-                $this->RenderData(UtilityController::SendResponse(200, $Errors));
+                $this->RenderData(UtilityController::SendResponse(200, $Response));
 
             endif;
         else:
-            $Data = array_merge(parent::Meta(), $Apis);
-            $this->RenderData(UtilityController::SendResponse(200, $Data));
+            $Response = array_merge(parent::Meta(), $Apis);
+            $this->RenderData(UtilityController::SendResponse(200, $Response));
         endif;
     }
 

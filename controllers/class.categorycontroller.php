@@ -58,7 +58,7 @@ class CategoryController extends APIController
             // TODO: There's probable a better way to do a 501 by default
             default:
                 
-                $Errors = array(
+                $Response = array(
                     'errorResponses' => array(
                         array(
                             'code' => 501,
@@ -67,7 +67,7 @@ class CategoryController extends APIController
                     )
                 );
 
-                $this->RenderData(UtilityController::SendResponse(501, $Errors));
+                $this->RenderData(UtilityController::SendResponse(501, $Response));
 
                 break;
 

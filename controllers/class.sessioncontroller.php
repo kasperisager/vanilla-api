@@ -45,7 +45,7 @@ class SessionController extends APIController
             // TODO: There's probable a better way to do a 501 by default
             default:
                 
-                $Errors = array(
+                $Response = array(
                     'errorResponses' => array(
                         array(
                             'code' => 501,
@@ -54,7 +54,7 @@ class SessionController extends APIController
                     )
                 );
 
-                $this->RenderData(UtilityController::SendResponse(501, $Errors));
+                $this->RenderData(UtilityController::SendResponse(501, $Response));
 
                 break;
 
@@ -73,11 +73,11 @@ class SessionController extends APIController
 
         $Session = Gdn::Session();
 
-        $Data = $Session;
+        $Response = $Session;
 
         if (!Gdn::Session()->IsValid()):
 
-            $Errors = array(
+            $Response = array(
                 'errorResponses' => array(
                     array(
                         'code' => 401,
@@ -86,11 +86,11 @@ class SessionController extends APIController
                 )
             );
 
-            $this->RenderData(UtilityController::SendResponse(401, $Errors));
+            $this->RenderData(UtilityController::SendResponse(401, $Response));
 
         else:
 
-            $this->RenderData(UtilityController::SendResponse(200, $Data));
+            $this->RenderData(UtilityController::SendResponse(200, $Response));
 
         endif;
 
