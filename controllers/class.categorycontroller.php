@@ -55,6 +55,12 @@ class CategoryController extends APIController
 
                 break;
 
+            case 'delete':
+                
+                self::_Delete($CategoryID, $Request);
+
+                break;
+
             // TODO: There's probable a better way to do a 501 by default
             default:
                 
@@ -84,8 +90,8 @@ class CategoryController extends APIController
      */
     protected function _Get($CategoryID = NULL)
     {
-        $Limit = GetIncomingValue('limit', null);
-        $Offset = GetIncomingValue('offset', null);
+        $Limit = GetIncomingValue('limit', NULL);
+        $Offset = GetIncomingValue('offset', NULL);
 
         $CategoryModel = $this->CategoryModel;
 
@@ -150,9 +156,7 @@ class CategoryController extends APIController
         // Prep models
         $RoleModel = new RoleModel();
         $PermissionModel = Gdn::PermissionModel();
-
         $this->Form->SetModel($this->CategoryModel);
-        //$this->Form->AddHidden('Category/TransientKey', $Session->TransientKey());
 
         // Load all roles with editable permissions.
         $this->RoleArray = $RoleModel->GetArray();
@@ -167,7 +171,7 @@ class CategoryController extends APIController
 
             $CategoryID = $this->Form->Save();
 
-            // If no category was created due to ID conflict
+            // If no category was created
             if (!$CategoryID):  
 
                 unset($CategoryID);
@@ -190,13 +194,121 @@ class CategoryController extends APIController
                 'Exception' => 'Unauthorized'
             );
 
-            $this->RenderData(UtilityController::SendResponse(401, $Response));
-
         endif;
 
         // Get all of the currently selected role/permission combinations for this junction.
         $Permissions = $PermissionModel->GetJunctionPermissions(array('JunctionID' => isset($CategoryID) ? $CategoryID : 0), 'Category');
         $Permissions = $PermissionModel->UnpivotPermissions($Permissions, TRUE);
+
+        $this->RenderData(UtilityController::SendResponse($Code, $Response));
+
+    }
+
+    /**
+     * To be written
+     * 
+     * DELETE /category/:id
+     * 
+     * @param   int $CategoryID
+     * @since   0.1.0
+     * @access  public
+     */
+    protected function _Delete($CategoryID = NULL)
+    {
+
+        // Security
+        $Session = Gdn::Session();
+        $TransientKey = $Session->TransientKey();
+
+        // Check permission
+        $this->Permission('Vanilla.Categories.Manage');
+
+        // Get category data
+        $this->Category = $this->CategoryModel->GetID($CategoryID);
+
+        $Replacement = GetIncomingValue('replacement', NULL);
+
+        if ($this->Category):
+
+            // Get a list of categories other than this one that can act as a replacement
+            $this->OtherCategories = $this->CategoryModel->GetWhere(
+                array(
+                    'CategoryID <>' => $CategoryID,
+                    'AllowDiscussions' => $this->Category->AllowDiscussions, // Don't allow a category with discussion to be the replacement for one without discussions (or vice versa)
+                    'CategoryID >' => 0
+                ),
+                'Sort'
+            );
+
+            if ($Session->ValidateTransientKey($TransientKey)):
+
+                $ReplacementCategory = $this->CategoryModel->GetID($Replacement);
+
+                // Error if:
+                // 1. The category being deleted is the last remaining category that
+                // allows discussions.
+                if ($this->Category->AllowDiscussions == '1'
+                    && $this->OtherCategories->NumRows() == 0):
+
+                    $this->Form->AddError('You cannot remove the only remaining category that allows discussions');
+
+                endif;
+                
+                // 2. The category being deleted allows discussions, and it contains
+                // discussions, and there is no replacement category specified.
+                if ($this->Form->ErrorCount() == 0
+                    && $this->Category->AllowDiscussions == '1'
+                    && $this->Category->CountDiscussions > 0
+                    && ($ReplacementCategory == FALSE || $ReplacementCategory->AllowDiscussions != '1')):
+
+                    $this->Form->AddError('You must select a replacement category in order to remove this category.');
+
+                endif;
+                
+            
+                // 3. The category being deleted does not allow discussions, and it
+                // does contain other categories, and there are replacement parent
+                // categories available, and one is not selected.
+                if ($this->Category->AllowDiscussions == '0'
+                    && $this->OtherCategories->NumRows() > 0
+                    && !$ReplacementCategory):
+
+                    if ($this->CategoryModel->GetWhere(array('ParentCategoryID' => $CategoryID))->NumRows() > 0):
+                        $this->Form->AddError('You must select a replacement category in order to remove this category.');
+                    endif;
+
+                endif;
+
+                if ($this->Form->ErrorCount() == 0) {
+                    // Go ahead and delete the category
+                    try {
+
+                        $this->CategoryModel->Delete($this->Category, $Replacement);
+
+                        $Code = 204;
+
+                    } catch (Exception $Exception) {
+
+                        $Code = 400;
+                        $Response = array(
+                            'Code' => $Code,
+                            'Exception' => json_decode($Exception)
+                        );
+
+                    }
+                }
+
+            endif;
+
+        else:
+
+            $Code = 400;
+            $Response = array(
+                'Code' => $Code,
+                'Exception' => T('Bad request')
+            );
+
+        endif;
 
         $this->RenderData(UtilityController::SendResponse($Code, $Response));
 
