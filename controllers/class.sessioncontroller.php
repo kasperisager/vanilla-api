@@ -65,7 +65,7 @@ class SessionController extends APIController
 
         if (!Gdn::Session()->IsValid()):
 
-            $Error = array(
+            $Errors = array(
                 'errorResponses' => array(
                     array(
                         'code' => 401,
@@ -74,7 +74,7 @@ class SessionController extends APIController
                 )
             );
 
-            $this->RenderData(UtilityController::SendResponse(401, $Error));
+            $this->RenderData(UtilityController::SendResponse(401, $Errors));
 
         else:
 
