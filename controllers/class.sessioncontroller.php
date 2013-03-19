@@ -32,7 +32,7 @@ class SessionController extends APIController
     public function Index()
     {
         
-        $Request = UtilityController::ProcessRequest();  
+        $Request = UtilityController::ProcessRequest();
   
         switch($Request->Method):
 
