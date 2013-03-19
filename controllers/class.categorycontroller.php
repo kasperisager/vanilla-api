@@ -59,7 +59,7 @@ class CategoryController extends APIController
             default:
                 
                 $Response = array(
-                    'Cpde' => 501,
+                    'Code' => 501,
                     'Exception' => T('Not Implemented')
                 );
 
