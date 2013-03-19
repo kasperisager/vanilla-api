@@ -38,7 +38,7 @@ class SessionController extends APIController
 
             case 'get':  
                 
-                self::Get();
+                self::_Get();
 
                 break;
 
@@ -68,7 +68,7 @@ class SessionController extends APIController
      * @since   0.1.0
      * @access  public
      */
-    protected function Get()
+    protected function _Get()
     {
 
         $Session = Gdn::Session();

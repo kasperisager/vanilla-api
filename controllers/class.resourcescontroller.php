@@ -40,7 +40,7 @@ class ResourcesController extends APIController
 
             case 'get':  
                 
-                self::Get($Resource);
+                self::_Get($Resource);
 
                 break;
 
@@ -55,7 +55,7 @@ class ResourcesController extends APIController
      * @since   0.1.0
      * @access  public
      */
-    public function Get($Resource = NULL)
+    protected function _Get($Resource = NULL)
     {
         $Apis = array(
             'apis' => array(

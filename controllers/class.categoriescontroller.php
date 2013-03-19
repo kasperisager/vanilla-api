@@ -45,7 +45,7 @@ class CategoriesController extends APIController
 
             case 'get':  
                 
-                self::Get($CategoryID);
+                self::_Get($CategoryID);
 
                 break;
 
@@ -78,7 +78,7 @@ class CategoriesController extends APIController
      * @since   0.1.0
      * @access  public
      */
-    protected function Get($CategoryID = NULL)
+    protected function _Get($CategoryID = NULL)
     {
         $Limit = GetIncomingValue('limit', null);
         $Offset = GetIncomingValue('offset', null);
