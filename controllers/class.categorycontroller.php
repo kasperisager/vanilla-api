@@ -79,7 +79,7 @@ class CategoryController extends APIController
     /**
      * To be written
      * 
-     * GET /category
+     * GET /category ? limit & offset
      * GET /category/:id
      *
      * TODO: Return error when Category ID isn't found
@@ -207,7 +207,7 @@ class CategoryController extends APIController
     /**
      * To be written
      * 
-     * DELETE /category/:id
+     * DELETE /category/:id ? replacement
      * 
      * @param   int $CategoryID
      * @since   0.1.0
