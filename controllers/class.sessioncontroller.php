@@ -42,6 +42,7 @@ class SessionController extends APIController
 
                 break;
 
+            // TODO: There's probable a better way to do a 501 by default
             default:
                 
                 $Errors = array(
