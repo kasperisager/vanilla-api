@@ -42,9 +42,18 @@ class SessionController extends APIController
 
                 break;
 
-            case 'post':
+            default:
                 
+                $Errors = array(
+                    'errorResponses' => array(
+                        array(
+                            'code' => 501,
+                            'reason' => 'Not Implemented'
+                        )
+                    )
+                );
 
+                $this->RenderData(UtilityController::SendResponse(501, $Errors));
 
                 break;
 
