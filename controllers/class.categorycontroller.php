@@ -144,6 +144,9 @@ class CategoryController extends APIController
         $Session = Gdn::Session();
         $TransientKey = $Session->TransientKey();
 
+        // Check permission
+        $this->Permission('Vanilla.Categories.Manage');
+
         // Prep models
         $RoleModel = new RoleModel();
         $PermissionModel = Gdn::PermissionModel();
@@ -158,6 +161,9 @@ class CategoryController extends APIController
 
             // Form was validly submitted
             $Response = $this->Form->FormValues();
+
+            $IsParent = $this->Form->GetFormValue('IsParent', '0');
+            $this->Form->SetFormValue('AllowDiscussions', $IsParent == '1' ? '0' : '1');
 
             $CategoryID = $this->Form->Save();
 
@@ -175,6 +181,8 @@ class CategoryController extends APIController
             endif;
 
         else:
+
+            $this->Form->AddHidden('CodeIsDefined', '0');
 
             $Code = 401;
             $Response = array(
