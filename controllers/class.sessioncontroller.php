@@ -73,6 +73,8 @@ class SessionController extends APIController
 
         $Session = Gdn::Session();
 
+        $Data = $Session;
+
         if (!Gdn::Session()->IsValid()):
 
             $Errors = array(
