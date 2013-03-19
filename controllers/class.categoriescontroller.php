@@ -3,23 +3,54 @@
 /**
  * API to access categories
  *
- * @package API
- * @since 0.1.0
- * @author Kasper Kronborg Isager <kasperisager@gmail.com>
- * @copyright Copyright © 2013
- * @license http://opensource.org/licenses/MIT MIT
+ * @package     API
+ * @since       0.1.0
+ * @author      Kasper Kronborg Isager <kasperisager@gmail.com>
+ * @copyright   Copyright © 2013
+ * @license     http://opensource.org/licenses/MIT MIT
  */
-class CategoryController extends APIController {
-
-    public $Resource = array();
+class CategoriesController extends APIController
+{
 
     /**
      * Define resources used in controller
      * 
-     * @since 0.1.0
-     * @access public
+     * @since   0.1.0
+     * @access  public
      */
     public $Uses = array('CategoryModel');
+
+    /**
+     * To be written
+     * 
+     * @since   0.1.0
+     * @access  public
+     */
+    public function Initialize()
+    {
+        UtilityController::Initialize();
+    }
+
+    /**
+     * To be written
+     * 
+     * @since   0.1.0
+     * @access  public
+     */
+    public function Index($CategoryID)
+    {
+        $Request = UtilityController::ProcessRequest();  
+  
+        switch($Request->Method):
+
+            case 'get':  
+                
+                self::Get($CategoryID);
+
+                break;
+
+        endswitch;
+    }
 
     /**
      * Build the category API and render it
@@ -27,12 +58,12 @@ class CategoryController extends APIController {
      * GET /category
      * GET /category/:id
      * 
-     * @param int $CategoryID
-     * @since 0.1.0
-     * @access public
+     * @param   int $CategoryID
+     * @since   0.1.0
+     * @access  public
      */
-    public function Index($CategoryID) {
-
+    public function Get($CategoryID = NULL)
+    {
         $Limit = GetIncomingValue('limit', null);
         $Offset = GetIncomingValue('offset', null);
 
@@ -74,24 +105,23 @@ class CategoryController extends APIController {
             endforeach;
         endif;
 
-        $this->RenderData(parent::Sanitize($Data));
-
+        $this->RenderData(UtilityController::SendResponse(200, $Data));
     }
 
     /**
      * Define resource readable by Swagger
      * 
-     * @return array
-     * @since 0.1.0
-     * @access public
+     * @return  array
+     * @since   0.1.0
+     * @access  public
      */
-    public function Resource() {
-
+    public function Resource()
+    {
         return array(
-            'resourcePath' => '/category',
+            'resourcePath' => '/categories',
             'apis' => array(
                 array(
-                    'path' => '/category',
+                    'path' => '/categories',
                     'description' => T('Operations related to categories'),
                     'operations' => array(
                         array(
@@ -121,7 +151,7 @@ class CategoryController extends APIController {
                     )
                 ),
                 array(
-                    'path' => '/category/{id}',
+                    'path' => '/categories/{id}',
                     'description' => T('Operations related to categories'),
                     'operations' => array(
                         array(
@@ -160,7 +190,6 @@ class CategoryController extends APIController {
                 )
             )
         );
-
     }
 
 }
