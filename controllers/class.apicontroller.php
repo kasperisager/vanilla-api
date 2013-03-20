@@ -20,6 +20,7 @@ class APIController extends Gdn_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->Theme = FALSE;
     }
 
     /**
