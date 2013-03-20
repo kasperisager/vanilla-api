@@ -38,10 +38,8 @@ class ResourcesController extends APIController
   
         switch($Request->Method):
 
-            case 'get':  
-                
+            case 'get':   
                 self::_Get($Resource);
-
                 break;
 
             // TODO: There's probable a better way to do a 501 by default
