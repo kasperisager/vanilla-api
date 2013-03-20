@@ -61,7 +61,7 @@ class APIController extends Gdn_Controller
      */
     public function Index()
     {
-        if ($this->DeliveryType() == DELIVERY_TYPE_ALL):
+        if ($this->DeliveryType() == DELIVERY_TYPE_ALL) {
 
             // Build the head asset
             $this->Head = new HeadModule($this);
@@ -70,9 +70,9 @@ class APIController extends Gdn_Controller
             /**
              * Vanilla 2.1 goodie
              */
-            if (method_exists('Gdn_Theme', 'Section')):
+            if (method_exists('Gdn_Theme', 'Section')) {
                 Gdn_Theme::Section('ApiDocumentation');
-            endif;
+            }
 
             $this->Menu->HighlightRoute('/api');
             $this->SetData('Breadcrumbs',array(
@@ -99,7 +99,7 @@ class APIController extends Gdn_Controller
             $this->AddCssFile('screen.css');
             $this->AddCssFile('highlight.default.css');
 
-        endif;
+        }
 
         $this->MasterView = 'api';
         $this->Render();
@@ -137,10 +137,10 @@ class UtilityController extends APIController
         $Accept = self::ProcessRequest()->HttpAccept;
 
         // Only serve XML if specifically requested to
-        if ($Accept == 'application/xml' || $Accept != 'application/json' && $Query == 'xml'):
+        if ($Accept == 'application/xml' || $Accept != 'application/json' && $Query == 'xml') {
             $this->DeliveryMethod(DELIVERY_METHOD_XML);
             $this->SetHeader('Content-Type', 'application/xml; charset=utf-8');
-        endif;
+        }
 
     }
 
@@ -151,13 +151,15 @@ class UtilityController extends APIController
      * @since   0.1.0
      * @access  public
      */
-    public function Sanitize($Data) {
+    public function Sanitize($Data)
+    {
         $Data = json_encode($Data);
         $Data = json_decode($Data, true);
         return $Data;
     }
 
-    public static function ProcessRequest() {
+    public static function ProcessRequest()
+    {
         // get our verb  
         $RequestMethod = strtolower($_SERVER['REQUEST_METHOD']);  
         $ReturnObj     = new RequestController();  
@@ -202,22 +204,19 @@ class UtilityController extends APIController
 
     }
 
-    public static function SendResponse($Status = 200, $Data = '') {
+    public static function SendResponse($Status = 200, $Data = '')
+    {
         $StatusHeader = 'HTTP/1.1 ' . $Status . ' ' . self::GetStatusCodeMessage($Status);
 
         // set the status
         header($StatusHeader);
       
         // resources with data are easy  
-        if($Data != '')
-        {  
+        if($Data != '') {  
             // send the data  
             return self::Sanitize($Data);
             exit;
-        }
-        // we need to create the body if none is passed
-        else
-        {
+        } else {
             // create some body messages
             $Message = '';
       
@@ -313,7 +312,8 @@ class UtilityController extends APIController
  * @copyright   Copyright © 2013
  * @license     http://opensource.org/licenses/MIT MIT
  */
-class RequestController extends APIController {
+class RequestController extends APIController
+{
 
     public $Data;
     public $RequestVars;
@@ -331,35 +331,43 @@ class RequestController extends APIController {
 
     }
 
-    public function Initialize() {
+    public function Initialize()
+    {
         parent::Initialize();
     }
 
-    public function SetData($Data) {
+    public function SetData($Data)
+    {
         $this->Data = $Data;
     }
 
-    public function SetMethod($Method) {
+    public function SetMethod($Method)
+    {
         $this->Method = $Method;
     }
 
-    public function SetRequestVars($RequestVars) {
+    public function SetRequestVars($RequestVars)
+    {
         $this->RequestVars = $RequestVars;
     }
 
-    public function GetData() {
+    public function GetData()
+    {
         return $this->Data;
     }
 
-    public function GetMethod() {
+    public function GetMethod()
+    {
         return $this->Method;
     }
 
-    public function GetHttpAccept() {
+    public function GetHttpAccept()
+    {
         return $this->HttpAccept;
     }
 
-    public function GetRequestVars() {
+    public function GetRequestVars()
+    {
         return $this->RequestVars;
     }
 }

@@ -41,24 +41,18 @@ class CategoryController extends APIController
     {
         $Request = UtilityController::ProcessRequest();
   
-        switch($Request->Method):
+        switch($Request->Method) {
 
-            case 'get':
-                
+            case 'get':   
                 self::_Get($CategoryID);
-
                 break;
 
             case 'post':
-                
                 self::_Post($Request);
-
                 break;
 
             case 'delete':
-                
-                self::_Delete($CategoryID, $Request);
-
+                self::_Delete($CategoryID);
                 break;
 
             // TODO: There's probable a better way to do a 501 by default
@@ -73,7 +67,7 @@ class CategoryController extends APIController
 
                 break;
 
-        endswitch;
+        }
     }
 
     /**
@@ -95,41 +89,42 @@ class CategoryController extends APIController
 
         $CategoryModel = $this->CategoryModel;
 
-        if ($CategoryID):
+        if ($CategoryID) {
 
             $Categories = $CategoryModel->GetID($CategoryID);
 
-        elseif (is_null($Limit) && is_null($Offset)):
+        } elseif (is_null($Limit) && is_null($Offset)) {
 
             $Categories = $CategoryModel->GetFull()->Result();
 
-        else:
+        } else {
 
             $Categories = array_slice($CategoryModel->GetFull($CategoryID)->Result(), $Offset, $Limit);
         
-        endif;
+        }
 
         $Data = array();
 
         // If a category ID has been passed, simply parse the category as-is
         // Don't parse the category if the category ID is 0 or less
-        if ($CategoryID && $CategoryID > 0):
+        if ($CategoryID && $CategoryID > 0) {
             $Data = $Categories;
-        else:
+        } else {
 
             // Do a little filtering of the categories
-            foreach ($Categories as $Category):
+            foreach ($Categories as $Category) {
 
                 // Don't add the category tree root
-                if (!is_null($Category->ParentCategoryID)):
+                if (!is_null($Category->ParentCategoryID)) {
 
                     // Add each entry in the object to the data array
                     $Data[] = $Category;
 
-                endif;
+                }
 
-            endforeach;
-        endif;
+            }
+
+        }
 
         $this->RenderData(UtilityController::SendResponse(200, $Data));
     }
@@ -161,7 +156,7 @@ class CategoryController extends APIController
         // Load all roles with editable permissions.
         $this->RoleArray = $RoleModel->GetArray();
 
-        if ($Session->ValidateTransientKey($TransientKey)):
+        if ($Session->ValidateTransientKey($TransientKey)) {
 
             // Form was validly submitted
             $Response = $this->Form->FormValues();
@@ -172,7 +167,7 @@ class CategoryController extends APIController
             $CategoryID = $this->Form->Save();
 
             // If no category was created
-            if (!$CategoryID):  
+            if (!$CategoryID) {
 
                 unset($CategoryID);
 
@@ -182,9 +177,9 @@ class CategoryController extends APIController
                     'Exception' => 'Conflict'
                 );
 
-            endif;
+            }
 
-        else:
+        } else {
 
             $this->Form->AddHidden('CodeIsDefined', '0');
 
@@ -194,7 +189,7 @@ class CategoryController extends APIController
                 'Exception' => 'Unauthorized'
             );
 
-        endif;
+        }
 
         // Get all of the currently selected role/permission combinations for this junction.
         $Permissions = $PermissionModel->GetJunctionPermissions(array('JunctionID' => isset($CategoryID) ? $CategoryID : 0), 'Category');
@@ -228,7 +223,7 @@ class CategoryController extends APIController
 
         $Replacement = GetIncomingValue('replacement', NULL);
 
-        if ($this->Category):
+        if ($this->Category) {
 
             // Get a list of categories other than this one that can act as a replacement
             $this->OtherCategories = $this->CategoryModel->GetWhere(
@@ -240,7 +235,7 @@ class CategoryController extends APIController
                 'Sort'
             );
 
-            if ($Session->ValidateTransientKey($TransientKey)):
+            if ($Session->ValidateTransientKey($TransientKey)) {
 
                 $ReplacementCategory = $this->CategoryModel->GetID($Replacement);
 
@@ -248,22 +243,22 @@ class CategoryController extends APIController
                 // 1. The category being deleted is the last remaining category that
                 // allows discussions.
                 if ($this->Category->AllowDiscussions == '1'
-                    && $this->OtherCategories->NumRows() == 0):
+                    && $this->OtherCategories->NumRows() == 0) {
 
                     $this->Form->AddError('You cannot remove the only remaining category that allows discussions');
 
-                endif;
+                }
                 
                 // 2. The category being deleted allows discussions, and it contains
                 // discussions, and there is no replacement category specified.
                 if ($this->Form->ErrorCount() == 0
                     && $this->Category->AllowDiscussions == '1'
                     && $this->Category->CountDiscussions > 0
-                    && ($ReplacementCategory == FALSE || $ReplacementCategory->AllowDiscussions != '1')):
+                    && ($ReplacementCategory == FALSE || $ReplacementCategory->AllowDiscussions != '1')) {
 
                     $this->Form->AddError('You must select a replacement category in order to remove this category.');
 
-                endif;
+                }
                 
             
                 // 3. The category being deleted does not allow discussions, and it
@@ -271,13 +266,13 @@ class CategoryController extends APIController
                 // categories available, and one is not selected.
                 if ($this->Category->AllowDiscussions == '0'
                     && $this->OtherCategories->NumRows() > 0
-                    && !$ReplacementCategory):
+                    && !$ReplacementCategory) {
 
-                    if ($this->CategoryModel->GetWhere(array('ParentCategoryID' => $CategoryID))->NumRows() > 0):
+                    if ($this->CategoryModel->GetWhere(array('ParentCategoryID' => $CategoryID))->NumRows() > 0) {
                         $this->Form->AddError('You must select a replacement category in order to remove this category.');
-                    endif;
+                    }
 
-                endif;
+                }
 
                 if ($this->Form->ErrorCount() == 0) {
                     // Go ahead and delete the category
@@ -298,9 +293,9 @@ class CategoryController extends APIController
                     }
                 }
 
-            endif;
+            }
 
-        else:
+        } else {
 
             $Code = 400;
             $Response = array(
@@ -308,7 +303,7 @@ class CategoryController extends APIController
                 'Exception' => T('Bad request')
             );
 
-        endif;
+        }
 
         $this->RenderData(UtilityController::SendResponse($Code, $Response));
 

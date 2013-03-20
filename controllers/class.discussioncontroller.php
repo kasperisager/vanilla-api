@@ -30,7 +30,7 @@ class DiscussionController extends APIController
      * @since   0.1.0
      * @access  public
      */
-    public function Index()
+    /*public function Index()
     {
         
         $Request = UtilityController::ProcessRequest();  
@@ -45,7 +45,7 @@ class DiscussionController extends APIController
 
         endswitch;
 
-    }
+    }*/
 
     /**
      * To be written
