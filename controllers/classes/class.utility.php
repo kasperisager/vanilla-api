@@ -33,48 +33,94 @@ class Utility
 
     public static function ProcessRequest()
     {
-        // get our verb  
-        $RequestMethod = strtolower($_SERVER['REQUEST_METHOD']);  
-        $ReturnObj     = new Request();  
+        // get our verb
+        $RequestMethod = strtolower($_SERVER['REQUEST_METHOD']);
+        $ReturnObj     = new Request();
         // we'll store our data here  
-        $Data          = array();  
+        $Data          = array();
       
-        switch ($RequestMethod):
+        switch ($RequestMethod) {
 
-            // gets are easy...  
-            case 'get':  
-                $Data = $_GET;  
-                break;  
-            // so are posts  
-            case 'post':  
-                $Data = $_POST;  
-                break;  
-            // here's the tricky bit...  
-            case 'put':  
-                // basically, we read a string from PHP's special input location,  
-                // and then parse it out into an array via parse_str... per the PHP docs:  
-                // Parses str  as if it were the query string passed via a URL and sets  
-                // variables in the current scope.  
-                parse_str(file_get_contents('php://input'), $put_vars);  
-                $Data = $put_vars;  
-                break; 
+            case 'get':
+                $Data = $_GET;
+                break;
 
-        endswitch;
+            case 'post':
+                $Data = $_POST;
+                break;
+
+        }
   
         // store the method  
-        $ReturnObj->SetMethod($RequestMethod);  
+        $ReturnObj->SetMethod($RequestMethod);
   
         // set the raw data, so we can access it if needed (there may be  
-        // other pieces to your requests)  
-        $ReturnObj->SetRequestVars($Data);  
+        // other pieces to your requests)
+        $ReturnObj->SetRequestVars($Data);
   
-        if(isset($Data['data'])) {
+        if(isset($Data['Data'])) {
             // translate the JSON to an Object for use however you want  
-            $ReturnObj->SetData(json_decode($Data['data']));
+            $ReturnObj->SetData(json_decode($Data['Data']));
         }
         
         return $ReturnObj;
 
+    }
+
+    public static function ParsePut()
+    {
+        // Fetch PUT content and determine Boundary
+        $RawData = file_get_contents('php://input');
+        $Boundary = substr($RawData, 0, strpos($RawData, "\r\n"));
+
+        // Fetch each part
+        $Parts = array_slice(explode($Boundary, $RawData), 1);
+        $PutData = array();
+
+        foreach ($Parts as $Part) {
+            // If this is the last part, break
+            if ($Part == "--\r\n") break; 
+
+            // Separate content from headers
+            $Part = ltrim($Part, "\r\n");
+            list($RawHeaders, $PutBody) = explode("\r\n\r\n", $Part, 2);
+
+            // Parse the headers list
+            $RawHeaders = explode("\r\n", $RawHeaders);
+            $headers = array();
+            foreach ($RawHeaders as $header) {
+                list($Name, $Value) = explode(':', $header);
+                $headers[strtolower($Name)] = ltrim($Value, ' '); 
+            } 
+
+            // Parse the Content-Disposition to get the field name, etc.
+            if (isset($headers['content-disposition'])) {
+                $filename = null;
+                preg_match(
+                    '/^(.+); *name="([^"]+)"(; *filename="([^"]+)")?/', 
+                    $headers['content-disposition'], 
+                    $Matches
+                );
+                list(, $Type, $Name) = $Matches;
+                isset($Matches[4]) and $filename = $Matches[4]; 
+
+                // handle your fields here
+                switch ($Name) {
+                    // this is a file upload
+                    case 'userfile':
+                         file_put_contents($filename, $PutBody);
+                         break;
+
+                    // default for all other files is to populate $PutData
+                    default: 
+                         $PutData[$Name] = substr($PutBody, 0, strlen($PutBody) - 2);
+                         break;
+                } 
+            }
+
+        }
+
+        return $PutData;
     }
 
     public static function SendResponse($Status = 200, $Data = NULL)

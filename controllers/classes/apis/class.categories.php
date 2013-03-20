@@ -28,7 +28,11 @@ class Categories
                 break;
 
             case 'post':
-                self::_Post($Request);
+                self::_Post($CategoryID);
+                break;
+
+            case 'put':
+                self::_Put($CategoryID);
                 break;
 
             case 'delete':
@@ -101,60 +105,152 @@ class Categories
      * 
      * POST /category { "Category/Name": name, "Category/UrlCode": url }
      * 
+     * @param   array $Request
+     * @since   0.1.0
+     * @access  public
+     */
+    protected function _Post($CategoryID = NULL)
+    {
+        if ($CategoryID) {
+            self::_Put($CategoryID);
+        } else {
+
+            // Security
+            $Session = Gdn::Session();
+            $TransientKey = $Session->TransientKey();
+
+            // Check permission
+            $this->Permission('Vanilla.Categories.Manage');
+
+            // Prep models
+            $RoleModel = new RoleModel();
+            $PermissionModel = Gdn::PermissionModel();
+            $this->CategoryModel = new CategoryModel();
+            $this->Form = $FormModel = new Gdn_Form();
+            $this->Form->SetModel($this->CategoryModel);
+
+            // Load all roles with editable permissions.
+            $this->RoleArray = $RoleModel->GetArray();
+
+            if ($Session->ValidateTransientKey($TransientKey)) {
+
+                // Form was validly submitted
+                $Response = $this->Form->FormValues();
+
+                $IsParent = $this->Form->GetFormValue('IsParent', '0');
+                $this->Form->SetFormValue('AllowDiscussions', $IsParent == '1' ? '0' : '1');
+
+                $CategoryID = $this->Form->Save();
+
+                // If no category was created
+                if (!$CategoryID) {
+                    //unset($CategoryID);
+                    Utility::SetError($Code = 409, 'Conflict');
+                } else {
+                    Utility::SetError($Code = 201, 'Created');
+                    $this->SetData('Category', $this->Form->FormValues());
+                }
+
+            } else {
+                $this->Form->AddHidden('CodeIsDefined', '0');
+                Utility::SetError($Code = 401, 'Unauthorized');
+            }
+
+            // Get all of the currently selected role/permission combinations for this junction.
+            $Permissions = $PermissionModel->GetJunctionPermissions(array('JunctionID' => isset($CategoryID) ? $CategoryID : 0), 'Category');
+            $Permissions = $PermissionModel->UnpivotPermissions($Permissions, TRUE);
+
+        }
+
+        $this->RenderData(Utility::SendResponse($Code, $this->Data));
+
+    }
+
+    /**
+     * To be written
+     * 
+     * PUT /category
+     * 
      * @param   int $CategoryID
      * @since   0.1.0
      * @access  public
      */
-    protected function _Post($Request)
+    protected function _Put($CategoryID = NULL)
     {
-
         // Security
         $Session = Gdn::Session();
         $TransientKey = $Session->TransientKey();
-
+      
         // Check permission
-        $this->Permission('Vanilla.Categories.Manage');
+        $this->Permission('Garden.Settings.Manage');
 
-        // Prep models
+        // Set up models
         $RoleModel = new RoleModel();
         $PermissionModel = Gdn::PermissionModel();
         $this->CategoryModel = new CategoryModel();
-        $this->Form = $FormModel = new Gdn_Form();
+        $this->Form = new Gdn_Form();
         $this->Form->SetModel($this->CategoryModel);
 
-        // Load all roles with editable permissions.
-        $this->RoleArray = $RoleModel->GetArray();
+        // Parse data from the PUT request
+        $PutData = Utility::ParsePut();
 
-        if ($Session->ValidateTransientKey($TransientKey)) {
-
-            // Form was validly submitted
-            $Response = $this->Form->FormValues();
-
-            $IsParent = $this->Form->GetFormValue('IsParent', '0');
-            $this->Form->SetFormValue('AllowDiscussions', $IsParent == '1' ? '0' : '1');
-
-            $CategoryID = $this->Form->Save();
-
-            // If no category was created
-            if (!$CategoryID) {
-                unset($CategoryID);
-                Utility::SetError($Code = 409, 'Conflict');
-            } else {
-                Utility::SetError($Code = 201, 'Created');
-                $this->SetData('Category', $this->Form->FormValues());
-            }
-
-        } else {
-            $this->Form->AddHidden('CodeIsDefined', '0');
-            Utility::SetError($Code = 401, 'Unauthorized');
+        // Populate form values
+        foreach ($PutData as $Key => $Value) {
+            $this->Form->SetFormValue($Key, $PutData[$Key]);
         }
 
+        if (!$CategoryID && $Session->ValidateTransientKey($TransientKey)) {
+            if ($ID = $this->Form->GetFormValue('CategoryID'))
+                $CategoryID = $ID;
+        }
+
+        // Get category data
+        $this->Category = $this->CategoryModel->GetID($CategoryID);
+        $this->Category->CustomPermissions = $this->Category->CategoryID == $this->Category->PermissionCategoryID;
+
+        // Make sure the form knows which item we are editing.
+        $this->Form->AddHidden('CategoryID', $CategoryID);
+        $this->SetData('CategoryID', $CategoryID);
+
+        // Load all roles with editable permissions
+        $this->RoleArray = $RoleModel->GetArray();
+
+        if ($Session->ValidateTransientKey($TransientKey) == FALSE) {
+            $this->Form->SetData($this->Category);
+        } else {
+            $Upload = new Gdn_Upload();
+            $TmpImage = $Upload->ValidateUpload('PhotoUpload', FALSE);
+            if ($TmpImage) {
+            
+                // Generate the target image name
+                $TargetImage = $Upload->GenerateTargetName(PATH_UPLOADS);
+                $ImageBaseName = pathinfo($TargetImage, PATHINFO_BASENAME);
+
+                // Save the uploaded image
+                $Parts = $Upload->SaveAs(
+                    $TmpImage,
+                    $ImageBaseName
+                );
+                $this->Form->SetFormValue('Photo', $Parts['SaveName']);
+            }
+         
+            if ($this->Form->Save()) {
+                $Category = CategoryModel::Categories($CategoryID);
+                $this->SetData('Category', $Category);
+            
+                if ($this->DeliveryType() == DELIVERY_TYPE_ALL)
+                    Redirect('vanilla/settings/managecategories');
+            }
+        }
+       
         // Get all of the currently selected role/permission combinations for this junction.
-        $Permissions = $PermissionModel->GetJunctionPermissions(array('JunctionID' => isset($CategoryID) ? $CategoryID : 0), 'Category');
+        $Permissions = $PermissionModel->GetJunctionPermissions(array('JunctionID' => $CategoryID), 'Category', '', array('AddDefaults' => !$this->Category->CustomPermissions));
         $Permissions = $PermissionModel->UnpivotPermissions($Permissions, TRUE);
+      
+        if ($this->DeliveryType() == DELIVERY_TYPE_ALL)
+            $this->SetData('PermissionData', $Permissions, TRUE);
 
-        $this->RenderData(Utility::SendResponse($Code, $this->Data));
-
+        $this->RenderData(Utility::SendResponse(200, $this->Data));
     }
 
     /**
