@@ -91,42 +91,46 @@ class CategoryController extends APIController
 
         if ($CategoryID) {
 
-            $Categories = $CategoryModel->GetID($CategoryID);
+            $Category = $CategoryModel->GetFull($CategoryID)->Result();
+            
+            if (!empty($Category)) {
 
-        } elseif (is_null($Limit) && is_null($Offset)) {
+                $Code = 200;
+                $this->SetData('Category', array_shift($Category));
 
-            $Categories = $CategoryModel->GetFull()->Result();
+            } else {
 
-        } else {
-
-            $Categories = array_slice($CategoryModel->GetFull($CategoryID)->Result(), $Offset, $Limit);
-        
-        }
-
-        $Data = array();
-
-        // If a category ID has been passed, simply parse the category as-is
-        // Don't parse the category if the category ID is 0 or less
-        if ($CategoryID && $CategoryID > 0) {
-            $Data = $Categories;
-        } else {
-
-            // Do a little filtering of the categories
-            foreach ($Categories as $Category) {
-
-                // Don't add the category tree root
-                if (!is_null($Category->ParentCategoryID)) {
-
-                    // Add each entry in the object to the data array
-                    $Data[] = $Category;
-
-                }
+                $Code = 404;
+                $this->SetData('Code', $Code);
+                $this->SetData('Exception', T('No category with the specified ID exists'));
 
             }
 
+        } else {
+
+            $Categories = $CategoryModel->GetFull()->Result();
+
+            if (!empty($Categories)) {
+                
+                $Code = 200;
+                $this->SetData('Categories', array_slice(
+                        array(
+                            array_shift($Categories)
+                        ), $Offset, $Limit
+                    )
+                );
+
+            } else {
+
+                $Code = 404;
+                $this->SetData('Code', $Code);
+                $this->SetData('Exception', T('No categories were found'));
+
+            }
+        
         }
 
-        $this->RenderData(UtilityController::SendResponse(200, $Data));
+        $this->RenderData(UtilityController::SendResponse($Code, $this->Data));
     }
 
     /**
