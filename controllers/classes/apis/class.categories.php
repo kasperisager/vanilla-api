@@ -84,12 +84,7 @@ class Categories
 
             if (!empty($Categories)) {
                 $Code = 200;
-                $this->SetData('Categories', array_slice(
-                        array(
-                            array_shift($Categories)
-                        ), $Offset, $Limit
-                    )
-                );
+                $this->SetData('Categories', array_slice($Categories, $Offset, $Limit));
             } else {
                 $Code = 404;
                 $this->SetData('Code', $Code);
