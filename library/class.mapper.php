@@ -1,7 +1,7 @@
 <?php if (!defined('APPLICATION')) exit();
 
 /**
- * Abstract Mapper class used for deining API resources
+ * Abstract Mapper class used for defining API resources
  *
  * By extending this class, APIs can be defined using pre-defined, abstract
  * methods thus ensuring compatibility with the API mapping mechanism.
