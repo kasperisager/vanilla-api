@@ -13,7 +13,6 @@ class Categories extends Mapper
 {
     private $Data;
     private $CategoryID;
-    private $Format;
 
     /**
      * GET
@@ -24,10 +23,9 @@ class Categories extends Mapper
      */
     public function Get($Params)
     {
-        $CategoryID = DS . $Params['Request'][2];
-        $Format = '.' . $Params['Format'];
+        $CategoryID = DS . $Params['URI'][2];
 
-        $Map = 'vanilla/categories' . $Format . $CategoryID;
+        $Map = 'vanilla/categories' . $CategoryID;
 
         $Data = array(
             'Map'   => $Map
@@ -45,19 +43,22 @@ class Categories extends Mapper
      */
     public function Post($Params)
     {
-        $CategoryID = DS . $Params['Request'][2];
-        $Format = '.' . $Params['Format'];
+        $CategoryID = DS . $Params['URI'][2];
 
         if ($CategoryID) {
 
-            $Map = 'vanilla/settings/editcategory' .  $Format . $CategoryID;
+            if ($Params['Request']['Delete']) {
+                $Map = 'vanilla/settings/deletecategory' . $CategoryID;
+            } else {
+                $Map = 'vanilla/settings/editcategory' . $CategoryID;
+            }
 
             $Args = array(
                 'CategoryID' => ltrim($CategoryID, DS)
             );
 
         } else {
-            $Map = 'vanilla/settings/addcategory' . $Format;
+            $Map = 'vanilla/settings/addcategory';
         }
 
         $Data = array(
@@ -77,8 +78,7 @@ class Categories extends Mapper
      */
     public function Put($Params)
     {
-        $CategoryID = DS . $Params['Request'][2];
-        $Format = '.' . $Params['Format'];
+        $CategoryID = DS . $Params['URI'][2];
 
         if ($CategoryID) {
 
@@ -107,8 +107,7 @@ class Categories extends Mapper
      */
     public function Delete($Params)
     {
-        $CategoryID = DS . $Params['Request'][2];
-        $Format = '.' . $Params['Format'];
+        $CategoryID = DS . $Params['URI'][2];
 
         $Map = 'vanilla/settings/deletecategory' . $CategoryID;
 

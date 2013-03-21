@@ -36,18 +36,30 @@ class VanillaAPI extends Gdn_Plugin
         $RequestURI     = $Request->RequestURI();
         $RequestMethod  = $Request->RequestMethod();
 
-        // Only deliver XML if specifically requested
-        $Accept         = $Request->Merged('HTTP_ACCEPT');
-        $Format         = ($Accept == 'application/xml') ? 'xml' : 'json';
-
         // Intercept API requests and store the requested class
         if (preg_match('/^api\/(\w+)/i', $RequestURI, $Class)) {
+
+            // Only deliver data - nothing else is needed
+            Gdn::Request()->WithDeliveryType(DELIVERY_TYPE_DATA);
+
+            // Only deliver XML if specifically requested
+            $Accept = $Request->Merged('HTTP_ACCEPT');
+            $Format = ($Accept == 'application/xml') ? 'xml' : 'json';
+
+            if ($Format == 'xml') {
+                Gdn::Request()->WithDeliveryMethod(DELIVERY_METHOD_XML);
+            } else {
+                Gdn::Request()->WithDeliveryMethod(DELIVERY_METHOD_JSON);
+            }
             
+            if (!class_exists($Class[1]))
+                return;
+
             $Class = new $Class[1];
 
             $Params = array(
-                'Request'   => explode('/', $RequestURI),
-                'Format'    => $Format
+                'Request'   => $Request->Merged(),
+                'URI'       => explode('/', $RequestURI)
             );
 
             switch(strtolower($RequestMethod)) {
@@ -115,7 +127,6 @@ class VanillaAPI extends Gdn_Plugin
             }
 
             Gdn::Request()->WithURI($Data['Map']);
-            Gdn::Request()->WithDeliveryType(DELIVERY_TYPE_DATA);
         }
     }
 
