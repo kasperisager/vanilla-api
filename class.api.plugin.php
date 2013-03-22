@@ -42,9 +42,9 @@ class VanillaAPI extends Gdn_Plugin
             // Only deliver data - nothing else is needed
             Gdn::Request()->WithDeliveryType(DELIVERY_TYPE_DATA);
 
-            // Only deliver XML if specifically requested
+            // Change response format depending on HTTP_ACCEPT
             $Accept = $Request->Merged('HTTP_ACCEPT');
-            $Format = ($Accept == 'application/xml') ? 'xml' : 'json';
+            $Format = (strpos($Accept, 'json')) ?: 'xml';
 
             if ($Format == 'xml') {
                 Gdn::Request()->WithDeliveryMethod(DELIVERY_METHOD_XML);
