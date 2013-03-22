@@ -7,7 +7,7 @@
  * using the standard HTTP verbs GET, POST, PUT and DELETE.
  *
  * @package     API
- * @version       0.1.0
+ * @version     0.1.0
  * @author      Kasper Kronborg Isager <kasperisager@gmail.com>
  * @copyright   Copyright © 2013
  * @license     http://opensource.org/licenses/MIT MIT
@@ -16,8 +16,8 @@
 /**
  * Main API controller
  *
- * @package     API
- * @since       0.1.0
+ * @package API
+ * @since   0.1.0
  */
 class APIController extends Gdn_Controller
 {
