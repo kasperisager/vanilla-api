@@ -23,14 +23,8 @@ class Categories extends Mapper
      */
     public function Get($Params)
     {
-        $CategoryID = DS . $Params['URI'][2];
-
-        $Map = 'vanilla/categories' . $CategoryID;
-
-        $Data = array(
-            'Map'   => $Map
-        );
-
+        $CategoryID = $Params['URI'][2];
+        $Data = array('Map'   => 'vanilla/categories' . DS . $CategoryID);
         return $Data;
     }
 
@@ -43,29 +37,7 @@ class Categories extends Mapper
      */
     public function Post($Params)
     {
-        $CategoryID = DS . $Params['URI'][2];
-
-        if ($CategoryID) {
-
-            if ($Params['Request']['Delete']) {
-                $Map = 'vanilla/settings/deletecategory' . $CategoryID;
-            } else {
-                $Map = 'vanilla/settings/editcategory' . $CategoryID;
-            }
-
-            $Args = array(
-                'CategoryID' => ltrim($CategoryID, DS)
-            );
-
-        } else {
-            $Map = 'vanilla/settings/addcategory';
-        }
-
-        $Data = array(
-            'Map'   => $Map,
-            'Args'  => $Args
-        );
-
+        $Data = array('Map'   => 'vanilla/settings/addcategory');
         return $Data;
     }
 
@@ -78,16 +50,15 @@ class Categories extends Mapper
      */
     public function Put($Params)
     {
-        $CategoryID = DS . $Params['URI'][2];
+        $CategoryID = $Params['URI'][2];
+
+        $Map = 'vanilla/settings/editcategory' . DS . $CategoryID;
 
         if ($CategoryID) {
-
-            $Map = 'vanilla/settings/editcategory' . $CategoryID;
-
             $Args = array(
-                'CategoryID' => ltrim($CategoryID, DS)
+                'CategoryID' => $CategoryID,
+                'TransientKey'  => Gdn::Session()->TransientKey()
             );
-
         }
 
         $Data = array(
@@ -107,13 +78,14 @@ class Categories extends Mapper
      */
     public function Delete($Params)
     {
-        $CategoryID = DS . $Params['URI'][2];
+        $CategoryID = $Params['URI'][2];
 
-        $Map = 'vanilla/settings/deletecategory' . $CategoryID;
+        $Map = 'vanilla/settings/deletecategory' . DS . $CategoryID;
 
         if ($CategoryID) {
             $Args = array(
-                'CategoryID' => ltrim($CategoryID, DS)
+                'CategoryID'    => $CategoryID,
+                'TransientKey'  => Gdn::Session()->TransientKey()
             );
         }
 

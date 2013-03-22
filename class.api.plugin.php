@@ -70,30 +70,18 @@ class VanillaAPI extends Gdn_Plugin
 
                 case 'post':
                     $Data = $Class->Post($Params);
-
-                    // Combine the POST request with any custom arguments,
-                    // this being because I also use POST for deleteing and
-                    // updating resources
-                    Gdn::Request()->SetRequestArguments(
-                        Gdn_Request::INPUT_POST, array_merge(
-                            Gdn::Request()->Post(),
-                            $Data['Args']
-                        )
-                    );
-
-                    // Set the POST request
-                    $_POST = Gdn::Request()->Post();
-
                     break;
 
                 case 'put':
-                    // Still trying to figure out how to make PUT work
-                    /*
                     $Data = $Class->Put($Params);
 
-                    $_POST = self::ParsePhpInput();
+                    // Garden can't handle PUT requests by default, so trick
+                    // it into thinking that this is actually a POST
+                    Gdn::Request()->RequestMethod('post');
 
-                    // Combine the POST request with any custom arguments
+                    $_PUT = self::ParsePut();
+
+                    // Combine the PUT request with any custom arguments
                     Gdn::Request()->SetRequestArguments(
                         Gdn_Request::INPUT_POST, array_merge(
                             $_PUT,
@@ -102,26 +90,25 @@ class VanillaAPI extends Gdn_Plugin
                     );
 
                     $_POST = Gdn::Request()->Post();
-                    */
+
+                    var_dump($_POST);
+
                     break;
 
                 case 'delete':
-                    // Still trying to figure out how to make DELETE work
-                    /*
-                    $Data = $Class->Put($Params);
+                    $Data = $Class->Delete($Params);
 
-                    $_DELETE = self::ParsePhpInput();
+                    // Garden can't handle DELETE requests by default, so trick
+                    // it into thinking that this is actually a POST
+                    Gdn::Request()->RequestMethod('post');
 
-                    // Combine the POST request with any custom arguments
+                    // Combine the DELETE request with any custom arguments
                     Gdn::Request()->SetRequestArguments(
-                        Gdn_Request::INPUT_POST, array_merge(
-                            $_DELETE,
-                            $Data['Args']
-                        )
+                        Gdn_Request::INPUT_POST, $Data['Args']
                     );
 
                     $_POST = Gdn::Request()->Post();
-                    */
+
                     break;
 
             }
@@ -131,17 +118,22 @@ class VanillaAPI extends Gdn_Plugin
     }
 
     /**
-     * Parse and return PUT/DELETE data
+     * Parse and return PUT data
      *
      * @package API
      * @since 0.1.0
      * @access public
      */
-    public static function ParsePhpInput()
+    public static function ParsePut()
     {
         // Fetch PUT content and determine Boundary
         $RawData = file_get_contents('php://input');
         $Boundary = substr($RawData, 0, strpos($RawData, "\r\n"));
+
+        if(empty($Boundary)){
+            parse_str($RawData, $Data);
+            return $Data;
+        }
 
         // Fetch each part
         $Parts = array_slice(explode($Boundary, $RawData), 1);
