@@ -120,6 +120,7 @@ class VanillaAPI extends Gdn_Plugin
     /**
      * Parse and return PUT data
      *
+     * @author netcoder <http://stackexchange.com/users/229735>
      * @package API
      * @since 0.1.0
      * @access public
