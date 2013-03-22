@@ -91,8 +91,6 @@ class VanillaAPI extends Gdn_Plugin
 
                     $_POST = Gdn::Request()->Post();
 
-                    var_dump($_POST);
-
                     break;
 
                 case 'delete':
