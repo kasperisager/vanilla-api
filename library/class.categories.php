@@ -12,7 +12,10 @@
 class Categories extends Mapper
 {
     /**
-     * GET
+     * Retrieve categories
+     *
+     * GET /categories
+     * GET /categories/:id
      *
      * @package API
      * @since   0.1.0
@@ -21,12 +24,14 @@ class Categories extends Mapper
     public function Get($Params)
     {
         $CategoryID = $Params['URI'][2];
-        $Data = array('Map' => 'vanilla/categories' . DS . $CategoryID);
+        $Data = array('Map' => 'vanilla/categories/all' . DS . $CategoryID);
         return $Data;
     }
 
     /**
-     * POST
+     * Creat categories
+     *
+     * POST /categories
      *
      * @package API
      * @since   0.1.0
@@ -39,7 +44,9 @@ class Categories extends Mapper
     }
 
     /**
-     * PUT
+     * Update categories
+     *
+     * PUT /categories/:id
      *
      * @package API
      * @since   0.1.0
@@ -62,7 +69,9 @@ class Categories extends Mapper
     }
 
     /**
-     * DELETE
+     * Remove categories
+     *
+     * DELETE /categories/:id
      *
      * @package API
      * @since   0.1.0
