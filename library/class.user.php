@@ -1,7 +1,7 @@
 <?php if (!defined('APPLICATION')) exit();
 
 /**
- * Session API
+ * User API
  *
  * @package     API
  * @version     0.1.0
@@ -9,7 +9,7 @@
  * @copyright   Copyright © 2013
  * @license     http://opensource.org/licenses/MIT MIT
  */
-class Session extends Mapper
+class User extends Mapper
 {
     /**
      * GET
