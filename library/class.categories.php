@@ -11,9 +11,6 @@
  */
 class Categories extends Mapper
 {
-    private $Data;
-    private $CategoryID;
-
     /**
      * GET
      *
