@@ -1,5 +1,7 @@
 <?php if (!defined('APPLICATION')) exit();
 
+use Swagger\Annotations as SWG;
+
 /**
  * Discussions API
  *
@@ -8,6 +10,10 @@
  * @author      Kasper Kronborg Isager <kasperisager@gmail.com>
  * @copyright   Copyright © 2013
  * @license     http://opensource.org/licenses/MIT MIT
+ *
+ * @SWG\Resource(
+ *     resourcePath="/discussions"
+ * )
  */
 class Discussions extends Mapper
 {
@@ -16,7 +22,6 @@ class Discussions extends Mapper
      *
      * GET /discussions
      * GET /discussions/:id
-     * GET /discussions/category/:id
      *
      * @package API
      * @since   0.1.0
@@ -24,18 +29,61 @@ class Discussions extends Mapper
      */
     public function Get($Params)
     {
-        $DiscussionID   = $Params['URI'][2];
-        $CategoryID     = $Params['URI'][3];
-
-        if ($DiscussionID == 'category') {
-            $Data = array('Map' => 'vanilla/categories' . DS . $CategoryID);
-        } else if ($DiscussionID) {
-            $Data = array('Map' => 'vanilla/discussion' . DS . $DiscussionID);
+        $DiscussionID = $Params['URI'][2];
+        if ($DiscussionID) {
+            return self::_GetById($DiscussionID);
         } else {
-            $Data = array('Map' => 'vanilla/discussions');
+            return self::_GetAll();
         }
+    }
 
-        return $Data;
+    /**
+     * Find all discussions
+     *
+     * @package API
+     * @since   0.1.0
+     * @access  public
+     *
+     * @SWG\Api(
+     *     path="/discussions",
+     *     @SWG\operations(
+     *         @SWG\operation(
+     *             httpMethod="GET",
+     *             path="/discussions",
+     *             nickname="GetAll",
+     *             summary="Find all discussions",
+     *             notes="Respects permissions"
+     *         )
+     *     )
+     * )
+     */
+    protected function _GetAll()
+    {
+        return array('Map' => 'vanilla/discussions');
+    }
+
+    /**
+     * Find a specific discussion
+     *
+     * @package API
+     * @since   0.1.0
+     * @access  public
+     *
+     * @SWG\Api(
+     *     path="/discussions/{id}",
+     *     @SWG\operations(
+     *         @SWG\operation(
+     *             httpMethod="GET",
+     *             nickname="GetById",
+     *             summary="Find a specific discussion",
+     *             notes="Respects permissions"
+     *         )
+     *     )
+     * )
+     */
+    protected function _GetById($DiscussionID)
+    {
+        return array('Map' => 'vanilla/discussion' . DS . $DiscussionID);
     }
 
     /**
@@ -46,11 +94,22 @@ class Discussions extends Mapper
      * @package API
      * @since   0.1.0
      * @access  public
+     *
+     * @SWG\Api(
+     *     path="/discussions",
+     *     @SWG\operations(
+     *         @SWG\operation(
+     *             httpMethod="POST",
+     *             nickname="Post",
+     *             summary="Create a new discussion",
+     *             notes="Respects permissions"
+     *         )
+     *     )
+     * )
      */
     public function Post($Params)
     {
-        $Data = array('Map' => 'vanilla/post/discussion');
-        return $Data;
+        return array('Map' => 'vanilla/post/discussion');
     }
 
     /**
@@ -61,21 +120,28 @@ class Discussions extends Mapper
      * @package API
      * @since   0.1.0
      * @access  public
+     *
+     * @SWG\Api(
+     *     path="/discussions/{id}",
+     *     @SWG\operations(
+     *         @SWG\operation(
+     *             httpMethod="PUT",
+     *             nickname="Put",
+     *             summary="Update an existing discussion",
+     *             notes="Respects permissions"
+     *         )
+     *     )
+     * )
      */
     public function Put($Params)
     {
         $DiscussionID = $Params['URI'][2];
-
-        if ($DiscussionID) {
-            $Map = 'vanilla/post/editdiscussion' . DS . $DiscussionID;
-            $Args = array(
-                'DiscussionID' => $DiscussionID,
-                'TransientKey'  => Gdn::Session()->TransientKey()
-            );
-        }
-
-        $Data = array('Map' => $Map, 'Args' => $Args);
-        return $Data;
+        $Map = 'vanilla/post/editdiscussion' . DS . $DiscussionID;
+        $Args = array(
+            'DiscussionID' => $DiscussionID,
+            'TransientKey'  => Gdn::Session()->TransientKey()
+        );
+        return array('Map' => $Map, 'Args' => $Args);
     }
 
     /**
@@ -86,20 +152,26 @@ class Discussions extends Mapper
      * @package API
      * @since   0.1.0
      * @access  public
+     *
+     * @SWG\Api(
+     *     path="/discussions/{id}",
+     *     @SWG\operations(
+     *         @SWG\operation(
+     *             httpMethod="DELETE",
+     *             nickname="Delete",
+     *             summary="Delete an existing discussion",
+     *             notes="Respects permissions"
+     *         )
+     *     )
+     * )
      */
     public function Delete($Params)
     {
         $DiscussionID = $Params['URI'][2];
-
-        if ($DiscussionID) {
-            $Map = 'vanilla/discussion/delete' . DS . $DiscussionID;
-            $Args = array(
-                //'DiscussionID'    => $DiscussionID,
-                'TransientKey'  => Gdn::Session()->TransientKey()
-            );
-        }
-
-        $Data = array('Map' => $Map, 'Args' => $Args);
-        return $Data;
+        $Map = 'vanilla/discussion/delete' . DS . $DiscussionID;
+        $Args = array(
+            'TransientKey'  => Gdn::Session()->TransientKey()
+        );
+        return array('Map' => $Map, 'Args' => $Args);
     }
 }

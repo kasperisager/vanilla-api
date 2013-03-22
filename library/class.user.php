@@ -1,5 +1,7 @@
 <?php if (!defined('APPLICATION')) exit();
 
+use Swagger\Annotations as SWG;
+
 /**
  * User API
  *
@@ -20,8 +22,7 @@ class User extends Mapper
      */
     public function Get($Params)
     {
-        $Data = array('Map' => 'dashboard/profile');
-        return $Data;
+        return array('Map' => 'dashboard/profile');
     }
 
     /**

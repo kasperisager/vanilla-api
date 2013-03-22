@@ -1,7 +1,7 @@
 <?php if (!defined('APPLICATION')) exit();
 
 /**
- * Vanilla API main controller
+ * Vanilla API Main controller
  *
  * The Vanilla API lets you interface with Vanilla in a fully RESTful way
  * using the standard HTTP verbs GET, POST, PUT and DELETE.
@@ -16,11 +16,87 @@
 /**
  * Main API controller
  *
- * @package API
- * @since   0.1.0
+ * @package     API
+ * @since       0.1.0
+ * @author      Kasper Kronborg Isager <kasperisager@gmail.com>
+ * @copyright   Copyright © 2013
+ * @license     http://opensource.org/licenses/MIT MIT
  */
 class APIController extends Gdn_Controller
 {
+    /**
+     * Do-nothing construct to let children constructs bubble up.
+     *
+     * @access public
+     */
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+    /**
+     * Do-nothing initialize to let children initializers bubble up.
+     * 
+     * @since   0.1.0
+     * @access  public
+     */
+    public function Initialize()
+    {
+        parent::Initialize();
+    }
+
+    /**
+     * API documentation and visualization using Swagger
+     * 
+     * @since   0.1.0
+     * @access  public
+     */
+    public function Index()
+    {
+        if ($this->DeliveryType() == DELIVERY_TYPE_ALL) {
+
+            // Build the head asset
+            $this->Head = new HeadModule($this);
+            $this->Title(T('API Documentation'));
+
+            /**
+             * Vanilla 2.1 goodie
+             */
+            if (method_exists('Gdn_Theme', 'Section')) {
+                Gdn_Theme::Section('ApiDocumentation');
+            }
+
+            $this->Menu->HighlightRoute('/api');
+            $this->SetData('Breadcrumbs',array(
+                array(
+                    'Name' => T('API Documentation'),
+                    'Url' => '/api')
+                )
+            );
+
+            // General resources
+            $this->AddJsFile('jquery.js');
+
+            // Documentation resources
+            $this->AddJsFile('jquery.slideto.min.js');
+            $this->AddJsFile('jquery.wiggle.min.js');
+            $this->AddJsFile('jquery.ba-bbq.min.js');
+            $this->AddJsFile('handlebars.js');
+            $this->AddJsFile('underscore-min.js');
+            $this->AddJsFile('backbone-min.js');
+            $this->AddJsFile('swagger.js');
+            $this->AddJsFile('swagger-ui.js');
+            $this->AddJsFile('highlight.js');
+
+            $this->AddCssFile('screen.css');
+            $this->AddCssFile('highlight.default.css');
+
+        }
+
+        $this->MasterView = 'api';
+        $this->Render();
+    }
+
     /**
      * Map the API request to the appropriate controller
      *
@@ -34,7 +110,15 @@ class APIController extends Gdn_Controller
         $URI            = $Request->RequestURI();
 
         // Intercept API requests and store the requested class
-        if (preg_match('/^api\/(\w+)/i', $URI, $Class)) {
+        if (preg_match('/^api\/(\w+)/i', $URI, $Matches)) {
+
+            $Class = $Matches[1];
+
+             if (class_exists($Class)) {
+                $Class = new $Class;
+            } else {
+                return;
+            }
 
             $Method         = $Request->RequestMethod();
             $Environment    = $Request->Export('Environment');
@@ -56,12 +140,6 @@ class APIController extends Gdn_Controller
                 case 'json':
                     $Request->WithDeliveryMethod(DELIVERY_METHOD_JSON);
                     break;
-            }
-            
-            if (class_exists($Class[1])) {
-                $Class = new $Class[1];
-            } else {
-                return;
             }
 
             $Params = array(
