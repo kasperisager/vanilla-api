@@ -27,8 +27,8 @@ class VanillaAPI extends Gdn_Plugin
      * Map the API request to the appropriate controller
      *
      * @package API
-     * @since 0.1.0
-     * @access public
+     * @since   0.1.0
+     * @access  public
      */
     public function Gdn_Dispatcher_BeforeDispatch_Handler($Sender)
     {
@@ -120,10 +120,10 @@ class VanillaAPI extends Gdn_Plugin
     /**
      * Parse and return PUT data
      *
-     * @author netcoder <http://stackexchange.com/users/229735>
+     * @author  netcoder <http://stackexchange.com/users/229735>
      * @package API
-     * @since 0.1.0
-     * @access public
+     * @since   0.1.0
+     * @access  public
      */
     public static function ParsePut()
     {
@@ -190,8 +190,8 @@ class VanillaAPI extends Gdn_Plugin
      * No setup required
      *
      * @package API
-     * @since 0.1.0
-     * @access public
+     * @since   0.1.0
+     * @access  public
      */
     public function Setup()
     {

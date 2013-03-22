@@ -18,8 +18,8 @@ class Categories extends Mapper
      * GET
      *
      * @package API
-     * @since 0.1.0
-     * @access public
+     * @since   0.1.0
+     * @access  public
      */
     public function Get($Params)
     {
@@ -32,8 +32,8 @@ class Categories extends Mapper
      * POST
      *
      * @package API
-     * @since 0.1.0
-     * @access public
+     * @since   0.1.0
+     * @access  public
      */
     public function Post($Params)
     {
@@ -45,8 +45,8 @@ class Categories extends Mapper
      * PUT
      *
      * @package API
-     * @since 0.1.0
-     * @access public
+     * @since   0.1.0
+     * @access  public
      */
     public function Put($Params)
     {
@@ -73,8 +73,8 @@ class Categories extends Mapper
      * DELETE
      *
      * @package API
-     * @since 0.1.0
-     * @access public
+     * @since   0.1.0
+     * @access  public
      */
     public function Delete($Params)
     {
