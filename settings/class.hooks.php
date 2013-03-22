@@ -1,17 +1,5 @@
 <?php if (!defined('APPLICATION')) exit();
 
-$PluginInfo['VanillaAPI'] = array(
-
-    'Name'          => 'Vanilla API',
-    'Description'   => 'RESTful API for Vanilla that responds in JSON and XML.',
-    'Version'       => '0.1.0',
-    'Author'        => 'Kasper Kronborg Isager',
-    'AuthorEmail'   => 'kasperisager@gmail.com',
-    'AuthorUrl'     => 'https://github.com/kasperisager/VanillaAPI',
-    'License'       => 'MIT'
-    
-);
-
 /**
  * To be written
  *
@@ -21,7 +9,7 @@ $PluginInfo['VanillaAPI'] = array(
  * @copyright   Copyright © 2013
  * @license     http://opensource.org/licenses/MIT MIT
  */
-class VanillaAPI extends Gdn_Plugin
+class API implements Gdn_IPlugin
 {
     /**
      * Map the API request to the appropriate controller
@@ -34,13 +22,14 @@ class VanillaAPI extends Gdn_Plugin
     {
         $Request        = Gdn::Request();
         $URI            = $Request->RequestURI();
-        $Method         = $Request->RequestMethod();
-        $Environment    = $Request->Export('Environment');
-        $Arguments      = $Request->Export('Arguments');
-        $Parsed         = $Request->Export('Parsed');
 
         // Intercept API requests and store the requested class
         if (preg_match('/^api\/(\w+)/i', $URI, $Class)) {
+
+            $Method         = $Request->RequestMethod();
+            $Environment    = $Request->Export('Environment');
+            $Arguments      = $Request->Export('Arguments');
+            $Parsed         = $Request->Export('Parsed');
 
             // Only deliver data - nothing else is needed
             Gdn::Request()->WithDeliveryType(DELIVERY_TYPE_DATA);
@@ -64,7 +53,7 @@ class VanillaAPI extends Gdn_Plugin
                 'Environment'   => $Environment,
                 'Arguments'     => $Arguments,
                 'Parsed'        => $Parsed,
-                'URI'           => explode('/', $RequestURI)
+                'URI'           => explode('/', $URI)
             );
 
             switch(strtolower($Method)) {
@@ -116,7 +105,11 @@ class VanillaAPI extends Gdn_Plugin
 
             }
 
-            Gdn::Request()->WithURI($Data['Map']);
+            if ($Data['Map']) {
+                Gdn::Request()->WithURI($Data['Map']);
+            } else {
+                return;
+            }
         }
     }
 
