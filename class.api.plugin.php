@@ -3,7 +3,7 @@
 $PluginInfo['VanillaAPI'] = array(
 
     'Name'          => 'Vanilla API',
-    'Description'   => 'RESTful API for Vanilla that responds in JSON and XML. Documentation is available through the <a href="/api">API explorer</a>',
+    'Description'   => 'RESTful API for Vanilla that responds in JSON and XML.',
     'Version'       => '0.1.0',
     'Author'        => 'Kasper Kronborg Isager',
     'AuthorEmail'   => 'kasperisager@gmail.com',
