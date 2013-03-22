@@ -33,23 +33,26 @@ class VanillaAPI extends Gdn_Plugin
     public function Gdn_Dispatcher_BeforeDispatch_Handler($Sender)
     {
         $Request        = Gdn::Request();
-        $RequestURI     = $Request->RequestURI();
-        $RequestMethod  = $Request->RequestMethod();
+        $URI            = $Request->RequestURI();
+        $Method         = $Request->RequestMethod();
+        $Environment    = $Request->Export('Environment');
+        $Arguments      = $Request->Export('Arguments');
+        $Parsed         = $Request->Export('Parsed');
 
         // Intercept API requests and store the requested class
-        if (preg_match('/^api\/(\w+)/i', $RequestURI, $Class)) {
+        if (preg_match('/^api\/(\w+)/i', $URI, $Class)) {
 
             // Only deliver data - nothing else is needed
             Gdn::Request()->WithDeliveryType(DELIVERY_TYPE_DATA);
 
             // Change response format depending on HTTP_ACCEPT
-            $Accept = $Request->Merged('HTTP_ACCEPT');
+            $Accept = $Arguments['server']['HTTP_ACCEPT'];
             $Format = (strpos($Accept, 'json')) ?: 'xml';
 
             if ($Format == 'xml') {
-                Gdn::Request()->WithDeliveryMethod(DELIVERY_METHOD_XML);
+                $Request->WithDeliveryMethod(DELIVERY_METHOD_XML);
             } else {
-                Gdn::Request()->WithDeliveryMethod(DELIVERY_METHOD_JSON);
+                $Request->WithDeliveryMethod(DELIVERY_METHOD_JSON);
             }
             
             if (!class_exists($Class[1]))
@@ -58,11 +61,13 @@ class VanillaAPI extends Gdn_Plugin
             $Class = new $Class[1];
 
             $Params = array(
-                'Request'   => $Request->Merged(),
-                'URI'       => explode('/', $RequestURI)
+                'Environment'   => $Environment,
+                'Arguments'     => $Arguments,
+                'Parsed'        => $Parsed,
+                'URI'           => explode('/', $RequestURI)
             );
 
-            switch(strtolower($RequestMethod)) {
+            switch(strtolower($Method)) {
 
                 case 'get':
                     $Data = $Class->Get($Params);
@@ -174,7 +179,9 @@ class VanillaAPI extends Gdn_Plugin
 
                     // default for all other files is to populate $PutData
                     default: 
-                         $PutData[$Name] = substr($PutBody, 0, strlen($PutBody) - 2);
+                         $PutData[$Name] = substr(
+                            $PutBody, 0, strlen($PutBody) - 2
+                        );
                          break;
                 } 
             }

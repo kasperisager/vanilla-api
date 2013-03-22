@@ -24,7 +24,7 @@ class Categories extends Mapper
     public function Get($Params)
     {
         $CategoryID = $Params['URI'][2];
-        $Data = array('Map'   => 'vanilla/categories' . DS . $CategoryID);
+        $Data = array('Map' => 'vanilla/categories' . DS . $CategoryID);
         return $Data;
     }
 
@@ -37,7 +37,7 @@ class Categories extends Mapper
      */
     public function Post($Params)
     {
-        $Data = array('Map'   => 'vanilla/settings/addcategory');
+        $Data = array('Map' => 'vanilla/settings/addcategory');
         return $Data;
     }
 
@@ -52,20 +52,15 @@ class Categories extends Mapper
     {
         $CategoryID = $Params['URI'][2];
 
-        $Map = 'vanilla/settings/editcategory' . DS . $CategoryID;
-
         if ($CategoryID) {
+            $Map = 'vanilla/settings/editcategory' . DS . $CategoryID;
             $Args = array(
                 'CategoryID' => $CategoryID,
                 'TransientKey'  => Gdn::Session()->TransientKey()
             );
         }
 
-        $Data = array(
-            'Map'   => $Map,
-            'Args'  => $Args
-        );
-
+        $Data = array('Map' => $Map, 'Args' => $Args);
         return $Data;
     }
 
@@ -80,20 +75,15 @@ class Categories extends Mapper
     {
         $CategoryID = $Params['URI'][2];
 
-        $Map = 'vanilla/settings/deletecategory' . DS . $CategoryID;
-
         if ($CategoryID) {
+            $Map = 'vanilla/settings/deletecategory' . DS . $CategoryID;
             $Args = array(
                 'CategoryID'    => $CategoryID,
                 'TransientKey'  => Gdn::Session()->TransientKey()
             );
         }
 
-        $Data = array(
-            'Map'   => $Map,
-            'Args'  => $Args
-        );
-
+        $Data = array('Map' => $Map, 'Args' => $Args);
         return $Data;
     }
 }
