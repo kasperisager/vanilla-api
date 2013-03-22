@@ -1,13 +1,23 @@
 <?php if (!defined('APPLICATION')) exit();
 
 /**
- * Main API controller
+ * Vanilla API main controller
+ *
+ * The Vanilla API lets you interface with Vanilla in a fully RESTful way
+ * using the standard HTTP verbs GET, POST, PUT and DELETE.
  *
  * @package     API
- * @version     0.1.0
+ * @version       0.1.0
  * @author      Kasper Kronborg Isager <kasperisager@gmail.com>
  * @copyright   Copyright © 2013
  * @license     http://opensource.org/licenses/MIT MIT
+ */
+
+/**
+ * Main API controller
+ *
+ * @package     API
+ * @since       0.1.0
  */
 class APIController extends Gdn_Controller
 {
@@ -18,7 +28,8 @@ class APIController extends Gdn_Controller
      * @since   0.1.0
      * @access  public
      */
-    public function _Dispatch() {
+    public function _Dispatch()
+    {
         $Request        = Gdn::Request();
         $URI            = $Request->RequestURI();
 
@@ -37,16 +48,21 @@ class APIController extends Gdn_Controller
             $Accept = $Arguments['server']['HTTP_ACCEPT'];
             $Format = (strpos($Accept, 'json')) ?: 'xml';
 
-            if ($Format == 'xml') {
-                $Request->WithDeliveryMethod(DELIVERY_METHOD_XML);
-            } else {
-                $Request->WithDeliveryMethod(DELIVERY_METHOD_JSON);
+            switch ($Format) {
+                case 'xml':
+                    $Request->WithDeliveryMethod(DELIVERY_METHOD_XML);
+                    break;
+
+                case 'json':
+                    $Request->WithDeliveryMethod(DELIVERY_METHOD_JSON);
+                    break;
             }
             
-            if (!class_exists($Class[1]))
+            if (class_exists($Class[1])) {
+                $Class = new $Class[1];
+            } else {
                 return;
-
-            $Class = new $Class[1];
+            }
 
             $Params = array(
                 'Environment'   => $Environment,

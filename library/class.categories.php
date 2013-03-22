@@ -24,7 +24,13 @@ class Categories extends Mapper
     public function Get($Params)
     {
         $CategoryID = $Params['URI'][2];
-        $Data = array('Map' => 'vanilla/categories/all' . DS . $CategoryID);
+
+        if ($CategoryID) {
+            $Data = array('Map' => 'vanilla/categories' . DS . $CategoryID);
+        } else {
+            $Data = array('Map' => 'vanilla/categories/all');
+        }
+
         return $Data;
     }
 

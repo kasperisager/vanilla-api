@@ -18,7 +18,7 @@ class API implements Gdn_IPlugin
      * @since   0.1.0
      * @access  public
      */
-    public function Gdn_Dispatcher_BeforeDispatch_Handler($Sender)
+    public function Gdn_Dispatcher_BeforeDispatch_Handler()
     {
         APIController::_Dispatch();
     }
