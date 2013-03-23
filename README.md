@@ -1,6 +1,6 @@
 [![Vanilla API](design/images/api.png)](https://github.com/kasperisager/VanillaAPI)
 
-# Vanilla API [![Build Status](https://travis-ci.org/kasperisager/VanillaAPI.png)](https://travis-ci.org/kasperisager/VanillaAPI) [![Dependency Status](https://gemnasium.com/kasperisager/VanillaAPI.png)](https://gemnasium.com/kasperisager/VanillaAPI)
+# Vanilla API [![Dependency Status](https://gemnasium.com/kasperisager/VanillaAPI.png)](https://gemnasium.com/kasperisager/VanillaAPI)
 
 A super early version of a RESTful API for Vanilla that responds in JSON and XML
 
