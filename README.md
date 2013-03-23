@@ -9,7 +9,7 @@ A super early version of a RESTful API for Vanilla that responds in JSON and XML
 
 ## Library dependencies
 
-### [Doctrine Common](https://github.com/doctrine/common) [![Build Status](https://travis-ci.org/doctrine/common.png)](https://travis-ci.org/doctrine/common)
+### [Doctrine Common](https://github.com/doctrine/common) [![Build Status](https://travis-ci.org/doctrine/common.png?branch=2.3)](https://travis-ci.org/doctrine/common)
 The Doctrine Common project is a library that provides extensions to core PHP functionality.
 
 ### [Swagger PHP](https://github.com/zircote/swagger-php) [![Build Status](https://travis-ci.org/zircote/swagger-php.png)](https://travis-ci.org/zircote/swagger-php)
