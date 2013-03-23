@@ -16,7 +16,28 @@ annotations support and caching.
 
 ## Getting started
 
-More info coming ASAP...
+To get started using Ninja, either:
+- [Download the latest release](https://github.com/kasperisager/VanillaAPI/archive/master.zip)
+- Clone the repository directly into your Vanilla `applications` directory:  
+`$ cd /path/to/vanilla/applications/`  
+`$ git clone git://github.com/kasperisager/VanillaAPI.git`
+
+Now that you've downloaded Vanilla API, it's time to get it installed. Vanilla API comes with a Makefile that makes installation a breeze:
+
+```sh
+$ [sudo] make
+```
+
+## Makefile tasks
+
+#### install - `make install`
+Downloads Composer and installs the required Composer and NPM packages.
+
+#### update - `make update`
+Downloads and install new versions of the installed Composer packages.
+
+#### clean - `make clean`
+Removes all files and directories created by `make install` and `make update`.
 
 ---
 Copyright © 2013 [Kasper K. Isager](https://github.com/kasperisager). Licensed under the terms of the [MIT License](LICENSE.md)
