@@ -5,7 +5,7 @@
             "path": ".",
             "name": "Vanilla API",
             "file_exclude_patterns": [
-                //"*.gitignore",
+                "*.gitignore",
                 "*.sublime-project",
                 "*.sublime-workspace"
             ],
