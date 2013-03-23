@@ -1,4 +1,6 @@
 .DS_Store
+vendors
 node_modules
+*.lock
 *.sublime-project
 *.sublime-workspace
