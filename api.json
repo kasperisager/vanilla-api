@@ -1,0 +1,17 @@
+{
+    "folders":
+    [
+        {
+            "path": ".",
+            "name": "Vanilla API",
+            "file_exclude_patterns": [
+                //"*.gitignore",
+                "*.sublime-project",
+                "*.sublime-workspace"
+            ],
+            "folder_exclude_patterns": [
+                "node_modules"
+            ]
+        }
+    ]
+}

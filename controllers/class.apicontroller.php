@@ -59,9 +59,7 @@ class APIController extends Gdn_Controller
             $this->Head = new HeadModule($this);
             $this->Title(T('API Documentation'));
 
-            /**
-             * Vanilla 2.1 goodie
-             */
+            // Vanilla 2.1 goodie
             if (method_exists('Gdn_Theme', 'Section')) {
                 Gdn_Theme::Section('ApiDocumentation');
             }
@@ -74,22 +72,23 @@ class APIController extends Gdn_Controller
                 )
             );
 
-            // General resources
-            $this->AddJsFile('jquery.js');
-
             // Documentation resources
-            $this->AddJsFile('jquery.slideto.min.js');
-            $this->AddJsFile('jquery.wiggle.min.js');
-            $this->AddJsFile('jquery.ba-bbq.min.js');
-            $this->AddJsFile('handlebars.js');
-            $this->AddJsFile('underscore-min.js');
-            $this->AddJsFile('backbone-min.js');
-            $this->AddJsFile('swagger.js');
-            $this->AddJsFile('swagger-ui.js');
-            $this->AddJsFile('highlight.js');
+            $Dist = 'applications/api/node_modules/swagger-ui/dist';
 
-            $this->AddCssFile('screen.css');
-            $this->AddCssFile('highlight.default.css');
+            $this->AddJsFile($Dist . '/lib/jquery-1.8.0.min.js');
+            $this->AddJsFile($Dist . '/lib/jquery.slideto.min.js');
+            $this->AddJsFile($Dist . '/lib/jquery.slideto.min.js');
+            $this->AddJsFile($Dist . '/lib/jquery.wiggle.min.js');
+            $this->AddJsFile($Dist . '/lib/jquery.ba-bbq.min.js');
+            $this->AddJsFile($Dist . '/lib/handlebars-1.0.rc.1.js');
+            $this->AddJsFile($Dist . '/lib/underscore-min.js');
+            $this->AddJsFile($Dist . '/lib/backbone-min.js');
+            $this->AddJsFile($Dist . '/lib/swagger.js');
+            $this->AddJsFile($Dist . '/lib/highlight.7.3.pack.js');
+            $this->AddJsFile($Dist . '/swagger-ui.js');
+
+            $this->AddCssFile($Dist . '/css/screen.css');
+            $this->AddCssFile($Dist . '/css/hightlight.default.css');
 
         }
 
@@ -114,7 +113,7 @@ class APIController extends Gdn_Controller
 
             $Class = $Matches[1];
 
-             if (class_exists($Class)) {
+             if (!$Class == NULL && class_exists($Class)) {
                 $Class = new $Class;
             } else {
                 return;

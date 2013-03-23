@@ -1,0 +1,21 @@
+{
+  "name": "VanillaAPI",
+  "description": "Description",
+  "version": "0.1.0",
+  "author": {
+    "name": "Kasper K. Isager",
+    "email": "kasperisager@gmail.com",
+    "url": "https://github.com/kasperisager"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kasperisager/VanillaAPI.git"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "swagger-ui": "0.1.x"
+  },
+  "devDependencies": {
+    "bower": "0.8.x"
+  }
+}
