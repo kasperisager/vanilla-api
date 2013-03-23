@@ -30,6 +30,8 @@ $ [sudo] make
 
 ## Makefile tasks
 
+Vanilla API comes with a couple of handy makefile task for installing, updating and unstalling dependencies. Some of these may require that you run them as the root user so be prepared to `sudo` if things go fishy.
+
 #### install - `make install`
 Downloads Composer and installs the required Composer and NPM packages.
 
@@ -38,6 +40,10 @@ Downloads and install new versions of the installed Composer packages.
 
 #### clean - `make clean`
 Removes all files and directories created by `make install` and `make update`.
+
+## Issue tracking
+
+If you come across any bugs or if you have a feature request, please [file an issue](https://github.com/kasperisager/VanillaAPI/issues) using the Github Issue tracker. Vanilla API won't be supported through http://vanillaforums.org so please stick to using Github for inquires about bugs and feature requests. Thanks!
 
 ---
 Copyright © 2013 [Kasper K. Isager](https://github.com/kasperisager). Licensed under the terms of the [MIT License](LICENSE.md)
