@@ -1,6 +1,7 @@
 .DS_Store
 vendors
+composer.lock
+composer.phar
 node_modules
-*.lock
 *.sublime-project
 *.sublime-workspace
