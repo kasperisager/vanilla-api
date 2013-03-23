@@ -1,6 +1,7 @@
-COMPOSER 	= php composer.phar
+COMPOSER	= php composer.phar
+NPM			= node_modules
 VENDORS 	= vendors
-BIN 		= $(VENDORS)/bin
+BIN			= $(VENDORS)/bin
 
 .check-composer:
 	@echo "Checking if Composer is installed..."
@@ -15,8 +16,8 @@ BIN 		= $(VENDORS)/bin
 build:
 	make install
 
-install: clean .check-composer
-	@echo "Install Composer dependencies..."
+install: .check-composer
+	@echo "Installing Composer packages..."
 	$(COMPOSER) install --dev
 
 	@echo "Removing unnecessary directories..."
@@ -25,12 +26,20 @@ install: clean .check-composer
 	rm -rf $(VENDORS)/zircote/swagger-php/scripts/
 	rm -rf $(VENDORS)/zircote/swagger-php/tests/
 
+	@echo "Installing Node.js packages..."
+	npm install
+
 update: .check-installation
-	@echo "Update Composer dependencies..."
+	@echo "Updating Composer packages..."
 	$(COMPOSER) update --dev
 
 clean:
-	@echo "Removing Composer..."
+	@echo "Uninstalling..."
+
+	@echo "Removing Composer files and packages..."
 	rm -f composer.phar
 	rm -f composer.lock
 	rm -rf $(VENDORS)
+
+	@echo "Removing Node.js packages..."
+	rm -rf $(NPM)
