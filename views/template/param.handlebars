@@ -1,23 +1,22 @@
-<td class='code'>{{name}}</td>
+<td class="code">{{name}}</td>
 <td>
-
 	{{#if isBody}}
 		{{#if isFile}}
-			<input type="file" name='{{name}}'/>
+			<input type="file" name="{{name}}">
 		{{else}}
 			{{#if defaultValue}}
-				<textarea class='body-textarea' name='{{name}}'>{{defaultValue}}</textarea>
+				<textarea class="body-textarea" name="{{name}}">{{defaultValue}}</textarea>
 			{{else}}
-				<textarea class='body-textarea' name='{{name}}'></textarea>
-				<br />
-				<div class="content-type" />
+				<textarea class="body-textarea" name="{{name}}"></textarea>
+				<br>
+				<div class="content-type">
 			{{/if}}
 		{{/if}}
 	{{else}}
 		{{#if defaultValue}}
-			<input class='parameter' minlength='0' name='{{name}}' placeholder='' type='text' value='{{defaultValue}}'/>
+			<input class="parameter" minlength="0" name="{{name}}" placeholder="" type="text" value="{{defaultValue}}">
 		{{else}}
-			<input class='parameter' minlength='0' name='{{name}}' placeholder='' type='text' value=''/>
+			<input class="parameter" minlength="0" name="{{name}}" placeholder="" type="text" value="">
 		{{/if}}
 	{{/if}}
 
@@ -26,4 +25,3 @@
 <td>
 	<span class="model-signature"></span>
 </td>
-

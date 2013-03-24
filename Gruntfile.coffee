@@ -3,23 +3,12 @@ module.exports = (grunt) ->
     # Project configuration.
     grunt.initConfig
     
-        stylus:
-            compile:
-                options:
-                    paths: [
-                        "components/topcoat/src/style",
-                        "design/stylus",
-                    ]
-                    urlfunc: "url"
-                files:
-                    "design/api.css": "design/stylus/api.styl"
-
         less:
             compile:
                 options:
                     paths: [
-                        "components/bootstrap/less",
                         "design/less",
+                        "components/bootstrap/less",
                     ]
                 files:
                     "design/api.css": "design/less/api.less"
@@ -31,5 +20,6 @@ module.exports = (grunt) ->
 
     # Load modules.
     grunt.loadNpmTasks "grunt-contrib-less"
-    grunt.loadNpmTasks "grunt-contrib-stylus"
     grunt.loadNpmTasks "grunt-contrib-watch"
+
+    grunt.registerTask "compile", ["less"]

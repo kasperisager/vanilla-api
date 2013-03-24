@@ -3698,15 +3698,15 @@ input[type="submit"].btn.btn-mini {
   min-height: 40px;
   padding-left: 20px;
   padding-right: 20px;
-  background-color: #fafafa;
-  background-image: -moz-linear-gradient(top, #ffffff, #f2f2f2);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#f2f2f2));
-  background-image: -webkit-linear-gradient(top, #ffffff, #f2f2f2);
-  background-image: -o-linear-gradient(top, #ffffff, #f2f2f2);
-  background-image: linear-gradient(to bottom, #ffffff, #f2f2f2);
+  background-color: #f7f7f7;
+  background-image: -moz-linear-gradient(top, #f9f9f9, #f3f3f3);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f9f9f9), to(#f3f3f3));
+  background-image: -webkit-linear-gradient(top, #f9f9f9, #f3f3f3);
+  background-image: -o-linear-gradient(top, #f9f9f9, #f3f3f3);
+  background-image: linear-gradient(to bottom, #f9f9f9, #f3f3f3);
   background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#fff2f2f2', GradientType=0);
-  border: 1px solid #d4d4d4;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff9f9f9', endColorstr='#fff3f3f3', GradientType=0);
+  border: 1px solid #e5e5e5;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border-radius: 4px;
@@ -3738,8 +3738,8 @@ input[type="submit"].btn.btn-mini {
   margin-left: -20px;
   font-size: 20px;
   font-weight: 200;
-  color: #777777;
-  text-shadow: 0 1px 0 #ffffff;
+  color: #555555;
+  text-shadow: 0 1px 0 #f9f9f9;
 }
 .navbar .brand:hover,
 .navbar .brand:focus {
@@ -3760,8 +3760,8 @@ input[type="submit"].btn.btn-mini {
 .navbar .divider-vertical {
   height: 40px;
   margin: 0 9px;
-  border-left: 1px solid #f2f2f2;
-  border-right: 1px solid #ffffff;
+  border-left: 1px solid #f3f3f3;
+  border-right: 1px solid #f9f9f9;
 }
 .navbar .btn,
 .navbar .btn-group {
@@ -3903,7 +3903,7 @@ input[type="submit"].btn.btn-mini {
   padding: 10px 15px 10px;
   color: #777777;
   text-decoration: none;
-  text-shadow: 0 1px 0 #ffffff;
+  text-shadow: 0 1px 0 #f9f9f9;
 }
 .navbar .nav .dropdown-toggle .caret {
   margin-top: 8px;
@@ -3919,7 +3919,7 @@ input[type="submit"].btn.btn-mini {
 .navbar .nav > .active > a:focus {
   color: #555555;
   text-decoration: none;
-  background-color: #e5e5e5;
+  background-color: #e6e6e6;
   -webkit-box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.125);
   -moz-box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.125);
   box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.125);
@@ -3932,17 +3932,17 @@ input[type="submit"].btn.btn-mini {
   margin-right: 5px;
   color: #ffffff;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-  background-color: #ededed;
-  background-image: -moz-linear-gradient(top, #f2f2f2, #e5e5e5);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f2f2f2), to(#e5e5e5));
-  background-image: -webkit-linear-gradient(top, #f2f2f2, #e5e5e5);
-  background-image: -o-linear-gradient(top, #f2f2f2, #e5e5e5);
-  background-image: linear-gradient(to bottom, #f2f2f2, #e5e5e5);
+  background-color: #eaeaea;
+  background-image: -moz-linear-gradient(top, #ececec, #e6e6e6);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ececec), to(#e6e6e6));
+  background-image: -webkit-linear-gradient(top, #ececec, #e6e6e6);
+  background-image: -o-linear-gradient(top, #ececec, #e6e6e6);
+  background-image: linear-gradient(to bottom, #ececec, #e6e6e6);
   background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff2f2f2', endColorstr='#ffe5e5e5', GradientType=0);
-  border-color: #e5e5e5 #e5e5e5 #bfbfbf;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffececec', endColorstr='#ffe6e6e6', GradientType=0);
+  border-color: #e6e6e6 #e6e6e6 #c0c0c0;
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-  *background-color: #e5e5e5;
+  *background-color: #e6e6e6;
   /* Darken IE7 buttons by default so they stand out more given they won't have borders */
 
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
@@ -3957,12 +3957,12 @@ input[type="submit"].btn.btn-mini {
 .navbar .btn-navbar.disabled,
 .navbar .btn-navbar[disabled] {
   color: #ffffff;
-  background-color: #e5e5e5;
+  background-color: #e6e6e6;
   *background-color: #d9d9d9;
 }
 .navbar .btn-navbar:active,
 .navbar .btn-navbar.active {
-  background-color: #cccccc \9;
+  background-color: #cdcdcd \9;
 }
 .navbar .btn-navbar .icon-bar {
   display: block;
@@ -4021,7 +4021,7 @@ input[type="submit"].btn.btn-mini {
 .navbar .nav li.dropdown.open > .dropdown-toggle,
 .navbar .nav li.dropdown.active > .dropdown-toggle,
 .navbar .nav li.dropdown.open.active > .dropdown-toggle {
-  background-color: #e5e5e5;
+  background-color: #e6e6e6;
   color: #555555;
 }
 .navbar .nav li.dropdown > .dropdown-toggle .caret {
@@ -5253,6 +5253,158 @@ a.badge:focus {
 .affix {
   position: fixed;
 }
-body {
-  -webkit-font-smoothing: antialiased;
+a:hover {
+  text-decoration: none;
+}
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+table.table {
+  margin-bottom: 20px;
+}
+table.table th,
+table.table td {
+  line-height: 30px;
+}
+.post table.table th:nth-child(2),
+.put table.table th:nth-child(2),
+.delete table.table th:nth-child(2),
+.post table.table td:nth-child(2),
+.put table.table td:nth-child(2),
+.delete table.table td:nth-child(2) {
+  display: none;
+}
+#message-bar {
+  text-align: center;
+}
+.container-fluid {
+  padding-right: 25px;
+  padding-left: 25px;
+}
+.navbar {
+  margin-bottom: 20px;
+}
+.navbar .navbar-inner {
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+.resource > .heading {
+  padding: 10px 0;
+}
+.resource > .heading h2 {
+  float: left;
+  margin: 0;
+  font-size: 24px;
+}
+.resource > .heading h2 .api {
+  font-weight: normal;
+}
+.resource > .heading .options {
+  padding: 10px 0;
+  line-height: 20px;
+}
+.resource > .heading .options a {
+  padding: 0 10px;
+  border-right: 1px solid #e5e5e5;
+  color: #999999;
+}
+.resource > .heading .options a:hover {
+  color: #808080;
+}
+.resource > .heading .options li:last-child a {
+  border: none;
+}
+.operation {
+  padding-bottom: 10px;
+}
+.operation .heading {
+  padding: 10px;
+  background: #F6F6F6;
+  border: 1px solid #E5E5E5;
+  -webkit-border-top-left-radius: 3px;
+  -moz-border-radius-topleft: 3px;
+  border-top-left-radius: 3px;
+  -webkit-border-bottom-left-radius: 3px;
+  -moz-border-radius-bottomleft: 3px;
+  border-bottom-left-radius: 3px;
+  font-size: 100%;
+  line-height: 20px;
+}
+.operation .heading h3 {
+  float: left;
+  margin: 0;
+  font-size: 18px;
+  font-weight: normal;
+  line-height: 20px;
+}
+.operation .heading h3 span {
+  display: inline-block;
+}
+.operation .heading .label {
+  width: 60px;
+  height: 42px;
+  margin: -11px;
+  margin-right: 15px;
+  padding: 0 15px;
+  font-size: 13px;
+  font-weight: normal;
+  line-height: 42px;
+  text-align: center;
+  text-transform: uppercase;
+  vertical-align: top;
+}
+.operation.get .label {
+  background-color: #3a87ad;
+}
+.operation.post .label {
+  background-color: #468847;
+}
+.operation.put .label {
+  background-color: #c09853;
+}
+.operation.delete .label {
+  background-color: #b94a48;
+}
+.operation .content h4 {
+  margin: 0;
+  padding: 10px 0;
+}
+.operation .content .parameter {
+  margin-bottom: 0;
+}
+.resource .heading,
+.operation .heading {
+  *zoom: 1;
+}
+.resource .heading:before,
+.operation .heading:before,
+.resource .heading:after,
+.operation .heading:after {
+  display: table;
+  content: "";
+  line-height: 0;
+}
+.resource .heading:after,
+.operation .heading:after {
+  clear: both;
+}
+.resource .heading .options,
+.operation .heading .options {
+  float: right;
+}
+.resource .heading .options li,
+.operation .heading .options li {
+  float: left;
+}
+.resource .heading .options a,
+.operation .heading .options a {
+  display: block;
+}
+.footer h4 span {
+  font-variant: small-caps;
+  font-weight: normal;
 }

@@ -6,3 +6,4 @@ components
 node_modules
 *.sublime-project
 *.sublime-workspace
+*.log

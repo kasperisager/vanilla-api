@@ -30,10 +30,11 @@ class Categories extends Mapper
     public function Get($Params)
     {
         $CategoryID = $Params['URI'][2];
+        $Format     = $Params['Format'];
         if ($CategoryID) {
-            return self::_GetById($CategoryID);
+            return self::_GetById($Format, $CategoryID);
         } else {
-            return self::_GetAll();
+            return self::_GetAll($Format);
         }
     }
 
@@ -56,9 +57,9 @@ class Categories extends Mapper
      *     )
      * )
      */
-    protected function _GetAll()
+    protected function _GetAll($Format)
     {
-        return array('Map' => 'vanilla/categories/all');
+        return array('Map' => 'vanilla/categories.' . $Format . '/all');
     }
 
     /**
@@ -69,20 +70,30 @@ class Categories extends Mapper
      * @access  public
      *
      * @SWG\Api(
-     *     path="/categories/{id}",
+     *     path="/categories/{categoryid}",
      *     @SWG\operations(
      *         @SWG\Operation(
      *             httpMethod="GET",
      *             nickname="GetAll",
      *             summary="Find a specific category",
-     *             notes="Respects permissions"
+     *             notes="Respects permissions",
+     *             @SWG\Parameters(
+     *                 @SWG\Parameter(
+     *                     allowMultiple="false",
+     *                     name="CategoryID",
+     *                     description="ID of category that needs to be fetched",
+     *                     paramType="path",
+     *                     required="true",
+     *                     dataType="int"
+     *                 )
+     *             )
      *         )
      *     )
      * )
      */
-    protected function _GetById($CategoryID)
+    protected function _GetById($Format, $CategoryID)
     {
-        return array('Map' => 'vanilla/categories' . DS . $CategoryID);
+        return array('Map' => 'vanilla/categories.' . $Format . DS . $CategoryID);
     }
 
     /**
@@ -108,7 +119,8 @@ class Categories extends Mapper
      */
     public function Post($Params)
     {
-        return array('Map' => 'vanilla/settings/addcategory');
+        $Format = $Params['Format'];
+        return array('Map' => 'vanilla/settings/addcategory.' . $Format);
     }
 
     /**
@@ -121,13 +133,37 @@ class Categories extends Mapper
      * @access  public
      *
      * @SWG\Api(
-     *     path="/categories/{id}",
+     *     path="/categories/{categoryid}",
      *     @SWG\operations(
      *         @SWG\operation(
      *             httpMethod="PUT",
      *             nickname="Put",
      *             summary="Update an existing category",
-     *             notes="Respects permissions"
+     *             notes="Respects permissions",
+     *             @SWG\parameter(
+     *                 allowMultiple="false",
+     *                 name="CategoryID",
+     *                 description="ID of category that needs to be updated",
+     *                 paramType="path",
+     *                 required="true",
+     *                 dataType="int"
+     *             ),
+     *             @SWG\parameter(
+     *                 allowMultiple="false",
+     *                 name="Name",
+     *                 description="Existing or new name of the category",
+     *                 paramType="body",
+     *                 required="true",
+     *                 dataType="string"
+     *             ),
+     *             @SWG\parameter(
+     *                 allowMultiple="false",
+     *                 name="UrlCode",
+     *                 description="Existing or new URL code of the category",
+     *                 paramType="body",
+     *                 required="true",
+     *                 dataType="string"
+     *             )
      *         )
      *     )
      * )
@@ -135,7 +171,8 @@ class Categories extends Mapper
     public function Put($Params)
     {
         $CategoryID = $Params['URI'][2];
-        $Map = 'vanilla/settings/editcategory' . DS . $CategoryID;
+        $Format     = $Params['Format'];
+        $Map = 'vanilla/settings/editcategory.' . $Format . DS . $CategoryID;
         $Args = array(
             'CategoryID' => $CategoryID,
             'TransientKey'  => Gdn::Session()->TransientKey()
@@ -153,13 +190,23 @@ class Categories extends Mapper
      * @access  public
      *
      * @SWG\Api(
-     *     path="/categories/{id}",
+     *     path="/categories/{categoryid}",
      *     @SWG\operations(
      *         @SWG\operation(
      *             httpMethod="DELETE",
      *             nickname="Delete",
      *             summary="Delete an existing category",
-     *             notes="Respects permissions"
+     *             notes="Respects permissions",
+     *             @SWG\parameters(
+     *                 @SWG\Parameter(
+     *                     allowMultiple="false",
+     *                     name="CategoryID",
+     *                     description="ID of category that needs to be deleted",
+     *                     paramType="path",
+     *                     required="true",
+     *                     dataType="int"
+     *                 )
+     *             )
      *         )
      *     )
      * )
@@ -167,7 +214,8 @@ class Categories extends Mapper
     public function Delete($Params)
     {
         $CategoryID = $Params['URI'][2];
-        $Map = 'vanilla/settings/deletecategory' . DS . $CategoryID;
+        $Format     = $Params['Format'];
+        $Map = 'vanilla/settings/deletecategory.' . $Format . DS . $CategoryID;
         $Args = array(
             'CategoryID'    => $CategoryID,
             'TransientKey'  => Gdn::Session()->TransientKey()

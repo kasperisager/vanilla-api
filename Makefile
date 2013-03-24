@@ -56,7 +56,7 @@ install:
 
 	@printf "Compiling the API Explorer..."
 	@npm run-script build $(OMIT)
-	@grunt less $(OMIT)
+	@grunt compile $(OMIT)
 	@echo "               $(CHECK)"
 
 	@echo "${HR}"

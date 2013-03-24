@@ -126,11 +126,12 @@ class APIController extends Gdn_Controller
             $Parsed         = $Request->Export('Parsed');
 
             // Only deliver data - nothing else is needed
-            Gdn::Request()->WithDeliveryType(DELIVERY_TYPE_DATA);
+            $Request->WithDeliveryType(DELIVERY_TYPE_DATA);
+            $Request->OutputFormat('json');
 
             // Change response format depending on HTTP_ACCEPT
             $Accept = $Arguments['server']['HTTP_ACCEPT'];
-            $Format = (strpos($Accept, 'json')) ?: 'xml';
+            $Format = (strpos($Accept, 'json')) ? 'json' : 'xml';
 
             switch ($Format) {
                 case 'xml':
@@ -146,6 +147,7 @@ class APIController extends Gdn_Controller
                 'Environment'   => $Environment,
                 'Arguments'     => $Arguments,
                 'Parsed'        => $Parsed,
+                'Format'        => $Format,
                 'URI'           => explode('/', $URI)
             );
 
@@ -164,19 +166,19 @@ class APIController extends Gdn_Controller
 
                     // Garden can't handle PUT requests by default, so trick
                     // it into thinking that this is actually a POST
-                    Gdn::Request()->RequestMethod('post');
+                    $Request->RequestMethod('post');
 
                     $_PUT = self::ParsePut();
 
                     // Combine the PUT request with any custom arguments
-                    Gdn::Request()->SetRequestArguments(
+                    $Request->SetRequestArguments(
                         Gdn_Request::INPUT_POST, array_merge(
                             $_PUT,
                             $Data['Args']
                         )
                     );
 
-                    $_POST = Gdn::Request()->Post();
+                    $_POST = $Request->Post();
 
                     break;
 
@@ -185,23 +187,21 @@ class APIController extends Gdn_Controller
 
                     // Garden can't handle DELETE requests by default, so trick
                     // it into thinking that this is actually a POST
-                    Gdn::Request()->RequestMethod('post');
+                    $Request->RequestMethod('post');
 
                     // Combine the DELETE request with any custom arguments
-                    Gdn::Request()->SetRequestArguments(
+                    $Request->SetRequestArguments(
                         Gdn_Request::INPUT_POST, $Data['Args']
                     );
 
-                    $_POST = Gdn::Request()->Post();
+                    $_POST = $Request->Post();
 
                     break;
 
             }
 
             if ($Data['Map']) {
-                Gdn::Request()->WithURI($Data['Map']);
-            } else {
-                return;
+                $Request->WithURI($Data['Map']);
             }
         }
     }
