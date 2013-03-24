@@ -1,0 +1,8 @@
+{
+  "name": "VanillaAPI",
+  "version": "0.1.0",
+  "dependencies": {
+    "topcoat": "0.1.x",
+    "bootstrap": "2.3.x"
+  }
+}

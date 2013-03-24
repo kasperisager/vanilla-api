@@ -2,6 +2,7 @@
 vendors
 composer.lock
 composer.phar
+components
 node_modules
 *.sublime-project
 *.sublime-workspace

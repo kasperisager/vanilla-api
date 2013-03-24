@@ -1,5 +1,6 @@
 COMPOSER	= composer.phar
 NPM			= node_modules
+BOWER		= components
 VENDORS 	= vendors
 BIN			= $(VENDORS)/bin
 
@@ -49,6 +50,15 @@ install:
 	@npm install $(OMIT)
 	@echo "              $(CHECK)"
 
+	@printf "Installing Bower packages..."
+	@bower install $(OMIT)
+	@echo "                $(CHECK)"
+
+	@printf "Compiling the API Explorer..."
+	@npm run-script build $(OMIT)
+	@grunt less $(OMIT)
+	@echo "               $(CHECK)"
+
 	@echo "${HR}"
 	@echo "\033[36mSuccess!\n\033[39m"
 
@@ -80,5 +90,14 @@ clean:
 	@printf "Removing Node.js packages..."
 	@rm -rf $(NPM)
 	@echo "                $(CHECK)"
+
+	@printf "Removing Bower packages..."
+	@rm -rf $(BOWER)
+	@echo "                  $(CHECK)"
+
+	@printf "Removing the API Explorer..."
+	@rm -f design/api.css
+	@echo "                $(CHECK)"
+	
 	@echo "${HR}"
 	@echo "\033[36mSuccess!\n\033[39m"
