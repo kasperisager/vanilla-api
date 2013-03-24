@@ -28,7 +28,7 @@ To get started using Ninja, either:
 Now that you've downloaded Vanilla API, it's time to get it installed. Vanilla API comes with a Makefile that makes installation a breeze:
 
 ```sh
-$ [sudo] make
+$ [sudo] make install
 ```
 
 Now simply go to your Vanilla dashboard, enable Vanilla API in the "Applications" menu and navigate to the API Explorer for all your documentation needs: http://your-domain.com/api
