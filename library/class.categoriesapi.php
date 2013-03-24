@@ -15,7 +15,7 @@ use Swagger\Annotations as SWG;
  *     resourcePath="/categories"
  * )
  */
-class Categories extends Mapper
+class CategoriesAPI extends Mapper
 {
     /**
      * Retrieve categories

@@ -15,7 +15,7 @@ use Swagger\Annotations as SWG;
  *     resourcePath="/discussions"
  * )
  */
-class Discussions extends Mapper
+class DiscussionsAPI extends Mapper
 {
     /**
      * Retrieve discussions

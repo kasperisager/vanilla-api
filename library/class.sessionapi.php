@@ -3,7 +3,7 @@
 use Swagger\Annotations as SWG;
 
 /**
- * Configuration API
+ * User API
  *
  * @package     API
  * @version     0.1.0
@@ -12,41 +12,22 @@ use Swagger\Annotations as SWG;
  * @license     http://opensource.org/licenses/MIT MIT
  *
  * @SWG\Resource(
- *     resourcePath="/configuration"
+ *     resourcePath="/session"
  * )
  */
-class Configuration extends Mapper
+class SessionAPI extends Mapper
 {
     /**
-     * Retrieve Vanilla configuration
+     * GET
      *
      * @package API
      * @since   0.1.0
      * @access  public
-     *
-     * @SWG\Api(
-     *     path="/configuration",
-     *     @SWG\operations(
-     *         @SWG\operation(
-     *             httpMethod="GET",
-     *             path="/configuration",
-     *             nickname="GetConfig",
-     *             summary="Get the current forum configuration"
-     *         )
-     *     )
-     * )
      */
     public function Get($Params)
     {
-        return array('Map' => 'dashboard/settings/configuration');
-    }
-
-    protected function _GetThemes() {
-
-    }
-
-    protected function _GetLocales() {
-        
+        $Format = $Params['Format'];
+        return array('Map' => 'dashboard/profile.' . $Format);
     }
 
     /**

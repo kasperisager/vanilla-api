@@ -112,7 +112,7 @@ class APIController extends Gdn_Controller
         // Intercept API requests and store the requested class
         if (preg_match('/^api\/(\w+)/i', $URI, $Matches)) {
 
-            $Class = $Matches[1];
+            $Class = $Matches[1].'API';
 
              if (!$Class == NULL && class_exists($Class)) {
                 $Class = new $Class;

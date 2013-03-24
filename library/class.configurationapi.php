@@ -3,26 +3,50 @@
 use Swagger\Annotations as SWG;
 
 /**
- * User API
+ * Configuration API
  *
  * @package     API
  * @version     0.1.0
  * @author      Kasper Kronborg Isager <kasperisager@gmail.com>
  * @copyright   Copyright © 2013
  * @license     http://opensource.org/licenses/MIT MIT
+ *
+ * @SWG\Resource(
+ *     resourcePath="/configuration"
+ * )
  */
-class User extends Mapper
+class ConfigurationAPI extends Mapper
 {
     /**
-     * GET
+     * Retrieve Vanilla configuration
      *
      * @package API
      * @since   0.1.0
      * @access  public
+     *
+     * @SWG\Api(
+     *     path="/configuration",
+     *     @SWG\operations(
+     *         @SWG\operation(
+     *             httpMethod="GET",
+     *             path="/configuration",
+     *             nickname="GetConfig",
+     *             summary="Get the current forum configuration"
+     *         )
+     *     )
+     * )
      */
     public function Get($Params)
     {
-        return array('Map' => 'dashboard/profile');
+        return array('Map' => 'dashboard/settings/configuration');
+    }
+
+    protected function _GetThemes() {
+
+    }
+
+    protected function _GetLocales() {
+        
     }
 
     /**
