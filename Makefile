@@ -1,45 +1,84 @@
-COMPOSER	= php composer.phar
+COMPOSER	= composer.phar
 NPM			= node_modules
 VENDORS 	= vendors
 BIN			= $(VENDORS)/bin
 
-.check-composer:
-	@echo "Checking if Composer is installed..."
-	@test -f composer.phar || curl -s http://getcomposer.org/installer | php;
+DEBUG 		= 0
+OMIT_0 		= &>/dev/null
+OMIT_1 		=
+OMIT 		= $(OMIT_$(DEBUG))
 
-.check-installation: .check-composer
-	@echo "Checking for vendor directory..."
-	@test -d $(VENDORS) || make install
-	@echo "Checking for bin directory..."
-	@test -d $(BIN) || make install
+CHECK		=\033[32m✔ Done\033[39m
+HR			=\033[37m--------------------------------------------------\033[39m
 
-build:
-	make install
+check-composer:
+	@printf "Checking if Composer is installed..."
+	@test -f $(COMPOSER) || curl -s -S http://getcomposer.org/installer | php $(OMIT)
+	@echo "        $(CHECK)"
 
-install: .check-composer
-	@echo "Installing Composer packages..."
-	$(COMPOSER) install --dev
+check-installation:
+	@make check-composer
 
-	@echo "Removing unnecessary directories..."
-	rm -rf $(VENDORS)/doctrine/common/bin/
-	rm -rf $(VENDORS)/doctrine/common/tests/
-	rm -rf $(VENDORS)/zircote/swagger-php/scripts/
-	rm -rf $(VENDORS)/zircote/swagger-php/tests/
+	@printf "Checking for vendor directory..."
+	@test -d $(VENDORS) || make install $(OMIT)
+	@echo "            $(CHECK)"
 
-	@echo "Installing Node.js packages..."
-	npm install
+	@printf "Checking for bin directory..."
+	@test -d $(BIN) || make install $(OMIT)
+	@echo "               $(CHECK)"
 
-update: .check-installation
-	@echo "Updating Composer packages..."
-	$(COMPOSER) update --dev
+install:
+	@echo "\n"
+	@echo "\033[36mInstalling Vanilla API...\033[39m"
+	@echo "${HR}"
+
+	@make check-composer
+
+	@printf "Installing Composer packages..."
+	@php $(COMPOSER) install --dev $(OMIT)
+	@echo "             $(CHECK)"
+
+	@printf "Removing unnecessary directories..."
+	@rm -rf $(VENDORS)/doctrine/common/bin/
+	@rm -rf $(VENDORS)/doctrine/common/tests/
+	@rm -rf $(VENDORS)/zircote/swagger-php/scripts/
+	@rm -rf $(VENDORS)/zircote/swagger-php/tests/
+	@echo "         $(CHECK)"
+
+	@printf "Installing Node.js packages..."
+	@npm install $(OMIT)
+	@echo "              $(CHECK)"
+
+	@echo "${HR}"
+	@echo "\033[36mSuccess!\n\033[39m"
+
+update:
+	@echo "\n"
+	@echo "\033[36mUpdating Vanilla API...\033[39m"
+	@echo "${HR}"
+
+	@make check-installation
+
+	@printf "Updating Composer packages..."
+	@php $(COMPOSER) update --dev $(OMIT)
+	@echo "               $(CHECK)"
+
+	@echo "${HR}"
+	@echo "\033[36mSuccess!\n\033[39m"
 
 clean:
-	@echo "Uninstalling..."
+	@echo "\n"
+	@echo "\033[36mUninstalling Vanilla API...\033[39m"
+	@echo "${HR}"
 
-	@echo "Removing Composer files and packages..."
-	rm -f composer.phar
-	rm -f composer.lock
-	rm -rf $(VENDORS)
+	@printf "Removing Composer files and packages..."
+	@rm -f composer.phar
+	@rm -f composer.lock
+	@rm -rf $(VENDORS)
+	@echo "     $(CHECK)"
 
-	@echo "Removing Node.js packages..."
-	rm -rf $(NPM)
+	@printf "Removing Node.js packages..."
+	@rm -rf $(NPM)
+	@echo "                $(CHECK)"
+	@echo "${HR}"
+	@echo "\033[36mSuccess!\n\033[39m"
