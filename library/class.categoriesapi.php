@@ -41,6 +41,8 @@ class CategoriesAPI extends Mapper
     /**
      * Find all categories
      *
+     * GET /categories
+     *
      * @package API
      * @since   0.1.0
      * @access  public
@@ -64,6 +66,8 @@ class CategoriesAPI extends Mapper
 
     /**
      * Find a specific category
+     *
+     * GET /categories/:id
      *
      * @package API
      * @since   0.1.0

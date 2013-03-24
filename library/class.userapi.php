@@ -3,7 +3,7 @@
 use Swagger\Annotations as SWG;
 
 /**
- * User API
+ * Users API
  *
  * @package     API
  * @version     0.1.0
@@ -12,13 +12,16 @@ use Swagger\Annotations as SWG;
  * @license     http://opensource.org/licenses/MIT MIT
  *
  * @SWG\Resource(
- *     resourcePath="/users"
+ *   resourcePath="/users"
  * )
  */
 class UsersAPI extends Mapper
 {
     /**
-     * GET
+     * Retrieve users
+     *
+     * GET /users
+     * GET /users/:id
      *
      * @package API
      * @since   0.1.0

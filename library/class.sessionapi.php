@@ -3,7 +3,7 @@
 use Swagger\Annotations as SWG;
 
 /**
- * User API
+ * Session API
  *
  * @package     API
  * @version     0.1.0
@@ -18,7 +18,9 @@ use Swagger\Annotations as SWG;
 class SessionAPI extends Mapper
 {
     /**
-     * GET
+     * Info about current user session
+     *
+     * GET /session
      *
      * @package API
      * @since   0.1.0

@@ -40,6 +40,8 @@ class DiscussionsAPI extends Mapper
     /**
      * Find all discussions
      *
+     * GET /discussions
+     *
      * @package API
      * @since   0.1.0
      * @access  public
@@ -64,6 +66,8 @@ class DiscussionsAPI extends Mapper
 
     /**
      * Find a specific discussion
+     *
+     * GET /discussions/:id
      *
      * @package API
      * @since   0.1.0
