@@ -11,8 +11,8 @@ use Swagger\Annotations as SWG;
  * @copyright   Copyright © 2013
  * @license     http://opensource.org/licenses/MIT MIT
  *
- * @SWG\Resource(
- *     resourcePath="/session"
+ * @SWG\resource(
+ *   resourcePath="/session"
  * )
  */
 class SessionAPI extends Mapper
@@ -23,6 +23,18 @@ class SessionAPI extends Mapper
      * @package API
      * @since   0.1.0
      * @access  public
+     *
+     * @SWG\api(
+     *   path="/session",
+     *   @SWG\operations(
+     *     @SWG\operation(
+     *       httpMethod="GET",
+     *       nickname="GetSession",
+     *       summary="Information about the current user session",
+     *       notes="Respects permissions"
+     *     )
+     *   )
+     * )
      */
     public function Get($Params)
     {

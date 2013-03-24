@@ -12,7 +12,7 @@ use Swagger\Annotations as SWG;
  * @license     http://opensource.org/licenses/MIT MIT
  *
  * @SWG\Resource(
- *     resourcePath="/configuration"
+ *   resourcePath="/configuration"
  * )
  */
 class ConfigurationAPI extends Mapper
@@ -25,20 +25,21 @@ class ConfigurationAPI extends Mapper
      * @access  public
      *
      * @SWG\Api(
-     *     path="/configuration",
-     *     @SWG\operations(
-     *         @SWG\operation(
-     *             httpMethod="GET",
-     *             path="/configuration",
-     *             nickname="GetConfig",
-     *             summary="Get the current forum configuration"
-     *         )
+     *   path="/configuration",
+     *   @SWG\operations(
+     *     @SWG\operation(
+     *       httpMethod="GET",
+     *       path="/configuration",
+     *       nickname="GetConfig",
+     *       summary="Get the current forum configuration"
      *     )
+     *   )
      * )
      */
     public function Get($Params)
     {
-        return array('Map' => 'dashboard/settings/configuration');
+        $Format = $Params['Format'];
+        return array('Map' => 'dashboard/settings/configuration.' . $Format);
     }
 
     protected function _GetThemes() {

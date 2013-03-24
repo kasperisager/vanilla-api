@@ -11,8 +11,8 @@ use Swagger\Annotations as SWG;
  * @copyright   Copyright © 2013
  * @license     http://opensource.org/licenses/MIT MIT
  *
- * @SWG\Resource(
- *     resourcePath="/discussions"
+ * @SWG\resource(
+ *   resourcePath="/discussions"
  * )
  */
 class DiscussionsAPI extends Mapper
@@ -44,17 +44,17 @@ class DiscussionsAPI extends Mapper
      * @since   0.1.0
      * @access  public
      *
-     * @SWG\Api(
-     *     path="/discussions",
-     *     @SWG\operations(
-     *         @SWG\operation(
-     *             httpMethod="GET",
-     *             path="/discussions",
-     *             nickname="GetAll",
-     *             summary="Find all discussions",
-     *             notes="Respects permissions"
-     *         )
+     * @SWG\api(
+     *   path="/discussions",
+     *   @SWG\operations(
+     *     @SWG\operation(
+     *       httpMethod="GET",
+     *       path="/discussions",
+     *       nickname="GetAll",
+     *       summary="Find all discussions",
+     *       notes="Respects permissions"
      *     )
+     *   )
      * )
      */
     protected function _GetAll()
@@ -69,16 +69,16 @@ class DiscussionsAPI extends Mapper
      * @since   0.1.0
      * @access  public
      *
-     * @SWG\Api(
-     *     path="/discussions/{id}",
-     *     @SWG\operations(
-     *         @SWG\operation(
-     *             httpMethod="GET",
-     *             nickname="GetById",
-     *             summary="Find a specific discussion",
-     *             notes="Respects permissions"
-     *         )
+     * @SWG\api(
+     *   path="/discussions/{id}",
+     *   @SWG\operations(
+     *     @SWG\operation(
+     *       httpMethod="GET",
+     *       nickname="GetById",
+     *       summary="Find a specific discussion",
+     *       notes="Respects permissions"
      *     )
+     *   )
      * )
      */
     protected function _GetById($DiscussionID)
@@ -95,16 +95,16 @@ class DiscussionsAPI extends Mapper
      * @since   0.1.0
      * @access  public
      *
-     * @SWG\Api(
-     *     path="/discussions",
-     *     @SWG\operations(
-     *         @SWG\operation(
-     *             httpMethod="POST",
-     *             nickname="Post",
-     *             summary="Create a new discussion",
-     *             notes="Respects permissions"
-     *         )
+     * @SWG\api(
+     *   path="/discussions",
+     *   @SWG\operations(
+     *     @SWG\operation(
+     *       httpMethod="POST",
+     *       nickname="Post",
+     *       summary="Create a new discussion",
+     *       notes="Respects permissions"
      *     )
+     *   )
      * )
      */
     public function Post($Params)
@@ -121,16 +121,16 @@ class DiscussionsAPI extends Mapper
      * @since   0.1.0
      * @access  public
      *
-     * @SWG\Api(
-     *     path="/discussions/{id}",
-     *     @SWG\operations(
-     *         @SWG\operation(
-     *             httpMethod="PUT",
-     *             nickname="Put",
-     *             summary="Update an existing discussion",
-     *             notes="Respects permissions"
-     *         )
+     * @SWG\api(
+     *   path="/discussions/{id}",
+     *   @SWG\operations(
+     *     @SWG\operation(
+     *       httpMethod="PUT",
+     *       nickname="Put",
+     *       summary="Update an existing discussion",
+     *       notes="Respects permissions"
      *     )
+     *   )
      * )
      */
     public function Put($Params)
@@ -153,16 +153,16 @@ class DiscussionsAPI extends Mapper
      * @since   0.1.0
      * @access  public
      *
-     * @SWG\Api(
-     *     path="/discussions/{id}",
-     *     @SWG\operations(
-     *         @SWG\operation(
-     *             httpMethod="DELETE",
-     *             nickname="Delete",
-     *             summary="Delete an existing discussion",
-     *             notes="Respects permissions"
-     *         )
+     * @SWG\api(
+     *   path="/discussions/{id}",
+     *   @SWG\operations(
+     *     @SWG\operation(
+     *       httpMethod="DELETE",
+     *       nickname="Delete",
+     *       summary="Delete an existing discussion",
+     *       notes="Respects permissions"
      *     )
+     *   )
      * )
      */
     public function Delete($Params)
