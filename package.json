@@ -12,8 +12,15 @@
     "url": "https://github.com/kasperisager/VanillaAPI.git"
   },
   "license": "MIT",
+  "scripts": {
+    "build": "PATH=$PATH:./node_modules/.bin cake dist",
+    "watch": "PATH=$PATH:./node_modules/.bin cake watch"
+  },
   "dependencies": {
-    "swagger-ui": "0.1.x"
+    "swagger-ui": "0.1.x",
+    "swagger-client": "1.0.x",
+    "coffee-script": "1.5.x",
+    "handlebars": "1.0.x"
   },
   "devDependencies": {
     "bower": "0.8.x"

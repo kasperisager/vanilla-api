@@ -87,8 +87,9 @@ class APIController extends Gdn_Controller
             $this->AddJsFile($Dist . '/lib/highlight.7.3.pack.js');
             $this->AddJsFile($Dist . '/swagger-ui.js');
 
-            $this->AddCssFile($Dist . '/css/screen.css');
             $this->AddCssFile($Dist . '/css/hightlight.default.css');
+
+            $this->AddCssFile('api.css');
 
         }
 
