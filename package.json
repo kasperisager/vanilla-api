@@ -19,7 +19,7 @@
   "dependencies": {
     "swagger-ui": "0.1.x",
     "swagger-client": "1.0.x",
-    "coffee-script": "1.5.x",
+    "coffee-script": "1.6.x",
     "handlebars": "1.0.x"
   },
   "devDependencies": {
