@@ -10,7 +10,7 @@ OMIT_1 		=
 OMIT 		= $(OMIT_$(DEBUG))
 
 CHECK		=\033[32m✔ Done\033[39m
-HR			=\033[37m--------------------------------------------------\033[39m
+HR  		=\033[37m--------------------------------------------------\033[39m
 
 check-composer:
 	@printf "Checking if Composer is installed..."
