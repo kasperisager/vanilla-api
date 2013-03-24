@@ -1,8 +1,8 @@
 COMPOSER	= composer.phar
-NPM			= node_modules
+NPM 		= node_modules
 BOWER		= components
 VENDORS 	= vendors
-BIN			= $(VENDORS)/bin
+BIN 		= $(VENDORS)/bin
 
 DEBUG 		= 0
 OMIT_0 		= &>/dev/null
