@@ -12,6 +12,8 @@
                     {t c="Vanilla API Explorer"}
                 </a>
                 {*{module name="MeModule"}*}
+                <embed src="http://ghbtns.com/github-btn.html?user=kasperisager&repo=VanillaAPI&type=watch&count=true&size=large"
+  allowtransparency="true" frameborder="0" scrolling="0" width="170" height="30">
             </div>
         </div>
     </div>

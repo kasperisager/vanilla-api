@@ -30,6 +30,17 @@ class UsersAPI extends Mapper
     public function Get($Params)
     {
         $Format = $Params['Format'];
+        if (Gdn::Session()->CheckPermission(
+            array(
+                'Garden.Users.Add',
+                'Garden.Users.Edit',
+                'Garden.Users.Delete'
+            )
+        )) {
+            return array('Map' => 'dashboard/user.' . $Format);
+        } else {
+            return array('Map' => 'dashboard/user/summary.' . $Format);
+        }
     }
 
     /**
