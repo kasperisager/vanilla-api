@@ -9,7 +9,7 @@
  * @copyright   Copyright © 2013
  * @license     http://opensource.org/licenses/MIT MIT
  */
-class API implements Gdn_IPlugin
+class APIHooks implements Gdn_IPlugin
 {
     /**
      * Map the API request to the appropriate controller
