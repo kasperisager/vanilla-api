@@ -14,7 +14,7 @@ The Doctrine Common project is a library that provides extensions to core PHP fu
 
 ### [Swagger PHP](https://github.com/zircote/swagger-php) [![Build Status](https://travis-ci.org/zircote/swagger-php.png)](https://travis-ci.org/zircote/swagger-php)
 Swagger-PHP is a PHP library that servers as an annotations toolkit to produce [Swagger Doc](http://swagger.wordnik.com).
-It makes extensive use of the [Doctine Common library](http://www.doctrine-project.org/projects/common.html) for
+It makes extensive use of the [Doctrine Common library](http://www.doctrine-project.org/projects/common.html) for
 annotations support and caching.
 
 ## Getting started
