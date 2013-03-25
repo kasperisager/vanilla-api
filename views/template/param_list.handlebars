@@ -1,18 +1,18 @@
-<td class='code'>{{name}}</td>
+<td class="code">{{name}}</td>
 <td>
-    <select class='parameter' name='{{name}}'>
+    <select class="parameter" name="{{name}}">
         {{#if required}}
         {{else}}
             {{#if defaultValue}}
             {{else}}
-                <option selected="" value=''></option>
+                <option selected="" value=""></option>
             {{/if}}
         {{/if}}
         {{#each allowableValues.descriptiveValues}}
             {{#if isDefault}}
-                <option value='{{value}}'>{{value}} (default)</option>
+                <option value="{{value}}">{{value}} (default)</option>
             {{else}}
-                <option value='{{value}}'>{{value}}</option>
+                <option value="{{value}}">{{value}}</option>
             {{/if}}
         {{/each}}
     </select>
