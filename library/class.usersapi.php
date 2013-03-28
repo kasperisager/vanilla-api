@@ -5,11 +5,11 @@ use Swagger\Annotations as SWG;
 /**
  * Users API
  *
- * @package     API
- * @version     0.1.0
- * @author      Kasper Kronborg Isager <kasperisager@gmail.com>
- * @copyright   Copyright © 2013
- * @license     http://opensource.org/licenses/MIT MIT
+ * @package    API
+ * @since      0.1.0
+ * @author     Kasper Kronborg Isager <kasperisager@gmail.com>
+ * @copyright  Copyright © 2013
+ * @license    http://opensource.org/licenses/MIT MIT
  *
  * @SWG\Resource(
  *   resourcePath="/users"
@@ -17,65 +17,64 @@ use Swagger\Annotations as SWG;
  */
 class UsersAPI extends Mapper
 {
-    /**
-     * Retrieve users
-     *
-     * GET /users
-     * GET /users/:id
-     *
-     * @package API
-     * @since   0.1.0
-     * @access  public
-     */
-    public function Get($Params)
-    {
-        $Format = $Params['Format'];
-        if (Gdn::Session()->CheckPermission(
-            array(
-                'Garden.Users.Add',
-                'Garden.Users.Edit',
-                'Garden.Users.Delete'
-            )
-        )) {
-            return array('Map' => 'dashboard/user.' . $Format);
-        } else {
-            return array('Map' => 'dashboard/user/summary.' . $Format);
-        }
-    }
+   /**
+    * Retrieve users
+    *
+    * GET /users
+    *
+    * @package API
+    * @since   0.1.0
+    * @access  public
+    */
+   public function Get($Params)
+   {
+      $Format = $Params['Format'];
+      if (Gdn::Session()->CheckPermission(
+         array(
+            'Garden.Users.Add',
+            'Garden.Users.Edit',
+            'Garden.Users.Delete'
+         )
+      )) {
+         return array('Map' => 'dashboard/user.' . $Format);
+      } else {
+         return array('Map' => 'dashboard/user/summary.' . $Format);
+      }
+   }
 
-    /**
-     * POST
-     *
-     * @package API
-     * @since   0.1.0
-     * @access  public
-     */
-    public function Post($Params)
-    {
-        return TRUE;
-    }
+   /**
+    * POST
+    *
+    * @package API
+    * @since   0.1.0
+    * @access  public
+    */
+   public function Post()
+   {
+      return TRUE;
+   }
 
-    /**
-     * PUT
-     *
-     * @package API
-     * @since   0.1.0
-     * @access  public
-     */
-    public function Put($Params)
-    {
-        return TRUE;
-    }
+   /**
+    * PUT
+    *
+    * @package API
+    * @since   0.1.0
+    * @access  public
+    */
+   public function Put()
+   {
+      return TRUE;
+   }
 
-    /**
-     * DELETE
-     *
-     * @package API
-     * @since   0.1.0
-     * @access  public
-     */
-    public function Delete($Params)
-    {
-        return TRUE;
-    }
+   /**
+    * DELETE
+    *
+    * @package API
+    * @since   0.1.0
+    * @access  public
+    */
+   public function Delete()
+   {
+      return TRUE;
+   }
 }

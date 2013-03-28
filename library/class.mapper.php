@@ -11,47 +11,47 @@
  * hopefully prove useful when we'll need to implement utility functions
  * in the API.
  *
- * @package     API
- * @version     0.1.0
- * @author      Kasper Kronborg Isager <kasperisager@gmail.com>
- * @copyright   Copyright © 2013
- * @license     http://opensource.org/licenses/MIT MIT
+ * @package    API
+ * @version    0.1.0
+ * @author     Kasper Kronborg Isager <kasperisager@gmail.com>
+ * @copyright  Copyright © 2013
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 abstract class Mapper
 {
-    /**
-     * GET
-     *
-     * @package API
-     * @since 0.1.0
-     * @access public
-     */
-    abstract public function Get($Params);
+   /**
+    * GET
+    *
+    * @package API
+    * @since 0.1.0
+    * @access public
+    */
+   abstract public function Get($Params);
 
-    /**
-     * POST
-     *
-     * @package API
-     * @since 0.1.0
-     * @access public
-     */
-    abstract public function Post($Params);
+   /**
+    * POST
+    *
+    * @package API
+    * @since 0.1.0
+    * @access public
+    */
+   abstract public function Post($Params);
 
-    /**
-     * PUT
-     *
-     * @package API
-     * @since 0.1.0
-     * @access public
-     */
-    abstract public function Put($Params);
+   /**
+    * PUT
+    *
+    * @package API
+    * @since 0.1.0
+    * @access public
+    */
+   abstract public function Put($Params);
 
-    /**
-     * DELETE
-     *
-     * @package API
-     * @since 0.1.0
-     * @access public
-     */
-    abstract public function Delete($Params);
+   /**
+    * DELETE
+    *
+    * @package API
+    * @since 0.1.0
+    * @access public
+    */
+   abstract public function Delete($Params);
 }

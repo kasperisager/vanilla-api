@@ -3,47 +3,47 @@
 /**
  * To be written
  *
- * @package     API
- * @since       0.1.0
- * @author      Kasper Kronborg Isager <kasperisager@gmail.com>
- * @copyright   Copyright © 2013
- * @license     http://opensource.org/licenses/MIT MIT
+ * @package    API
+ * @since      0.1.0
+ * @author     Kasper Kronborg Isager <kasperisager@gmail.com>
+ * @copyright  Copyright © 2013
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 class APIHooks implements Gdn_IPlugin
 {
-    /**
-     * Map the API request to the appropriate controller
-     *
-     * @package API
-     * @since   0.1.0
-     * @access  public
-     */
-    public function Gdn_Dispatcher_BeforeDispatch_Handler()
-    {
-        APIController::_Dispatch();
-    }
+   /**
+    * Map the API request to the appropriate controller
+    *
+    * @package API
+    * @since   0.1.0
+    * @access  public
+    */
+   public function Gdn_Dispatcher_BeforeDispatch_Handler()
+   {
+      APIController::_Dispatch();
+   }
 
-    /**
-     * No setup required
-     *
-     * @package API
-     * @since   0.1.0
-     * @access  public
-     */
-    public function Setup()
-    {
-        return TRUE;
-    }
+   /**
+    * No setup required
+    *
+    * @package API
+    * @since   0.1.0
+    * @access  public
+    */
+   public function Setup()
+   {
+      return TRUE;
+   }
 
-    /**
-     * No cleanup required
-     *
-     * @package API
-     * @since 0.1.0
-     * @access public
-     */
-    public function OnDisable()
-    {
-        return TRUE;
-    }
+   /**
+    * No cleanup required
+    *
+    * @package API
+    * @since 0.1.0
+    * @access public
+    */
+   public function OnDisable()
+   {
+      return TRUE;
+   }
 }
