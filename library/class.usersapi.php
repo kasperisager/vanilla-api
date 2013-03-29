@@ -26,6 +26,18 @@ class UsersAPI extends Mapper
     * @since   0.1.0
     * @access  public
     * @param   array $Params
+    *
+    * @SWG\api(
+    *   path="/users",
+    *   @SWG\operations(
+    *     @SWG\operation(
+    *       httpMethod="GET",
+    *       path="/users",
+    *       nickname="GetUsers",
+    *       summary="Get a list of all registered users"
+    *     )
+    *   )
+    * )
     */
    public function Get($Params)
    {
