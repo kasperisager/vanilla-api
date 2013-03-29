@@ -3,7 +3,7 @@
 /**
  * Vanilla API Main controller
  *
- * The Vanilla API lets you interface with Vanilla in a fully RESTful way
+ * The Vanilla API lets you interface with Vanilla in a REST-like way
  * using the standard HTTP verbs GET, POST, PUT and DELETE.
  *
  * @package    API
