@@ -252,7 +252,7 @@ class DiscussionsAPI extends Mapper
     *       httpMethod="PUT",
     *       nickname="PutSink",
     *       summary="Sink/unsink an existing discussion",
-    *       notes="This is a convenience method. The same result can be accomplished using <code>PUT /discussions/:id</code>"
+    *       notes="This is a convenience operation. The same result can be accomplished using <code>PUT /discussions/:id</code>"
     *     )
     *   )
     * )
@@ -280,7 +280,7 @@ class DiscussionsAPI extends Mapper
     *       httpMethod="PUT",
     *       nickname="PutAnnounce",
     *       summary="Announce/unannounce an existing discussion",
-    *       notes="This is a convenience method. The same result can be accomplished using <code>PUT /discussions/:id</code>"
+    *       notes="This is a convenience operation. The same result can be accomplished using <code>PUT /discussions/:id</code>"
     *     )
     *   )
     * )
@@ -308,7 +308,7 @@ class DiscussionsAPI extends Mapper
     *       httpMethod="PUT",
     *       nickname="PutDismiss",
     *       summary="Dismiss an announced discussion",
-    *       notes="This is a convenience method. The same result can be accomplished using <code>PUT /discussions/:id</code>"
+    *       notes="This is a convenience operation. The same result can be accomplished using <code>PUT /discussions/:id</code>"
     *     )
     *   )
     * )
@@ -336,7 +336,7 @@ class DiscussionsAPI extends Mapper
     *       httpMethod="PUT",
     *       nickname="PutClose",
     *       summary="Close/open an existing discussion",
-    *       notes="This is a convenience method. The same result can be accomplished using <code>PUT /discussions/:id</code>"
+    *       notes="This is a convenience operation. The same result can be accomplished using <code>PUT /discussions/:id</code>"
     *     )
     *   )
     * )
@@ -364,7 +364,7 @@ class DiscussionsAPI extends Mapper
     *       httpMethod="PUT",
     *       nickname="PutBookmark",
     *       summary="Bookmark/unbookmark an existing discussion",
-    *       notes="This is a convenience method. The same result can be accomplished using <code>PUT /discussions/:id</code>"
+    *       notes="This is a convenience operation. The same result can be accomplished using <code>PUT /discussions/:id</code>"
     *     )
     *   )
     * )
