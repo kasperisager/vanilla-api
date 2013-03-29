@@ -23,6 +23,11 @@ class DiscussionsAPI extends Mapper
     * GET /discussions
     * GET /discussions/:id
     *
+    * To be implemented:
+    * GET /discussions/bookmarks
+    * GET /discussions/mine
+    * GET /discussions/unread
+    *
     * @package API
     * @since   0.1.0
     * @access  public
@@ -30,11 +35,12 @@ class DiscussionsAPI extends Mapper
     */
    public function Get($Params)
    {
-      $DiscussionID = $Params['URI'][2];
+      $DiscussionID  = $Params['URI'][2];
+      $Format        = $Params['Format'];
       if ($DiscussionID) {
-         return self::_GetById($DiscussionID);
+         return self::_GetById($Format, $DiscussionID);
       } else {
-         return self::_GetAll();
+         return self::_GetAll($Format);
       }
    }
 
@@ -52,7 +58,6 @@ class DiscussionsAPI extends Mapper
     *   @SWG\operations(
     *     @SWG\operation(
     *       httpMethod="GET",
-    *       path="/discussions",
     *       nickname="GetAll",
     *       summary="Find all discussions",
     *       notes="Respects permissions"
@@ -87,15 +92,74 @@ class DiscussionsAPI extends Mapper
     *   )
     * )
     */
-   protected function _GetById($DiscussionID)
+   protected function _GetById($Format, $DiscussionID)
    {
       return array('Map' => 'vanilla/discussion' . DS . $DiscussionID);
+   }
+
+   /**
+    * Retrieve a the current user's bookmarked discussions
+    *
+    * GET /discussions/bookmarked
+    *
+    * @package API
+    * @since   0.1.0
+    * @access  public
+    * @param   string $Format
+    *
+    * @SWG\api(
+    *   path="/discussions/bookmarks",
+    *   @SWG\operations(
+    *     @SWG\operation(
+    *       httpMethod="GET",
+    *       nickname="GetBookmarked",
+    *       summary="Find a users bookmarked discussions"
+    *     )
+    *   )
+    * )
+    */
+   protected function _GetBookmarks($Format)
+   {
+      return array('Map' => 'vanilla/discussions/bookmarked');
+   }
+
+   /**
+    * Retrieve discussions created by the current user
+    *
+    * GET /discussions/bookmarked
+    *
+    * @package API
+    * @since   0.1.0
+    * @access  public
+    * @param   string $Format
+    *
+    * @SWG\api(
+    *   path="/discussions/mine",
+    *   @SWG\operations(
+    *     @SWG\operation(
+    *       httpMethod="GET",
+    *       nickname="GetMine",
+    *       summary="Find discussions created by the current user"
+    *     )
+    *   )
+    * )
+    */
+   protected function _GetMine()
+   {
+      return array('Map' => 'vanilla/discussions/mine');
    }
 
    /**
     * Create discussions
     *
     * POST /discussions
+    *
+    * To be implemented:
+    * POST /discussions/:id/sink
+    * POST /discussions/:id/announce
+    * POST /discussions/:id/dismiss
+    * POST /discussions/:id/close
+    * POST /discussions/:id/bookmark
     *
     * @package API
     * @since   0.1.0
@@ -116,13 +180,17 @@ class DiscussionsAPI extends Mapper
     */
    public function Post($Params)
    {
-      return array('Map' => 'vanilla/post/discussion');
+      $Format = $Params['Format'];
+      return array('Map' => 'vanilla/post/discussion.' . $Format);
    }
 
    /**
     * Update discussions
     *
     * PUT /discussions/:id
+    *
+    * To be implemented:
+    * PUT /discussions/bookmarks/:id
     *
     * @package API
     * @since   0.1.0
@@ -143,7 +211,8 @@ class DiscussionsAPI extends Mapper
     */
    public function Put($Params)
    {
-      $DiscussionID = $Params['URI'][2];
+      $DiscussionID  = $Params['URI'][2];
+      $Format        = $Params['Format'];
       $Map = 'vanilla/post/editdiscussion' . DS . $DiscussionID;
       $Args = array(
          'DiscussionID' => $DiscussionID,
@@ -156,6 +225,9 @@ class DiscussionsAPI extends Mapper
     * Remove discussions
     *
     * DELETE /discussions/:id
+    *
+    * To be implemented:
+    * DELETE /discussions/bookmarks/:id
     *
     * @package API
     * @since   0.1.0
@@ -176,7 +248,8 @@ class DiscussionsAPI extends Mapper
     */
    public function Delete($Params)
    {
-      $DiscussionID = $Params['URI'][2];
+      $DiscussionID  = $Params['URI'][2];
+      $Format        = $Params['Format'];
       $Map = 'vanilla/discussion/delete' . DS . $DiscussionID;
       $Args = array(
          'TransientKey'  => Gdn::Session()->TransientKey()
