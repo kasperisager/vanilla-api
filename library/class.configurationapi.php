@@ -28,7 +28,7 @@ class ConfigurationAPI extends Mapper
     * @param   array $Params
     * @return  array
     *
-    * @SWG\Api(
+    * @SWG\api(
     *   path="/configuration",
     *   @SWG\operations(
     *     @SWG\operation(
