@@ -154,13 +154,6 @@ class DiscussionsAPI extends Mapper
     *
     * POST /discussions
     *
-    * To be implemented:
-    * POST /discussions/:id/sink
-    * POST /discussions/:id/announce
-    * POST /discussions/:id/dismiss
-    * POST /discussions/:id/close
-    * POST /discussions/:id/bookmark
-    *
     * @package API
     * @since   0.1.0
     * @access  public
@@ -185,17 +178,44 @@ class DiscussionsAPI extends Mapper
    }
 
    /**
-    * Update discussions
+    * Update and alter discussions
     *
     * PUT /discussions/:id
     *
     * To be implemented:
-    * PUT /discussions/bookmarks/:id
+    * PUT /discussions/:id/sink
+    * PUT /discussions/:id/announce
+    * PUT /discussions/:id/dismiss
+    * PUT /discussions/:id/close
+    * PUT /discussions/:id/bookmark
     *
     * @package API
     * @since   0.1.0
     * @access  public
     * @param   array $Params
+    */
+   public function Put($Params)
+   {
+      $DiscussionID  = $Params['URI'][2];
+      $Format        = $Params['Format'];
+      $Map = 'vanilla/post/editdiscussion' . DS . $DiscussionID;
+      $Args = array(
+         'DiscussionID' => $DiscussionID,
+         'TransientKey'  => Gdn::Session()->TransientKey()
+      );
+      return array('Map' => $Map, 'Args' => $Args);
+   }
+
+   /**
+    * Update an existing discussion
+    *
+    * PUT /discussions/:id
+    *
+    * @package API
+    * @since   0.1.0
+    * @access  public
+    * @param   string $Format
+    * @param   int $DiscussionID
     *
     * @SWG\api(
     *   path="/discussions/{id}",
@@ -209,16 +229,78 @@ class DiscussionsAPI extends Mapper
     *   )
     * )
     */
-   public function Put($Params)
+   protected function _Put($Format, $DiscussionID)
    {
-      $DiscussionID  = $Params['URI'][2];
-      $Format        = $Params['Format'];
-      $Map = 'vanilla/post/editdiscussion' . DS . $DiscussionID;
-      $Args = array(
-         'DiscussionID' => $DiscussionID,
-         'TransientKey'  => Gdn::Session()->TransientKey()
-      );
-      return array('Map' => $Map, 'Args' => $Args);
+
+   }
+
+   /**
+    * Sink/unsink an existing discussion
+    *
+    * PUT /discussions/:id/sink
+    *
+    * @package API
+    * @since   0.1.0
+    * @access  public
+    * @param   string $Format
+    * @param   int $DiscussionID
+    *
+    * @SWG\api(
+    *   path="/discussions/{id}/sink",
+    *   @SWG\operations(
+    *     @SWG\operation(
+    *       httpMethod="PUT",
+    *       nickname="PutSink",
+    *       summary="Sink/unsink an existing discussion"
+    *     )
+    *   )
+    * )
+    */
+   protected function _PutSink($Format, $DiscussionID)
+   {
+
+   }
+
+   /**
+    * Announce/unannounce an existing discussion
+    *
+    * PUT /discussions/:id/announce
+    *
+    * @package API
+    * @since   0.1.0
+    * @access  public
+    * @param   string $Format
+    * @param   int $DiscussionID
+    *
+    * @SWG\api(
+    *   path="/discussions/{id}/announce",
+    *   @SWG\operations(
+    *     @SWG\operation(
+    *       httpMethod="PUT",
+    *       nickname="PutAnnounce",
+    *       summary="Announce/unannounce an existing discussion"
+    *     )
+    *   )
+    * )
+    */
+   protected function _PutAnnounce($Format, $DiscussionID)
+   {
+
+   }
+
+   protected function _PutDismiss($Format, $DiscussionID)
+   {
+
+   }
+
+   protected function _PutClose($Format, $DiscussionID)
+   {
+
+   }
+
+   protected function _PutBookmark($Format, $DiscussionID)
+   {
+
    }
 
    /**
