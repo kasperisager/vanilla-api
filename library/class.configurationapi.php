@@ -60,9 +60,10 @@ class ConfigurationAPI extends Mapper
     * @package API
     * @since   0.1.0
     * @access  public
+    * @param   array $Params
     * @return  bool
     */
-   public function Post()
+   public function Post($Params)
    {
       return TRUE;
    }
@@ -73,9 +74,10 @@ class ConfigurationAPI extends Mapper
     * @package API
     * @since   0.1.0
     * @access  public
+    * @param   array $Params
     * @return  bool
     */
-   public function Put()
+   public function Put($Params)
    {
       return TRUE;
    }
@@ -86,9 +88,10 @@ class ConfigurationAPI extends Mapper
     * @package API
     * @since   0.1.0
     * @access  public
+    * @param   array $Params
     * @return  bool
     */
-   public function Delete()
+   public function Delete($Params)
    {
       return TRUE;
    }

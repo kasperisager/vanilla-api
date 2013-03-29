@@ -25,6 +25,7 @@ class UsersAPI extends Mapper
     * @package API
     * @since   0.1.0
     * @access  public
+    * @param   array $Params
     */
    public function Get($Params)
    {
@@ -48,8 +49,9 @@ class UsersAPI extends Mapper
     * @package API
     * @since   0.1.0
     * @access  public
+    * @param   array $Params
     */
-   public function Post()
+   public function Post($Params)
    {
       return TRUE;
    }
@@ -60,8 +62,9 @@ class UsersAPI extends Mapper
     * @package API
     * @since   0.1.0
     * @access  public
+    * @param   array $Params
     */
-   public function Put()
+   public function Put($Params)
    {
       return TRUE;
    }
@@ -72,8 +75,9 @@ class UsersAPI extends Mapper
     * @package API
     * @since   0.1.0
     * @access  public
+    * @param   array $Params
     */
-   public function Delete()
+   public function Delete($Params)
    {
       return TRUE;
    }

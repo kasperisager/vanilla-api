@@ -26,6 +26,7 @@ class DiscussionsAPI extends Mapper
     * @package API
     * @since   0.1.0
     * @access  public
+    * @param   array $Params
     */
    public function Get($Params)
    {
@@ -72,6 +73,7 @@ class DiscussionsAPI extends Mapper
     * @package API
     * @since   0.1.0
     * @access  public
+    * @param   int $DiscussionID
     *
     * @SWG\api(
     *   path="/discussions/{id}",
@@ -98,6 +100,7 @@ class DiscussionsAPI extends Mapper
     * @package API
     * @since   0.1.0
     * @access  public
+    * @param   array $Params
     *
     * @SWG\api(
     *   path="/discussions",
@@ -124,6 +127,7 @@ class DiscussionsAPI extends Mapper
     * @package API
     * @since   0.1.0
     * @access  public
+    * @param   array $Params
     *
     * @SWG\api(
     *   path="/discussions/{id}",
@@ -156,6 +160,7 @@ class DiscussionsAPI extends Mapper
     * @package API
     * @since   0.1.0
     * @access  public
+    * @param   array $Params
     *
     * @SWG\api(
     *   path="/discussions/{id}",
