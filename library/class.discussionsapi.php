@@ -183,11 +183,11 @@ class DiscussionsAPI extends Mapper
     * PUT /discussions/:id
     *
     * To be implemented:
-    * PUT /discussions/:id/sink
-    * PUT /discussions/:id/announce
-    * PUT /discussions/:id/dismiss
-    * PUT /discussions/:id/close
-    * PUT /discussions/:id/bookmark
+    * PUT /discussions/sink/:id
+    * PUT /discussions/announce:id
+    * PUT /discussions/dismiss/:id
+    * PUT /discussions/close/:id/
+    * PUT /discussions/bookmark/:id
     *
     * @package API
     * @since   0.1.0
@@ -237,7 +237,7 @@ class DiscussionsAPI extends Mapper
    /**
     * Sink/unsink an existing discussion
     *
-    * PUT /discussions/:id/sink
+    * PUT /discussions/sink/:id
     *
     * @package API
     * @since   0.1.0
@@ -246,7 +246,7 @@ class DiscussionsAPI extends Mapper
     * @param   int $DiscussionID
     *
     * @SWG\api(
-    *   path="/discussions/{id}/sink",
+    *   path="/discussions/sink/{id}",
     *   @SWG\operations(
     *     @SWG\operation(
     *       httpMethod="PUT",
@@ -264,7 +264,7 @@ class DiscussionsAPI extends Mapper
    /**
     * Announce/unannounce an existing discussion
     *
-    * PUT /discussions/:id/announce
+    * PUT /discussions/announce/:id
     *
     * @package API
     * @since   0.1.0
@@ -273,7 +273,7 @@ class DiscussionsAPI extends Mapper
     * @param   int $DiscussionID
     *
     * @SWG\api(
-    *   path="/discussions/{id}/announce",
+    *   path="/discussions/announce/{id}",
     *   @SWG\operations(
     *     @SWG\operation(
     *       httpMethod="PUT",
