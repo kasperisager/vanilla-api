@@ -33,6 +33,12 @@ $ [sudo] make install
 
 Now simply go to your Vanilla dashboard, enable Vanilla API in the "Applications" menu and navigate to the API Explorer for all your documentation needs: http://your-domain.com/api
 
+## How does it work?
+
+Vanilla API is in fact not an API in itself. A more fitting description would be that it's a mapper tool whose purpose is to implement a RESTlike URI scheme upon with you can invoke different methods using the standard GET, POST, PUT and DELETE HTTP verbs. It also translates PUT and DELETE requests into POST requests so that Garden can understand and process these.
+
+In the end, you can look at Vanilla API as being an application that sits of top of the default API, translating and handling different requests for use by the application and core controllers who in return carry out the actual methods.
+
 ## Makefile tasks
 
 Vanilla API comes with a couple of handy makefile task for installing, updating and unstalling dependencies. Some of these may require that you run them as the root user so be prepared to `sudo` if things go fishy.
@@ -48,12 +54,6 @@ Removes all files and directories created by `make install` and `make update`.
 
 > #### Notice
 > Please be aware that manually installing the dependencies using `npm install` and `composer install` will result in errors upon running the application. This is due to the fact that the third party libraries used contains tests and binaries that are currently conflicting with Garden. The makefile takes care of removing these, leaving only the actual libraries for use by Vanilla API.
-
-## How does it work?
-
-Vanilla API is in fact not an API in itself. A more fitting description would be that it's a mapper tool whose purpose is to implement a RESTlike URI scheme upon with you can invoke different methods using the standard GET, POST, PUT and DELETE HTTP verbs. It also translates PUT and DELETE requests into POST requests so that Garden can understand and process these.
-
-In the end, you can look at Vanilla API as being an application that sits of top of the default API, translating and handling different requests for use by the application and core controllers who in return carry out the actual methods.
 
 ## Issue tracking
 
