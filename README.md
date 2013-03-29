@@ -49,6 +49,12 @@ Removes all files and directories created by `make install` and `make update`.
 > #### Notice
 > Please be aware that manually installing the dependencies using `npm install` and `composer install` will result in errors upon running the application. This is due to the fact that the third party libraries used contains tests and binaries that are currently conflicting with Garden. The makefile takes care of removing these, leaving only the actual libraries for use by Vanilla API.
 
+## How does it work?
+
+Vanilla API is in fact not an API in itself. A more fitting description would be that it's a mapper tool whose purpose is to implement a RESTlike URI scheme upon with you can invoke different methods using the standard GET, POST, PUT and DELETE HTTP verbs. It also translates PUT and DELETE requests into POST requests so that Garden can understand and process these.
+
+In the end, you can look at Vanilla API as being an application that sits of top of the default API, translating and handling different requests for use by the application and core controllers who in return carry out the actual methods.
+
 ## Issue tracking
 
 If you come across any bugs or if you have a feature request, please [file an issue](https://github.com/kasperisager/VanillaAPI/issues) using the Github Issue tracker. Vanilla API won't be supported through http://vanillaforums.org so please stick to using Github for inquires about bugs and feature requests. Thanks!
