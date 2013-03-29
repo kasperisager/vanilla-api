@@ -33,7 +33,6 @@ class ConfigurationAPI extends Mapper
     *   @SWG\operations(
     *     @SWG\operation(
     *       httpMethod="GET",
-    *       path="/configuration",
     *       nickname="GetConfig",
     *       summary="Get the current forum configuration"
     *     )
