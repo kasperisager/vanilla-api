@@ -222,7 +222,7 @@ class DiscussionsAPI extends Mapper
     *   @SWG\operations(
     *     @SWG\operation(
     *       httpMethod="PUT",
-    *       nickname="Put",
+    *       nickname="PutDiscussion",
     *       summary="Update an existing discussion",
     *       notes="Respects permissions"
     *     )
@@ -251,7 +251,8 @@ class DiscussionsAPI extends Mapper
     *     @SWG\operation(
     *       httpMethod="PUT",
     *       nickname="PutSink",
-    *       summary="Sink/unsink an existing discussion"
+    *       summary="Sink/unsink an existing discussion",
+    *       notes="This is a convenience method. The same result can be accomplished using <code>PUT /discussions/:id</code>"
     *     )
     *   )
     * )
@@ -278,7 +279,8 @@ class DiscussionsAPI extends Mapper
     *     @SWG\operation(
     *       httpMethod="PUT",
     *       nickname="PutAnnounce",
-    *       summary="Announce/unannounce an existing discussion"
+    *       summary="Announce/unannounce an existing discussion",
+    *       notes="This is a convenience method. The same result can be accomplished using <code>PUT /discussions/:id</code>"
     *     )
     *   )
     * )
@@ -288,16 +290,85 @@ class DiscussionsAPI extends Mapper
 
    }
 
+   /**
+    * Dismiss an announced discussion
+    *
+    * PUT /discussions/dismiss/:id
+    *
+    * @package API
+    * @since   0.1.0
+    * @access  public
+    * @param   string $Format
+    * @param   int $DiscussionID
+    *
+    * @SWG\api(
+    *   path="/discussions/dismiss/{id}",
+    *   @SWG\operations(
+    *     @SWG\operation(
+    *       httpMethod="PUT",
+    *       nickname="PutDismiss",
+    *       summary="Dismiss an announced discussion",
+    *       notes="This is a convenience method. The same result can be accomplished using <code>PUT /discussions/:id</code>"
+    *     )
+    *   )
+    * )
+    */
    protected function _PutDismiss($Format, $DiscussionID)
    {
 
    }
 
+   /**
+    * Close/open an existing discussion
+    *
+    * PUT /discussions/close/:id
+    *
+    * @package API
+    * @since   0.1.0
+    * @access  public
+    * @param   string $Format
+    * @param   int $DiscussionID
+    *
+    * @SWG\api(
+    *   path="/discussions/close/{id}",
+    *   @SWG\operations(
+    *     @SWG\operation(
+    *       httpMethod="PUT",
+    *       nickname="PutClose",
+    *       summary="Close/open an existing discussion",
+    *       notes="This is a convenience method. The same result can be accomplished using <code>PUT /discussions/:id</code>"
+    *     )
+    *   )
+    * )
+    */
    protected function _PutClose($Format, $DiscussionID)
    {
 
    }
 
+   /**
+    * Bookmark/unbookmark an existing discussion
+    *
+    * PUT /discussions/bookmark/:id
+    *
+    * @package API
+    * @since   0.1.0
+    * @access  public
+    * @param   string $Format
+    * @param   int $DiscussionID
+    *
+    * @SWG\api(
+    *   path="/discussions/bookmark/{id}",
+    *   @SWG\operations(
+    *     @SWG\operation(
+    *       httpMethod="PUT",
+    *       nickname="PutBookmark",
+    *       summary="Bookmark/unbookmark an existing discussion",
+    *       notes="This is a convenience method. The same result can be accomplished using <code>PUT /discussions/:id</code>"
+    *     )
+    *   )
+    * )
+    */
    protected function _PutBookmark($Format, $DiscussionID)
    {
 
