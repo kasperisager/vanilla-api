@@ -164,6 +164,7 @@ class APIController extends Gdn_Controller
          '/configuration',
          '/categories',
          '/discussions',
+         '/messages',
          '/session',
          '/users'
       );
@@ -201,13 +202,13 @@ class APIController extends Gdn_Controller
     */
    public function _Dispatch()
    {
-      $Request      = Gdn::Request();
-      $URI         = $Request->RequestURI();
+      $Request    = Gdn::Request();
+      $URI        = $Request->RequestURI();
+      $Intercept  = preg_match('/^api\/(\w+)/i', $URI, $Matches);
+      $Class      = $Matches[1].'API';
 
       // Intercept API requests and store the requested class
-      if (preg_match('/^api\/(\w+)/i', $URI, $Matches)) {
-
-         $Class = $Matches[1].'API';
+      if ($Intercept) {
 
          if (!$Class == NULL && class_exists($Class)) {
             $Class = new $Class;
@@ -215,10 +216,10 @@ class APIController extends Gdn_Controller
             return;
          }
 
-         $Method       = $Request->RequestMethod();
+         $Method        = $Request->RequestMethod();
          $Environment   = $Request->Export('Environment');
          $Arguments     = $Request->Export('Arguments');
-         $Parsed       = $Request->Export('Parsed');
+         $Parsed        = $Request->Export('Parsed');
 
          // Only deliver data - nothing else is needed
          $Request->WithDeliveryType(DELIVERY_TYPE_DATA);
@@ -266,10 +267,7 @@ class APIController extends Gdn_Controller
 
                // Combine the PUT request with any custom arguments
                $Request->SetRequestArguments(
-                  Gdn_Request::INPUT_POST, array_merge(
-                     $_PUT,
-                     $Data['Args']
-                  )
+                  Gdn_Request::INPUT_POST, array_merge($_PUT, $Data['Args'])
                );
 
                $_POST = $Request->Post();
