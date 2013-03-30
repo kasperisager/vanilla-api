@@ -154,6 +154,9 @@ class DiscussionsAPI extends Mapper
     *
     * POST /discussions
     *
+    * To be implemented:
+    * POST /discussions/:id/comments
+    *
     * @package API
     * @since   0.1.0
     * @access  public
@@ -183,6 +186,7 @@ class DiscussionsAPI extends Mapper
     * PUT /discussions/:id
     *
     * To be implemented:
+    * PUT /discussions/comments/:id
     * PUT /discussions/sink/:id
     * PUT /discussions/announce:id
     * PUT /discussions/dismiss/:id
@@ -198,11 +202,10 @@ class DiscussionsAPI extends Mapper
    {
       $DiscussionID  = $Params['URI'][2];
       $Format        = $Params['Format'];
-      $Map = 'vanilla/post/editdiscussion' . DS . $DiscussionID;
-      $Args = array(
-         'DiscussionID' => $DiscussionID,
-         'TransientKey'  => Gdn::Session()->TransientKey()
-      );
+      $Map  = 'vanilla/post/editdiscussion' . DS . $DiscussionID;
+      $Args = array();
+      $Args['DiscussionID'] = $DiscussionID;
+      $Args['TransientKey'] = Gdn::Session()->TransientKey();
       return array('Map' => $Map, 'Args' => $Args);
    }
 
@@ -404,9 +407,8 @@ class DiscussionsAPI extends Mapper
       $DiscussionID  = $Params['URI'][2];
       $Format        = $Params['Format'];
       $Map = 'vanilla/discussion/delete' . DS . $DiscussionID;
-      $Args = array(
-         'TransientKey'  => Gdn::Session()->TransientKey()
-      );
+      $Args = array();
+      $Args['TransientKey'] = Gdn::Session()->TransientKey();
       return array('Map' => $Map, 'Args' => $Args);
    }
 }

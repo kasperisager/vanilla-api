@@ -1,5 +1,7 @@
 <?php if (!defined('APPLICATION')) exit();
 
+use Swagger\Swagger;
+
 /**
  * Vanilla API Main controller
  *
@@ -25,6 +27,15 @@
 class APIController extends Gdn_Controller
 {
    /**
+    * Allow registration of docs
+    * 
+    * @var     array
+    * @since   0.1.0
+    * @access  public
+    */
+   public $Register = array();
+
+   /**
     * Do-nothing construct to let children constructs bubble up.
     *
     * @access public
@@ -43,6 +54,25 @@ class APIController extends Gdn_Controller
    public function Initialize()
    {
       parent::Initialize();
+   }
+
+   /**
+    * Information about the API
+    *
+    * This info array is included in all API resources as to enable Swagger
+    * to crawl and list the entire API.
+    * 
+    * @return  array
+    * @since   0.1.0
+    * @access  public
+    */
+   public function Meta()
+   {
+      return array(
+         'apiVersion' => '0.1.0',
+         'swaggerVersion' => '1.1',
+         'basePath' => Gdn::Request()->Domain() . '/api'
+      );
    }
 
    /**
@@ -65,7 +95,7 @@ class APIController extends Gdn_Controller
          }
 
          $this->Menu->HighlightRoute('/api');
-         $this->SetData('Breadcrumbs',array(
+         $this->SetData('Breadcrumbs', array(
             array(
                'Name' => T('API Documentation'),
                'Url' => '/api')
@@ -98,6 +128,71 @@ class APIController extends Gdn_Controller
    }
 
    /**
+    * Vanilla API resource method
+    *
+    * Resource method used to get information about each information about
+    * each controller and output this as JSON for Swagger UI to read
+    * 
+    * @since   0.1.0
+    * @param   string $Resource
+    * @access  public
+    */
+   public function Resources($Resource)
+   {
+      $this->DeliveryType(DELIVERY_TYPE_DATA);
+      $this->DeliveryMethod(DELIVERY_METHOD_JSON);
+
+      $this->SetData(self::Meta());
+      
+      $Swagger = new Swagger();
+
+      $Class = $Resource.'API';
+
+      // Automatic API docs discovery
+      if ($Resource && class_exists($Class)) {
+         $Class = new $Class;
+
+         $Docs = new ReflectionClass($Class);
+         $Docs = dirname($Docs->getFilename());
+
+         $Discover = $Swagger->discover($Docs);
+         $Registry = $Discover->registry;
+      }
+
+      // Register core API docs
+      array_push($this->Register,
+         '/configuration',
+         '/categories',
+         '/discussions',
+         '/session',
+         '/users'
+      );
+
+      // Allow plugins and applications to register docs
+      $this->FireEvent('Register');
+
+      if (!$Resource) {
+
+         $Listing = array();
+         $Registry = $this->Register;
+
+         foreach ($Registry as $API) {
+            $Resource = array('path' => '/resources' . $API);
+            $Listing[] = $Resource;
+         }
+
+         $this->SetData('apis', $Listing);
+
+      } else if ($Resource) {
+
+         $this->SetData($Registry['/'.$Resource]);
+
+      }
+
+      $this->RenderData();
+   }
+
+   /**
     * Map the API request to the appropriate controller
     *
     * @package API
@@ -114,7 +209,7 @@ class APIController extends Gdn_Controller
 
          $Class = $Matches[1].'API';
 
-          if (!$Class == NULL && class_exists($Class)) {
+         if (!$Class == NULL && class_exists($Class)) {
             $Class = new $Class;
          } else {
             return;
@@ -143,13 +238,12 @@ class APIController extends Gdn_Controller
                break;
          }
 
-         $Params = array(
-            'Environment'   => $Environment,
-            'Arguments'    => $Arguments,
-            'Parsed'      => $Parsed,
-            'Format'      => $Format,
-            'URI'         => explode('/', $URI)
-         );
+         $Params = array();
+         $Params['Environment']  = $Environment;
+         $Params['Arguments']    = $Arguments;
+         $Params['Parsed']       = $Parsed;
+         $Params['Format']       = $Format;
+         $Params['URI']          = explode('/', $URI);
 
          switch(strtolower($Method)) {
 
@@ -275,5 +369,19 @@ class APIController extends Gdn_Controller
       }
 
       return $PutData;
+   }
+
+   /**
+    * A little voodoo to turn objects into arrays
+    * 
+    * @param   object $Data
+    * @since   0.1.0
+    * @access  public
+    */
+   public function Sanitize($Data)
+   {
+      $Data = json_encode($Data);
+      $Data = json_decode($Data, true);
+      return $Data;
    }
 }

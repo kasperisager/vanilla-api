@@ -1,17 +1,22 @@
 {
-   "folders":
-   [
-      {
-         "path": ".",
-         "name": "Vanilla API",
-         "file_exclude_patterns": [
-            "*.gitignore",
-            "*.sublime-project",
-            "*.sublime-workspace"
-         ],
-         "folder_exclude_patterns": [
-            "node_modules"
-         ]
-      }
-   ]
+	"folders":
+	[
+		{
+			"file_exclude_patterns":
+			[
+				"*.gitignore",
+				"*.sublime-project",
+				"*.sublime-workspace"
+			],
+			"folder_exclude_patterns":
+			[
+				"node_modules"
+			],
+			"name": "Vanilla API",
+			"path": "/Users/kasperisager/Documents/Github/VanillaAPI"
+		},
+		{
+			"path": "/Users/kasperisager/Apache/vanilla/master/applications/conversations"
+		}
+	]
 }

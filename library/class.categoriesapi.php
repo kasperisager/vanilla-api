@@ -132,6 +132,10 @@ class CategoriesAPI extends Mapper
     *
     * PUT /categories/:id
     *
+    * To be implemented:
+    * PUT /categories/follow/:id
+    * PUT /categories/read/:id
+    *
     * @package API
     * @since   0.1.0
     * @access  public
@@ -175,12 +179,11 @@ class CategoriesAPI extends Mapper
    public function Put($Params)
    {
       $CategoryID = $Params['URI'][2];
-      $Format    = $Params['Format'];
+      $Format     = $Params['Format'];
       $Map = 'vanilla/settings/editcategory.' . $Format . DS . $CategoryID;
-      $Args = array(
-         'CategoryID' => $CategoryID,
-         'TransientKey'  => Gdn::Session()->TransientKey()
-      );
+      $Args = array();
+      $Args['CategoryID'] = $CategoryID;
+      $Args['TransientKey'] = Gdn::Session()->TransientKey();
       return array('Map' => $Map, 'Args' => $Args);
    }
 
@@ -220,10 +223,9 @@ class CategoriesAPI extends Mapper
       $CategoryID = $Params['URI'][2];
       $Format    = $Params['Format'];
       $Map = 'vanilla/settings/deletecategory.' . $Format . DS . $CategoryID;
-      $Args = array(
-         'CategoryID'   => $CategoryID,
-         'TransientKey'  => Gdn::Session()->TransientKey()
-      );
+      $Args = array();
+      $Args['CategoryID'] = $CategoryID;
+      $Args['TransientKey'] = Gdn::Session()->TransientKey();
       return array('Map' => $Map, 'Args' => $Args);
    }
 }
