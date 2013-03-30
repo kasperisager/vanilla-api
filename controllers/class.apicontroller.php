@@ -141,53 +141,65 @@ class APIController extends Gdn_Controller
    {
       $this->DeliveryType(DELIVERY_TYPE_DATA);
       $this->DeliveryMethod(DELIVERY_METHOD_JSON);
-
-      $this->SetData(self::Meta());
       
       $Swagger = new Swagger();
 
-      $Class = $Resource.'API';
+      try {
 
-      // Automatic API docs discovery
-      if ($Resource && class_exists($Class)) {
-         $Class = new $Class;
+         // Automatic API docs discovery
+         if ($Resource) {
+            $Class = $Resource.'API';
 
-         $Docs = new ReflectionClass($Class);
-         $Docs = dirname($Docs->getFilename());
+            if (!class_exists($Class)) throw new Exception(404);
 
-         $Discover = $Swagger->discover($Docs);
-         $Registry = $Discover->registry;
-      }
+            $Class = new $Class;
 
-      // Register core API docs
-      array_push($this->Register,
-         '/configuration',
-         '/categories',
-         '/discussions',
-         '/messages',
-         '/session',
-         '/users'
-      );
+            $Docs = new ReflectionClass($Class);
+            $Docs = dirname($Docs->getFilename());
 
-      // Allow plugins and applications to register docs
-      $this->FireEvent('Register');
-
-      if (!$Resource) {
-
-         $Listing = array();
-         $Registry = $this->Register;
-
-         foreach ($Registry as $API) {
-            $Resource = array('path' => '/resources' . $API);
-            $Listing[] = $Resource;
+            $Discover = $Swagger->discover($Docs);
+            $Registry = $Discover->registry;
          }
 
-         $this->SetData('apis', $Listing);
+         // Add meta data
+         $this->SetData(self::Meta());
 
-      } else if ($Resource) {
+         // Register core API docs
+         array_push($this->Register,
+            '/configuration',
+            '/categories',
+            '/discussions',
+            '/messages',
+            '/session',
+            '/users'
+         );
 
-         $this->SetData($Registry['/'.$Resource]);
+         // Allow plugins and applications to register docs
+         $this->FireEvent('Register');
 
+         if (!$Resource) {
+
+            $Listing = array();
+            $Registry = $this->Register;
+
+            foreach ($Registry as $API) {
+               $Resource = array('path' => '/resources' . $API);
+               $Listing[] = $Resource;
+            }
+
+            $this->SetData('apis', $Listing);
+
+         } else if ($Resource) {
+
+            $this->SetData($Registry['/'.$Resource]);
+
+         }
+
+      } catch (Exception $Exception) {
+         $Code = intval($Exception->getMessage());
+         $Message = Gdn_Controller::StatusCode($Code);
+         $this->SetData('Code', $Code);
+         $this->SetData('Exception', $Message);
       }
 
       $this->RenderData();
