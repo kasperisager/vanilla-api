@@ -141,8 +141,6 @@ class APIController extends Gdn_Controller
    {
       $this->DeliveryType(DELIVERY_TYPE_DATA);
       $this->DeliveryMethod(DELIVERY_METHOD_JSON);
-      
-      $Swagger = new Swagger();
 
       try {
 
@@ -152,48 +150,44 @@ class APIController extends Gdn_Controller
 
             if (!class_exists($Class)) throw new Exception(404);
 
-            $Class = new $Class;
+            $Swagger = new Swagger();
+            $Class   = new $Class;
 
             $Docs = new ReflectionClass($Class);
             $Docs = dirname($Docs->getFilename());
 
             $Discover = $Swagger->discover($Docs);
             $Registry = $Discover->registry;
-         }
 
-         // Add meta data
-         $this->SetData(self::Meta());
+            $this->SetData(self::Meta());
+            $this->SetData($Registry['/'.$Resource]);
+         } else {
 
-         // Register core API docs
-         array_push($this->Register,
-            '/configuration',
-            '/categories',
-            '/discussions',
-            '/messages',
-            '/session',
-            '/users'
-         );
-
-         // Allow plugins and applications to register docs
-         $this->FireEvent('Register');
-
-         if (!$Resource) {
-
-            $Listing = array();
             $Registry = $this->Register;
 
-            foreach ($Registry as $API) {
-               $Resource = array('path' => '/resources' . $API);
+            // Register core API docs
+            $Registry['Session']       = '/session';
+            $Registry['Configuration'] = '/configuration';
+            $Registry['Categories']    = '/categories';
+            $Registry['Discussions']   = '/discussions';
+            $Registry['Messages']      = '/messages';
+            $Registry['Users']         = '/users';
+
+            // Allow plugins and applications to register docs
+            $this->FireEvent('Register');
+
+            $Listing = array();
+
+            foreach ($Registry as $Description => $Path) {
+               $Resource = array();
+               $Resource['path'] = '/resources' . $Path;
+               $Resource['description'] = $Description;
                $Listing[] = $Resource;
             }
 
+            $this->SetData(self::Meta());
             $this->SetData('apis', $Listing);
-
-         } else if ($Resource) {
-
-            $this->SetData($Registry['/'.$Resource]);
-
-         }
+         }         
 
       } catch (Exception $Exception) {
          $Code = intval($Exception->getMessage());
