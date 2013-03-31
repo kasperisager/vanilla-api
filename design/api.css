@@ -5253,14 +5253,377 @@ a.badge:focus {
 .affix {
   position: fixed;
 }
+.highlight {
+  background: #fff;
+}
+.highlight .c {
+  color: #998;
+  font-style: italic;
+}
+.highlight .err {
+  color: #a61717;
+  background-color: #e3d2d2;
+}
+.highlight .k {
+  font-weight: 700;
+}
+.highlight .o {
+  font-weight: 700;
+}
+.highlight .cm {
+  color: #998;
+  font-style: italic;
+}
+.highlight .cp {
+  color: #999;
+  font-weight: 700;
+}
+.highlight .c1 {
+  color: #998;
+  font-style: italic;
+}
+.highlight .cs {
+  color: #999;
+  font-weight: 700;
+  font-style: italic;
+}
+.highlight .gd {
+  color: #000;
+  background-color: #fdd;
+}
+.highlight .gd .x {
+  color: #000;
+  background-color: #faa;
+}
+.highlight .ge {
+  font-style: italic;
+}
+.highlight .gr {
+  color: #a00;
+}
+.highlight .gh {
+  color: #999;
+}
+.highlight .gi {
+  color: #000;
+  background-color: #dfd;
+}
+.highlight .gi .x {
+  color: #000;
+  background-color: #afa;
+}
+.highlight .go {
+  color: #888;
+}
+.highlight .gp {
+  color: #555;
+}
+.highlight .gs {
+  font-weight: 700;
+}
+.highlight .gu {
+  color: purple;
+  font-weight: 700;
+}
+.highlight .gt {
+  color: #a00;
+}
+.highlight .kc {
+  font-weight: 700;
+}
+.highlight .kd {
+  font-weight: 700;
+}
+.highlight .kn {
+  font-weight: 700;
+}
+.highlight .kp {
+  font-weight: 700;
+}
+.highlight .kr {
+  font-weight: 700;
+}
+.highlight .kt {
+  color: #458;
+  font-weight: 700;
+}
+.highlight .m {
+  color: #099;
+}
+.highlight .s {
+  color: #d14;
+}
+.highlight .n {
+  color: #333;
+}
+.highlight .na {
+  color: teal;
+}
+.highlight .nb {
+  color: #0086B3;
+}
+.highlight .nc {
+  color: #458;
+  font-weight: 700;
+}
+.highlight .no {
+  color: teal;
+}
+.highlight .ni {
+  color: purple;
+}
+.highlight .ne {
+  color: #900;
+  font-weight: 700;
+}
+.highlight .nf {
+  color: #900;
+  font-weight: 700;
+}
+.highlight .nn {
+  color: #555;
+}
+.highlight .nt {
+  color: navy;
+}
+.highlight .nv {
+  color: teal;
+}
+.highlight .ow {
+  font-weight: 700;
+}
+.highlight .w {
+  color: #bbb;
+}
+.highlight .mf {
+  color: #099;
+}
+.highlight .mh {
+  color: #099;
+}
+.highlight .mi {
+  color: #099;
+}
+.highlight .mo {
+  color: #099;
+}
+.highlight .sb {
+  color: #d14;
+}
+.highlight .sc {
+  color: #d14;
+}
+.highlight .sd {
+  color: #d14;
+}
+.highlight .s2 {
+  color: #d14;
+}
+.highlight .se {
+  color: #d14;
+}
+.highlight .sh {
+  color: #d14;
+}
+.highlight .si {
+  color: #d14;
+}
+.highlight .sx {
+  color: #d14;
+}
+.highlight .sr {
+  color: #009926;
+}
+.highlight .s1 {
+  color: #d14;
+}
+.highlight .ss {
+  color: #990073;
+}
+.highlight .bp {
+  color: #999;
+}
+.highlight .vc {
+  color: teal;
+}
+.highlight .vg {
+  color: teal;
+}
+.highlight .vi {
+  color: teal;
+}
+.highlight .il {
+  color: #099;
+}
+.highlight .gc {
+  color: #999;
+  background-color: #EAF2F5;
+}
+.type-csharp .highlight .k {
+  color: #00F;
+}
+.type-csharp .highlight .kt {
+  color: #00F;
+}
+.type-csharp .highlight .nf {
+  color: #000;
+  font-weight: 400;
+}
+.type-csharp .highlight .nc {
+  color: #2B91AF;
+}
+.type-csharp .highlight .nn {
+  color: #000;
+}
+.type-csharp .highlight .s {
+  color: #A31515;
+}
+.type-csharp .highlight .sc {
+  color: #A31515;
+}
+.wiki-body {
+  font-size: 14px;
+  line-height: 1.6;
+  /*.wiki-sidebar {
+      float: right;
+      width: 230px;
+
+      h2 {
+         margin: 0;
+         font-size: 22px;
+      }
+
+   }
+
+   .wiki-content {
+      margin-right: 280px;
+   }*/
+
+}
+.wiki-body .wiki-footer {
+  *zoom: 1;
+  margin-bottom: 20px;
+}
+.wiki-body .wiki-footer:before,
+.wiki-body .wiki-footer:after {
+  display: table;
+  content: "";
+  line-height: 0;
+}
+.wiki-body .wiki-footer:after {
+  clear: both;
+}
+.wiki-body > *:first-child {
+  margin-top: 0 !important;
+}
+.wiki-body h1,
+.wiki-body h2,
+.wiki-body h3,
+.wiki-body h4,
+.wiki-body h5,
+.wiki-body h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+  cursor: text;
+  position: relative;
+  line-height: 1.6;
+}
+.wiki-body h1 .mini-icon-link,
+.wiki-body h2 .mini-icon-link,
+.wiki-body h3 .mini-icon-link,
+.wiki-body h4 .mini-icon-link,
+.wiki-body h5 .mini-icon-link,
+.wiki-body h6 .mini-icon-link {
+  display: none;
+  color: #000;
+}
+.wiki-body h1 {
+  font-size: 28px;
+  color: #000;
+}
+.wiki-body h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #EEE;
+  color: #000;
+}
+.wiki-body h3 {
+  font-size: 18px;
+}
+.wiki-body h4 {
+  font-size: 16px;
+}
+.wiki-body h5 {
+  font-size: 14px;
+}
+.wiki-body h6 {
+  color: #777;
+  font-size: 14px;
+}
+.wiki-body ul,
+.wiki-body ol {
+  padding-left: 30px;
+}
+.wiki-body pre,
+.wiki-body code,
+.wiki-body tt {
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+.wiki-body p,
+.wiki-body blockquote,
+.wiki-body ul,
+.wiki-body ol,
+.wiki-body dl,
+.wiki-body table,
+.wiki-body pre {
+  margin: 15px 0;
+}
+.wiki-body img {
+  max-width: 100%;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: baseline;
+}
+.wiki-body blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+.wiki-body blockquote > :first-child {
+  margin-top: 0px;
+}
+.wiki-body blockquote p {
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1.6;
+}
+.wiki-body span.float-right {
+  display: block;
+  margin-left: 13px;
+  overflow: hidden;
+  float: right;
+}
+.wiki-body span.float-left {
+  display: block;
+  margin-right: 13px;
+  overflow: hidden;
+  float: left;
+}
+.wiki-body .edited {
+  color: #999;
+  margin: 10px 0 0;
+  font-size: 12px;
+  line-height: 19px;
+}
 body {
   -webkit-font-smoothing: antialiased;
 }
 a:hover {
   text-decoration: none;
 }
-ul,
-ol {
+.swagger-ui-wrap ul,
+.swagger-ui-wrap ol {
   margin: 0;
   padding: 0;
   list-style: none;
@@ -5309,6 +5672,7 @@ table.table td {
 .navbar .pull-right {
   padding: 10px 0 0;
 }
+.page-header h1,
 .page-header h2 {
   margin: 0;
 }
@@ -5438,4 +5802,29 @@ table.table td {
   font-size: 11px;
   text-align: right;
   line-height: 1.4;
+}
+.navbar .nav > li > a {
+  outline: none !important;
+}
+.navbar .nav > li > a:hover,
+.navbar .nav > li.open > a {
+  border-top: 3px solid #DD4B39;
+  padding-top: 7px;
+}
+.navbar .nav > li > a.Selected {
+  border-top: 3px solid #2590D6;
+  padding-top: 7px;
+}
+.dropdown-menu > li > a.Selected {
+  color: #ffffff;
+  text-decoration: none;
+  outline: 0;
+  background-color: #0081c2;
+  background-image: -moz-linear-gradient(top, #0088cc, #0077b3);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#0088cc), to(#0077b3));
+  background-image: -webkit-linear-gradient(top, #0088cc, #0077b3);
+  background-image: -o-linear-gradient(top, #0088cc, #0077b3);
+  background-image: linear-gradient(to bottom, #0088cc, #0077b3);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff0077b3', GradientType=0);
 }

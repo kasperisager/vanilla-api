@@ -54,6 +54,35 @@ class APIController extends Gdn_Controller
    public function Initialize()
    {
       parent::Initialize();
+
+      if ($this->DeliveryType() == DELIVERY_TYPE_ALL) {
+
+         // Build the head asset
+         $this->Head = new HeadModule($this);
+
+         // Documentation resources
+         $SwaggerUI = 'applications/api/node_modules/swagger-ui/dist';
+         $Bootstrap = 'applications/api/components/bootstrap';
+
+         $this->AddJsFile($SwaggerUI . '/lib/jquery-1.8.0.min.js');
+         $this->AddJsFile($SwaggerUI . '/lib/jquery.slideto.min.js');
+         $this->AddJsFile($SwaggerUI . '/lib/jquery.slideto.min.js');
+         $this->AddJsFile($SwaggerUI . '/lib/jquery.wiggle.min.js');
+         $this->AddJsFile($SwaggerUI . '/lib/jquery.ba-bbq.min.js');
+         $this->AddJsFile($SwaggerUI . '/lib/handlebars-1.0.rc.1.js');
+         $this->AddJsFile($SwaggerUI . '/lib/underscore-min.js');
+         $this->AddJsFile($SwaggerUI . '/lib/backbone-min.js');
+         $this->AddJsFile($SwaggerUI . '/lib/swagger.js');
+         $this->AddJsFile($SwaggerUI . '/lib/highlight.7.3.pack.js');
+         $this->AddJsFile($SwaggerUI . '/swagger-ui.js');
+
+         $this->AddCssFile($SwaggerUI . '/css/hightlight.default.css');
+
+         $this->AddJsFile($Bootstrap . '/js/bootstrap-dropdown.js');
+
+         $this->AddCssFile('api.css');
+
+      }
    }
 
    /**
@@ -85,13 +114,12 @@ class APIController extends Gdn_Controller
    {
       if ($this->DeliveryType() == DELIVERY_TYPE_ALL) {
 
-         // Build the head asset
-         $this->Head = new HeadModule($this);
+         // Set page title
          $this->Title(T('API Documentation'));
 
          // Vanilla 2.1 goodie
          if (method_exists('Gdn_Theme', 'Section')) {
-            Gdn_Theme::Section('ApiDocumentation');
+            Gdn_Theme::Section('APIDocumentation');
          }
 
          $Breadcrumbs = array();
@@ -101,28 +129,83 @@ class APIController extends Gdn_Controller
          $this->Menu->HighlightRoute('/api');
          $this->SetData('Breadcrumbs', array($Breadcrumbs));
 
-         // Documentation resources
-         $SwaggerUI = 'applications/api/node_modules/swagger-ui/dist';
-         $Bootstrap = 'applications/api/components/bootstrap';
+      }
 
-         $this->AddJsFile($SwaggerUI . '/lib/jquery-1.8.0.min.js');
-         $this->AddJsFile($SwaggerUI . '/lib/jquery.slideto.min.js');
-         $this->AddJsFile($SwaggerUI . '/lib/jquery.slideto.min.js');
-         $this->AddJsFile($SwaggerUI . '/lib/jquery.wiggle.min.js');
-         $this->AddJsFile($SwaggerUI . '/lib/jquery.ba-bbq.min.js');
-         $this->AddJsFile($SwaggerUI . '/lib/handlebars-1.0.rc.1.js');
-         $this->AddJsFile($SwaggerUI . '/lib/underscore-min.js');
-         $this->AddJsFile($SwaggerUI . '/lib/backbone-min.js');
-         $this->AddJsFile($SwaggerUI . '/lib/swagger.js');
-         $this->AddJsFile($SwaggerUI . '/lib/highlight.7.3.pack.js');
-         $this->AddJsFile($SwaggerUI . '/swagger-ui.js');
+      $this->MasterView = 'api';
+      $this->Render();
+   }
 
-         $this->AddCssFile($SwaggerUI . '/css/hightlight.default.css');
+   /**
+    * Usage and development documentation from the Github wiki
+    * 
+    * @since   0.1.0
+    * @param   string $Wiki
+    * @access  public
+    */
+   public function Wiki($Wiki)
+   {
+      $RemoteData = 'https://github.com/kasperisager/VanillaAPI/wiki.atom';
+      $CacheData  = PATH_CACHE.'/xml/api_wiki_entries.xml';
 
-         $this->AddJsFile($Bootstrap . '/js/bootstrap-dropdown.js');
+      if (!is_dir(PATH_CACHE.'/xml')) mkdir(PATH_CACHE.'/xml');
 
-         $this->AddCssFile('api.css');
+      if (!file_exists($CacheData) || time() - filemtime($CacheData) >= 3600) {
+         file_put_contents($CacheData, file_get_contents($RemoteData));
+      }
 
+      $Data = file_get_contents($CacheData);
+      $Data = self::Sanitize(simplexml_load_string($Data));
+
+      // Regex for matching relative images and links
+      $Href = "#(<\s*a\s+[^>]*href\s*=\s*[\"'])(?!http)([^\"'>]+)([\"'>]+)#";
+      $Src  = "#(<\s*img\s+[^>]*src\s*=\s*[\"'])(?!http)([^\"'>]+)([\"'>]+)#";
+
+      $Entries = array();
+
+      foreach ($Data['entry'] as $Entry) {
+
+         $Title   = Gdn_Format::Clean($Entry['title']);
+         $Content = Gdn_Format::Raw($Entry['content']);
+         $Updated = Gdn_Format::FuzzyTime($Entry['updated']);
+
+         $Content = preg_replace($Href, '$1https://github.com$2$3', $Content);
+         $Content = preg_replace($Src, '$1https://github.com$2$3', $Content);
+
+         $Page = array();
+         $Page['Title']    = ucfirst($Title);
+         $Page['Content']  = $Content;
+         $Page['Updated']  = $Updated;
+
+         $Entries[$Title] = $Page;
+
+      }
+
+      if ($Wiki) {
+         $this->SetData('Entry', $Entries[$Wiki]);
+      } else {
+         $this->SetData('Entry', $Entries['home']);
+      }
+
+      // $this->SetData('Sidebar', $Entries['sidebar']['Content']);
+      // $this->SetData('Footer', $Entries['footer']['Content']);
+
+      if ($this->DeliveryType() == DELIVERY_TYPE_ALL) {
+
+         // Set page title
+         $this->Title(T('API Wiki'));
+
+         // Vanilla 2.1 goodie
+         if (method_exists('Gdn_Theme', 'Section')) {
+            Gdn_Theme::Section('APIWiki');
+         }
+
+         $Breadcrumbs = array();
+         $Breadcrumbs['Name'] = T('API Wiki');
+         $Breadcrumbs['Url']  = '/api/wiki';
+
+         $this->Menu->HighlightRoute('/api');
+         $this->SetData('Breadcrumbs', array($Breadcrumbs));
+         
       }
 
       $this->MasterView = 'api';
@@ -219,8 +302,9 @@ class APIController extends Gdn_Controller
       $Intercept  = preg_match('/^api\/(\w+)/i', $URI, $Matches);
       $Class      = $Matches[1] . 'API';
 
-      // Abandon dispatch if resources method is requested
+      // Abandon dispatch if resources or wiki method is requested
       if (strtolower($Class) == 'resources' . 'api') return;
+      if (strtolower($Class) == 'wiki' . 'api') return;
 
       try {
 

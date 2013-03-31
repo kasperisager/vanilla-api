@@ -1,4 +1,5 @@
 @import "bootstrap";
+@import "wiki";
 
 body {
    -webkit-font-smoothing: antialiased;
@@ -12,9 +13,12 @@ a {
 
 ul,
 ol {
-   margin: 0;
-   padding: 0;
-   list-style: none;
+
+   .swagger-ui-wrap & {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+   }
 }
 
 table {
@@ -84,6 +88,7 @@ table {
 
 .page-header {
 
+   h1,
    h2 {
       margin: 0;
    }
@@ -250,4 +255,26 @@ table {
       line-height: 1.4;
    }
 
+}
+
+.navbar .nav > li > a {
+   outline: none !important;
+}
+
+.navbar .nav > li > a:hover,
+.navbar .nav > li.open > a {
+   border-top: 3px solid #DD4B39;
+   padding-top: 7px;
+}
+
+.navbar .nav > li > a.Selected {
+   border-top: 3px solid #2590D6;
+   padding-top: 7px;
+}
+
+.dropdown-menu > li > a.Selected {
+   color: @dropdownLinkColorActive;
+   text-decoration: none;
+   outline: 0;
+   #gradient > .vertical(@dropdownLinkBackgroundActive, darken(@dropdownLinkBackgroundActive, 5%));
 }

@@ -11,19 +11,20 @@
    <div class="navbar navbar-static-top">
       <div class="navbar-inner">
          <div class="container">
-            <a class="brand" href="{link path="$Repo"}">{t c="Vanilla API"}</a>
+            <a class="brand" href="{link path="api"}">{t c="Vanilla API"}</a>
             <ul class="nav">
+               <li>{link path="api" text="Explorer"}</li>
                <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">{t c="Documentation"} <b class="caret"></b></a>
+                  {link format="<a href='#' data-toggle='dropdown' class='%class'>%text <b class='caret'></b></a>" class="dropdown-toggle" path="api/wiki" text="Documentation"}
                   <ul class="dropdown-menu">
                      <li>
-                        <a href="{$Repo}/wiki">{t c="Wiki"}</a>
+                        {link path="api/wiki" text="Index"}
                      </li>
                      <li class="divider"></li>
                      <li class="nav-header">{t c="Documentation"}</li>
-                     <li><a href="{$Repo}/wiki/Installation">{t c="Installation"}</a></li>
-                     <li><a href="{$Repo}/wiki/Annotations">{t c="Annotations"}</a></li>
-                     <li><a href="{$Repo}/wiki/Extending">{t c="Extending"}</a></li>
+                     <li>{link path="api/wiki/installation" text="Installation"}</li>
+                     <li>{link path="api/wiki/annotations" text="Annotations"}</li>
+                     <li>{link path="api/wiki/extending" text="Extending"}</li>
                   </ul>
                </li>
             </ul>
