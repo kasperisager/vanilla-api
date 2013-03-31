@@ -19,7 +19,7 @@ annotations support and caching.
 
 ## Getting started
 
-To get started using Ninja, either:
+To get started using Vanilla API, either:
 - [Download the latest release](https://github.com/kasperisager/VanillaAPI/archive/master.zip)
 - Clone the repository directly into your Vanilla `applications` directory:  
 `$ cd /path/to/vanilla/applications/`  
