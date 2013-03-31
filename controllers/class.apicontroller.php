@@ -148,6 +148,7 @@ class APIController extends Gdn_Controller
          if ($Resource) {
             $Class = $Resource . 'API';
 
+            // If a resource doesn't exist throw a "Not Found"
             if (!class_exists($Class)) throw new Exception(404);
 
             $Swagger = new Swagger();
@@ -233,7 +234,6 @@ class APIController extends Gdn_Controller
 
             // Only deliver data - nothing else is needed
             $Request->WithDeliveryType(DELIVERY_TYPE_DATA);
-            $Request->OutputFormat('json');
 
             // Change response format depending on HTTP_ACCEPT
             $Accept = $Arguments['server']['HTTP_ACCEPT'];
