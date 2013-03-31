@@ -7,5 +7,6 @@ $ApplicationInfo['API'] = array(
    'Author'       => 'Kasper Kronborg Isager',
    'AuthorEmail'  => 'kasperisager@gmail.com',
    'AuthorUrl'    => 'https://github.com/kasperisager',
-   'License'      => 'MIT'
+   'License'      => 'MIT',
+   'RequiredApplications' => array('Vanilla' => '2.1a')
 );
