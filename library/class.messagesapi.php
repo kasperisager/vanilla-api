@@ -56,7 +56,7 @@ class MessagesAPI extends Mapper
     */
    public function Post($Params)
    {
-      return TRUE;
+      return FALSE;
    }
 
    /**
@@ -70,7 +70,7 @@ class MessagesAPI extends Mapper
     */
    public function Put($Params)
    {
-      return TRUE;
+      return FALSE;
    }
 
    /**
@@ -84,6 +84,6 @@ class MessagesAPI extends Mapper
     */
    public function Delete($Params)
    {
-      return TRUE;
+      return FALSE;
    }
 }

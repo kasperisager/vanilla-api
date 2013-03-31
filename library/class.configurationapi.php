@@ -64,7 +64,7 @@ class ConfigurationAPI extends Mapper
     */
    public function Post($Params)
    {
-      return TRUE;
+      return FALSE;
    }
 
    /**
@@ -78,7 +78,7 @@ class ConfigurationAPI extends Mapper
     */
    public function Put($Params)
    {
-      return TRUE;
+      return FALSE;
    }
 
    /**
@@ -92,6 +92,6 @@ class ConfigurationAPI extends Mapper
     */
    public function Delete($Params)
    {
-      return TRUE;
+      return FALSE;
    }
 }

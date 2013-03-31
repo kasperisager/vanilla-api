@@ -53,7 +53,7 @@ class SessionAPI extends Mapper
     */
    public function Post($Params)
    {
-      return TRUE;
+      return FALSE;
    }
 
    /**
@@ -65,7 +65,7 @@ class SessionAPI extends Mapper
     */
    public function Put($Params)
    {
-      return TRUE;
+      return FALSE;
    }
 
    /**
@@ -77,6 +77,6 @@ class SessionAPI extends Mapper
     */
    public function Delete($Params)
    {
-      return TRUE;
+      return FALSE;
    }
 }

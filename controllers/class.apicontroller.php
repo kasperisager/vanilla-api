@@ -146,7 +146,7 @@ class APIController extends Gdn_Controller
 
          // Automatic API docs discovery
          if ($Resource) {
-            $Class = $Resource.'API';
+            $Class = $Resource . 'API';
 
             if (!class_exists($Class)) throw new Exception(404);
 
@@ -211,97 +211,125 @@ class APIController extends Gdn_Controller
       $Request    = Gdn::Request();
       $URI        = $Request->RequestURI();
       $Intercept  = preg_match('/^api\/(\w+)/i', $URI, $Matches);
-      $Class      = $Matches[1].'API';
+      $Class      = $Matches[1] . 'API';
 
-      // Intercept API requests and store the requested class
-      if ($Intercept) {
+      // Abandon dispatch if resources method is requested
+      if (strtolower($Class) == 'resources' . 'api') return;
 
-         if (!$Class == NULL && class_exists($Class)) {
+      try {
+
+         // Intercept API requests and store the requested class
+         if ($Intercept && $Class) {
+
+            // If no API class is found throw a "Not Found"
+            if (!class_exists($Class)) throw new Exception(404);
+            
             $Class = new $Class;
-         } else {
-            return;
-         }
 
-         $Method        = $Request->RequestMethod();
-         $Environment   = $Request->Export('Environment');
-         $Arguments     = $Request->Export('Arguments');
-         $Parsed        = $Request->Export('Parsed');
+            $Method        = $Request->RequestMethod();
+            $Environment   = $Request->Export('Environment');
+            $Arguments     = $Request->Export('Arguments');
+            $Parsed        = $Request->Export('Parsed');
 
-         // Only deliver data - nothing else is needed
-         $Request->WithDeliveryType(DELIVERY_TYPE_DATA);
-         $Request->OutputFormat('json');
+            // Only deliver data - nothing else is needed
+            $Request->WithDeliveryType(DELIVERY_TYPE_DATA);
+            $Request->OutputFormat('json');
 
-         // Change response format depending on HTTP_ACCEPT
-         $Accept = $Arguments['server']['HTTP_ACCEPT'];
-         $Format = (strpos($Accept, 'json')) ? 'json' : 'xml';
+            // Change response format depending on HTTP_ACCEPT
+            $Accept = $Arguments['server']['HTTP_ACCEPT'];
+            $Format = (strpos($Accept, 'json')) ? 'json' : 'xml';
 
-         switch ($Format) {
-            case 'xml':
-               $Request->WithDeliveryMethod(DELIVERY_METHOD_XML);
-               break;
+            switch ($Format) {
+               case 'xml':
+                  $Request->WithDeliveryMethod(DELIVERY_METHOD_XML);
+                  break;
 
-            case 'json':
-               $Request->WithDeliveryMethod(DELIVERY_METHOD_JSON);
-               break;
-         }
+               case 'json':
+                  $Request->WithDeliveryMethod(DELIVERY_METHOD_JSON);
+                  break;
+            }
 
-         $Params = array();
-         $Params['Environment']  = $Environment;
-         $Params['Arguments']    = $Arguments;
-         $Params['Parsed']       = $Parsed;
-         $Params['Format']       = $Format;
-         $Params['URI']          = explode('/', $URI);
+            $Params = array();
+            $Params['Environment']  = $Environment;
+            $Params['Arguments']    = $Arguments;
+            $Params['Parsed']       = $Parsed;
+            $Params['Format']       = $Format;
+            $Params['URI']          = explode('/', $URI);
 
-         switch(strtolower($Method)) {
+            switch(strtolower($Method)) {
 
-            case 'get':
-               $Data = $Class->Get($Params);
-               break;
+               case 'get':
+                  $Data = $Class->Get($Params);
+                  break;
 
-            case 'post':
-               $Data = $Class->Post($Params);
-               break;
+               case 'post':
+                  $Data = $Class->Post($Params);
+                  break;
 
-            case 'put':
-               $Data = $Class->Put($Params);
+               case 'put':
+                  $Data = $Class->Put($Params);
 
-               // Garden can't handle PUT requests by default, so trick
-               // it into thinking that this is actually a POST
-               $Request->RequestMethod('post');
+                  // Garden can't handle PUT requests by default, so trick
+                  // it into thinking that this is actually a POST
+                  $Request->RequestMethod('post');
 
-               $_PUT = self::ParsePut();
+                  $_PUT = self::ParsePut();
 
-               // Combine the PUT request with any custom arguments
-               $Request->SetRequestArguments(
-                  Gdn_Request::INPUT_POST, array_merge($_PUT, $Data['Args'])
-               );
+                  // Combine the PUT request with any custom arguments
+                  $Request->SetRequestArguments(
+                     Gdn_Request::INPUT_POST, array_merge($_PUT, $Data['Args'])
+                  );
 
-               $_POST = $Request->Post();
+                  $_POST = $Request->Post();
 
-               break;
+                  break;
 
-            case 'delete':
-               $Data = $Class->Delete($Params);
+               case 'delete':
+                  $Data = $Class->Delete($Params);
 
-               // Garden can't handle DELETE requests by default, so trick
-               // it into thinking that this is actually a POST
-               $Request->RequestMethod('post');
+                  // Garden can't handle DELETE requests by default, so trick
+                  // it into thinking that this is actually a POST
+                  $Request->RequestMethod('post');
 
-               // Combine the DELETE request with any custom arguments
-               $Request->SetRequestArguments(
-                  Gdn_Request::INPUT_POST, $Data['Args']
-               );
+                  // Combine the DELETE request with any custom arguments
+                  $Request->SetRequestArguments(
+                     Gdn_Request::INPUT_POST, $Data['Args']
+                  );
 
-               $_POST = $Request->Post();
+                  $_POST = $Request->Post();
 
-               break;
+                  break;
 
-         }
+            }
 
-         if ($Data['Map']) {
+            // If data returns false throw a "Not Implemented"
+            if (!$Data) throw new Exception(501);
+
+            // Throw generic error if no map is defined
+            if (!$Data['Map']) throw new Exception(500);  
+            
+            // Map the request to the specified URI
             $Request->WithURI($Data['Map']);
          }
+
+      } catch (Exception $Exception) {
+         $Code = $Exception->getMessage();
+         $Request->WithControllerMethod('API', 'Error', array($Code));
       }
+   }
+
+   /**
+    * Method for handling errors
+    * 
+    * @param   string|int $Code
+    * @return  array
+    */
+   public function Error($Code)
+   {
+      $Message = Gdn_Controller::StatusCode($Code);
+      $this->SetData('Code', intval($Code));
+      $this->SetData('Exception', $Message);
+      $this->RenderData();
    }
 
    /**
@@ -311,6 +339,7 @@ class APIController extends Gdn_Controller
     * @package API
     * @since   0.1.0
     * @access  public
+    * @return  array
     */
    public static function ParsePut()
    {
@@ -381,6 +410,7 @@ class APIController extends Gdn_Controller
     * @param   object $Data
     * @since   0.1.0
     * @access  public
+    * @return  array
     */
    public function Sanitize($Data)
    {
