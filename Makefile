@@ -94,10 +94,6 @@ clean:
 	@printf "Removing Bower packages..."
 	@rm -rf $(BOWER)
 	@echo "                  $(CHECK)"
-
-	@printf "Removing the API Explorer..."
-	@rm -f design/api.css
-	@echo "                $(CHECK)"
 	
 	@echo "${HR}"
 	@echo "\033[36mSuccess!\n\033[39m"
