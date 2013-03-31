@@ -5309,6 +5309,9 @@ table.table td {
 .navbar .pull-right {
   padding: 10px 0 0;
 }
+.page-header h2 {
+  margin: 0;
+}
 .resource > .heading {
   padding: 10px 0;
 }
