@@ -1,7 +1,7 @@
 @import "bootstrap";
 
 body {
-   //-webkit-font-smoothing: antialiased;
+   -webkit-font-smoothing: antialiased;
 }
 
 a {
@@ -63,7 +63,21 @@ table {
    }
 
    .brand {
-      //-webkit-font-smoothing: auto;
+      padding-left: 60px;
+      background-image: url("images/grey.svg");
+      background-repeat: no-repeat;
+      background-size: 25px;
+      background-position: 20px center;
+
+      &:hover {
+         background-image: url("images/blue.svg");
+         color: #528EC9;
+      }
+
+   }
+
+   .pull-right {
+      padding: 10px 0 0;
    }
 
 }
@@ -120,6 +134,7 @@ table {
       padding: 10px;
       background: #F6F6F6;
       border: 1px solid #E5E5E5;
+      border-radius: 2px;
       .border-left-radius(3px);
       font-size: 100%;
       line-height: 20px;
@@ -208,6 +223,7 @@ table {
 }
 
 .footer {
+   margin-bottom: 20px;
 
    h4 {
 
@@ -216,6 +232,14 @@ table {
          font-weight: normal;
       }
 
+   }
+
+   .credits {
+      float: right;
+      color: #999;
+      font-size: 11px;
+      text-align: right;
+      line-height: 1.4;
    }
 
 }

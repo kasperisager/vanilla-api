@@ -1,9 +1,19 @@
 <div class="container" id="resources_container">
+
+   <div class="page-header">
+      <h1>API Explorer <small>Visualization and documentation</small></h1>
+   </div>
+
    <ul id="resources"></ul>
 
    <hr>
 
    <div class="footer">
+      <div class="credits">
+         <p>Copyright 2013 © <a class="author" href="https://github.com/kasperisager">Kasper Kronborg Isager</a>
+         <br>Licensed under the terms of the <a class="license" href="https://github.com/kasperisager/VanillaAPI/blob/master/LICENSE.md">MIT License</a>
+         <br>The Explorer is powered by <a class="swagger" href="https://github.com/wordnik/swagger-ui">Swagger UI</a></p>
+      </div>
       <h4><span>base url</span>: {{basePath}}</h4>
       {{#if apiVersion}}
          <h4><span>api version</span>: {{apiVersion}}</h4>

@@ -5253,6 +5253,9 @@ a.badge:focus {
 .affix {
   position: fixed;
 }
+body {
+  -webkit-font-smoothing: antialiased;
+}
 a:hover {
   text-decoration: none;
 }
@@ -5292,6 +5295,20 @@ table.table td {
   -moz-box-shadow: none;
   box-shadow: none;
 }
+.navbar .brand {
+  padding-left: 60px;
+  background-image: url("images/grey.svg");
+  background-repeat: no-repeat;
+  background-size: 25px;
+  background-position: 20px center;
+}
+.navbar .brand:hover {
+  background-image: url("images/blue.svg");
+  color: #528EC9;
+}
+.navbar .pull-right {
+  padding: 10px 0 0;
+}
 .resource > .heading {
   padding: 10px 0;
 }
@@ -5325,6 +5342,7 @@ table.table td {
   padding: 10px;
   background: #F6F6F6;
   border: 1px solid #E5E5E5;
+  border-radius: 2px;
   -webkit-border-top-left-radius: 3px;
   -moz-border-radius-topleft: 3px;
   border-top-left-radius: 3px;
@@ -5404,7 +5422,17 @@ table.table td {
 .operation .heading .options a {
   display: block;
 }
+.footer {
+  margin-bottom: 20px;
+}
 .footer h4 span {
   font-variant: small-caps;
   font-weight: normal;
+}
+.footer .credits {
+  float: right;
+  color: #999;
+  font-size: 11px;
+  text-align: right;
+  line-height: 1.4;
 }

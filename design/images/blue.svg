@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="100px"
+	 height="100px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
+<g id="Plain" display="none">
+	<polygon display="inline" fill="#C2E7FA" points="50.877,0.001 6.816,25.439 50.877,50.876 94.942,25.451 94.942,25.44 	"/>
+	<polygon display="inline" fill="#EFEFEF" points="53.932,55.237 53.932,99.99 94.942,76.328 94.942,31.574 	"/>
+	<polygon display="inline" fill="#EFEFEF" points="47.819,55.234 6.815,31.561 6.815,76.315 47.819,99.987 	"/>
+</g>
+<g id="Blue">
+	<g id="Mask_5_">
+		<defs>
+			<polygon id="Icon_Top_1_" points="50.877,0.001 6.816,25.439 50.877,50.876 94.942,25.451 94.942,25.44 			"/>
+		</defs>
+		<clipPath id="Icon_Top_3_">
+			<use xlink:href="#Icon_Top_1_"  overflow="visible"/>
+		</clipPath>
+		<linearGradient id="Background_9_" gradientUnits="userSpaceOnUse" x1="50.0005" y1="100" x2="50.0005" y2="4.882812e-04">
+			<stop  offset="0" style="stop-color:#528EC9"/>
+			<stop  offset="1" style="stop-color:#6FA0D1"/>
+		</linearGradient>
+		<rect id="Background_6_" clip-path="url(#Icon_Top_3_)" fill="url(#Background_9_)" width="100" height="100"/>
+	</g>
+	<g id="Mask_4_">
+		<defs>
+			<polygon id="Icon_Right_2_" points="53.932,55.237 53.932,99.99 94.942,76.328 94.942,31.574 			"/>
+		</defs>
+		<clipPath id="Icon_Right_4_">
+			<use xlink:href="#Icon_Right_2_"  overflow="visible"/>
+		</clipPath>
+		<linearGradient id="Background_10_" gradientUnits="userSpaceOnUse" x1="50.0005" y1="100" x2="50.0005" y2="4.882812e-04">
+			<stop  offset="0" style="stop-color:#528EC9"/>
+			<stop  offset="1" style="stop-color:#6FA0D1"/>
+		</linearGradient>
+		<rect id="Background_3_" clip-path="url(#Icon_Right_4_)" fill="url(#Background_10_)" width="100" height="100"/>
+	</g>
+	<g id="Mask_3_">
+		<defs>
+			<polygon id="Icon_Left_1_" points="47.819,55.234 6.815,31.561 6.815,76.315 47.819,99.987 			"/>
+		</defs>
+		<clipPath id="Icon_Left_3_">
+			<use xlink:href="#Icon_Left_1_"  overflow="visible"/>
+		</clipPath>
+		<linearGradient id="Background_11_" gradientUnits="userSpaceOnUse" x1="50.0005" y1="100" x2="50.0005" y2="4.882812e-04">
+			<stop  offset="0" style="stop-color:#528EC9"/>
+			<stop  offset="1" style="stop-color:#6FA0D1"/>
+		</linearGradient>
+		<rect id="Background_4_" clip-path="url(#Icon_Left_3_)" fill="url(#Background_11_)" width="100" height="100"/>
+	</g>
+</g>
+</svg>

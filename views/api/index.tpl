@@ -13,7 +13,7 @@ $(function () {
 </script>
 {/literal}
 
-<div id="swagger-ui-container" class="swagger-ui-wrap container">
+<div id="swagger-ui-container" class="swagger-ui-wrap">
 
    <div id="message-bar" class="swagger-ui-wrap"></div>
 

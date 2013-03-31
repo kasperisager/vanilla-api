@@ -94,30 +94,32 @@ class APIController extends Gdn_Controller
             Gdn_Theme::Section('ApiDocumentation');
          }
 
+         $Breadcrumbs = array();
+         $Breadcrumbs['Name'] = T('API Documentation');
+         $Breadcrumbs['Url']  = '/api';
+
          $this->Menu->HighlightRoute('/api');
-         $this->SetData('Breadcrumbs', array(
-            array(
-               'Name' => T('API Documentation'),
-               'Url' => '/api')
-            )
-         );
+         $this->SetData('Breadcrumbs', array($Breadcrumbs));
 
          // Documentation resources
-         $Dist = 'applications/api/node_modules/swagger-ui/dist';
+         $SwaggerUI = 'applications/api/node_modules/swagger-ui/dist';
+         $Bootstrap = 'applications/api/components/bootstrap';
 
-         $this->AddJsFile($Dist . '/lib/jquery-1.8.0.min.js');
-         $this->AddJsFile($Dist . '/lib/jquery.slideto.min.js');
-         $this->AddJsFile($Dist . '/lib/jquery.slideto.min.js');
-         $this->AddJsFile($Dist . '/lib/jquery.wiggle.min.js');
-         $this->AddJsFile($Dist . '/lib/jquery.ba-bbq.min.js');
-         $this->AddJsFile($Dist . '/lib/handlebars-1.0.rc.1.js');
-         $this->AddJsFile($Dist . '/lib/underscore-min.js');
-         $this->AddJsFile($Dist . '/lib/backbone-min.js');
-         $this->AddJsFile($Dist . '/lib/swagger.js');
-         $this->AddJsFile($Dist . '/lib/highlight.7.3.pack.js');
-         $this->AddJsFile($Dist . '/swagger-ui.js');
+         $this->AddJsFile($SwaggerUI . '/lib/jquery-1.8.0.min.js');
+         $this->AddJsFile($SwaggerUI . '/lib/jquery.slideto.min.js');
+         $this->AddJsFile($SwaggerUI . '/lib/jquery.slideto.min.js');
+         $this->AddJsFile($SwaggerUI . '/lib/jquery.wiggle.min.js');
+         $this->AddJsFile($SwaggerUI . '/lib/jquery.ba-bbq.min.js');
+         $this->AddJsFile($SwaggerUI . '/lib/handlebars-1.0.rc.1.js');
+         $this->AddJsFile($SwaggerUI . '/lib/underscore-min.js');
+         $this->AddJsFile($SwaggerUI . '/lib/backbone-min.js');
+         $this->AddJsFile($SwaggerUI . '/lib/swagger.js');
+         $this->AddJsFile($SwaggerUI . '/lib/highlight.7.3.pack.js');
+         $this->AddJsFile($SwaggerUI . '/swagger-ui.js');
 
-         $this->AddCssFile($Dist . '/css/hightlight.default.css');
+         $this->AddCssFile($SwaggerUI . '/css/hightlight.default.css');
+
+         $this->AddJsFile($Bootstrap . '/js/bootstrap-dropdown.js');
 
          $this->AddCssFile('api.css');
 
@@ -146,6 +148,7 @@ class APIController extends Gdn_Controller
 
          // Automatic API docs discovery
          if ($Resource) {
+
             $Class = $Resource . 'API';
 
             // If a resource doesn't exist throw a "Not Found"
@@ -162,6 +165,7 @@ class APIController extends Gdn_Controller
 
             $this->SetData(self::Meta());
             $this->SetData($Registry['/'.$Resource]);
+
          } else {
 
             $Registry = $this->Register;
@@ -188,6 +192,7 @@ class APIController extends Gdn_Controller
 
             $this->SetData(self::Meta());
             $this->SetData('apis', $Listing);
+
          }         
 
       } catch (Exception $Exception) {
