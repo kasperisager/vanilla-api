@@ -326,6 +326,26 @@ class APIController extends Gdn_Controller
     */
    public function Error($Code)
    {
+      $Request    = Gdn::Request();
+      $Arguments  = $Request->Export('Arguments');
+
+      // Only deliver data - nothing else is needed
+      $this->DeliveryType(DELIVERY_TYPE_DATA);
+
+      // Change response format depending on HTTP_ACCEPT
+      $Accept = $Arguments['server']['HTTP_ACCEPT'];
+      $Format = (strpos($Accept, 'json')) ? 'json' : 'xml';
+
+      switch ($Format) {
+         case 'xml':
+            $this->DeliveryMethod(DELIVERY_METHOD_XML);
+            break;
+
+         case 'json':
+            $this->DeliveryMethod(DELIVERY_METHOD_JSON);
+            break;
+      }
+
       $Message = Gdn_Controller::StatusCode($Code);
       $this->SetData('Code', intval($Code));
       $this->SetData('Exception', $Message);
