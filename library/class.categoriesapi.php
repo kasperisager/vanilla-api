@@ -29,12 +29,13 @@ class CategoriesAPI extends Mapper
     */
    public function Get($Params)
    {
-      $CategoryID = $Params['URI'][2];
-      $Format    = $Params['Format'];
-      if ($CategoryID) {
-         return self::_GetById($Format, $CategoryID);
+      $ID   = $Params['URI'][2];
+      $Ext  = $Params['Ext'];
+
+      if ($ID) {
+         return self::_GetById($Ext, $ID);
       } else {
-         return self::_GetAll($Format);
+         return self::_GetAll($Ext);
       }
    }
 
@@ -59,9 +60,12 @@ class CategoriesAPI extends Mapper
     *   )
     * )
     */
-   protected function _GetAll($Format)
+   protected function _GetAll($Ext)
    {
-      return array('Map' => 'vanilla/categories.' . $Format . '/all');
+      $Return = array();
+      $Return['Map'] = 'vanilla/categories.' . $Ext . '/all';
+
+      return $Return;
    }
 
    /**
@@ -95,9 +99,12 @@ class CategoriesAPI extends Mapper
     *   )
     * )
     */
-   protected function _GetById($Format, $CategoryID)
+   protected function _GetById($Ext, $ID)
    {
-      return array('Map' => 'vanilla/categories.' . $Format . DS . $CategoryID);
+      $Return = array();
+      $Return['Map'] = 'vanilla/categories.' . $Ext . DS . $ID;
+
+      return $Return;
    }
 
    /**
@@ -123,8 +130,12 @@ class CategoriesAPI extends Mapper
     */
    public function Post($Params)
    {
-      $Format = $Params['Format'];
-      return array('Map' => 'vanilla/settings/addcategory.' . $Format);
+      $Ext = $Params['Ext'];
+
+      $Return = array();
+      $Return['Map'] = 'vanilla/settings/addcategory.' . $Ext;
+
+      return $Return;
    }
 
    /**
@@ -178,13 +189,15 @@ class CategoriesAPI extends Mapper
     */
    public function Put($Params)
    {
-      $CategoryID = $Params['URI'][2];
-      $Format     = $Params['Format'];
-      $Map = 'vanilla/settings/editcategory.' . $Format . DS . $CategoryID;
-      $Args = array();
-      $Args['CategoryID'] = $CategoryID;
-      $Args['TransientKey'] = Gdn::Session()->TransientKey();
-      return array('Map' => $Map, 'Args' => $Args);
+      $ID   = $Params['URI'][2];
+      $Ext  = $Params['Ext'];
+
+      $Return = array();
+      $Return['Args']['CategoryID'] = $ID;
+      $Return['Args']['TransientKey'] = Gdn::Session()->TransientKey();
+      $Return['Map'] = 'vanilla/settings/editcategory.' . $Ext . DS . $ID;
+      
+      return $Return;
    }
 
    /**
@@ -220,12 +233,14 @@ class CategoriesAPI extends Mapper
     */
    public function Delete($Params)
    {
-      $CategoryID = $Params['URI'][2];
-      $Format    = $Params['Format'];
-      $Map = 'vanilla/settings/deletecategory.' . $Format . DS . $CategoryID;
-      $Args = array();
-      $Args['CategoryID'] = $CategoryID;
-      $Args['TransientKey'] = Gdn::Session()->TransientKey();
-      return array('Map' => $Map, 'Args' => $Args);
+      $ID   = $Params['URI'][2];
+      $Ext  = $Params['Ext'];
+
+      $Return = array();
+      $Return['Args']['CategoryID'] = $ID;
+      $Return['Args']['TransientKey'] = Gdn::Session()->TransientKey();
+      $Return['Map'] = 'vanilla/settings/deletecategory.' . $Ext . DS . $ID;
+
+      return $Return;
    }
 }

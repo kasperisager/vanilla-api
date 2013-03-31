@@ -41,8 +41,12 @@ class ConfigurationAPI extends Mapper
     */
    public function Get($Params)
    {
-      $Format = $Params['Format'];
-      return array('Map' => 'dashboard/settings/configuration.' . $Format);
+      $Ext = $Params['Ext'];
+
+      $Return = array();
+      $Return['Map'] = 'dashboard/settings/configuration.' . $Ext;
+
+      return $Return;
    }
 
    protected function _GetThemes() {

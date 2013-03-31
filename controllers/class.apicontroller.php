@@ -97,11 +97,12 @@ class APIController extends Gdn_Controller
     */
    public function Meta()
    {
-      return array(
-         'apiVersion' => '0.1.0',
-         'swaggerVersion' => '1.1',
-         'basePath' => Gdn::Request()->Domain() . '/api'
-      );
+      $Meta = array();
+      $Meta['apiVersion']     = '0.1.0';
+      $Meta['swaggerVersion'] = '1.1';
+      $Meta['basePath']       = Gdn::Request()->Domain() . '/api';
+      
+      return $Meta;
    }
 
    /**
@@ -325,10 +326,10 @@ class APIController extends Gdn_Controller
             $Request->WithDeliveryType(DELIVERY_TYPE_DATA);
 
             // Change response format depending on HTTP_ACCEPT
-            $Accept = $Arguments['server']['HTTP_ACCEPT'];
-            $Format = (strpos($Accept, 'json')) ? 'json' : 'xml';
+            $Accept  = $Arguments['server']['HTTP_ACCEPT'];
+            $Ext     = (strpos($Accept, 'json')) ? 'json' : 'xml';
 
-            switch ($Format) {
+            switch ($Ext) {
                case 'xml':
                   $Request->WithDeliveryMethod(DELIVERY_METHOD_XML);
                   break;
@@ -342,7 +343,7 @@ class APIController extends Gdn_Controller
             $Params['Environment']  = $Environment;
             $Params['Arguments']    = $Arguments;
             $Params['Parsed']       = $Parsed;
-            $Params['Format']       = $Format;
+            $Params['Ext']          = $Ext;
             $Params['URI']          = explode('/', $URI);
 
             switch(strtolower($Method)) {
@@ -422,10 +423,10 @@ class APIController extends Gdn_Controller
       $this->DeliveryType(DELIVERY_TYPE_DATA);
 
       // Change response format depending on HTTP_ACCEPT
-      $Accept = $Arguments['server']['HTTP_ACCEPT'];
-      $Format = (strpos($Accept, 'json')) ? 'json' : 'xml';
+      $Accept  = $Arguments['server']['HTTP_ACCEPT'];
+      $Ext     = (strpos($Accept, 'json')) ? 'json' : 'xml';
 
-      switch ($Format) {
+      switch ($Ext) {
          case 'xml':
             $this->DeliveryMethod(DELIVERY_METHOD_XML);
             break;

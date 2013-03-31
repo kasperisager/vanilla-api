@@ -32,15 +32,17 @@ class DiscussionsAPI extends Mapper
     * @since   0.1.0
     * @access  public
     * @param   array $Params
+    * @return  array
     */
    public function Get($Params)
    {
-      $DiscussionID  = $Params['URI'][2];
-      $Format        = $Params['Format'];
-      if ($DiscussionID) {
-         return self::_GetById($Format, $DiscussionID);
+      $ID   = $Params['URI'][2];
+      $Ext  = $Params['Ext'];
+
+      if ($ID) {
+         return self::_GetById($Ext, $ID);
       } else {
-         return self::_GetAll($Format);
+         return self::_GetAll($Ext);
       }
    }
 
@@ -52,6 +54,7 @@ class DiscussionsAPI extends Mapper
     * @package API
     * @since   0.1.0
     * @access  public
+    * @return  array
     *
     * @SWG\api(
     *   path="/discussions",
@@ -65,9 +68,12 @@ class DiscussionsAPI extends Mapper
     *   )
     * )
     */
-   protected function _GetAll()
+   protected function _GetAll($Ext)
    {
-      return array('Map' => 'vanilla/discussions');
+      $Return = array();
+      $Return['Map'] = 'vanilla/discussions.' . $Ext;
+
+      return $Return;
    }
 
    /**
@@ -78,7 +84,9 @@ class DiscussionsAPI extends Mapper
     * @package API
     * @since   0.1.0
     * @access  public
-    * @param   int $DiscussionID
+    * @param   string $Ext
+    * @param   int $ID
+    * @return  array
     *
     * @SWG\api(
     *   path="/discussions/{id}",
@@ -92,9 +100,12 @@ class DiscussionsAPI extends Mapper
     *   )
     * )
     */
-   protected function _GetById($Format, $DiscussionID)
+   protected function _GetById($Ext, $ID)
    {
-      return array('Map' => 'vanilla/discussion' . DS . $DiscussionID);
+      $Return = array();
+      $Return['Map'] = 'vanilla/discussion' . DS . $ID;
+
+      return $Return;
    }
 
    /**
@@ -105,7 +116,7 @@ class DiscussionsAPI extends Mapper
     * @package API
     * @since   0.1.0
     * @access  public
-    * @param   string $Format
+    * @param   string $Ext
     *
     * @SWG\api(
     *   path="/discussions/bookmarks",
@@ -118,9 +129,12 @@ class DiscussionsAPI extends Mapper
     *   )
     * )
     */
-   protected function _GetBookmarks($Format)
+   protected function _GetBookmarks($Ext)
    {
-      return array('Map' => 'vanilla/discussions/bookmarked');
+      $Return = array();
+      $Return['Map'] = 'vanilla/discussions/bookmarked.' . $Ext;
+
+      return $Return;
    }
 
    /**
@@ -131,7 +145,7 @@ class DiscussionsAPI extends Mapper
     * @package API
     * @since   0.1.0
     * @access  public
-    * @param   string $Format
+    * @param   string $Ext
     *
     * @SWG\api(
     *   path="/discussions/mine",
@@ -144,9 +158,12 @@ class DiscussionsAPI extends Mapper
     *   )
     * )
     */
-   protected function _GetMine()
+   protected function _GetMine($Ext)
    {
-      return array('Map' => 'vanilla/discussions/mine');
+      $Return = array();
+      $Return['Map'] = 'vanilla/discussions/mine.' . $Ext;
+
+      return $Return;
    }
 
    /**
@@ -176,8 +193,12 @@ class DiscussionsAPI extends Mapper
     */
    public function Post($Params)
    {
-      $Format = $Params['Format'];
-      return array('Map' => 'vanilla/post/discussion.' . $Format);
+      $Ext = $Params['Ext'];
+
+      $Return = array();
+      $Return['Map'] = 'vanilla/post/discussion.' . $Ext;
+
+      return $Return;
    }
 
    /**
@@ -200,13 +221,15 @@ class DiscussionsAPI extends Mapper
     */
    public function Put($Params)
    {
-      $DiscussionID  = $Params['URI'][2];
-      $Format        = $Params['Format'];
-      $Map  = 'vanilla/post/editdiscussion' . DS . $DiscussionID;
-      $Args = array();
-      $Args['DiscussionID'] = $DiscussionID;
-      $Args['TransientKey'] = Gdn::Session()->TransientKey();
-      return array('Map' => $Map, 'Args' => $Args);
+      $ID   = $Params['URI'][2];
+      $Ext  = $Params['Ext'];
+
+      $Return = array();
+      $Return['Args']['DiscussionID'] = $ID;
+      $Return['Args']['TransientKey'] = Gdn::Session()->TransientKey();
+      $Return['Map'] = 'vanilla/post/editdiscussion.' . $Ext . DS . $ID;
+
+      return $Return;
    }
 
    /**
@@ -217,8 +240,8 @@ class DiscussionsAPI extends Mapper
     * @package API
     * @since   0.1.0
     * @access  public
-    * @param   string $Format
-    * @param   int $DiscussionID
+    * @param   string $Ext
+    * @param   int $ID
     *
     * @SWG\api(
     *   path="/discussions/{id}",
@@ -232,7 +255,7 @@ class DiscussionsAPI extends Mapper
     *   )
     * )
     */
-   protected function _Put($Format, $DiscussionID)
+   protected function _Put($Ext, $ID)
    {
 
    }
@@ -245,8 +268,8 @@ class DiscussionsAPI extends Mapper
     * @package API
     * @since   0.1.0
     * @access  public
-    * @param   string $Format
-    * @param   int $DiscussionID
+    * @param   string $Ext
+    * @param   int $ID
     *
     * @SWG\api(
     *   path="/discussions/sink/{id}",
@@ -260,7 +283,7 @@ class DiscussionsAPI extends Mapper
     *   )
     * )
     */
-   protected function _PutSink($Format, $DiscussionID)
+   protected function _PutSink($Ext, $ID)
    {
 
    }
@@ -273,8 +296,8 @@ class DiscussionsAPI extends Mapper
     * @package API
     * @since   0.1.0
     * @access  public
-    * @param   string $Format
-    * @param   int $DiscussionID
+    * @param   string $Ext
+    * @param   int $ID
     *
     * @SWG\api(
     *   path="/discussions/announce/{id}",
@@ -288,7 +311,7 @@ class DiscussionsAPI extends Mapper
     *   )
     * )
     */
-   protected function _PutAnnounce($Format, $DiscussionID)
+   protected function _PutAnnounce($Ext, $ID)
    {
 
    }
@@ -301,8 +324,8 @@ class DiscussionsAPI extends Mapper
     * @package API
     * @since   0.1.0
     * @access  public
-    * @param   string $Format
-    * @param   int $DiscussionID
+    * @param   string $Ext
+    * @param   int $ID
     *
     * @SWG\api(
     *   path="/discussions/dismiss/{id}",
@@ -316,7 +339,7 @@ class DiscussionsAPI extends Mapper
     *   )
     * )
     */
-   protected function _PutDismiss($Format, $DiscussionID)
+   protected function _PutDismiss($Ext, $ID)
    {
 
    }
@@ -329,8 +352,8 @@ class DiscussionsAPI extends Mapper
     * @package API
     * @since   0.1.0
     * @access  public
-    * @param   string $Format
-    * @param   int $DiscussionID
+    * @param   string $Ext
+    * @param   int $ID
     *
     * @SWG\api(
     *   path="/discussions/close/{id}",
@@ -344,7 +367,7 @@ class DiscussionsAPI extends Mapper
     *   )
     * )
     */
-   protected function _PutClose($Format, $DiscussionID)
+   protected function _PutClose($Ext, $ID)
    {
 
    }
@@ -357,8 +380,8 @@ class DiscussionsAPI extends Mapper
     * @package API
     * @since   0.1.0
     * @access  public
-    * @param   string $Format
-    * @param   int $DiscussionID
+    * @param   string $Ext
+    * @param   int $ID
     *
     * @SWG\api(
     *   path="/discussions/bookmark/{id}",
@@ -372,7 +395,7 @@ class DiscussionsAPI extends Mapper
     *   )
     * )
     */
-   protected function _PutBookmark($Format, $DiscussionID)
+   protected function _PutBookmark($Ext, $ID)
    {
 
    }
@@ -404,11 +427,13 @@ class DiscussionsAPI extends Mapper
     */
    public function Delete($Params)
    {
-      $DiscussionID  = $Params['URI'][2];
-      $Format        = $Params['Format'];
-      $Map = 'vanilla/discussion/delete' . DS . $DiscussionID;
-      $Args = array();
-      $Args['TransientKey'] = Gdn::Session()->TransientKey();
-      return array('Map' => $Map, 'Args' => $Args);
+      $ID   = $Params['URI'][2];
+      $Ext  = $Params['Ext'];
+
+      $Return = array();
+      $Return['Args']['TransientKey'] = Gdn::Session()->TransientKey();
+      $Return['Map'] = 'vanilla/discussion/delete.' . $Ext . DS . $ID;
+
+      return $Return;
    }
 }
