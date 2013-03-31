@@ -1,8 +1,8 @@
 {
-    "require": {
-        "zircote/swagger-php": "master-dev"
-    },
-    "config": {
-        "vendor-dir": "vendors"
-    }
+  "require": {
+    "zircote/swagger-php": "master-dev"
+  },
+  "config": {
+    "vendor-dir": "vendors"
+  }
 }
