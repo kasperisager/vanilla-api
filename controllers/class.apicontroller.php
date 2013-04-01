@@ -143,7 +143,7 @@ class APIController extends Gdn_Controller
     * @param   string $Wiki
     * @access  public
     */
-   public function Wiki($Wiki)
+   public function Wiki($Wiki = NULL)
    {
       $RemoteData = 'https://github.com/kasperisager/VanillaAPI/wiki.atom';
       $CacheData  = PATH_CACHE.'/xml/api_wiki_entries.xml';
@@ -223,7 +223,7 @@ class APIController extends Gdn_Controller
     * @param   string $Resource
     * @access  public
     */
-   public function Resources($Resource)
+   public function Resources($Resource = NULL)
    {
       $this->DeliveryType(DELIVERY_TYPE_DATA);
       $this->DeliveryMethod(DELIVERY_METHOD_JSON);
