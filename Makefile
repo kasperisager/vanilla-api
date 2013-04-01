@@ -39,12 +39,12 @@ install:
 	@php $(COMPOSER) install --dev $(OMIT)
 	@echo "             $(CHECK)"
 
-	@printf "Removing unnecessary directories..."
+	@printf "Removing unneeded directories..."
 	@rm -rf $(VENDORS)/doctrine/common/bin/
 	@rm -rf $(VENDORS)/doctrine/common/tests/
 	@rm -rf $(VENDORS)/zircote/swagger-php/scripts/
 	@rm -rf $(VENDORS)/zircote/swagger-php/tests/
-	@echo "         $(CHECK)"
+	@echo "            $(CHECK)"
 
 	@printf "Installing Node.js packages..."
 	@npm install $(OMIT)
@@ -57,6 +57,9 @@ install:
 	@printf "Compiling the API Explorer..."
 	@npm run-script build $(OMIT)
 	@grunt compile $(OMIT)
+	@cp -r node_modules/swagger-ui/dist/lib/ js
+	@cp -r node_modules/swagger-ui/dist/swagger-ui.js js
+	@cp -r components/bootstrap/js/ js
 	@echo "               $(CHECK)"
 
 	@echo "${HR}"
@@ -94,6 +97,10 @@ clean:
 	@printf "Removing Bower packages..."
 	@rm -rf $(BOWER)
 	@echo "                  $(CHECK)"
+
+	@printf "Removing component scripts..."
+	@rm -rf js
+	@echo "               $(CHECK)"
 	
 	@echo "${HR}"
 	@echo "\033[36mSuccess!\n\033[39m"

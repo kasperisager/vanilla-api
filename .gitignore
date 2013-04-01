@@ -1,5 +1,6 @@
 .DS_Store
 vendors
+js
 composer.lock
 composer.phar
 components

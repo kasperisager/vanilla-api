@@ -46,7 +46,7 @@ class APIController extends Gdn_Controller
    }
 
    /**
-    * Do-nothing initialize to let children initializers bubble up.
+    * Initialize the API Explorer if needed
     * 
     * @since   0.1.0
     * @access  public
@@ -60,26 +60,23 @@ class APIController extends Gdn_Controller
          // Build the head asset
          $this->Head = new HeadModule($this);
 
-         // Documentation resources
-         $SwaggerUI = 'applications/api/node_modules/swagger-ui/dist';
-         $Bootstrap = 'applications/api/components/bootstrap';
+         // Swagger UI
+         $this->AddJsFile('jquery-1.8.0.min.js');
+         $this->AddJsFile('jquery.slideto.min.js');
+         $this->AddJsFile('jquery.slideto.min.js');
+         $this->AddJsFile('jquery.wiggle.min.js');
+         $this->AddJsFile('jquery.ba-bbq.min.js');
+         $this->AddJsFile('handlebars-1.0.rc.1.js');
+         $this->AddJsFile('underscore-min.js');
+         $this->AddJsFile('backbone-min.js');
+         $this->AddJsFile('swagger.js');
+         $this->AddJsFile('highlight.7.3.pack.js');
+         $this->AddJsFile('swagger-ui.js');
 
-         $this->AddJsFile($SwaggerUI . '/lib/jquery-1.8.0.min.js');
-         $this->AddJsFile($SwaggerUI . '/lib/jquery.slideto.min.js');
-         $this->AddJsFile($SwaggerUI . '/lib/jquery.slideto.min.js');
-         $this->AddJsFile($SwaggerUI . '/lib/jquery.wiggle.min.js');
-         $this->AddJsFile($SwaggerUI . '/lib/jquery.ba-bbq.min.js');
-         $this->AddJsFile($SwaggerUI . '/lib/handlebars-1.0.rc.1.js');
-         $this->AddJsFile($SwaggerUI . '/lib/underscore-min.js');
-         $this->AddJsFile($SwaggerUI . '/lib/backbone-min.js');
-         $this->AddJsFile($SwaggerUI . '/lib/swagger.js');
-         $this->AddJsFile($SwaggerUI . '/lib/highlight.7.3.pack.js');
-         $this->AddJsFile($SwaggerUI . '/swagger-ui.js');
+         // Bootstrap
+         $this->AddJsFile('bootstrap-dropdown.js');
 
-         $this->AddCssFile($SwaggerUI . '/css/hightlight.default.css');
-
-         $this->AddJsFile($Bootstrap . '/js/bootstrap-dropdown.js');
-
+         // Default stylesheet
          $this->AddCssFile('api.css');
 
       }
