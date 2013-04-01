@@ -26,33 +26,70 @@ class UsersAPI extends Mapper
     * @since   0.1.0
     * @access  public
     * @param   array $Params
-    *
+    */
+   public function Get($Params)
+   {
+      $ID   = $Params['URI'][2];
+      $Ext  = $Params['Ext'];
+
+      if ($ID) {
+         return self::_GetById($Ext, $ID);
+      } else {
+         return self::_GetAll($Ext);
+      }
+   }
+
+   /**
+    * Find all users
+    * 
+    * @param  string $Ext
+    * @return array
+    * 
     * @SWG\api(
     *   path="/users",
     *   @SWG\operations(
     *     @SWG\operation(
     *       httpMethod="GET",
     *       path="/users",
-    *       nickname="GetUsers",
+    *       nickname="GetAll",
     *       summary="Get a list of all registered users"
     *     )
     *   )
     * )
     */
-   public function Get($Params)
+   protected function _GetAll($Ext)
    {
-      $Format = $Params['Format'];
-      if (Gdn::Session()->CheckPermission(
-         array(
-            'Garden.Users.Add',
-            'Garden.Users.Edit',
-            'Garden.Users.Delete'
-         )
-      )) {
-         return array('Map' => 'dashboard/user.' . $Format);
-      } else {
-         return array('Map' => 'dashboard/user/summary.' . $Format);
-      }
+      $Return = array();
+      $Return['Map'] = 'dashboard/user/summary.' . $Ext;
+      
+      return $Return;
+   }
+
+   /**
+    * Find a specific user
+    * 
+    * @param  string $Ext
+    * @param  int $ID
+    *
+    * @SWG\api(
+    *   path="/users/{id}",
+    *   @SWG\operations(
+    *     @SWG\operation(
+    *       httpMethod="GET",
+    *       path="/users",
+    *       nickname="GetById",
+    *       summary="Get a specific user"
+    *     )
+    *   )
+    * )
+    */
+   protected function _GetById($Ext, $ID)
+   {
+      $Return = array();
+      $Return['Args']['userid'] = $ID;
+      $Return['Map'] = 'dashboard/profile.' . $Ext . DS . $ID . DS . 'false';
+      
+      return $Return;
    }
 
    /**
