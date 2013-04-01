@@ -301,16 +301,17 @@ class APIController extends Gdn_Controller
       $Request    = Gdn::Request();
       $URI        = $Request->RequestURI();
       $Intercept  = preg_match('/^api\/(\w+)/i', $URI, $Matches);
-      $Class      = $Matches[1] . 'API';
-
-      // Abandon dispatch if resources or wiki method is requested
-      if (strtolower($Class) == 'resources' . 'api') return;
-      if (strtolower($Class) == 'wiki' . 'api') return;
 
       try {
 
          // Intercept API requests and store the requested class
-         if ($Intercept && $Class) {
+         if ($Intercept && $Matches) {
+
+            $Class = $Matches[1] . 'API';
+
+            // Abandon dispatch if resources or wiki method is requested
+            if (strtolower($Class) == 'resources' . 'api') return;
+            if (strtolower($Class) == 'wiki' . 'api') return;
 
             // If no API class is found throw a "Not Found"
             if (!class_exists($Class)) throw new Exception(404);
