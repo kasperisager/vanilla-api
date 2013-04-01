@@ -29,10 +29,13 @@ class CategoriesAPI extends Mapper
     */
    public function Get($Params)
    {
-      $ID   = $Params['URI'][2];
-      $Ext  = $Params['Ext'];
+      if (isset($Params['URI'][2])) {
+         $ID = $Params['URI'][2];
+      }
 
-      if ($ID) {
+      $Ext = $Params['Ext'];
+
+      if (isset($ID)) {
          return self::_GetById($Ext, $ID);
       } else {
          return self::_GetAll($Ext);
@@ -189,14 +192,20 @@ class CategoriesAPI extends Mapper
     */
    public function Put($Params)
    {
-      $ID   = $Params['URI'][2];
-      $Ext  = $Params['Ext'];
+      if (isset($Params['URI'][2])) {
 
-      $Return = array();
-      $Return['Args']['CategoryID'] = $ID;
-      $Return['Args']['TransientKey'] = Gdn::Session()->TransientKey();
-      $Return['Map'] = 'vanilla/settings/editcategory.' . $Ext . DS . $ID;
-      
+         $ID   = $Params['URI'][2];
+         $Ext  = $Params['Ext'];
+
+         $Return = array();
+         $Return['Args']['CategoryID'] = $ID;
+         $Return['Args']['TransientKey'] = Gdn::Session()->TransientKey();
+         $Return['Map'] = 'vanilla/settings/editcategory.' . $Ext . DS . $ID;
+
+      } else {
+         $Return = 404;
+      }
+
       return $Return;
    }
 
@@ -233,13 +242,19 @@ class CategoriesAPI extends Mapper
     */
    public function Delete($Params)
    {
-      $ID   = $Params['URI'][2];
-      $Ext  = $Params['Ext'];
+      if (isset($Params['URI'][2])) {
 
-      $Return = array();
-      $Return['Args']['CategoryID'] = $ID;
-      $Return['Args']['TransientKey'] = Gdn::Session()->TransientKey();
-      $Return['Map'] = 'vanilla/settings/deletecategory.' . $Ext . DS . $ID;
+         $ID   = $Params['URI'][2];
+         $Ext  = $Params['Ext'];
+
+         $Return = array();
+         $Return['Args']['CategoryID'] = $ID;
+         $Return['Args']['TransientKey'] = Gdn::Session()->TransientKey();
+         $Return['Map'] = 'vanilla/settings/deletecategory.' . $Ext . DS . $ID;
+
+      } else {
+         $Return = 404;
+      }
 
       return $Return;
    }

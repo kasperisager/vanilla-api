@@ -327,14 +327,19 @@ class APIController extends Gdn_Controller
             $Accept  = $Arguments['server']['HTTP_ACCEPT'];
             $Ext     = (strpos($Accept, 'json')) ? 'json' : 'xml';
 
-            switch ($Ext) {
-               case 'xml':
-                  $Request->WithDeliveryMethod(DELIVERY_METHOD_XML);
-                  break;
+            // Handle reponse format using WithDeliveryMethod() if it exists
+            if (method_exists($Request, 'WithDeliveryMethod')) {
 
-               case 'json':
-                  $Request->WithDeliveryMethod(DELIVERY_METHOD_JSON);
-                  break;
+               switch ($Ext) {
+                  case 'xml':
+                     $Request->WithDeliveryMethod(DELIVERY_METHOD_XML);
+                     break;
+
+                  case 'json':
+                     $Request->WithDeliveryMethod(DELIVERY_METHOD_JSON);
+                     break;
+               }
+
             }
 
             $Params = array();
@@ -364,9 +369,17 @@ class APIController extends Gdn_Controller
                   $_PUT = self::ParsePut();
 
                   // Combine the PUT request with any custom arguments
-                  $Request->SetRequestArguments(
-                     Gdn_Request::INPUT_POST, array_merge($_PUT, $Data['Args'])
-                  );
+                  if (isset($Data['Args'])) {
+                     $Request->SetRequestArguments(
+                        Gdn_Request::INPUT_POST, array_merge(
+                           $_PUT, $Data['Args']
+                        )
+                     );
+                  } else {
+                     $Request->SetRequestArguments(
+                        Gdn_Request::INPUT_POST, $_PUT
+                     );
+                  }
 
                   $_POST = $Request->Post();
 
@@ -380,9 +393,11 @@ class APIController extends Gdn_Controller
                   $Request->RequestMethod('post');
 
                   // Combine the DELETE request with any custom arguments
-                  $Request->SetRequestArguments(
-                     Gdn_Request::INPUT_POST, $Data['Args']
-                  );
+                  if (isset($Data['Args'])) {
+                     $Request->SetRequestArguments(
+                        Gdn_Request::INPUT_POST, $Data['Args']
+                     );
+                  }
 
                   $_POST = $Request->Post();
 
@@ -390,29 +405,29 @@ class APIController extends Gdn_Controller
 
             }
 
-            // If data returns false throw a "Not Implemented"
-            if (!$Data) throw new Exception(501);
+            // If data returns a numeric value throw it as an error
+            if (is_numeric($Data)) throw new Exception($Data);
 
             // Throw generic error if no map is defined
-            if (!$Data['Map']) throw new Exception(500);  
+            if (!isset($Data['Map'])) throw new Exception(500);  
             
             // Map the request to the specified URI
             $Request->WithURI($Data['Map']);
          }
 
       } catch (Exception $Exception) {
-         $Code = $Exception->getMessage();
-         $Request->WithControllerMethod('API', 'Error', array($Code));
+         $Exception = $Exception->getMessage();
+         $Request->WithControllerMethod('API', 'Error', array($Exception));
       }
    }
 
    /**
     * Method for handling errors
     * 
-    * @param   string|int $Code
+    * @param   string|int $Exception
     * @return  array
     */
-   public function Error($Code)
+   public function Error($Exception)
    {
       $Request    = Gdn::Request();
       $Arguments  = $Request->Export('Arguments');
@@ -434,9 +449,13 @@ class APIController extends Gdn_Controller
             break;
       }
 
-      $Message = Gdn_Controller::StatusCode($Code);
-      $this->SetData('Code', intval($Code));
-      $this->SetData('Exception', $Message);
+      if (is_numeric($Exception)) {
+         $Code = $Exception;
+         $Exception = Gdn_Controller::StatusCode($Exception);
+         $this->SetData('Code', intval($Code));
+      }
+
+      $this->SetData('Exception', $Exception);
       $this->RenderData();
    }
 

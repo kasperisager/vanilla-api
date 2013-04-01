@@ -65,7 +65,7 @@ class UsersAPI extends Mapper
     */
    public function Post($Params)
    {
-      return FALSE;
+      return 501;
    }
 
    /**
@@ -78,7 +78,7 @@ class UsersAPI extends Mapper
     */
    public function Put($Params)
    {
-      return FALSE;
+      return 501;
    }
 
    /**
@@ -91,6 +91,6 @@ class UsersAPI extends Mapper
     */
    public function Delete($Params)
    {
-      return FALSE;
+      return 501;
    }
 }

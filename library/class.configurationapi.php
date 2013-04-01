@@ -49,14 +49,6 @@ class ConfigurationAPI extends Mapper
       return $Return;
    }
 
-   protected function _GetThemes() {
-
-   }
-
-   protected function _GetLocales() {
-      
-   }
-
    /**
     * POST
     *
@@ -68,7 +60,7 @@ class ConfigurationAPI extends Mapper
     */
    public function Post($Params)
    {
-      return FALSE;
+      return 501;
    }
 
    /**
@@ -82,7 +74,7 @@ class ConfigurationAPI extends Mapper
     */
    public function Put($Params)
    {
-      return FALSE;
+      return 501;
    }
 
    /**
@@ -96,6 +88,6 @@ class ConfigurationAPI extends Mapper
     */
    public function Delete($Params)
    {
-      return FALSE;
+      return 501;
    }
 }
