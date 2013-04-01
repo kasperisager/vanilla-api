@@ -24,7 +24,7 @@ class APIHooks implements Gdn_IPlugin
    }
 
    /**
-    * No setup required
+    * Make sure the application secret is set
     *
     * @package API
     * @since   0.1.0
@@ -32,7 +32,11 @@ class APIHooks implements Gdn_IPlugin
     */
    public function Setup()
    {
-      return TRUE;
+      $Secret = C('API.Secret');
+      if (!$Secret) {
+         $Secret = sha1(mt_rand());
+      }
+      SaveToConfig('API.Secret', $Secret);
    }
 
    /**

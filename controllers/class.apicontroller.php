@@ -287,6 +287,58 @@ class APIController extends Gdn_Controller
    }
 
    /**
+    * Expose the session object
+    *
+    * @package API
+    * @since   0.1.0
+    * @access  public
+    */
+   public function Session()
+   {  
+      $Request    = Gdn::Request();
+      $Arguments  = $Request->Export('Arguments');
+
+      $this->DeliveryType(DELIVERY_TYPE_DATA);
+
+      // Change response format depending on HTTP_ACCEPT
+      $Accept  = $Arguments['server']['HTTP_ACCEPT'];
+      $Ext     = (strpos($Accept, 'json')) ? 'json' : 'xml';
+   
+      switch ($Ext) {
+         case 'xml':
+            $this->DeliveryMethod(DELIVERY_METHOD_XML);
+            break;
+
+         case 'json':
+            $this->DeliveryMethod(DELIVERY_METHOD_JSON);
+            break;
+      }
+
+      self::Authenticate();
+
+      $this->SetData('Session', self::Sanitize(Gdn::Session()));
+      $this->RenderData();
+   }
+
+   /**
+    * Very simple "single-use only" authentication
+    *
+    * @package API
+    * @since   0.1.0
+    * @access  public
+    */
+   protected static function Authenticate()
+   {
+      $Secret  = C('API.Secret');
+      $Token   = GetIncomingValue('token');
+      $UserID  = GetIncomingValue('user');
+
+      if ($Token == $Secret) {
+         Gdn::Session()->Start(intval($UserID), FALSE);
+      }
+   }
+
+   /**
     * Map the API request to the appropriate controller
     *
     * @package API
@@ -306,9 +358,11 @@ class APIController extends Gdn_Controller
 
             $Class = $Matches[1] . 'API';
 
-            // Abandon dispatch if resources or wiki method is requested
-            if (strtolower($Class) == 'resources' . 'api') return;
-            if (strtolower($Class) == 'wiki' . 'api') return;
+            // Abandon dispatch if any of these methods are requested
+            $Methods = array('resources', 'wiki', 'session');
+            foreach ($Methods as $Method) {
+               if (strtolower($Class) == $Method . 'api') return;
+            }
 
             // If no API class is found throw a "Not Found"
             if (!class_exists($Class)) throw new Exception(404);
@@ -413,6 +467,11 @@ class APIController extends Gdn_Controller
             
             // Map the request to the specified URI
             $Request->WithURI($Data['Map']);
+
+            // Authenticate the request
+            if (!Gdn::Session()->IsValid) {
+               self::Authenticate();
+            }
          }
 
       } catch (Exception $Exception) {

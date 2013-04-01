@@ -5,6 +5,9 @@ use Swagger\Annotations as SWG;
 /**
  * Session API
  *
+ * This method is not used for anything besides documentation purposes as the
+ * API controller takes care of exposing the session object
+ *
  * @package    API
  * @since      0.1.0
  * @author     Kasper Kronborg Isager <kasperisager@gmail.com>
@@ -40,8 +43,7 @@ class SessionAPI extends Mapper
     */
    public function Get($Params)
    {
-      $Format = $Params['Format'];
-      return array('Map' => 'dashboard/profile.' . $Format);
+      return FALSE;
    }
 
    /**
