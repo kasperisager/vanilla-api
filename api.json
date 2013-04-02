@@ -2,6 +2,8 @@
   "folders":
   [
     {
+      "name": "Vanilla API",
+      "path": ".",
       "file_exclude_patterns":
       [
         "*.gitignore",
@@ -11,9 +13,7 @@
       "folder_exclude_patterns":
       [
         "node_modules"
-      ],
-      "name": "Vanilla API",
-      "path": "/Users/kasperisager/Documents/Github/VanillaAPI"
+      ]
     }
   ]
 }
