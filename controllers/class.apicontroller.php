@@ -286,6 +286,23 @@ class APIController extends Gdn_Controller
       $this->RenderData();
    }
 
+   public function Debug()
+   {
+      $Request = Gdn::Request();
+
+      $Environment   = $Request->Export('Environment');
+      $Arguments     = $Request->Export('Arguments');
+      $Parsed        = $Request->Export('Parsed');
+
+      $this->SetData('Environment', $Environment);
+      $this->SetData('Arguments', $Arguments);
+      $this->SetData('Parsed', $Parsed);
+
+      $this->SetData('Cookie', Gdn::Session()->GetCookie());
+
+      $this->RenderData();
+   }
+
    /**
     * Expose the session object
     *
@@ -359,7 +376,7 @@ class APIController extends Gdn_Controller
             $Class = $Matches[1] . 'API';
 
             // Abandon dispatch if any of these methods are requested
-            $Methods = array('resources', 'wiki', 'session');
+            $Methods = array('resources', 'wiki', 'session', 'debug');
             foreach ($Methods as $Method) {
                if (strtolower($Class) == $Method . 'api') return;
             }

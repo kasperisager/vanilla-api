@@ -5741,12 +5741,6 @@ pre .xml .cdata {
   overflow: hidden;
   float: left;
 }
-.wiki-body .edited {
-  color: #999;
-  margin: 10px 0 0;
-  font-size: 12px;
-  line-height: 19px;
-}
 body {
   -webkit-font-smoothing: antialiased;
 }
@@ -5800,7 +5794,7 @@ table.table td {
   background-image: url("images/blue.svg");
   color: #528EC9;
 }
-.navbar .pull-right {
+.navbar .github-btns {
   padding: 10px 0 0;
 }
 .page-header h1,
@@ -5931,8 +5925,13 @@ table.table td {
   float: right;
   color: #999;
   font-size: 11px;
-  text-align: right;
   line-height: 1.4;
+}
+.footer .edited {
+  color: #999;
+  margin: 10px 0 0;
+  font-size: 12px;
+  line-height: 19px;
 }
 .navbar .nav > li > a {
   outline: none !important;
@@ -5958,4 +5957,30 @@ table.table td {
   background-image: linear-gradient(to bottom, #0088cc, #0077b3);
   background-repeat: repeat-x;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff0077b3', GradientType=0);
+}
+.DismissMessage {
+  padding: 8px 35px 8px 14px;
+  margin-bottom: 20px;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+  background-color: #fcf8e3;
+  border: 1px solid #fbeed5;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  color: #c09853;
+}
+.CasualMessage {
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
+  color: #468847;
+}
+.InfoMessage {
+  background-color: #d9edf7;
+  border-color: #bce8f1;
+  color: #3a87ad;
+}
+.WarningMessage {
+  background-color: #f2dede;
+  border-color: #eed3d7;
+  color: #b94a48;
 }

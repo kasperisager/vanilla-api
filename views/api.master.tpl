@@ -29,9 +29,30 @@
                </li>
             </ul>
             <ul class="nav pull-right">
+               {if $User.SignedIn}                 
+                  <li class="dropdown">
+                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        {$User.Name} <b class="caret"></b>
+                     </a>
+                     <ul class="dropdown-menu">
+                        <li class="nav-header">{t c="Welcome!"}</li>
+                        {profile_link text="Profile"}
+                        {inbox_link text="Inbox"}
+                        {bookmarks_link text="Bookmarks"}
+                        {dashboard_link text="Dashboard"}
+                        <li class="divider"></li>
+                        <li>{link path="signinout"}</li>
+                     </ul>
+                  </li>
+               {/if}
+               {if !$User.SignedIn}                
+                  <li>{link path="/entry/register" text="Register"}</li>
+                  <li>{link path="signin" target="current" text="Sign in"}</li>
+               {/if}
+            </ul>
+            <ul class="nav pull-right github-btns">
                <embed src="{$GhbBtns}&repo=VanillaAPI&type=watch&count=true" width="85" height="20">
                <embed src="{$GhbBtns}&repo=VanillaAPI&type=fork&count=true" width="90" height="20">
-               <embed src="{$GhbBtns}&type=follow&count=true" width="180" height="20">
             </ul>
          </div>
       </div>
