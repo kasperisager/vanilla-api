@@ -23,6 +23,7 @@
                      <li class="divider"></li>
                      <li class="nav-header">Documentation</li>
                      <li>{link path="api/wiki/installation" text="Installation"}</li>
+                     <li>{link path="api/wiki/authentication" text="Authentication"}</li>
                      <li>{link path="api/wiki/annotations" text="Annotations"}</li>
                      <li>{link path="api/wiki/extending" text="Extending"}</li>
                   </ul>
