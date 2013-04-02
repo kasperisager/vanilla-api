@@ -5915,7 +5915,17 @@ table.table td {
   display: block;
 }
 .footer {
+  *zoom: 1;
   margin: 20px 0;
+}
+.footer:before,
+.footer:after {
+  display: table;
+  content: "";
+  line-height: 0;
+}
+.footer:after {
+  clear: both;
 }
 .footer h4 span {
   font-variant: small-caps;
