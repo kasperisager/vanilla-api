@@ -26,7 +26,6 @@
     "bower": "0.8.x",
     "grunt": "0.4.x",
     "grunt-contrib-less": "0.5.x",
-    "grunt-contrib-stylus": "0.5.x",
     "grunt-contrib-watch": "0.3.x"
   }
 }

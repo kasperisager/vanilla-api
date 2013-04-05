@@ -1,6 +1,7 @@
 <?php if (!defined('APPLICATION')) exit();
 
 use Swagger\Swagger;
+use \Doctrine\Common\Cache\PhpFileCache;
 
 /**
  * Vanilla API Main controller
@@ -26,15 +27,6 @@ use Swagger\Swagger;
  */
 class APIController extends Gdn_Controller
 {
-   /**
-    * Allow registration of docs
-    * 
-    * @var     array
-    * @since   0.1.0
-    * @access  public
-    */
-   public $Register = array();
-
    /**
     * Do-nothing construct to let children constructs bubble up.
     *
@@ -113,15 +105,15 @@ class APIController extends Gdn_Controller
       if ($this->DeliveryType() == DELIVERY_TYPE_ALL) {
 
          // Set page title
-         $this->Title(T('API Documentation'));
+         $this->Title(T('Vanilla API'));
 
-         // Vanilla 2.1 goodie
+         // Vanilla 2.1 goodie - sections!
          if (method_exists('Gdn_Theme', 'Section')) {
             Gdn_Theme::Section('APIDocumentation');
          }
 
          $Breadcrumbs = array();
-         $Breadcrumbs['Name'] = T('API Documentation');
+         $Breadcrumbs['Name'] = T('Vanilla API');
          $Breadcrumbs['Url']  = '/api';
 
          $this->Menu->HighlightRoute('/api');
@@ -142,16 +134,25 @@ class APIController extends Gdn_Controller
     */
    public function Wiki($Wiki = NULL)
    {
+      // Vanilla 2.1 goodie - sections!
+      if (method_exists('Gdn_Theme', 'Section')) Gdn_Theme::Section('APIWiki');
+
+      // Define the API Wiki remote feed and local cache
       $RemoteData = 'https://github.com/kasperisager/VanillaAPI/wiki.atom';
-      $CacheData  = PATH_CACHE.'/xml/api_wiki_entries.xml';
+      $CacheData  = PATH_CACHE . '/VanillaAPI/wiki_entries.cache';
 
-      if (!is_dir(PATH_CACHE.'/xml')) mkdir(PATH_CACHE.'/xml');
+      // If the cache folder hasn't been create yet, create it
+      if (!is_dir(PATH_CACHE . '/VanillaAPI')) mkdir(PATH_CACHE . '/VanillaAPI');
 
+      // If no cache data is found or the cache data is older than 1 hour,
+      // pull in the remote feed and cache it
       if (!file_exists($CacheData) || time() - filemtime($CacheData) >= 3600) {
          file_put_contents($CacheData, file_get_contents($RemoteData));
       }
 
-      $Data = file_get_contents($CacheData);
+      // Get the contents of the cache or use the remote feed if caching has
+      // been turned off in the configuration
+      $Data = file_get_contents(C('API.Wiki.Cache') ? $CacheData : $RemoteData);
       $Data = self::Sanitize(simplexml_load_string($Data));
 
       // Regex for matching relative images and links
@@ -179,33 +180,37 @@ class APIController extends Gdn_Controller
       }
 
       if ($Wiki) {
-         $this->SetData('Entry', $Entries[$Wiki]);
+
+         if (!isset($Entries[$Wiki])) return self::Error(404);
+         
+         $Entry = $Entries[$Wiki];
+
+         $Title = $Entry['Title'];
+
+         $Breadcrumbs = array();
+         $Breadcrumbs['Name'] = T($Title);
+         $Breadcrumbs['Url']  = '/api/wiki/' . $Wiki;
+
+         $this->Title(T($Title));
+         $this->SetData('Entry', $Entry);
+
       } else {
+
+         $Breadcrumbs = array();
+         $Breadcrumbs['Name'] = T('Wiki');
+         $Breadcrumbs['Url']  = '/api/wiki';
+
+         $this->Title(T('Wiki'));
          $this->SetData('Entry', $Entries['home']);
+
       }
 
       // $this->SetData('Sidebar', $Entries['sidebar']['Content']);
       // $this->SetData('Footer', $Entries['footer']['Content']);
 
-      if ($this->DeliveryType() == DELIVERY_TYPE_ALL) {
-
-         // Set page title
-         $this->Title(T('API Wiki'));
-
-         // Vanilla 2.1 goodie
-         if (method_exists('Gdn_Theme', 'Section')) {
-            Gdn_Theme::Section('APIWiki');
-         }
-
-         $Breadcrumbs = array();
-         $Breadcrumbs['Name'] = T('API Wiki');
-         $Breadcrumbs['Url']  = '/api/wiki';
-
-         $this->Menu->HighlightRoute('/api');
-         $this->SetData('Breadcrumbs', array($Breadcrumbs));
-         
-      }
-
+      $this->SetData('Breadcrumbs', array(
+         array('Name' => T('Vanilla API'), 'Url' => '/api'), $Breadcrumbs
+      ));
       $this->MasterView = 'api';
       $this->Render();
    }
@@ -227,52 +232,54 @@ class APIController extends Gdn_Controller
 
       try {
 
-         // Automatic API docs discovery
+         $Root       = PATH_ROOT;
+         $Cache      = PATH_CACHE . DS . 'VanillaAPI';
+         $Data       = array();
+         $Data       = array_merge(self::Meta(), $Data);
+
+         // Crawl the entire installation and cache all API documentation
+         // unless caching of docs has been turned off
+         if (C('API.Docs.Cache')) {
+            $PhpFileCache = new PhpFileCache($Cache, '.cache');
+            $Swagger = new \Swagger\Swagger($Root, NULL, $PhpFileCache);
+         } else {
+            $Swagger = Swagger::discover($Root);
+         }
+
          if ($Resource) {
 
-            $Class = $Resource . 'API';
+            // Get the cached registry
+            $Registry = $Swagger->getRegistry();
+
+            // Find the requested resource in the registry
+            $Resource = $Registry['/' . $Resource]->apis;
 
             // If a resource doesn't exist throw a "Not Found"
-            if (!class_exists($Class)) throw new Exception(404);
+            if (!$Resource) throw new Exception(404);
 
-            $Swagger = new Swagger();
-            $Class   = new $Class;
-
-            $Docs = new ReflectionClass($Class);
-            $Docs = dirname($Docs->getFilename());
-
-            $Discover = $Swagger->discover($Docs);
-            $Registry = $Discover->registry;
-
-            $this->SetData(self::Meta());
-            $this->SetData($Registry['/'.$Resource]);
+            $Data['apis']  = $Resource;
+            $this->SetData($Data);
 
          } else {
 
-            $Registry = $this->Register;
-
-            // Register core API docs
-            $Registry['Session']       = '/session';
-            $Registry['Configuration'] = '/configuration';
-            $Registry['Categories']    = '/categories';
-            $Registry['Discussions']   = '/discussions';
-            $Registry['Messages']      = '/messages';
-            $Registry['Users']         = '/users';
-
-            // Allow plugins and applications to register docs
-            $this->FireEvent('Register');
+            // Get the resource list
+            $Resources = $Swagger->getResourceList(TRUE, FALSE);
 
             $Listing = array();
 
-            foreach ($Registry as $Description => $Path) {
+            foreach ($Resources['apis'] as $Api) {
+               // Trim .{format} from resource path since we only want
+               // to deliver JSON and not XML to Swagger UI
+               $Path = str_replace('.{format}', NULL, $Api['path']);
+
                $Resource = array();
-               $Resource['path'] = '/resources' . $Path;
-               $Resource['description'] = $Description;
+               $Resource['path'] = $Path;
+
                $Listing[] = $Resource;
             }
 
-            $this->SetData(self::Meta());
-            $this->SetData('apis', $Listing);
+            $Data['apis']  = $Listing;
+            $this->SetData($Data);
 
          }         
 
@@ -282,23 +289,6 @@ class APIController extends Gdn_Controller
          $this->SetData('Code', $Code);
          $this->SetData('Exception', $Message);
       }
-
-      $this->RenderData();
-   }
-
-   public function Debug()
-   {
-      $Request = Gdn::Request();
-
-      $Environment   = $Request->Export('Environment');
-      $Arguments     = $Request->Export('Arguments');
-      $Parsed        = $Request->Export('Parsed');
-
-      $this->SetData('Environment', $Environment);
-      $this->SetData('Arguments', $Arguments);
-      $this->SetData('Parsed', $Parsed);
-
-      $this->SetData('Cookie', Gdn::Session()->GetCookie());
 
       $this->RenderData();
    }

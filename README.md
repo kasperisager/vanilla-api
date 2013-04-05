@@ -12,7 +12,7 @@ A super early version of a RESTful API for Vanilla that responds in JSON and XML
 ### [Doctrine Common](https://github.com/doctrine/common) [![Build Status](https://travis-ci.org/doctrine/common.png?branch=2.3)](https://travis-ci.org/doctrine/common)
 The Doctrine Common project is a library that provides extensions to core PHP functionality.
 
-### [Swagger PHP](https://github.com/zircote/swagger-php) [![Build Status](https://travis-ci.org/zircote/swagger-php.png)](https://travis-ci.org/zircote/swagger-php)
+### [Swagger PHP](https://github.com/zircote/swagger-php) [![Build Status](https://travis-ci.org/zircote/swagger-php.png?branch=0.6)](https://travis-ci.org/zircote/swagger-php)
 Swagger-PHP is a PHP library that servers as an annotations toolkit to produce [Swagger Doc](http://swagger.wordnik.com).
 It makes extensive use of the [Doctrine Common library](http://www.doctrine-project.org/projects/common.html) for
 annotations support and caching.

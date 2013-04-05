@@ -39,13 +39,6 @@ install:
 	@php $(COMPOSER) install --dev $(OMIT)
 	@echo "             $(CHECK)"
 
-	@printf "Removing unneeded directories..."
-	@rm -rf $(VENDORS)/doctrine/common/bin/
-	@rm -rf $(VENDORS)/doctrine/common/tests/
-	@rm -rf $(VENDORS)/zircote/swagger-php/scripts/
-	@rm -rf $(VENDORS)/zircote/swagger-php/tests/
-	@echo "            $(CHECK)"
-
 	@printf "Installing Node.js packages..."
 	@npm install $(OMIT)
 	@echo "              $(CHECK)"

@@ -11,7 +11,7 @@ use Swagger\Annotations as SWG;
  * @copyright  Copyright © 2013
  * @license    http://opensource.org/licenses/MIT MIT
  *
- * @SWG\Resource(
+ * @SWG\resource(
  *   resourcePath="/configuration"
  * )
  */

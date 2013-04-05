@@ -11,7 +11,7 @@
    <div class="navbar navbar-static-top">
       <div class="navbar-inner">
          <div class="container">
-            <a class="brand" href="{link path="api"}">Vanilla API</a>
+            <a class="brand" href="{link path="api"}">{t c="Vanilla API"}</a>
             <ul class="nav">
                <li>{link path="api" text="Explorer"}</li>
                <li class="dropdown">
@@ -21,8 +21,9 @@
                         {link path="api/wiki" text="Index"}
                      </li>
                      <li class="divider"></li>
-                     <li class="nav-header">Documentation</li>
+                     <li class="nav-header">{t c="Documentation"}</li>
                      <li>{link path="api/wiki/installation" text="Installation"}</li>
+                     <li>{link path="api/wiki/configuration" text="Configuration"}</li>
                      <li>{link path="api/wiki/authentication" text="Authentication"}</li>
                      <li>{link path="api/wiki/annotations" text="Annotations"}</li>
                      <li>{link path="api/wiki/extending" text="Extending"}</li>
