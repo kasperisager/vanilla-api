@@ -14,19 +14,18 @@ class APIHooks implements Gdn_IPlugin
    /**
     * Map the API request to the appropriate controller
     *
-    * @package API
     * @since   0.1.0
     * @access  public
     */
    public function Gdn_Dispatcher_BeforeDispatch_Handler()
    {
-      APIController::_Dispatch();
+      $API = new APIController();
+      $API->_Dispatch();
    }
 
    /**
     * Make sure the application secret is set
     *
-    * @package API
     * @since   0.1.0
     * @access  public
     */
@@ -42,7 +41,6 @@ class APIHooks implements Gdn_IPlugin
    /**
     * No cleanup required
     *
-    * @package API
     * @since 0.1.0
     * @access public
     */

@@ -22,7 +22,6 @@ class UsersAPI extends Mapper
     *
     * GET /users
     *
-    * @package API
     * @since   0.1.0
     * @access  public
     * @param   array $Params
@@ -95,7 +94,6 @@ class UsersAPI extends Mapper
    /**
     * POST
     *
-    * @package API
     * @since   0.1.0
     * @access  public
     * @param   array $Params
@@ -108,7 +106,6 @@ class UsersAPI extends Mapper
    /**
     * PUT
     *
-    * @package API
     * @since   0.1.0
     * @access  public
     * @param   array $Params
@@ -121,7 +118,6 @@ class UsersAPI extends Mapper
    /**
     * DELETE
     *
-    * @package API
     * @since   0.1.0
     * @access  public
     * @param   array $Params

@@ -23,7 +23,6 @@ class CategoriesAPI extends Mapper
     * GET /categories
     * GET /categories/:id
     *
-    * @package API
     * @since   0.1.0
     * @access  public
     */
@@ -47,7 +46,6 @@ class CategoriesAPI extends Mapper
     *
     * GET /categories
     *
-    * @package API
     * @since   0.1.0
     * @access  public
     *
@@ -76,7 +74,6 @@ class CategoriesAPI extends Mapper
     *
     * GET /categories/:id
     *
-    * @package API
     * @since   0.1.0
     * @access  public
     *
@@ -115,7 +112,6 @@ class CategoriesAPI extends Mapper
     *
     * POST /categories
     *
-    * @package API
     * @since   0.1.0
     * @access  public
     *
@@ -150,7 +146,6 @@ class CategoriesAPI extends Mapper
     * PUT /categories/follow/:id
     * PUT /categories/read/:id
     *
-    * @package API
     * @since   0.1.0
     * @access  public
     *
@@ -214,7 +209,6 @@ class CategoriesAPI extends Mapper
     *
     * DELETE /categories/:id
     *
-    * @package API
     * @since   0.1.0
     * @access  public
     *

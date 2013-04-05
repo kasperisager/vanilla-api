@@ -22,7 +22,6 @@ class ConfigurationAPI extends Mapper
     *
     * GET /configuration
     *
-    * @package API
     * @since   0.1.0
     * @access  public
     * @param   array $Params
@@ -52,7 +51,6 @@ class ConfigurationAPI extends Mapper
    /**
     * POST
     *
-    * @package API
     * @since   0.1.0
     * @access  public
     * @param   array $Params
@@ -66,7 +64,6 @@ class ConfigurationAPI extends Mapper
    /**
     * PUT
     *
-    * @package API
     * @since   0.1.0
     * @access  public
     * @param   array $Params
@@ -80,7 +77,6 @@ class ConfigurationAPI extends Mapper
    /**
     * DELETE
     *
-    * @package API
     * @since   0.1.0
     * @access  public
     * @param   array $Params

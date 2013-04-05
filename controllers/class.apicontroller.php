@@ -1,5 +1,7 @@
 <?php if (!defined('APPLICATION')) exit();
 
+//if (C('Debug')) error_reporting(E_ALL);
+
 use Swagger\Swagger;
 use \Doctrine\Common\Cache\PhpFileCache;
 
@@ -80,9 +82,9 @@ class APIController extends Gdn_Controller
     * This info array is included in all API resources as to enable Swagger
     * to crawl and list the entire API.
     * 
-    * @return  array
     * @since   0.1.0
     * @access  public
+    * @return  array
     */
    public function Meta()
    {
@@ -129,8 +131,8 @@ class APIController extends Gdn_Controller
     * Usage and development documentation from the Github wiki
     * 
     * @since   0.1.0
-    * @param   string $Wiki
     * @access  public
+    * @param   string $Wiki
     */
    public function Wiki($Wiki = NULL)
    {
@@ -222,8 +224,8 @@ class APIController extends Gdn_Controller
     * each controller and output this as JSON for Swagger UI to read
     * 
     * @since   0.1.0
-    * @param   string $Resource
     * @access  public
+    * @param   string $Resource
     */
    public function Resources($Resource = NULL)
    {
@@ -296,7 +298,6 @@ class APIController extends Gdn_Controller
    /**
     * Expose the session object
     *
-    * @package API
     * @since   0.1.0
     * @access  public
     */
@@ -321,34 +322,146 @@ class APIController extends Gdn_Controller
             break;
       }
 
-      self::Authenticate();
-
       $this->SetData('Session', self::Sanitize(Gdn::Session()));
       $this->RenderData();
+   }
+
+   public function Debug()
+   {
+      $Secret        = C('API.Secret');
+      $Request       = Gdn::Request();
+      $Request       = $Request->PathAndQuery();
+      $ParsedURL     = parse_url($Request);
+      parse_str($ParsedURL['query'], $Request);
+
+      $Username   = $Request['username'];
+      $Email      = $Request['email'];
+      $Timestamp  = $Request['timestamp'];
+      $Token      = $Request['token'];
+
+      unset($Request['token']);
+
+      $UserID     = self::GetUserID($Username, $Email);
+      $Signature  = self::Signature($Request, $Secret);
+      
+      if ($Token == $Signature) {
+         Gdn::Session()->Start(intval($UserID), FALSE);
+      }
+
+      $Data                = array();
+      $Data['Username']    = $Username;
+      $Data['Email']       = $Email;
+      $Data['UserID']      = $UserID;
+      $Data['Timestamp']   = $Timestamp;
+      $Data['Token']       = $Token;
+      $Data['Signature']   = $Signature;
+      $Data['Request']     = $Request;
+      $Data['Session']     = self::Sanitize(Gdn::Session());
+
+      $this->SetData($Data);
+      $this->RenderData();
+   }
+
+   /**
+    * A little voodoo to turn objects into arrays
+    *
+    * @since   0.1.0
+    * @access  public
+    * @param   object $Data
+    * @return  array
+    */
+   public static function Sanitize($Data)
+   {
+      $Data = json_encode($Data);
+      $Data = json_decode($Data, true);
+      return $Data;
    }
 
    /**
     * Very simple "single-use only" authentication
     *
-    * @package API
     * @since   0.1.0
     * @access  public
     */
    protected static function Authenticate()
    {
-      $Secret  = C('API.Secret');
-      $Token   = GetIncomingValue('token');
-      $UserID  = GetIncomingValue('user');
+      try {
 
-      if ($Token == $Secret) {
-         Gdn::Session()->Start(intval($UserID), FALSE);
+         $Request       = Gdn::Request();
+         $Request       = $Request->PathAndQuery();
+         $ParsedURL     = parse_url($Request);
+
+         parse_str($ParsedURL['query'], $Request);
+
+         /*if (!isset($Request['username'])
+            || !isset($Request['email'])) {
+            throw new Exception('Username or email must be specified', 401);
+         }
+
+         if (!isset($Request['timestamp'])
+            || (abs($Request['timestamp'] - time())) > C('API.Timeout')) {
+               throw new Exception('Timeout expired', 401);
+         }*/
+
+         /*if (!isset($Request['token'])
+            || $Request['token'] != self::Signature($Request, $Secret)) {
+            throw new Exception('Signature invalid', 401);
+         }*/
+
+         $Username      = $Request['username'];
+         $Email         = $Request['email'];
+         $Timestamp     = $Request['timestamp'];
+         $Token         = $Request['token'];
+
+         unset($Request['token']);
+
+         $UserID        = self::GetUserID($Username, $Email);
+         $Signature     = self::Signature($Request);
+         
+         if ($Token == $Signature) Gdn::Session()->Start(intval($UserID), FALSE);
+
+      } catch (Exception $Exception) {
+         return;
       }
+   }
+
+   /**
+    * Generate a signature from a request array
+    *
+    * This function takes an array of data, sorts the keys alphabetically and
+    * generates an HMAC hash using a specified application secret. The hash
+    * can then be used to validate incoming API calls as only the client and
+    * server knows the secret key used for creating the hash.
+    *
+    * @since   0.1.0
+    * @param   array $Request
+    * @return  string
+    */
+   protected static function Signature($Request)
+   {
+      $Secret = C('API.Secret');
+
+      ksort($Request, SORT_STRING);
+
+      $Signature = hash_hmac('sha256', strtolower(implode('-', $Request)), $Secret);
+
+      return $Signature;
+   }
+
+   protected static function GetUserID($Username, $Email)
+   {
+      $UserModel = new UserModel();
+
+      if(isset($UserName)) return $UserModel->GetByUsername($UserName)->UserID;
+
+      if(isset($Email))    return $UserModel->GetByEmail($Email)->UserID;
+
+      return;
    }
 
    /**
     * Map the API request to the appropriate controller
     *
-    * @package API
     * @since   0.1.0
     * @access  public
     */
@@ -356,6 +469,8 @@ class APIController extends Gdn_Controller
    {
       $Request    = Gdn::Request();
       $URI        = $Request->RequestURI();
+
+      // Intercept any request with the following format: /api/:resource
       $Intercept  = preg_match('/^api\/(\w+)/i', $URI, $Matches);
 
       try {
@@ -374,36 +489,17 @@ class APIController extends Gdn_Controller
             // If no API class is found throw a "Not Found"
             if (!class_exists($Class)) throw new Exception(404);
             
-            $Class = new $Class;
-
+            $Class         = new $Class;
             $Method        = $Request->RequestMethod();
             $Environment   = $Request->Export('Environment');
             $Arguments     = $Request->Export('Arguments');
             $Parsed        = $Request->Export('Parsed');
 
-            // Only deliver data - nothing else is needed
-            $Request->WithDeliveryType(DELIVERY_TYPE_DATA);
-
             // Change response format depending on HTTP_ACCEPT
             $Accept  = $Arguments['server']['HTTP_ACCEPT'];
             $Ext     = (strpos($Accept, 'json')) ? 'json' : 'xml';
 
-            // Handle reponse format using WithDeliveryMethod() if it exists
-            if (method_exists($Request, 'WithDeliveryMethod')) {
-
-               switch ($Ext) {
-                  case 'xml':
-                     $Request->WithDeliveryMethod(DELIVERY_METHOD_XML);
-                     break;
-
-                  case 'json':
-                     $Request->WithDeliveryMethod(DELIVERY_METHOD_JSON);
-                     break;
-               }
-
-            }
-
-            $Params = array();
+            $Params                 = array();
             $Params['Environment']  = $Environment;
             $Params['Arguments']    = $Arguments;
             $Params['Parsed']       = $Parsed;
@@ -475,10 +571,8 @@ class APIController extends Gdn_Controller
             // Map the request to the specified URI
             $Request->WithURI($Data['Map']);
 
-            // Authenticate the request
-            if (!Gdn::Session()->IsValid) {
-               self::Authenticate();
-            }
+            // Authenticate the request if no valid session exists
+            if (!Gdn::Session()->IsValid()) self::Authenticate();
          }
 
       } catch (Exception $Exception) {
@@ -492,6 +586,7 @@ class APIController extends Gdn_Controller
     * 
     * @param   string|int $Exception
     * @return  array
+    * @access  public
     */
    public function Error($Exception)
    {
@@ -528,8 +623,6 @@ class APIController extends Gdn_Controller
    /**
     * Parse and return PUT data
     *
-    * @author  netcoder <http://stackexchange.com/users/229735>
-    * @package API
     * @since   0.1.0
     * @access  public
     * @return  array
@@ -595,20 +688,5 @@ class APIController extends Gdn_Controller
       }
 
       return $PutData;
-   }
-
-   /**
-    * A little voodoo to turn objects into arrays
-    * 
-    * @param   object $Data
-    * @since   0.1.0
-    * @access  public
-    * @return  array
-    */
-   public function Sanitize($Data)
-   {
-      $Data = json_encode($Data);
-      $Data = json_decode($Data, true);
-      return $Data;
    }
 }

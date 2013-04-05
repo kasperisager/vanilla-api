@@ -22,7 +22,6 @@ abstract class Mapper
    /**
     * GET
     *
-    * @package API
     * @since 0.1.0
     * @access public
     */
@@ -31,7 +30,6 @@ abstract class Mapper
    /**
     * POST
     *
-    * @package API
     * @since 0.1.0
     * @access public
     */
@@ -40,7 +38,6 @@ abstract class Mapper
    /**
     * PUT
     *
-    * @package API
     * @since 0.1.0
     * @access public
     */
@@ -49,7 +46,6 @@ abstract class Mapper
    /**
     * DELETE
     *
-    * @package API
     * @since 0.1.0
     * @access public
     */

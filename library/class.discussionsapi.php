@@ -28,7 +28,6 @@ class DiscussionsAPI extends Mapper
     * GET /discussions/mine
     * GET /discussions/unread
     *
-    * @package API
     * @since   0.1.0
     * @access  public
     * @param   array $Params
@@ -51,7 +50,6 @@ class DiscussionsAPI extends Mapper
     *
     * GET /discussions
     *
-    * @package API
     * @since   0.1.0
     * @access  public
     * @return  array
@@ -81,7 +79,6 @@ class DiscussionsAPI extends Mapper
     *
     * GET /discussions/:id
     *
-    * @package API
     * @since   0.1.0
     * @access  public
     * @param   string $Ext
@@ -113,7 +110,6 @@ class DiscussionsAPI extends Mapper
     *
     * GET /discussions/bookmarked
     *
-    * @package API
     * @since   0.1.0
     * @access  public
     * @param   string $Ext
@@ -142,7 +138,6 @@ class DiscussionsAPI extends Mapper
     *
     * GET /discussions/bookmarked
     *
-    * @package API
     * @since   0.1.0
     * @access  public
     * @param   string $Ext
@@ -174,7 +169,6 @@ class DiscussionsAPI extends Mapper
     * To be implemented:
     * POST /discussions/:id/comments
     *
-    * @package API
     * @since   0.1.0
     * @access  public
     * @param   array $Params
@@ -214,7 +208,6 @@ class DiscussionsAPI extends Mapper
     * PUT /discussions/close/:id/
     * PUT /discussions/bookmark/:id
     *
-    * @package API
     * @since   0.1.0
     * @access  public
     * @param   array $Params
@@ -237,7 +230,6 @@ class DiscussionsAPI extends Mapper
     *
     * PUT /discussions/:id
     *
-    * @package API
     * @since   0.1.0
     * @access  public
     * @param   string $Ext
@@ -265,7 +257,6 @@ class DiscussionsAPI extends Mapper
     *
     * PUT /discussions/sink/:id
     *
-    * @package API
     * @since   0.1.0
     * @access  public
     * @param   string $Ext
@@ -293,7 +284,6 @@ class DiscussionsAPI extends Mapper
     *
     * PUT /discussions/announce/:id
     *
-    * @package API
     * @since   0.1.0
     * @access  public
     * @param   string $Ext
@@ -321,7 +311,6 @@ class DiscussionsAPI extends Mapper
     *
     * PUT /discussions/dismiss/:id
     *
-    * @package API
     * @since   0.1.0
     * @access  public
     * @param   string $Ext
@@ -349,7 +338,6 @@ class DiscussionsAPI extends Mapper
     *
     * PUT /discussions/close/:id
     *
-    * @package API
     * @since   0.1.0
     * @access  public
     * @param   string $Ext
@@ -377,7 +365,6 @@ class DiscussionsAPI extends Mapper
     *
     * PUT /discussions/bookmark/:id
     *
-    * @package API
     * @since   0.1.0
     * @access  public
     * @param   string $Ext
@@ -408,7 +395,6 @@ class DiscussionsAPI extends Mapper
     * To be implemented:
     * DELETE /discussions/bookmarks/:id
     *
-    * @package API
     * @since   0.1.0
     * @access  public
     * @param   array $Params
