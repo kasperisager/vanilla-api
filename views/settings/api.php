@@ -31,7 +31,7 @@ echo $Form->Errors();
    <li>
       <?php echo $Form->Label('Endpoint', 'Endpoint'); ?>
       <div class="Info">
-         <?php echo T('You can access your forum\'s Application Interface (API) through this endpoint URL') ?>
+         <p><?php echo T('You can access your forum\'s Application Interface (API) through this endpoint URL') ?></p>
       </div>
       <div class="Endpoint">
          <blockquote><?php echo Gdn::Request()->Domain() ?>/api/</blockquote>
@@ -40,7 +40,8 @@ echo $Form->Errors();
    <li>
       <?php echo $Form->Label('Application Secret', 'Secret'); ?>
       <div class="Info">
-         <?php echo T('This is the Application Secret used for signature based authentication. <b>Keep it secret!</b>') ?>
+         <p><?php echo T('This is the Application Secret used for signature based authentication. <b>Keep it secret!</b>') ?></p>
+         <small><?php echo sprintf(T('Clicking "Re-generate" will generate a new UUID v4 key. Please refer to %s for more information'), Anchor(T('this article'), 'http://en.wikipedia.org/wiki/Uuid')) ?></small>
       </div>
       <?php
       echo $Form->TextBox('Secret', array('class' => 'InputBox BigInput', 'readonly' => 'readonly'));
