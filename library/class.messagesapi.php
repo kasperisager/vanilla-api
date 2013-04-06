@@ -24,7 +24,7 @@ class MessagesAPI extends Mapper
     *
     * @since   0.1.0
     * @access  public
-    * @param   array $Params
+    * @param   array $Parameters
     * @return  array
     *
     * @SWG\api(
@@ -38,9 +38,9 @@ class MessagesAPI extends Mapper
     *   )
     * )
     */
-   public function Get($Params)
+   public function Get($Parameters)
    {
-      $Format = $Params['Format'];
+      $Format = $Parameters['Format'];
       return array('Map' => 'messages/all.' . $Format);
    }
 
@@ -49,10 +49,10 @@ class MessagesAPI extends Mapper
     *
     * @since   0.1.0
     * @access  public
-    * @param   array $Params
+    * @param   array $Parameters
     * @return  bool
     */
-   public function Post($Params)
+   public function Post($Parameters)
    {
       return 501;
    }
@@ -62,10 +62,10 @@ class MessagesAPI extends Mapper
     *
     * @since   0.1.0
     * @access  public
-    * @param   array $Params
+    * @param   array $Parameters
     * @return  bool
     */
-   public function Put($Params)
+   public function Put($Parameters)
    {
       return 501;
    }
@@ -75,10 +75,10 @@ class MessagesAPI extends Mapper
     *
     * @since   0.1.0
     * @access  public
-    * @param   array $Params
+    * @param   array $Parameters
     * @return  bool
     */
-   public function Delete($Params)
+   public function Delete($Parameters)
    {
       return 501;
    }

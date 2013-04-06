@@ -30,13 +30,13 @@ class DiscussionsAPI extends Mapper
     *
     * @since   0.1.0
     * @access  public
-    * @param   array $Params
+    * @param   array $Parameters
     * @return  array
     */
-   public function Get($Params)
+   public function Get($Parameters)
    {
-      $ID   = $Params['URI'][2];
-      $Ext  = $Params['Ext'];
+      $ID   = $Parameters['URI'][2];
+      $Ext  = $Parameters['Ext'];
 
       if ($ID) {
          return self::_GetById($Ext, $ID);
@@ -171,7 +171,7 @@ class DiscussionsAPI extends Mapper
     *
     * @since   0.1.0
     * @access  public
-    * @param   array $Params
+    * @param   array $Parameters
     *
     * @SWG\api(
     *   path="/discussions",
@@ -185,9 +185,9 @@ class DiscussionsAPI extends Mapper
     *   )
     * )
     */
-   public function Post($Params)
+   public function Post($Parameters)
    {
-      $Ext = $Params['Ext'];
+      $Ext = $Parameters['Ext'];
 
       $Return = array();
       $Return['Map'] = 'vanilla/post/discussion.' . $Ext;
@@ -210,12 +210,12 @@ class DiscussionsAPI extends Mapper
     *
     * @since   0.1.0
     * @access  public
-    * @param   array $Params
+    * @param   array $Parameters
     */
-   public function Put($Params)
+   public function Put($Parameters)
    {
-      $ID   = $Params['URI'][2];
-      $Ext  = $Params['Ext'];
+      $ID   = $Parameters['URI'][2];
+      $Ext  = $Parameters['Ext'];
 
       $Return = array();
       $Return['Args']['DiscussionID'] = $ID;
@@ -397,7 +397,7 @@ class DiscussionsAPI extends Mapper
     *
     * @since   0.1.0
     * @access  public
-    * @param   array $Params
+    * @param   array $Parameters
     *
     * @SWG\api(
     *   path="/discussions/{id}",
@@ -411,10 +411,10 @@ class DiscussionsAPI extends Mapper
     *   )
     * )
     */
-   public function Delete($Params)
+   public function Delete($Parameters)
    {
-      $ID   = $Params['URI'][2];
-      $Ext  = $Params['Ext'];
+      $ID   = $Parameters['URI'][2];
+      $Ext  = $Parameters['Ext'];
 
       $Return = array();
       $Return['Args']['TransientKey'] = Gdn::Session()->TransientKey();

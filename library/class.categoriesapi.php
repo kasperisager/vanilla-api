@@ -26,13 +26,13 @@ class CategoriesAPI extends Mapper
     * @since   0.1.0
     * @access  public
     */
-   public function Get($Params)
+   public function Get($Parameters)
    {
-      if (isset($Params['URI'][2])) {
-         $ID = $Params['URI'][2];
+      if (isset($Parameters['URI'][2])) {
+         $ID = $Parameters['URI'][2];
       }
 
-      $Ext = $Params['Ext'];
+      $Ext = $Parameters['Format'];
 
       if (isset($ID)) {
          return self::_GetById($Ext, $ID);
@@ -64,7 +64,8 @@ class CategoriesAPI extends Mapper
    protected function _GetAll($Ext)
    {
       $Return = array();
-      $Return['Map'] = 'vanilla/categories.' . $Ext . '/all';
+      $Return['Resource']     = 'vanilla/categories.' . $Ext . '/all';
+      $Return['Authenticate'] = 'Optional';
 
       return $Return;
    }
@@ -127,12 +128,12 @@ class CategoriesAPI extends Mapper
     *   )
     * )
     */
-   public function Post($Params)
+   public function Post($Parameters)
    {
-      $Ext = $Params['Ext'];
+      $Ext = $Parameters['Ext'];
 
       $Return = array();
-      $Return['Map'] = 'vanilla/settings/addcategory.' . $Ext;
+      $Return['Map']    = 'vanilla/settings/addcategory.' . $Ext;
 
       return $Return;
    }
@@ -185,12 +186,12 @@ class CategoriesAPI extends Mapper
     *   )
     * )
     */
-   public function Put($Params)
+   public function Put($Parameters)
    {
-      if (isset($Params['URI'][2])) {
+      if (isset($Parameters['URI'][2])) {
 
-         $ID   = $Params['URI'][2];
-         $Ext  = $Params['Ext'];
+         $ID   = $Parameters['URI'][2];
+         $Ext  = $Parameters['Ext'];
 
          $Return = array();
          $Return['Args']['CategoryID'] = $ID;
@@ -234,12 +235,12 @@ class CategoriesAPI extends Mapper
     *   )
     * )
     */
-   public function Delete($Params)
+   public function Delete($Parameters)
    {
-      if (isset($Params['URI'][2])) {
+      if (isset($Parameters['URI'][2])) {
 
-         $ID   = $Params['URI'][2];
-         $Ext  = $Params['Ext'];
+         $ID   = $Parameters['URI'][2];
+         $Ext  = $Parameters['Ext'];
 
          $Return = array();
          $Return['Args']['CategoryID'] = $ID;

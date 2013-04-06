@@ -25,7 +25,7 @@ abstract class Mapper
     * @since 0.1.0
     * @access public
     */
-   abstract public function Get($Params);
+   abstract public function Get($Parameters);
 
    /**
     * POST
@@ -33,7 +33,7 @@ abstract class Mapper
     * @since 0.1.0
     * @access public
     */
-   abstract public function Post($Params);
+   abstract public function Post($Parameters);
 
    /**
     * PUT
@@ -41,7 +41,7 @@ abstract class Mapper
     * @since 0.1.0
     * @access public
     */
-   abstract public function Put($Params);
+   abstract public function Put($Parameters);
 
    /**
     * DELETE
@@ -49,5 +49,5 @@ abstract class Mapper
     * @since 0.1.0
     * @access public
     */
-   abstract public function Delete($Params);
+   abstract public function Delete($Parameters);
 }

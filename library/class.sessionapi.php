@@ -40,7 +40,7 @@ class SessionAPI extends Mapper
     *   )
     * )
     */
-   public function Get($Params)
+   public function Get($Parameters)
    {
       return FALSE;
    }
@@ -51,7 +51,7 @@ class SessionAPI extends Mapper
     * @since   0.1.0
     * @access  public
     */
-   public function Post($Params)
+   public function Post($Parameters)
    {
       return 501;
    }
@@ -62,7 +62,7 @@ class SessionAPI extends Mapper
     * @since   0.1.0
     * @access  public
     */
-   public function Put($Params)
+   public function Put($Parameters)
    {
       return 501;
    }
@@ -73,7 +73,7 @@ class SessionAPI extends Mapper
     * @since   0.1.0
     * @access  public
     */
-   public function Delete($Params)
+   public function Delete($Parameters)
    {
       return 501;
    }

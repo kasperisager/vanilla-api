@@ -31,10 +31,7 @@ class APIHooks implements Gdn_IPlugin
     */
    public function Setup()
    {
-      $Secret = C('API.Secret');
-      if (!$Secret) {
-         $Secret = sha1(mt_rand());
-      }
+      if (!C('API.Secret')) $Secret = sha1(mt_rand());
       SaveToConfig('API.Secret', $Secret);
    }
 

@@ -24,12 +24,12 @@ class UsersAPI extends Mapper
     *
     * @since   0.1.0
     * @access  public
-    * @param   array $Params
+    * @param   array $Parameters
     */
-   public function Get($Params)
+   public function Get($Parameters)
    {
-      $ID   = $Params['URI'][2];
-      $Ext  = $Params['Ext'];
+      $ID   = $Parameters['URI'][2];
+      $Ext  = $Parameters['Ext'];
 
       if ($ID) {
          return self::_GetById($Ext, $ID);
@@ -96,9 +96,9 @@ class UsersAPI extends Mapper
     *
     * @since   0.1.0
     * @access  public
-    * @param   array $Params
+    * @param   array $Parameters
     */
-   public function Post($Params)
+   public function Post($Parameters)
    {
       return 501;
    }
@@ -108,9 +108,9 @@ class UsersAPI extends Mapper
     *
     * @since   0.1.0
     * @access  public
-    * @param   array $Params
+    * @param   array $Parameters
     */
-   public function Put($Params)
+   public function Put($Parameters)
    {
       return 501;
    }
@@ -120,9 +120,9 @@ class UsersAPI extends Mapper
     *
     * @since   0.1.0
     * @access  public
-    * @param   array $Params
+    * @param   array $Parameters
     */
-   public function Delete($Params)
+   public function Delete($Parameters)
    {
       return 501;
    }

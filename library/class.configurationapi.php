@@ -24,7 +24,7 @@ class ConfigurationAPI extends Mapper
     *
     * @since   0.1.0
     * @access  public
-    * @param   array $Params
+    * @param   array $Parameters
     * @return  array
     *
     * @SWG\api(
@@ -38,9 +38,9 @@ class ConfigurationAPI extends Mapper
     *   )
     * )
     */
-   public function Get($Params)
+   public function Get($Parameters)
    {
-      $Ext = $Params['Ext'];
+      $Ext = $Parameters['Ext'];
 
       $Return = array();
       $Return['Map'] = 'dashboard/settings/configuration.' . $Ext;
@@ -53,10 +53,10 @@ class ConfigurationAPI extends Mapper
     *
     * @since   0.1.0
     * @access  public
-    * @param   array $Params
+    * @param   array $Parameters
     * @return  bool
     */
-   public function Post($Params)
+   public function Post($Parameters)
    {
       return 501;
    }
@@ -66,10 +66,10 @@ class ConfigurationAPI extends Mapper
     *
     * @since   0.1.0
     * @access  public
-    * @param   array $Params
+    * @param   array $Parameters
     * @return  bool
     */
-   public function Put($Params)
+   public function Put($Parameters)
    {
       return 501;
    }
@@ -79,10 +79,10 @@ class ConfigurationAPI extends Mapper
     *
     * @since   0.1.0
     * @access  public
-    * @param   array $Params
+    * @param   array $Parameters
     * @return  bool
     */
-   public function Delete($Params)
+   public function Delete($Parameters)
    {
       return 501;
    }
