@@ -106,10 +106,10 @@ class DocsController extends APIController
 
       // Define the API Wiki remote feed and local cache
       $RemoteData = 'https://github.com/kasperisager/VanillaAPI/wiki.atom';
-      $CacheData  = PATH_CACHE . '/VanillaAPI/wiki_entries.cache';
+      $CacheData  = PATH_CACHE . '/API/wiki_entries.cache';
 
       // If the cache folder hasn't been create yet, create it
-      if (!is_dir(PATH_CACHE . '/VanillaAPI')) mkdir(PATH_CACHE . '/VanillaAPI');
+      if (!is_dir(PATH_CACHE . '/API')) mkdir(PATH_CACHE . '/API');
 
       // If no cache data is found or the cache data is older than 1 hour,
       // pull in the remote feed and cache it
@@ -184,7 +184,7 @@ class DocsController extends APIController
       $this->DeliveryMethod(DELIVERY_METHOD_JSON);
 
       $Root       = PATH_ROOT;
-      $Cache      = PATH_CACHE . DS . 'VanillaAPI';
+      $Cache      = PATH_CACHE . DS . 'API';
       $Data       = array();
       $Data       = array_merge(self::Meta(), $Data);
 

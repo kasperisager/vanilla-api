@@ -28,8 +28,8 @@ class UsersAPI extends Mapper
     */
    public function Get($Parameters)
    {
-      $ID   = $Parameters['URI'][2];
-      $Ext  = $Parameters['Ext'];
+      $ID      = $Parameters['Path'][2];
+      $Format  = $Parameters['Format'];
 
       if ($ID) {
          return self::_GetById($Ext, $ID);
@@ -100,7 +100,7 @@ class UsersAPI extends Mapper
     */
    public function Post($Parameters)
    {
-      return 501;
+      throw new Exception("Method Not Implemented", 501);
    }
 
    /**
@@ -112,7 +112,7 @@ class UsersAPI extends Mapper
     */
    public function Put($Parameters)
    {
-      return 501;
+      throw new Exception("Method Not Implemented", 501);
    }
 
    /**
@@ -124,6 +124,6 @@ class UsersAPI extends Mapper
     */
    public function Delete($Parameters)
    {
-      return 501;
+      throw new Exception("Method Not Implemented", 501);
    }
 }

@@ -40,10 +40,11 @@ class ConfigurationAPI extends Mapper
     */
    public function Get($Parameters)
    {
-      $Ext = $Parameters['Ext'];
+      $Format = $Parameters['Format'];
 
       $Return = array();
-      $Return['Map'] = 'dashboard/settings/configuration.' . $Ext;
+      $Return['Resource'] = 'dashboard/settings/configuration.' . $Format;
+      $Return['Authenticate'] = 'Required';
 
       return $Return;
    }
@@ -58,7 +59,7 @@ class ConfigurationAPI extends Mapper
     */
    public function Post($Parameters)
    {
-      return 501;
+      throw new Exception("Method Not Implemented", 501);
    }
 
    /**
@@ -71,7 +72,7 @@ class ConfigurationAPI extends Mapper
     */
    public function Put($Parameters)
    {
-      return 501;
+      throw new Exception("Method Not Implemented", 501);
    }
 
    /**
@@ -84,6 +85,6 @@ class ConfigurationAPI extends Mapper
     */
    public function Delete($Parameters)
    {
-      return 501;
+      throw new Exception("Method Not Implemented", 501);
    }
 }

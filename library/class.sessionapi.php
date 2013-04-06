@@ -53,7 +53,7 @@ class SessionAPI extends Mapper
     */
    public function Post($Parameters)
    {
-      return 501;
+      throw new Exception("Method Not Implemented", 501);
    }
 
    /**
@@ -64,7 +64,7 @@ class SessionAPI extends Mapper
     */
    public function Put($Parameters)
    {
-      return 501;
+      throw new Exception("Method Not Implemented", 501);
    }
 
    /**
@@ -75,6 +75,6 @@ class SessionAPI extends Mapper
     */
    public function Delete($Parameters)
    {
-      return 501;
+      throw new Exception("Method Not Implemented", 501);
    }
 }

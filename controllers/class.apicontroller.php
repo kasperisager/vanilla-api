@@ -150,8 +150,8 @@ class APIController extends Gdn_Controller
    protected static function Authenticate()
    {
       $Request       = Gdn::Request();
-      $Request       = $Request->PathAndQuery();
-      $ParsedURL     = parse_url($Request);
+      $PathAndQuery  = $Request->PathAndQuery();
+      $ParsedURL     = parse_url($PathAndQuery);
 
       // Get the values we need for authentication
       $Username      = GetIncomingValue('username');
@@ -370,7 +370,7 @@ class APIController extends Gdn_Controller
       if (empty($Call) || $Call != 'api' || empty($Resource)) return;
 
       // Abandon dispatch if any of these methods are requested
-      $Abandon = array('resources', 'wiki', 'session');
+      $Abandon    = array('resources', 'wiki', 'session');
       foreach ($Abandon as $Method) if ($Resource == $Method) return;
 
       // Turn requested resource into API class and store it
@@ -391,7 +391,7 @@ class APIController extends Gdn_Controller
       $Method     = $Request->RequestMethod();
       
       // Use the MethodHandler to get data from the API class
-      $Data = self::MethodHandler($Path, $Class, $Method);
+      $Data       = self::MethodHandler($Path, $Class, $Method);
 
       // Make sure that the API class returns a resource
       if (!isset($Data['Resource']))
