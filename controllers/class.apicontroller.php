@@ -172,7 +172,7 @@ class APIController extends Gdn_Controller
       unset($Request['token']);
 
       // Make sure that either a username or an email has been passed
-      if (empty($Username) && !empty($Email))
+      if (empty($Username) && empty($Email))
          throw new Exception("Username or email must be specified", 401);
 
       // Make sure that the query contains a timestamp
