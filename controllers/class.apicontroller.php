@@ -91,6 +91,37 @@ class APIController extends Gdn_Controller
    }
 
    /**
+    * Expose the session object
+    *
+    * @since   0.1.0
+    * @access  public
+    */
+   public function Session()
+   {  
+      $Request    = Gdn::Request();
+      $Arguments  = $Request->Export('Arguments');
+
+      $this->DeliveryType(DELIVERY_TYPE_DATA);
+
+      // Change response format depending on HTTP_ACCEPT
+      $Accept  = $Arguments['server']['HTTP_ACCEPT'];
+      $Ext     = (strpos($Accept, 'json')) ? 'json' : 'xml';
+   
+      switch ($Ext) {
+         case 'xml':
+            $this->DeliveryMethod(DELIVERY_METHOD_XML);
+            break;
+
+         case 'json':
+            $this->DeliveryMethod(DELIVERY_METHOD_JSON);
+            break;
+      }
+
+      $this->SetData('Session', self::Sanitize(Gdn::Session()));
+      $this->RenderData();
+   }
+
+   /**
     * A little voodoo to turn objects into arrays
     *
     * @since   0.1.0
