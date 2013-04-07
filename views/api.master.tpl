@@ -39,8 +39,6 @@
                      <ul class="dropdown-menu">
                         <li class="nav-header">{t c="Welcome!"}</li>
                         {profile_link text="Profile"}
-                        {inbox_link text="Inbox"}
-                        {bookmarks_link text="Bookmarks"}
                         {dashboard_link text="Dashboard"}
                         <li class="divider"></li>
                         <li>{link path="signinout"}</li>
