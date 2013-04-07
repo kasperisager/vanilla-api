@@ -161,9 +161,6 @@ class DocsController extends APIController
          $this->SetData('Entry', $Entries['home']);
       }
 
-      // $this->SetData('Sidebar', $Entries['sidebar']['Content']);
-      // $this->SetData('Footer', $Entries['footer']['Content']);
-
       $this->MasterView = 'api';
       $this->Render();
    }
