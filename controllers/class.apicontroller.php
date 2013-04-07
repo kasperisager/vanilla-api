@@ -3,7 +3,7 @@
 /**
  * Vanilla API
  *
- * The Vanilla API lets you interface with Vanilla in a RESTlike way using the
+ * The Vanilla API lets you interface with Vanilla in a RESTful way using the
  * standard HTTP verbs GET, POST, PUT and DELETE. It also provides great
  * documentation and visualization of the API itself as well as its inner
  * workings.
