@@ -2,6 +2,7 @@
   "name": "VanillaAPI",
   "description": "Description",
   "version": "0.1.0",
+  "private": true,
   "author": {
     "name": "Kasper K. Isager",
     "email": "kasperisager@gmail.com",
