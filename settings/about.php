@@ -2,7 +2,7 @@
 
 $ApplicationInfo['API'] = array(
    'Description'  => 'RESTful API for Vanilla that responds in JSON and XML.',
-   'Version'      => '0.1.0',
+   'Version'      => '0.0.0-dev',
    'Url'          => 'https://github.com/kasperisager/VanillaAPI',
    'Author'       => 'Kasper Kronborg Isager',
    'AuthorEmail'  => 'kasperisager@gmail.com',
