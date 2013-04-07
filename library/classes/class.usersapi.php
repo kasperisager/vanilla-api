@@ -25,6 +25,7 @@ class UsersAPI extends APIMapper
     * @since   0.1.0
     * @access  public
     * @param   array $Parameters
+    * @return  array
     */
    public function Get($Parameters)
    {
@@ -40,19 +41,19 @@ class UsersAPI extends APIMapper
 
    /**
     * Find all users
-    * 
-    * @param  string $Format
-    * @return array
+    *
+    * @since   0.1.0
+    * @access  protected
+    * @param   string $Format
+    * @return  array
     * 
     * @SWG\api(
     *   path="/users",
-    *   @SWG\operations(
-    *     @SWG\operation(
-    *       httpMethod="GET",
-    *       path="/users",
-    *       nickname="GetAll",
-    *       summary="Get a list of all registered users"
-    *     )
+    *   @SWG\operation(
+    *     httpMethod="GET",
+    *     path="/users",
+    *     nickname="GetAll",
+    *     summary="Get a list of all registered users"
     *   )
     * )
     */
@@ -66,19 +67,20 @@ class UsersAPI extends APIMapper
 
    /**
     * Find a specific user
-    * 
-    * @param  string $Format
-    * @param  int $ID
+    *
+    * @since   0.1.0
+    * @access  protected
+    * @param   string   $Format
+    * @param   int      $ID
+    * @return  array
     *
     * @SWG\api(
     *   path="/users/{id}",
-    *   @SWG\operations(
-    *     @SWG\operation(
-    *       httpMethod="GET",
-    *       path="/users",
-    *       nickname="GetById",
-    *       summary="Get a specific user"
-    *     )
+    *   @SWG\operation(
+    *     httpMethod="GET",
+    *     path="/users",
+    *     nickname="GetById",
+    *     summary="Get a specific user"
     *   )
     * )
     */

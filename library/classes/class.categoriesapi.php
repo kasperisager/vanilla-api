@@ -25,6 +25,8 @@ class CategoriesAPI extends APIMapper
     *
     * @since   0.1.0
     * @access  public
+    * @param   array $Parameters
+    * @return  array
     */
    public function Get($Parameters)
    {
@@ -43,16 +45,15 @@ class CategoriesAPI extends APIMapper
     *
     * @since   0.1.0
     * @access  protected
+    * @param   string $Format
+    * @return  array
     *
     * @SWG\api(
     *   path="/categories",
-    *   @SWG\operations(
-    *     @SWG\operation(
-    *       httpMethod="GET",
-    *       nickname="GetAll",
-    *       summary="Find all categories",
-    *       notes="Respects permissions"
-    *     )
+    *   @SWG\operation(
+    *     httpMethod="GET",
+    *     nickname="GetAll",
+    *     summary="Find all categories"
     *   )
     * )
     */
@@ -72,25 +73,23 @@ class CategoriesAPI extends APIMapper
     *
     * @since   0.1.0
     * @access  protected
+    * @param   string   $Format
+    * @param   int      $ID
+    * @return  array
     *
     * @SWG\api(
     *   path="/categories/{id}",
-    *   @SWG\operations(
-    *     @SWG\operation(
-    *       httpMethod="GET",
-    *       nickname="GetAll",
-    *       summary="Find a specific category",
-    *       notes="Respects permissions",
-    *       @SWG\parameters(
-    *         @SWG\parameter(
-    *           allowMultiple="false",
-    *           name="ID",
-    *           description="ID of category that needs to be fetched",
-    *           paramType="path",
-    *           required="true",
-    *           dataType="int"
-    *         )
-    *       )
+    *   @SWG\operation(
+    *     httpMethod="GET",
+    *     nickname="GetAll",
+    *     summary="Find a specific category",
+    *     @SWG\parameter(
+    *       allowMultiple="false",
+    *       name="ID",
+    *       description="ID of category that needs to be fetched",
+    *       paramType="path",
+    *       required="true",
+    *       dataType="int"
     *     )
     *   )
     * )
@@ -111,16 +110,15 @@ class CategoriesAPI extends APIMapper
     *
     * @since   0.1.0
     * @access  public
+    * @param   array $Parameters
+    * @return  array
     *
     * @SWG\api(
     *   path="/categories",
-    *   @SWG\operations(
-    *     @SWG\operation(
-    *       httpMethod="POST",
-    *       nickname="Post",
-    *       summary="Create a new category",
-    *       notes="Respects permissions"
-    *     )
+    *   @SWG\operation(
+    *     httpMethod="POST",
+    *     nickname="Post",
+    *     summary="Create a new category"
     *   )
     * )
     */
@@ -139,45 +137,40 @@ class CategoriesAPI extends APIMapper
     *
     * PUT /categories/:id
     *
-    * To be implemented:
-    * PUT /categories/follow/:id
-    * PUT /categories/read/:id
-    *
     * @since   0.1.0
     * @access  public
+    * @param   array $Parameters
+    * @return  array
     *
     * @SWG\api(
     *   path="/categories/{id}",
-    *   @SWG\operations(
-    *     @SWG\operation(
-    *       httpMethod="PUT",
-    *       nickname="Put",
-    *       summary="Update an existing category",
-    *       notes="Respects permissions",
-    *       @SWG\parameter(
-    *         allowMultiple="false",
-    *         name="ID",
-    *         description="ID of category that needs to be updated",
-    *         paramType="path",
-    *         required="true",
-    *         dataType="int"
-    *       ),
-    *       @SWG\parameter(
-    *         allowMultiple="false",
-    *         name="Name",
-    *         description="Existing or new name of the category",
-    *         paramType="body",
-    *         required="true",
-    *         dataType="string"
-    *       ),
-    *       @SWG\parameter(
-    *         allowMultiple="false",
-    *         name="UrlCode",
-    *         description="Existing or new URL code of the category",
-    *         paramType="body",
-    *         required="true",
-    *         dataType="string"
-    *       )
+    *   @SWG\operation(
+    *     httpMethod="PUT",
+    *     nickname="Put",
+    *     summary="Update an existing category",
+    *     @SWG\parameter(
+    *       allowMultiple="false",
+    *       name="ID",
+    *       description="ID of category that needs to be updated",
+    *       paramType="path",
+    *       required="true",
+    *       dataType="int"
+    *     ),
+    *     @SWG\parameter(
+    *       allowMultiple="false",
+    *       name="Name",
+    *       description="Existing or new name of the category",
+    *       paramType="body",
+    *       required="true",
+    *       dataType="string"
+    *     ),
+    *     @SWG\parameter(
+    *       allowMultiple="false",
+    *       name="UrlCode",
+    *       description="Existing or new URL code of the category",
+    *       paramType="body",
+    *       required="true",
+    *       dataType="string"
     *     )
     *   )
     * )
@@ -202,25 +195,22 @@ class CategoriesAPI extends APIMapper
     *
     * @since   0.1.0
     * @access  public
+    * @param   array $Parameters
+    * @return  array
     *
     * @SWG\api(
     *   path="/categories/{id}",
-    *   @SWG\operations(
-    *     @SWG\operation(
-    *       httpMethod="DELETE",
-    *       nickname="Delete",
-    *       summary="Delete an existing category",
-    *       notes="Respects permissions",
-    *       @SWG\parameters(
-    *         @SWG\parameter(
-    *           allowMultiple="false",
-    *           name="ID",
-    *           description="ID of category that needs to be deleted",
-    *           paramType="path",
-    *           required="true",
-    *           dataType="int"
-    *         )
-    *       )
+    *   @SWG\operation(
+    *     httpMethod="DELETE",
+    *     nickname="Delete",
+    *     summary="Delete an existing category",
+    *     @SWG\parameter(
+    *       allowMultiple="false",
+    *       name="ID",
+    *       description="ID of category that needs to be deleted",
+    *       paramType="path",
+    *       required="true",
+    *       dataType="int"
     *     )
     *   )
     * )

@@ -22,6 +22,7 @@ class LocalesAPI extends APIMapper
     *
     * @since   0.1.0
     * @access  public
+    * @param   array $Parameters
     */
    public function Get($Parameters)
    {
@@ -33,6 +34,7 @@ class LocalesAPI extends APIMapper
     *
     * @since   0.1.0
     * @access  public
+    * @param   array $Parameters
     */
    public function Post($Parameters)
    {
@@ -44,6 +46,7 @@ class LocalesAPI extends APIMapper
     *
     * @since   0.1.0
     * @access  public
+    * @param   array $Parameters
     */
    public function Put($Parameters)
    {
@@ -55,6 +58,7 @@ class LocalesAPI extends APIMapper
     *
     * @since   0.1.0
     * @access  public
+    * @param   array $Parameters
     */
    public function Delete($Parameters)
    {

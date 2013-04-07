@@ -29,12 +29,10 @@ class ConfigurationAPI extends APIMapper
     *
     * @SWG\api(
     *   path="/configuration",
-    *   @SWG\operations(
-    *     @SWG\operation(
-    *       httpMethod="GET",
-    *       nickname="GetConfig",
-    *       summary="Get the current forum configuration"
-    *     )
+    *   @SWG\operation(
+    *     httpMethod="GET",
+    *     nickname="GetConfig",
+    *     summary="Get the current forum configuration"
     *   )
     * )
     */
@@ -55,7 +53,6 @@ class ConfigurationAPI extends APIMapper
     * @since   0.1.0
     * @access  public
     * @param   array $Parameters
-    * @return  bool
     */
    public function Post($Parameters)
    {
@@ -68,7 +65,6 @@ class ConfigurationAPI extends APIMapper
     * @since   0.1.0
     * @access  public
     * @param   array $Parameters
-    * @return  bool
     */
    public function Put($Parameters)
    {
@@ -81,7 +77,6 @@ class ConfigurationAPI extends APIMapper
     * @since   0.1.0
     * @access  public
     * @param   array $Parameters
-    * @return  bool
     */
    public function Delete($Parameters)
    {

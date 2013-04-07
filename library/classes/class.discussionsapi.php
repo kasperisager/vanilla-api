@@ -23,11 +23,6 @@ class DiscussionsAPI extends APIMapper
     * GET /discussions
     * GET /discussions/:id
     *
-    * To be implemented:
-    * GET /discussions/bookmarks
-    * GET /discussions/mine
-    * GET /discussions/unread
-    *
     * @since   0.1.0
     * @access  public
     * @param   array $Parameters
@@ -52,17 +47,15 @@ class DiscussionsAPI extends APIMapper
     *
     * @since   0.1.0
     * @access  protected
+    * @param   string $Format
     * @return  array
     *
     * @SWG\api(
     *   path="/discussions",
-    *   @SWG\operations(
-    *     @SWG\operation(
-    *       httpMethod="GET",
-    *       nickname="GetAll",
-    *       summary="Find all discussions",
-    *       notes="Respects permissions"
-    *     )
+    *   @SWG\operation(
+    *     httpMethod="GET",
+    *     nickname="GetAll",
+    *     summary="Find all discussions"
     *   )
     * )
     */
@@ -81,19 +74,16 @@ class DiscussionsAPI extends APIMapper
     *
     * @since   0.1.0
     * @access  protected
-    * @param   string $Ext
-    * @param   int $ID
+    * @param   string   $Format
+    * @param   int      $ID
     * @return  array
     *
     * @SWG\api(
     *   path="/discussions/{id}",
-    *   @SWG\operations(
-    *     @SWG\operation(
-    *       httpMethod="GET",
-    *       nickname="GetById",
-    *       summary="Find a specific discussion",
-    *       notes="Respects permissions"
-    *     )
+    *   @SWG\operation(
+    *     httpMethod="GET",
+    *     nickname="GetById",
+    *     summary="Find a specific discussion"
     *   )
     * )
     */
@@ -111,6 +101,7 @@ class DiscussionsAPI extends APIMapper
     * @since   0.1.0
     * @access  protected
     * @param   string $Format
+    * @return  array
     */
    protected function GetBookmarks($Format)
    {
@@ -126,6 +117,7 @@ class DiscussionsAPI extends APIMapper
     * @since   0.1.0
     * @access  protected
     * @param   string $Format
+    * @return  array
     */
    protected function GetMine($Format)
    {
@@ -144,6 +136,7 @@ class DiscussionsAPI extends APIMapper
     * @since   0.1.0
     * @access  public
     * @param   array $Parameters
+    * @return  array
     */
    public function Post($Parameters)
    {
@@ -170,13 +163,10 @@ class DiscussionsAPI extends APIMapper
     * 
     * @SWG\api(
     *   path="/discussions",
-    *   @SWG\operations(
-    *     @SWG\operation(
-    *       httpMethod="POST",
-    *       nickname="PostDiscussion",
-    *       summary="Create a new discussion",
-    *       notes="Respects permissions"
-    *     )
+    *   @SWG\operation(
+    *     httpMethod="POST",
+    *     nickname="PostDiscussion",
+    *     summary="Create a new discussion"
     *   )
     * )
     */
@@ -190,20 +180,19 @@ class DiscussionsAPI extends APIMapper
 
    /**
     * Create a new comment
-    * 
+    *
+    * @since   0.1.0
+    * @access  protected
     * @param   string   $Format
     * @param   int      $ID
     * @return  array
     *
     * @SWG\api(
     *   path="/discussions/{id}/comments",
-    *   @SWG\operations(
-    *     @SWG\operation(
-    *       httpMethod="POST",
-    *       nickname="PostComment",
-    *       summary="Create a new comment",
-    *       notes="Respects permissions"
-    *     )
+    *   @SWG\operation(
+    *     httpMethod="POST",
+    *     nickname="PostComment",
+    *     summary="Create a new comment"
     *   )
     * )
     */
@@ -226,6 +215,7 @@ class DiscussionsAPI extends APIMapper
     * @since   0.1.0
     * @access  public
     * @param   array $Parameters
+    * @return  array
     */
    public function Put($Parameters)
    {
@@ -247,18 +237,16 @@ class DiscussionsAPI extends APIMapper
     *
     * @since   0.1.0
     * @access  protected
-    * @param   string $Format
-    * @param   int $ID
+    * @param   string   $Format
+    * @param   int      $ID
+    * @return  array
     *
     * @SWG\api(
     *   path="/discussions/{id}",
-    *   @SWG\operations(
-    *     @SWG\operation(
-    *       httpMethod="PUT",
-    *       nickname="PutDiscussion",
-    *       summary="Update an existing discussion",
-    *       notes="Respects permissions"
-    *     )
+    *   @SWG\operation(
+    *     httpMethod="PUT",
+    *     nickname="PutDiscussion",
+    *     summary="Update an existing discussion"
     *   )
     * )
     */
@@ -279,18 +267,16 @@ class DiscussionsAPI extends APIMapper
     *
     * @since   0.1.0
     * @access  protected
-    * @param   string $Format
-    * @param   int $ID
+    * @param   string   $Format
+    * @param   int      $ID
+    * @return  array
     *
     * @SWG\api(
     *   path="/discussions/comments/{id}",
-    *   @SWG\operations(
-    *     @SWG\operation(
-    *       httpMethod="PUT",
-    *       nickname="PutComment",
-    *       summary="Update an existing comment",
-    *       notes="Respects permissions"
-    *     )
+    *   @SWG\operation(
+    *     httpMethod="PUT",
+    *     nickname="PutComment",
+    *     summary="Update an existing comment"
     *   )
     * )
     */
@@ -313,6 +299,7 @@ class DiscussionsAPI extends APIMapper
     * @since   0.1.0
     * @access  public
     * @param   array $Parameters
+    * @return  array
     */
    public function Delete($Parameters)
    {
@@ -340,13 +327,10 @@ class DiscussionsAPI extends APIMapper
     *
     * @SWG\api(
     *   path="/discussions/{id}",
-    *   @SWG\operations(
-    *     @SWG\operation(
-    *       httpMethod="DELETE",
-    *       nickname="DeleteDiscussion",
-    *       summary="Delete an existing discussion",
-    *       notes="Respects permissions"
-    *     )
+    *   @SWG\operation(
+    *     httpMethod="DELETE",
+    *     nickname="DeleteDiscussion",
+    *     summary="Delete an existing discussion"
     *   )
     * )
     */
@@ -372,13 +356,10 @@ class DiscussionsAPI extends APIMapper
     *
     * @SWG\api(
     *   path="/discussions/comments/{id}",
-    *   @SWG\operations(
-    *     @SWG\operation(
-    *       httpMethod="DELETE",
-    *       nickname="DeleteComment",
-    *       summary="Delete an existing comment",
-    *       notes="Respects permissions"
-    *     )
+    *   @SWG\operation(
+    *     httpMethod="DELETE",
+    *     nickname="DeleteComment",
+    *     summary="Delete an existing comment"
     *   )
     * )
     */

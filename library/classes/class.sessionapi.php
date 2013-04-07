@@ -27,22 +27,20 @@ class SessionAPI extends APIMapper
     *
     * @since   0.1.0
     * @access  public
+    * @param   array $Parameters
     *
     * @SWG\api(
     *   path="/session",
-    *   @SWG\operations(
-    *     @SWG\operation(
-    *       httpMethod="GET",
-    *       nickname="GetSession",
-    *       summary="Information about the current user session",
-    *       notes="Respects permissions"
-    *     )
+    *   @SWG\operation(
+    *     httpMethod="GET",
+    *     nickname="GetSession",
+    *     summary="Information about the current user session"
     *   )
     * )
     */
    public function Get($Parameters)
    {
-      return FALSE;
+      throw new Exception("Method Not Implemented", 501);
    }
 
    /**
@@ -50,6 +48,7 @@ class SessionAPI extends APIMapper
     *
     * @since   0.1.0
     * @access  public
+    * @param   array $Parameters
     */
    public function Post($Parameters)
    {
@@ -61,6 +60,7 @@ class SessionAPI extends APIMapper
     *
     * @since   0.1.0
     * @access  public
+    * @param   array $Parameters
     */
    public function Put($Parameters)
    {
@@ -72,6 +72,7 @@ class SessionAPI extends APIMapper
     *
     * @since   0.1.0
     * @access  public
+    * @param   array $Parameters
     */
    public function Delete($Parameters)
    {

@@ -29,19 +29,21 @@ class MessagesAPI extends APIMapper
     *
     * @SWG\api(
     *   path="/messages",
-    *   @SWG\operations(
-    *     @SWG\operation(
-    *       httpMethod="GET",
-    *       nickname="GetMessages",
-    *       summary="Get the current user's messages"
-    *     )
+    *   @SWG\operation(
+    *     httpMethod="GET",
+    *     nickname="GetMessages",
+    *     summary="Get all of a user's messages"
     *   )
     * )
     */
    public function Get($Parameters)
    {
       $Format = $Parameters['Format'];
-      return array('Resource' => 'messages/all.' . $Format);
+
+      $Return = array();
+      $Return['Resource'] = 'messages/all.' . $Format;
+
+      return $Return;
    }
 
    /**
@@ -50,7 +52,6 @@ class MessagesAPI extends APIMapper
     * @since   0.1.0
     * @access  public
     * @param   array $Parameters
-    * @return  bool
     */
    public function Post($Parameters)
    {
@@ -63,7 +64,6 @@ class MessagesAPI extends APIMapper
     * @since   0.1.0
     * @access  public
     * @param   array $Parameters
-    * @return  bool
     */
    public function Put($Parameters)
    {
@@ -76,7 +76,6 @@ class MessagesAPI extends APIMapper
     * @since   0.1.0
     * @access  public
     * @param   array $Parameters
-    * @return  bool
     */
    public function Delete($Parameters)
    {
