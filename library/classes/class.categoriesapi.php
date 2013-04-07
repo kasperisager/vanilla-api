@@ -42,7 +42,7 @@ class CategoriesAPI extends APIMapper
     * GET /categories
     *
     * @since   0.1.0
-    * @access  public
+    * @access  protected
     *
     * @SWG\api(
     *   path="/categories",
@@ -71,7 +71,7 @@ class CategoriesAPI extends APIMapper
     * GET /categories/:id
     *
     * @since   0.1.0
-    * @access  public
+    * @access  protected
     *
     * @SWG\api(
     *   path="/categories/{id}",

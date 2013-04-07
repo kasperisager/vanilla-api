@@ -180,7 +180,7 @@ class APIController extends Gdn_Controller
          throw new Exception("A timestamp must be specified", 401);
 
       // Make sure that this timestamp is still valid
-      if ((abs($Timestamp - time())) > C('API.Timeout'))
+      if ((abs($Timestamp - time())) > C('API.Expiration'))
          throw new Exception("The request is no longer valid", 401);
 
       // Make sure that the query contains a token
