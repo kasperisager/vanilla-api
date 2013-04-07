@@ -12,12 +12,12 @@
  * in the API.
  *
  * @package    API
- * @version    0.1.0
+ * @since      0.1.0
  * @author     Kasper Kronborg Isager <kasperisager@gmail.com>
- * @copyright  Copyright © 2013
+ * @copyright  Copyright 2013 © Kasper Kronborg Isager
  * @license    http://opensource.org/licenses/MIT MIT
  */
-abstract class Mapper
+abstract class APIMapper
 {
    /**
     * GET

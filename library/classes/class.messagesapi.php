@@ -3,46 +3,45 @@
 use Swagger\Annotations as SWG;
 
 /**
- * Session API
- *
- * This method is not used for anything besides documentation purposes as the
- * API controller takes care of exposing the session object
+ * Messages API
  *
  * @package    API
  * @since      0.1.0
  * @author     Kasper Kronborg Isager <kasperisager@gmail.com>
- * @copyright  Copyright © 2013
+ * @copyright  Copyright 2013 © Kasper Kronborg Isager
  * @license    http://opensource.org/licenses/MIT MIT
  *
  * @SWG\resource(
- *   resourcePath="/session"
+ *   resourcePath="/messages"
  * )
  */
-class SessionAPI extends Mapper
+class MessagesAPI extends APIMapper
 {
    /**
-    * Info about current user session
+    * Retrieve Vanilla configuration
     *
-    * GET /session
+    * GET /messages
     *
     * @since   0.1.0
     * @access  public
+    * @param   array $Parameters
+    * @return  array
     *
     * @SWG\api(
-    *   path="/session",
+    *   path="/messages",
     *   @SWG\operations(
     *     @SWG\operation(
     *       httpMethod="GET",
-    *       nickname="GetSession",
-    *       summary="Information about the current user session",
-    *       notes="Respects permissions"
+    *       nickname="GetMessages",
+    *       summary="Get the current user's messages"
     *     )
     *   )
     * )
     */
    public function Get($Parameters)
    {
-      return FALSE;
+      $Format = $Parameters['Format'];
+      return array('Resource' => 'messages/all.' . $Format);
    }
 
    /**
@@ -50,6 +49,8 @@ class SessionAPI extends Mapper
     *
     * @since   0.1.0
     * @access  public
+    * @param   array $Parameters
+    * @return  bool
     */
    public function Post($Parameters)
    {
@@ -61,6 +62,8 @@ class SessionAPI extends Mapper
     *
     * @since   0.1.0
     * @access  public
+    * @param   array $Parameters
+    * @return  bool
     */
    public function Put($Parameters)
    {
@@ -72,6 +75,8 @@ class SessionAPI extends Mapper
     *
     * @since   0.1.0
     * @access  public
+    * @param   array $Parameters
+    * @return  bool
     */
    public function Delete($Parameters)
    {

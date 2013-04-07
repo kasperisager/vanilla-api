@@ -3,24 +3,24 @@
 use Swagger\Annotations as SWG;
 
 /**
- * Messages API
+ * Configuration API
  *
  * @package    API
  * @since      0.1.0
  * @author     Kasper Kronborg Isager <kasperisager@gmail.com>
- * @copyright  Copyright © 2013
+ * @copyright  Copyright 2013 © Kasper Kronborg Isager
  * @license    http://opensource.org/licenses/MIT MIT
  *
  * @SWG\resource(
- *   resourcePath="/messages"
+ *   resourcePath="/configuration"
  * )
  */
-class MessagesAPI extends Mapper
+class ConfigurationAPI extends APIMapper
 {
    /**
     * Retrieve Vanilla configuration
     *
-    * GET /messages
+    * GET /configuration
     *
     * @since   0.1.0
     * @access  public
@@ -28,12 +28,12 @@ class MessagesAPI extends Mapper
     * @return  array
     *
     * @SWG\api(
-    *   path="/messages",
+    *   path="/configuration",
     *   @SWG\operations(
     *     @SWG\operation(
     *       httpMethod="GET",
-    *       nickname="GetMessages",
-    *       summary="Get the current user's messages"
+    *       nickname="GetConfig",
+    *       summary="Get the current forum configuration"
     *     )
     *   )
     * )
@@ -41,7 +41,12 @@ class MessagesAPI extends Mapper
    public function Get($Parameters)
    {
       $Format = $Parameters['Format'];
-      return array('Resource' => 'messages/all.' . $Format);
+
+      $Return = array();
+      $Return['Resource'] = 'dashboard/settings/configuration.' . $Format;
+      $Return['Authenticate'] = 'Required';
+
+      return $Return;
    }
 
    /**

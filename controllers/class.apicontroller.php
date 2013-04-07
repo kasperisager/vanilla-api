@@ -11,7 +11,7 @@
  * @package    API
  * @version    0.1.0
  * @author     Kasper Kronborg Isager <kasperisager@gmail.com>
- * @copyright  Copyright © 2013
+ * @copyright  Copyright 2013 © Kasper Kronborg Isager
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
@@ -24,7 +24,7 @@
  * @package    API
  * @since      0.1.0
  * @author     Kasper Kronborg Isager <kasperisager@gmail.com>
- * @copyright  Copyright © 2013
+ * @copyright  Copyright 2013 © Kasper Kronborg Isager
  * @license    http://opensource.org/licenses/MIT MIT
  */
 class APIController extends Gdn_Controller
@@ -383,8 +383,8 @@ class APIController extends Gdn_Controller
       // Instantiate the requested API class
       $Class      = new $Class;
 
-      // Make sure that the requested API class extends Mapper
-      if (!is_subclass_of($Class, 'Mapper'))
+      // Make sure that the requested API class extends the API Mapper
+      if (!is_subclass_of($Class, 'APIMapper'))
          throw new Exception("API class must extend the API Mapper", 401); 
 
       // Get the request method issued by the client

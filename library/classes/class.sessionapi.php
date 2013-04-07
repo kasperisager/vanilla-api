@@ -3,50 +3,46 @@
 use Swagger\Annotations as SWG;
 
 /**
- * Configuration API
+ * Session API
+ *
+ * This method is not used for anything besides documentation purposes as the
+ * API controller takes care of exposing the session object
  *
  * @package    API
  * @since      0.1.0
  * @author     Kasper Kronborg Isager <kasperisager@gmail.com>
- * @copyright  Copyright © 2013
+ * @copyright  Copyright 2013 © Kasper Kronborg Isager
  * @license    http://opensource.org/licenses/MIT MIT
  *
  * @SWG\resource(
- *   resourcePath="/configuration"
+ *   resourcePath="/session"
  * )
  */
-class ConfigurationAPI extends Mapper
+class SessionAPI extends APIMapper
 {
    /**
-    * Retrieve Vanilla configuration
+    * Info about current user session
     *
-    * GET /configuration
+    * GET /session
     *
     * @since   0.1.0
     * @access  public
-    * @param   array $Parameters
-    * @return  array
     *
     * @SWG\api(
-    *   path="/configuration",
+    *   path="/session",
     *   @SWG\operations(
     *     @SWG\operation(
     *       httpMethod="GET",
-    *       nickname="GetConfig",
-    *       summary="Get the current forum configuration"
+    *       nickname="GetSession",
+    *       summary="Information about the current user session",
+    *       notes="Respects permissions"
     *     )
     *   )
     * )
     */
    public function Get($Parameters)
    {
-      $Format = $Parameters['Format'];
-
-      $Return = array();
-      $Return['Resource'] = 'dashboard/settings/configuration.' . $Format;
-      $Return['Authenticate'] = 'Required';
-
-      return $Return;
+      return FALSE;
    }
 
    /**
@@ -54,8 +50,6 @@ class ConfigurationAPI extends Mapper
     *
     * @since   0.1.0
     * @access  public
-    * @param   array $Parameters
-    * @return  bool
     */
    public function Post($Parameters)
    {
@@ -67,8 +61,6 @@ class ConfigurationAPI extends Mapper
     *
     * @since   0.1.0
     * @access  public
-    * @param   array $Parameters
-    * @return  bool
     */
    public function Put($Parameters)
    {
@@ -80,8 +72,6 @@ class ConfigurationAPI extends Mapper
     *
     * @since   0.1.0
     * @access  public
-    * @param   array $Parameters
-    * @return  bool
     */
    public function Delete($Parameters)
    {

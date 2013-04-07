@@ -1,4 +1,4 @@
 <?php if (!defined('APPLICATION')) exit();
 
-// Bootstrap vendor libraries
-require PATH_APPLICATIONS . '/api/vendors/autoload.php';
+// Autoload vendor libraries and core API classes
+$APIAutoloader = new APIAutoload();
