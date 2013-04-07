@@ -33,8 +33,10 @@ class APIHooks implements Gdn_IPlugin
     *
     * This function sets up and renders a settings page where the API
     * configuration can be changed.
-    * 
-    * @param SettingsController $Sender
+    *
+    * @since   0.1.0
+    * @access  public
+    * @param   SettingsController $Sender
     */
    public function SettingsController_API_Create($Sender) {
       $Sender->Permission('Garden.Settings.Manage');
@@ -73,8 +75,10 @@ class APIHooks implements Gdn_IPlugin
    
    /**
     * Adds an "API" menu to the "Forum Settings" section in the dashboard
-    * 
-    * @param Gdn_Controller $Sender 
+    *
+    * @since   0.1.0
+    * @access  public
+    * @param   Gdn_Controller $Sender 
     */
    public function Base_GetAppSettingsMenuItems_Handler($Sender) {
       $Menu = $Sender->EventArguments['SideMenu'];
@@ -86,8 +90,11 @@ class APIHooks implements Gdn_IPlugin
    /**
     * Generates a Universally Unique IDentifier, version 4.
     *
-    * @see http://en.wikipedia.org/wiki/UUID
-    * @return string A UUID, made up of 32 hex digits and 4 hyphens.
+    * @since   0.1.0
+    * @access  protected
+    * @see     http://en.wikipedia.org/wiki/UUID
+    * @return  string A UUID, made up of 32 hex digits and 4 hyphens.
+    * @static
     */
    protected static function UUIDSecure()
    {

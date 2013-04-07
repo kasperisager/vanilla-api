@@ -19,6 +19,8 @@ class APIAutoload
 {
    /**
     * Load vendor libraries autoloader and register core API class autoloader
+    *
+    * @access public
     */
    public function __construct()
    {
@@ -31,8 +33,9 @@ class APIAutoload
     *
     * Using the GetClass function, Autoload checks if the specified class is a
     * core API class and if it is, it includes the class in the autoloader.
-    * 
-    * @param string $Class    The class to be included in the autoloader
+    *
+    * @access  protected
+    * @param   string $Class  The class to be included in the autoloader
     */
    protected function Autoload($Class)
    {
@@ -45,11 +48,13 @@ class APIAutoload
     *
     * This function checks if the specified class belongs to the core API
     * classes by making sure the class exists within the classes directory.
-    * 
+    *
+    * @access  protected
     * @param   string $Class  The class to be checked
     * @return  string|bool    If the class is part of the core API classes, the
     *                         full path to the class is returned. If not, the
     *                         function will return FALSE instead.
+    * @static
     */
    protected static function GetClass($Class)
    {

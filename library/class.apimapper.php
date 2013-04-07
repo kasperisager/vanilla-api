@@ -16,6 +16,7 @@
  * @author     Kasper Kronborg Isager <kasperisager@gmail.com>
  * @copyright  Copyright 2013 © Kasper Kronborg Isager
  * @license    http://opensource.org/licenses/MIT MIT
+ * @abstract
  */
 abstract class APIMapper
 {
@@ -24,6 +25,8 @@ abstract class APIMapper
     *
     * @since   0.1.0
     * @access  protected
+    * @param   array $Parameters
+    * @abstract
     */
    abstract protected function Get($Parameters);
 
@@ -32,6 +35,8 @@ abstract class APIMapper
     *
     * @since   0.1.0
     * @access  protected
+    * @param   array $Parameters
+    * @abstract
     */
    abstract protected function Post($Parameters);
 
@@ -40,6 +45,8 @@ abstract class APIMapper
     *
     * @since   0.1.0
     * @access  public
+    * @param   array $Parameters
+    * @abstract
     */
    abstract protected function Put($Parameters);
 
@@ -48,6 +55,8 @@ abstract class APIMapper
     *
     * @since   0.1.0
     * @access  public
+    * @param   array $Parameters
+    * @abstract
     */
    abstract protected function Delete($Parameters);
 }

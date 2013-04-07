@@ -31,15 +31,18 @@ class APIController extends Gdn_Controller
 {
    /**
     * Prepare controllers
-    * 
-    * @var array
+    *
+    * @since   0.1.0
+    * @access  public
+    * @var     array
     */
    public $Uses = array('DocsController');
 
    /**
     * Do-nothing construct to let children constructs bubble up.
     *
-    * @access public
+    * @since   0.1.0
+    * @access  public
     */
    public function __construct()
    {
@@ -59,6 +62,9 @@ class APIController extends Gdn_Controller
 
    /**
     * Initialize the API Explorer
+    *
+    * @since   0.1.0
+    * @access  public
     */
    public function Index()
    {
@@ -68,9 +74,11 @@ class APIController extends Gdn_Controller
 
    /**
     * Initialize the API Wiki
-    * 
-    * @param string $Wiki The requested Wiki article. If none is specified, the
-    *                     index containing the README will be shown
+    *
+    * @since   0.1.0
+    * @access  public
+    * @param   string $Wiki The requested Wiki article. If none is specified,
+    *                       the index containing the README will be shown
     */
    public function Wiki($Wiki = NULL)
    {
@@ -80,9 +88,12 @@ class APIController extends Gdn_Controller
 
    /**
     * Initialize the API Resource Listing
-    * 
-    * @param string $Resource The requested resource. If none is specified, the
-    *                         index containing the entire listing will be shown
+    *
+    * @since   0.1.0
+    * @access  public
+    * @param   string $Resource The requested resource. If none is specified,
+    *                           the index containing the entire listing will be
+    *                           shown
     */
    public function Resources($Resource = NULL)
    {
@@ -128,6 +139,7 @@ class APIController extends Gdn_Controller
     * @access  public
     * @param   object $Data
     * @return  array
+    * @static
     */
    public static function Sanitize($Data)
    {
@@ -145,7 +157,8 @@ class APIController extends Gdn_Controller
     * token match, the client is considered legimate and the request is served.
     *
     * @since   0.1.0
-    * @access  public
+    * @access  protected
+    * @static
     */
    protected static function Authenticate()
    {
@@ -221,8 +234,10 @@ class APIController extends Gdn_Controller
     * server knows the secret key used for creating the hash.
     *
     * @since   0.1.0
+    * @access  protected
     * @param   array $Request
-    * @return  string   
+    * @return  string
+    * @static
     */
    protected static function Signature($Request)
    {
@@ -248,11 +263,14 @@ class APIController extends Gdn_Controller
     * Note: if both a username and an email are specified, only the username
     * will be used. This is to prevent abusing of the function by passing two
     * parameters at a time and hoping to get a User ID.
-    * 
+    *
+    * @since   0.1.0
+    * @access  protected
     * @param   string $Username  Username of the user whose ID we wish to get
     * @param   string $Email     Email of the user whose ID we wish to get
     * @return  int|null          User ID is a username or an email has been
     *                            specified, otherwise NULL
+    * @static
     */
    protected static function GetUserID($Username, $Email)
    {
@@ -272,11 +290,13 @@ class APIController extends Gdn_Controller
 
    /**
     * Delegate methods to a specified API class
-    * 
+    *
+    * @since   0.1.0
     * @param   string $Path   The full request path excluding queries
     * @param   string $Class  The class that we wish to delegate an action to
     * @param   string $Method The request method issued by the client
     * @return  array          An array of data returned by the API class
+    * @static
     */
    protected static function MethodHandler($Path, $Class, $Method)
    {
@@ -433,6 +453,7 @@ class APIController extends Gdn_Controller
     * @since   0.1.0
     * @access  public
     * @return  array
+    * @static
     */
    public static function ParseFormData()
    {
