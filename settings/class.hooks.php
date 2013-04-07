@@ -113,7 +113,7 @@ class APIHooks implements Gdn_IPlugin
    }
 
    /**
-    * Make sure the application secret is set
+    * Code to be run upon enabling the API
     *
     * @since   0.1.0
     * @access  public
@@ -121,16 +121,13 @@ class APIHooks implements Gdn_IPlugin
    public function Setup()
    {
       if (!C('API.Secret')) SaveToConfig('API.Secret', self::UUIDSecure());
-   }
 
-   /**
-    * No cleanup required
-    *
-    * @since 0.1.0
-    * @access public
-    */
-   public function OnDisable()
-   {
-      return TRUE;
+      if (!Gdn::PluginManager()->CheckPlugin('Logger'))
+         throw new Exception("Please install Logger before enabling the API");
+
+      $ApplicationInfo = array();
+      include CombinePaths(array(PATH_APPLICATIONS . DS . 'api/settings/about.php'));
+      $Version = ArrayValue('Version', ArrayValue('API', $ApplicationInfo, array()), 'Undefined');
+      SaveToConfig('API.Version', $Version);  
    }
 }
