@@ -22,32 +22,32 @@ abstract class APIMapper
    /**
     * GET
     *
-    * @since 0.1.0
-    * @access public
+    * @since   0.1.0
+    * @access  protected
     */
-   abstract public function Get($Parameters);
+   abstract protected function Get($Parameters);
 
    /**
     * POST
     *
-    * @since 0.1.0
-    * @access public
+    * @since   0.1.0
+    * @access  protected
     */
-   abstract public function Post($Parameters);
+   abstract protected function Post($Parameters);
 
    /**
     * PUT
     *
-    * @since 0.1.0
-    * @access public
+    * @since   0.1.0
+    * @access  public
     */
-   abstract public function Put($Parameters);
+   abstract protected function Put($Parameters);
 
    /**
     * DELETE
     *
-    * @since 0.1.0
-    * @access public
+    * @since   0.1.0
+    * @access  public
     */
-   abstract public function Delete($Parameters);
+   abstract protected function Delete($Parameters);
 }
