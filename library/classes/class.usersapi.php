@@ -32,16 +32,16 @@ class UsersAPI extends APIMapper
       $Format  = $Parameters['Format'];
 
       if ($ID) {
-         return self::_GetById($Ext, $ID);
+         return self::_GetById($Format, $ID);
       } else {
-         return self::_GetAll($Ext);
+         return self::_GetAll($Format);
       }
    }
 
    /**
     * Find all users
     * 
-    * @param  string $Ext
+    * @param  string $Format
     * @return array
     * 
     * @SWG\api(
@@ -56,10 +56,10 @@ class UsersAPI extends APIMapper
     *   )
     * )
     */
-   protected function _GetAll($Ext)
+   protected function _GetAll($Format)
    {
       $Return = array();
-      $Return['Map'] = 'dashboard/user/summary.' . $Ext;
+      $Return['Resource'] = 'dashboard/user/summary.' . $Format;
       
       return $Return;
    }
@@ -67,7 +67,7 @@ class UsersAPI extends APIMapper
    /**
     * Find a specific user
     * 
-    * @param  string $Ext
+    * @param  string $Format
     * @param  int $ID
     *
     * @SWG\api(
@@ -82,11 +82,11 @@ class UsersAPI extends APIMapper
     *   )
     * )
     */
-   protected function _GetById($Ext, $ID)
+   protected function _GetById($Format, $ID)
    {
       $Return = array();
-      $Return['Args']['userid'] = $ID;
-      $Return['Map'] = 'dashboard/profile.' . $Ext . DS . $ID . DS . 'false';
+      $Return['Arguments']['userid'] = $ID;
+      $Return['Resource'] = 'dashboard/profile.' . $Format . DS . $ID . DS . 'false';
       
       return $Return;
    }

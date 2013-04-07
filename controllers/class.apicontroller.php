@@ -300,6 +300,15 @@ class APIController extends Gdn_Controller
 
          case 'post':
             $Data = $Class->Post($Parameters);
+
+            // Combine the POST request with any custom arguments
+            if (isset($Data['Arguments'])) {
+               $Merged = array_merge($_POST, $Data['Arguments']);
+               $Request->SetRequestArguments(Gdn_Request::INPUT_POST, $Merged);
+            }
+
+            $_POST = $Request->Post();
+
             break;
 
          case 'put':

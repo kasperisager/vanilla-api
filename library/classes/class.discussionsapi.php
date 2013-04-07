@@ -38,10 +38,10 @@ class DiscussionsAPI extends APIMapper
       $ID      = $Parameters['Path'][2];
       $Format  = $Parameters['Format'];
 
-      if ($ID) {
-         return self::_GetById($Format, $ID);
+      if (isset($ID)) {
+         return self::GetById($Format, $ID);
       } else {
-         return self::_GetAll($Format);
+         return self::GetAll($Format);
       }
    }
 
@@ -51,7 +51,7 @@ class DiscussionsAPI extends APIMapper
     * GET /discussions
     *
     * @since   0.1.0
-    * @access  public
+    * @access  protected
     * @return  array
     *
     * @SWG\api(
@@ -66,7 +66,7 @@ class DiscussionsAPI extends APIMapper
     *   )
     * )
     */
-   protected function _GetAll($Format)
+   protected function GetAll($Format)
    {
       $Return = array();
       $Return['Resource'] = 'vanilla/discussions.' . $Format;
@@ -80,7 +80,7 @@ class DiscussionsAPI extends APIMapper
     * GET /discussions/:id
     *
     * @since   0.1.0
-    * @access  public
+    * @access  protected
     * @param   string $Ext
     * @param   int $ID
     * @return  array
@@ -97,10 +97,10 @@ class DiscussionsAPI extends APIMapper
     *   )
     * )
     */
-   protected function _GetById($Format, $ID)
+   protected function GetById($Format, $ID)
    {
       $Return = array();
-      $Return['Resource'] = 'vanilla/discussion' . DS . $ID;
+      $Return['Resource'] = 'vanilla/discussion.' . $Format . DS . $ID;
 
       return $Return;
    }
@@ -108,24 +108,11 @@ class DiscussionsAPI extends APIMapper
    /**
     * Retrieve a the current user's bookmarked discussions
     *
-    * GET /discussions/bookmarked
-    *
     * @since   0.1.0
-    * @access  public
+    * @access  protected
     * @param   string $Format
-    *
-    * @SWG\api(
-    *   path="/discussions/bookmarks",
-    *   @SWG\operations(
-    *     @SWG\operation(
-    *       httpMethod="GET",
-    *       nickname="GetBookmarked",
-    *       summary="Find a users bookmarked discussions"
-    *     )
-    *   )
-    * )
     */
-   protected function _GetBookmarks($Format)
+   protected function GetBookmarks($Format)
    {
       $Return = array();
       $Return['Resource'] = 'vanilla/discussions/bookmarked.' . $Format;
@@ -135,25 +122,12 @@ class DiscussionsAPI extends APIMapper
 
    /**
     * Retrieve discussions created by the current user
-    *
-    * GET /discussions/bookmarked
-    *
+    * 
     * @since   0.1.0
-    * @access  public
+    * @access  protected
     * @param   string $Format
-    *
-    * @SWG\api(
-    *   path="/discussions/mine",
-    *   @SWG\operations(
-    *     @SWG\operation(
-    *       httpMethod="GET",
-    *       nickname="GetMine",
-    *       summary="Find discussions created by the current user"
-    *     )
-    *   )
-    * )
     */
-   protected function _GetMine($Format)
+   protected function GetMine($Format)
    {
       $Return = array();
       $Return['Resource'] = 'vanilla/discussions/mine.' . $Format;
@@ -162,35 +136,83 @@ class DiscussionsAPI extends APIMapper
    }
 
    /**
-    * Create discussions
+    * Create discussions and comments
     *
     * POST /discussions
-    *
-    * To be implemented:
     * POST /discussions/:id/comments
     *
     * @since   0.1.0
     * @access  public
     * @param   array $Parameters
+    */
+   public function Post($Parameters)
+   {
+      $ID      = $Parameters['Path'][2];
+      $Comment = $Parameters['Path'][3];
+      $Format  = $Parameters['Format'];
+
+      if (isset($ID) && isset($Comment) && $Comment == 'comments') {
+         return self::PostComment($Format, $ID);
+      } else {
+         return self::PostDiscussion($Format);
+      }
+   }
+
+   /**
+    * Create a new discussion
     *
+    * POST /discussions
+    *
+    * @since   0.1.0
+    * @access  protected
+    * @param   string $Format
+    * @return  array
+    * 
     * @SWG\api(
     *   path="/discussions",
     *   @SWG\operations(
     *     @SWG\operation(
     *       httpMethod="POST",
-    *       nickname="Post",
+    *       nickname="PostDiscussion",
     *       summary="Create a new discussion",
     *       notes="Respects permissions"
     *     )
     *   )
     * )
     */
-   public function Post($Parameters)
+   protected function PostDiscussion($Format)
    {
-      $Format = $Parameters['Format'];
-
       $Return = array();
       $Return['Resource'] = 'vanilla/post/discussion.' . $Format;
+
+      return $Return;
+   }
+
+   /**
+    * Create a new comment
+    * 
+    * @param   string   $Format
+    * @param   int      $ID
+    * @return  array
+    *
+    * @SWG\api(
+    *   path="/discussions/{id}/comments",
+    *   @SWG\operations(
+    *     @SWG\operation(
+    *       httpMethod="POST",
+    *       nickname="PostComment",
+    *       summary="Create a new comment",
+    *       notes="Respects permissions"
+    *     )
+    *   )
+    * )
+    */
+   protected function PostComment($Format, $ID)
+   {
+      $Return = array();
+      $Return['Arguments']['DiscussionID'] = $ID;
+      $Return['Arguments']['TransientKey'] = Gdn::Session()->TransientKey();
+      $Return['Resource'] = 'vanilla/post/comment.' . $Format . DS . $ID;
 
       return $Return;
    }
@@ -199,14 +221,7 @@ class DiscussionsAPI extends APIMapper
     * Update and alter discussions
     *
     * PUT /discussions/:id
-    *
-    * To be implemented:
     * PUT /discussions/comments/:id
-    * PUT /discussions/sink/:id
-    * PUT /discussions/announce:id
-    * PUT /discussions/dismiss/:id
-    * PUT /discussions/close/:id/
-    * PUT /discussions/bookmark/:id
     *
     * @since   0.1.0
     * @access  public
@@ -217,12 +232,12 @@ class DiscussionsAPI extends APIMapper
       $ID      = $Parameters['Path'][2];
       $Format  = $Parameters['Format'];
 
-      $Return = array();
-      $Return['Arguments']['DiscussionID'] = $ID;
-      $Return['Arguments']['TransientKey'] = Gdn::Session()->TransientKey();
-      $Return['Resource'] = 'vanilla/post/editdiscussion.' . $Format . DS . $ID;
-
-      return $Return;
+      if (isset($ID) && $ID == 'comments') {
+         $ID = $Parameters['Path'][3];
+         return self::PutComment($Format, $ID);
+      } elseif (isset($ID)) {
+         return self::PutDiscussion($Format, $ID);
+      }
    }
 
    /**
@@ -231,7 +246,7 @@ class DiscussionsAPI extends APIMapper
     * PUT /discussions/:id
     *
     * @since   0.1.0
-    * @access  public
+    * @access  protected
     * @param   string $Format
     * @param   int $ID
     *
@@ -247,178 +262,131 @@ class DiscussionsAPI extends APIMapper
     *   )
     * )
     */
-   protected function _Put($Format, $ID)
+   protected function PutDiscussion($Format, $ID)
    {
+      $Return = array();
+      $Return['Arguments']['DiscussionID'] = $ID;
+      $Return['Arguments']['TransientKey'] = Gdn::Session()->TransientKey();
+      $Return['Resource'] = 'vanilla/post/editdiscussion.' . $Format . DS . $ID;
 
+      return $Return;
    }
 
    /**
-    * Sink/unsink an existing discussion
+    * Update an existing comment
     *
-    * PUT /discussions/sink/:id
+    * PUT /discussions/comments/:id
     *
     * @since   0.1.0
-    * @access  public
+    * @access  protected
     * @param   string $Format
     * @param   int $ID
     *
     * @SWG\api(
-    *   path="/discussions/sink/{id}",
+    *   path="/discussions/comments/{id}",
     *   @SWG\operations(
     *     @SWG\operation(
     *       httpMethod="PUT",
-    *       nickname="PutSink",
-    *       summary="Sink/unsink an existing discussion",
-    *       notes="This is a convenience operation. The same result can be accomplished using <code>PUT /discussions/:id</code>"
-    *     )
-    *   )
-    * )
-    */
-   protected function _PutSink($Format, $ID)
-   {
-
-   }
-
-   /**
-    * Announce/unannounce an existing discussion
-    *
-    * PUT /discussions/announce/:id
-    *
-    * @since   0.1.0
-    * @access  public
-    * @param   string $Format
-    * @param   int $ID
-    *
-    * @SWG\api(
-    *   path="/discussions/announce/{id}",
-    *   @SWG\operations(
-    *     @SWG\operation(
-    *       httpMethod="PUT",
-    *       nickname="PutAnnounce",
-    *       summary="Announce/unannounce an existing discussion",
-    *       notes="This is a convenience operation. The same result can be accomplished using <code>PUT /discussions/:id</code>"
-    *     )
-    *   )
-    * )
-    */
-   protected function _PutAnnounce($Format, $ID)
-   {
-
-   }
-
-   /**
-    * Dismiss an announced discussion
-    *
-    * PUT /discussions/dismiss/:id
-    *
-    * @since   0.1.0
-    * @access  public
-    * @param   string $Format
-    * @param   int $ID
-    *
-    * @SWG\api(
-    *   path="/discussions/dismiss/{id}",
-    *   @SWG\operations(
-    *     @SWG\operation(
-    *       httpMethod="PUT",
-    *       nickname="PutDismiss",
-    *       summary="Dismiss an announced discussion",
-    *       notes="This is a convenience operation. The same result can be accomplished using <code>PUT /discussions/:id</code>"
-    *     )
-    *   )
-    * )
-    */
-   protected function _PutDismiss($Format, $ID)
-   {
-
-   }
-
-   /**
-    * Close/open an existing discussion
-    *
-    * PUT /discussions/close/:id
-    *
-    * @since   0.1.0
-    * @access  public
-    * @param   string $Format
-    * @param   int $ID
-    *
-    * @SWG\api(
-    *   path="/discussions/close/{id}",
-    *   @SWG\operations(
-    *     @SWG\operation(
-    *       httpMethod="PUT",
-    *       nickname="PutClose",
-    *       summary="Close/open an existing discussion",
-    *       notes="This is a convenience operation. The same result can be accomplished using <code>PUT /discussions/:id</code>"
-    *     )
-    *   )
-    * )
-    */
-   protected function _PutClose($Format, $ID)
-   {
-
-   }
-
-   /**
-    * Bookmark/unbookmark an existing discussion
-    *
-    * PUT /discussions/bookmark/:id
-    *
-    * @since   0.1.0
-    * @access  public
-    * @param   string $Format
-    * @param   int $ID
-    *
-    * @SWG\api(
-    *   path="/discussions/bookmark/{id}",
-    *   @SWG\operations(
-    *     @SWG\operation(
-    *       httpMethod="PUT",
-    *       nickname="PutBookmark",
-    *       summary="Bookmark/unbookmark an existing discussion",
-    *       notes="This is a convenience operation. The same result can be accomplished using <code>PUT /discussions/:id</code>"
-    *     )
-    *   )
-    * )
-    */
-   protected function _PutBookmark($Format, $ID)
-   {
-
-   }
-
-   /**
-    * Remove discussions
-    *
-    * DELETE /discussions/:id
-    *
-    * To be implemented:
-    * DELETE /discussions/bookmarks/:id
-    *
-    * @since   0.1.0
-    * @access  public
-    * @param   array $Parameters
-    *
-    * @SWG\api(
-    *   path="/discussions/{id}",
-    *   @SWG\operations(
-    *     @SWG\operation(
-    *       httpMethod="DELETE",
-    *       nickname="Delete",
-    *       summary="Delete an existing discussion",
+    *       nickname="PutComment",
+    *       summary="Update an existing comment",
     *       notes="Respects permissions"
     *     )
     *   )
     * )
+    */
+   protected function PutComment($Format, $ID)
+   {
+      $Return = array();
+      $Return['Arguments']['CommentID'] = $ID;
+      $Return['Arguments']['TransientKey'] = Gdn::Session()->TransientKey();
+      $Return['Resource'] = 'vanilla/post/editcomment.' . $Format . DS . $ID;
+
+      return $Return;
+   }
+
+   /**
+    * Remove discussions and comments
+    *
+    * DELETE /discussions/:id
+    * DELETE /discussions/comments/:id
+    *
+    * @since   0.1.0
+    * @access  public
+    * @param   array $Parameters
     */
    public function Delete($Parameters)
    {
       $ID      = $Parameters['Path'][2];
       $Format  = $Parameters['Format'];
 
+      if (isset($ID) && $ID == 'comments') {
+         $ID = $Parameters['Path'][3];
+         return self::DeleteComment($Format, $ID);
+      } elseif (isset($ID)) {
+         return self::DeleteDiscussion($Format, $ID);
+      }
+   }
+
+   /**
+    * Remove a discussion
+    *
+    * DELETE /discussions/:id
+    *
+    * @since   0.1.0
+    * @access  public
+    * @param   string   $Format
+    * @param   int      $ID
+    * @return  array
+    *
+    * @SWG\api(
+    *   path="/discussions/{id}",
+    *   @SWG\operations(
+    *     @SWG\operation(
+    *       httpMethod="DELETE",
+    *       nickname="DeleteDiscussion",
+    *       summary="Delete an existing discussion",
+    *       notes="Respects permissions"
+    *     )
+    *   )
+    * )
+    */
+   protected function DeleteDiscussion($Format, $ID)
+   {
       $Return = array();
       $Return['Arguments']['TransientKey'] = Gdn::Session()->TransientKey();
       $Return['Resource'] = 'vanilla/discussion/delete.' . $Format . DS . $ID;
+
+      return $Return;
+   }
+
+   /**
+    * Remove a discussion
+    *
+    * DELETE /discussions/comments/:id
+    *
+    * @since   0.1.0
+    * @access  public
+    * @param   string   $Format
+    * @param   int      $ID
+    * @return  array
+    *
+    * @SWG\api(
+    *   path="/discussions/comments/{id}",
+    *   @SWG\operations(
+    *     @SWG\operation(
+    *       httpMethod="DELETE",
+    *       nickname="DeleteComment",
+    *       summary="Delete an existing comment",
+    *       notes="Respects permissions"
+    *     )
+    *   )
+    * )
+    */
+   protected function DeleteComment($Format, $ID)
+   {
+      $Return = array();
+      $TransientKey = Gdn::Session()->TransientKey();
+      $Return['Resource'] = 'vanilla/discussion/deletecomment.' . $Format . DS . $ID . DS . $TransientKey;
 
       return $Return;
    }

@@ -74,7 +74,7 @@ class CategoriesAPI extends APIMapper
     * @access  public
     *
     * @SWG\api(
-    *   path="/categories/{categoryid}",
+    *   path="/categories/{id}",
     *   @SWG\operations(
     *     @SWG\operation(
     *       httpMethod="GET",
@@ -84,7 +84,7 @@ class CategoriesAPI extends APIMapper
     *       @SWG\parameters(
     *         @SWG\parameter(
     *           allowMultiple="false",
-    *           name="CategoryID",
+    *           name="ID",
     *           description="ID of category that needs to be fetched",
     *           paramType="path",
     *           required="true",
@@ -147,7 +147,7 @@ class CategoriesAPI extends APIMapper
     * @access  public
     *
     * @SWG\api(
-    *   path="/categories/{categoryid}",
+    *   path="/categories/{id}",
     *   @SWG\operations(
     *     @SWG\operation(
     *       httpMethod="PUT",
@@ -156,7 +156,7 @@ class CategoriesAPI extends APIMapper
     *       notes="Respects permissions",
     *       @SWG\parameter(
     *         allowMultiple="false",
-    *         name="CategoryID",
+    *         name="ID",
     *         description="ID of category that needs to be updated",
     *         paramType="path",
     *         required="true",
@@ -204,7 +204,7 @@ class CategoriesAPI extends APIMapper
     * @access  public
     *
     * @SWG\api(
-    *   path="/categories/{categoryid}",
+    *   path="/categories/{id}",
     *   @SWG\operations(
     *     @SWG\operation(
     *       httpMethod="DELETE",
@@ -214,7 +214,7 @@ class CategoriesAPI extends APIMapper
     *       @SWG\parameters(
     *         @SWG\parameter(
     *           allowMultiple="false",
-    *           name="CategoryID",
+    *           name="ID",
     *           description="ID of category that needs to be deleted",
     *           paramType="path",
     *           required="true",
