@@ -1,7 +1,12 @@
 <?php if (!defined('APPLICATION')) exit();
 
 /**
- * To be written
+ * API Hooks
+ *
+ * The API hooks handles hooking into different events throught Garden and its
+ * applications. More specifically, this class hooks into the dispatcher to
+ * handle API request mapping and also hooks the dashboard settings controller
+ * to render the Application Interface settings menu.
  *
  * @package    API
  * @since      0.1.0
