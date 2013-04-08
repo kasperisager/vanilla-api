@@ -13,7 +13,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  * @abstract
  */
-interface API_Mapper
+interface API_IMapper
 {
    /**
     * GET

@@ -12,7 +12,7 @@
  * @copyright  Copyright 2013 © Kasper Kronborg Isager
  * @license    http://opensource.org/licenses/MIT MIT
  */
-class API_Class_Session implements API_Mapper
+class API_Class_Session implements API_IMapper
 {
    /**
     * Info about current user session
