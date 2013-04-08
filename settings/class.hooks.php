@@ -1,14 +1,14 @@
 <?php if (!defined('APPLICATION')) exit();
 
 /**
- * API Hooks
+ * API hooks for hooking into Garden and its applications
  *
- * The API hooks handles hooking into different events throught Garden and its
+ * The API hooks handles hooking into different events throughout Garden and its
  * applications. More specifically, this class hooks into the dispatcher to
  * handle API request mapping and also hooks the dashboard settings controller
  * to render the Application Interface settings menu.
  *
- * @package    API
+ * @package    API\Settings
  * @since      0.1.0
  * @author     Kasper Kronborg Isager <kasperisager@gmail.com>
  * @copyright  Copyright 2013 © Kasper Kronborg Isager
@@ -17,7 +17,7 @@
 class APIHooks implements Gdn_IPlugin
 {
    /**
-    * Map the API request to the appropriate controller
+    * Map an API request to a resource
     *
     * @since   0.1.0
     * @access  public
@@ -29,7 +29,7 @@ class APIHooks implements Gdn_IPlugin
    }
 
    /**
-    * API Settings
+    * Render the settings menu in the dashboard
     *
     * This function sets up and renders a settings page where the API
     * configuration can be changed.
@@ -74,7 +74,7 @@ class APIHooks implements Gdn_IPlugin
    }
    
    /**
-    * Adds an "API" menu to the "Forum Settings" section in the dashboard
+    * Renders menu link in the dashboard sidebar
     *
     * @since   0.1.0
     * @access  public
@@ -88,11 +88,11 @@ class APIHooks implements Gdn_IPlugin
    }
 
    /**
-    * Generates a Universally Unique IDentifier, version 4.
+    * Generates a Universally Unique Identifier, version 4
     *
     * @since   0.1.0
     * @access  protected
-    * @see     http://en.wikipedia.org/wiki/UUID
+    * @link    http://en.wikipedia.org/wiki/UUID
     * @return  string A UUID, made up of 32 hex digits and 4 hyphens.
     * @static
     */

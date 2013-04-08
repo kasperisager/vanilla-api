@@ -12,7 +12,7 @@ use \Doctrine\Common\Cache\PhpFileCache;
  * which runs on the front end. It also integrates with the public Github Wiki
  * to users have easy access to documentation directly in the API Explorer.
  *
- * @package    API
+ * @package    API\Controllers
  * @since      0.1.0
  * @author     Kasper Kronborg Isager <kasperisager@gmail.com>
  * @copyright  Copyright 2013 © Kasper Kronborg Isager

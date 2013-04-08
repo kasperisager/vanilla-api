@@ -1,4 +1,5 @@
 .DS_Store
+phpdoc
 vendors
 js
 composer.lock

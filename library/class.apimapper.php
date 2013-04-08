@@ -11,7 +11,7 @@
  * hopefully prove useful when we'll need to implement utility functions
  * in the API.
  *
- * @package    API
+ * @package    API\Library
  * @since      0.1.0
  * @author     Kasper Kronborg Isager <kasperisager@gmail.com>
  * @copyright  Copyright 2013 © Kasper Kronborg Isager

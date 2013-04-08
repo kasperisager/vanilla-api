@@ -9,7 +9,7 @@
  * clean directory structure where all API classes live within their own folder
  * inside the library directory.
  *
- * @package    API
+ * @package    API\Library
  * @since      0.1.0
  * @author     Kasper Kronborg Isager <kasperisager@gmail.com>
  * @copyright  Copyright 2013 © Kasper Kronborg Isager

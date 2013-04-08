@@ -8,7 +8,7 @@ use Swagger\Annotations as SWG;
  * This method is not used for anything besides documentation purposes as the
  * API controller takes care of exposing the session object
  *
- * @package    API
+ * @package    API\Library\Classes
  * @since      0.1.0
  * @author     Kasper Kronborg Isager <kasperisager@gmail.com>
  * @copyright  Copyright 2013 © Kasper Kronborg Isager

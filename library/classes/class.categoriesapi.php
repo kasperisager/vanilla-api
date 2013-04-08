@@ -5,7 +5,7 @@ use Swagger\Annotations as SWG;
 /**
  * Categories API
  *
- * @package    API
+ * @package    API\Library\Classes
  * @since      0.1.0
  * @author     Kasper Kronborg Isager <kasperisager@gmail.com>
  * @copyright  Copyright 2013 © Kasper Kronborg Isager

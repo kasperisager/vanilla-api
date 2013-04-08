@@ -1,27 +1,12 @@
 <?php if (!defined('APPLICATION')) exit();
 
 /**
- * Vanilla API
- *
- * The Vanilla API lets you interface with Vanilla in a RESTful way using the
- * standard HTTP verbs GET, POST, PUT and DELETE. It also provides great
- * documentation and visualization of the API itself as well as its inner
- * workings.
- *
- * @package    API
- * @version    0.1.0
- * @author     Kasper Kronborg Isager <kasperisager@gmail.com>
- * @copyright  Copyright 2013 © Kasper Kronborg Isager
- * @license    http://opensource.org/licenses/MIT MIT
- */
-
-/**
- * API Controller
+ * The main API controller
  *
  * This class handles authentication and delegation of API requests and their
  * corresponding methods.
  *
- * @package    API
+ * @package    API\Controllers
  * @since      0.1.0
  * @author     Kasper Kronborg Isager <kasperisager@gmail.com>
  * @copyright  Copyright 2013 © Kasper Kronborg Isager
@@ -104,6 +89,9 @@ class APIController extends Gdn_Controller
    /**
     * Expose the session object
     *
+    * A the Dashboard application doesn't natively expose the session object,
+    * we'll have to do this ourselves.
+    *
     * @since   0.1.0
     * @access  public
     */
@@ -137,8 +125,8 @@ class APIController extends Gdn_Controller
     *
     * @since   0.1.0
     * @access  public
-    * @param   object $Data
-    * @return  array
+    * @param   object $Data   Object that we wish to turn into an array
+    * @return  array          An array containing the data from the input object
     * @static
     */
    public static function Sanitize($Data)
@@ -235,8 +223,10 @@ class APIController extends Gdn_Controller
     *
     * @since   0.1.0
     * @access  protected
-    * @param   array $Request
-    * @return  string
+    * @param   array $Request Array of request data uesd for generating the
+    *                         signature hash
+    * @return  string         An HMAC-SHA256 hash generated from the request
+    *                         data
     * @static
     */
    protected static function Signature($Request)
@@ -268,7 +258,7 @@ class APIController extends Gdn_Controller
     * @access  protected
     * @param   string $Username  Username of the user whose ID we wish to get
     * @param   string $Email     Email of the user whose ID we wish to get
-    * @return  int|null          User ID is a username or an email has been
+    * @return  int|null          User ID if a username or an email has been
     *                            specified, otherwise NULL
     * @static
     */
@@ -291,14 +281,20 @@ class APIController extends Gdn_Controller
    /**
     * Delegate methods to a specified API class
     *
+    * This function takes a request URI and an HTTP method and uses these to
+    * delegate an action to the specified API class. In return, the API returns
+    * an array of data which we later to map the request to an application or
+    * plugin controller.
+    *
     * @since   0.1.0
+    * @access  protected
     * @param   string $Path   The full request path excluding queries
-    * @param   string $Class  The class that we wish to delegate an action to
     * @param   string $Method The request method issued by the client
+    * @param   string $Class  The class that we wish to delegate an action to
     * @return  array          An array of data returned by the API class
     * @static
     */
-   protected static function MethodHandler($Path, $Class, $Method)
+   protected static function MethodHandler($Path, $Method, $Class)
    {
       $Request    = Gdn::Request();
       $Arguments  = $Request->Export('Arguments');
@@ -420,7 +416,7 @@ class APIController extends Gdn_Controller
       $Method     = $Request->RequestMethod();
       
       // Use the MethodHandler to get data from the API class
-      $Data       = self::MethodHandler($Path, $Class, $Method);
+      $Data       = self::MethodHandler($Path, $Method, $Class);
 
       // Make sure that the API class returns a resource
       if (!isset($Data['Resource']))
@@ -452,7 +448,8 @@ class APIController extends Gdn_Controller
     *
     * @since   0.1.0
     * @access  public
-    * @return  array
+    * @return  array Parsed array of data derived from the raw Form Data
+    *                submitted in the request.
     * @static
     */
    public static function ParseFormData()
