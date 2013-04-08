@@ -1,4 +1,4 @@
-[![Vanilla API](design/images/api.png)](https://github.com/kasperisager/VanillaAPI)
+[![Vanilla API](http://i.imgur.com/6Qawex7.png)](https://github.com/kasperisager/VanillaAPI)
 
 # Vanilla API [![Build Status](https://travis-ci.org/kasperisager/VanillaAPI.png?branch=master)](https://travis-ci.org/kasperisager/VanillaAPI) [![Dependency Status](https://gemnasium.com/kasperisager/VanillaAPI.png)](https://gemnasium.com/kasperisager/VanillaAPI)
 
@@ -15,7 +15,17 @@ To get started using Vanilla API, either:
 `$ cd /path/to/vanilla/applications/`  
 `$ git clone git://github.com/kasperisager/VanillaAPI.git`
 
-Now simply go to your Vanilla dashboard, enable Vanilla API in the "Applications" menu and you're all set!
+When you've done this, make sure the newly created folder is named `api` and not `VanillaAPI`. Now simply go to your dashboard, enable the API in the "Applications" menu and you're all set!
+
+### Generating documentation
+
+The application source is well-documented and the API comes bundled with [Sami](https://github.com/fabpot/Sami) for generating the documentation. You will however need to install Sami first after which you can generate the documentation:
+
+```shell
+$ composer install && php vendors/sami/sami/sami.php update config.php -v
+```
+
+If the Composer installation fails, if might be a good idea to [read the instructions](http://getcomposer.org/doc/00-intro.md#installation-nix) on how to use Composer. When you've got it all up and running, navigate to http://your-domain.com/applications/api/build to read the generated documentation.
 
 ## How does it work?
 
