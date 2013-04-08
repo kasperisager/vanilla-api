@@ -21,7 +21,7 @@ When you've done this, make sure the newly created folder is named `api` and not
 
 The application source is well-documented and the API comes bundled with [Sami](https://github.com/fabpot/Sami) for generating the documentation. You will however need to install Sami first after which you can generate the documentation:
 
-```shell
+```sh
 $ composer install && php vendors/sami/sami/sami.php update config.php -v
 ```
 
