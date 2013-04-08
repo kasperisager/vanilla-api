@@ -1,13 +1,4 @@
-<?php
-/**
- * API Settings View
- *
- * @author     Kasper Kronborg Isager <kasperisager@gmail.com>
- * @copyright  Copyright 2013 © Kasper Kronborg Isager
- * @license    http://opensource.org/licenses/MIT MIT
- */
-
-if (!defined('APPLICATION')) exit(); ?>
+<?php if (!defined('APPLICATION')) exit(); ?>
 
 <style class="text/css">
    .Endpoint {
