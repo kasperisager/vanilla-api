@@ -1,19 +1,16 @@
-<?php
-/**
- * API Controller
- *
- * @author     Kasper Kronborg Isager <kasperisager@gmail.com>
- * @copyright  Copyright 2013 © Kasper Kronborg Isager
- * @license    http://opensource.org/licenses/MIT MIT
- */
+<?php if (!defined('APPLICATION')) exit();
 
-if (!defined('APPLICATION')) exit();
+// Load SwaggerSwagger and PhpFileCache
+use Swagger\Swagger;
+use \Doctrine\Common\Cache\PhpFileCache;
 
 /**
- * The main API controller
+ * API Docs Controller
  *
- * This class handles authentication and delegation of API requests and their
- * corresponding methods.
+ * This class handles documentation and visualization of the API. It uses
+ * Swagger PHP to provide Swagger-compliant JSON documents to the Swagger UI
+ * which runs on the front end. It also integrates with the public Github Wiki
+ * to users have easy access to documentation directly in the API Explorer.
  *
  * @package    API
  * @since      0.1.0
@@ -23,116 +20,6 @@ if (!defined('APPLICATION')) exit();
  */
 class APIController extends Gdn_Controller
 {
-   /**
-    * Prepare controllers
-    *
-    * @since   0.1.0
-    * @access  public
-    * @var     array
-    */
-   public $Uses = array('DocsController');
-
-   /**
-    * Do-nothing construct 
-    * 
-    * Let children constructs bubble up.
-    *
-    * @since   0.1.0
-    * @access  public
-    */
-   public function __construct()
-   {
-      parent::__construct();
-   }
-
-   /**
-    * Do-nothing intialize
-    * 
-    * Let children initializers bubble up.
-    * 
-    * @since   0.1.0
-    * @access  public
-    */
-   public function Initialize()
-   {
-      parent::Initialize();
-   }
-
-   /**
-    * Initialize the API Explorer
-    *
-    * @since   0.1.0
-    * @access  public
-    */
-   public function Index()
-   {
-      DocsController::Initialize();
-      DocsController::Explorer();
-   }
-
-   /**
-    * Initialize the API Wiki
-    *
-    * @since   0.1.0
-    * @access  public
-    * @param   string $Wiki The requested Wiki article. If none is specified,
-    *                       the index containing the README will be shown
-    */
-   public function Wiki($Wiki = NULL)
-   {
-      DocsController::Initialize();
-      DocsController::Wiki($Wiki);
-   }
-
-   /**
-    * Initialize the API Resource Listing
-    *
-    * @since   0.1.0
-    * @access  public
-    * @param   string $Resource The requested resource. If none is specified,
-    *                           the index containing the entire listing will be
-    *                           shown
-    */
-   public function Resources($Resource = NULL)
-   {
-      DocsController::Initialize();
-      DocsController::Resources($Resource);
-   }
-
-   /**
-    * Expose the session object
-    *
-    * A the Dashboard application doesn't natively expose the session object,
-    * we'll have to do this ourselves.
-    *
-    * @since   0.1.0
-    * @access  public
-    */
-   public function Session()
-   {  
-      $Request    = Gdn::Request();
-      $Arguments  = $Request->Export('Arguments');
-
-      $this->DeliveryType(DELIVERY_TYPE_DATA);
-
-      // Change response format depending on HTTP_ACCEPT
-      $Accept  = $Arguments['server']['HTTP_ACCEPT'];
-      $Ext     = (strpos($Accept, 'json')) ? 'json' : 'xml';
-   
-      switch ($Ext) {
-         case 'xml':
-            $this->DeliveryMethod(DELIVERY_METHOD_XML);
-            break;
-
-         case 'json':
-            $this->DeliveryMethod(DELIVERY_METHOD_JSON);
-            break;
-      }
-
-      $this->SetData('Session', self::Sanitize(Gdn::Session()));
-      $this->RenderData();
-   }
-
    /**
     * A little voodoo to turn objects into arrays
     *
@@ -148,383 +35,224 @@ class APIController extends Gdn_Controller
       $Data = json_decode($Data, TRUE);
       return $Data;
    }
-
+   
    /**
-    * Token-based, per-request authentication
+    * Information about the API
     *
-    * This function takes the entire request string and turns the query into an
-    * array of data. It then uses all the data to generate a signature the same
-    * way it got generated on the client. If the server signature and client
-    * token match, the client is considered legimate and the request is served.
-    *
+    * This info array is included in all API resources as to enable Swagger
+    * to crawl and list the entire API.
+    * 
     * @since   0.1.0
-    * @access  protected
-    * @static
+    * @access  public
+    * @return  array
     */
-   protected static function Authenticate()
+   public function Meta()
    {
-      $Request       = Gdn::Request();
-      $PathAndQuery  = $Request->PathAndQuery();
-      $ParsedURL     = parse_url($PathAndQuery);
-
-      // Get the values we need for authentication
-      $Username      = GetIncomingValue('username');
-      $Email         = GetIncomingValue('email');
-      $Timestamp     = GetIncomingValue('timestamp');
-      $Token         = GetIncomingValue('token');
-
-      // Make sure that the query actually contains data
-      if (!isset($ParsedURL['query']))
-         throw new Exception("No authentication query defined", 401);
-
-      // Now that we're sure the query conatins some data, turn this data into
-      // an array which we will later use to analyze each part of the query
-      parse_str($ParsedURL['query'], $Request);
-
-      // Unset the client token as we don't want to include it when generating
-      // the server signature
-      unset($Request['token']);
-
-      // Make sure that either a username or an email has been passed
-      if (empty($Username) && empty($Email))
-         throw new Exception("Username or email must be specified", 401);
-
-      // Make sure that the query contains a timestamp
-      if (empty($Timestamp))
-         throw new Exception("A timestamp must be specified", 401);
-
-      // Make sure that this timestamp is still valid
-      if ((abs($Timestamp - time())) > C('API.Expiration'))
-         throw new Exception("The request is no longer valid", 401);
-
-      // Make sure that the query contains a token
-      if (empty($Token))
-         throw new Exception("A token must be specified", 401);
-
-      // Now we check for a username and email (we've already made sure that at
-      // least one of them have been passed) and set them if they exist
-      (empty($Username)) ?: $Username  = $Request['username'];
-      (empty($Email))    ?: $Email     = $Request['email'];
-
-      // Get the ID of the client (user) sending the request
-      $UserID        = self::GetUserID($Username, $Email);
-
-      // Make sure that the user actually exists
-      if (!isset($UserID))
-         throw new Exception("The specified user doesn't exist", 401);
-
-      // Generate a signature from the passed data the same way it was
-      // generated on the client
-      $Signature     = self::Signature($Request);
+      $Meta = array();
+      $Meta['apiVersion']     = '0.1.0';
+      $Meta['swaggerVersion'] = '1.1';
+      $Meta['basePath']       = Gdn::Request()->Domain() . '/api';
       
-      // Make sure that the client token and the server signature match
-      if ($Token != $Signature)
-         throw new Exception("Token and signature do not match", 401);
-
-      // Now that we've thoroughly verified the client, start a session for the
-      // duration of the request using the User ID we specified earlier
-      Gdn::Session()->Start(intval($UserID), FALSE);
+      return $Meta;
    }
 
    /**
-    * Generate a signature from a request array
-    *
-    * This function takes an array of data, sorts the keys alphabetically and
-    * generates an HMAC hash using a specified application secret. The hash
-    * can then be used to validate incoming API calls as only the client and
-    * server knows the secret key used for creating the hash.
-    *
-    * @since   0.1.0
-    * @access  protected
-    * @param   array $Request Array of request data uesd for generating the
-    *                         signature hash
-    * @return  string         An HMAC-SHA256 hash generated from the request
-    *                         data
-    * @static
-    */
-   protected static function Signature($Request)
-   {
-      // Get the application secret used for generating the hash
-      $Secret = C('API.Secret');
-
-      // Sort the data array alphabetically so we always get the same hash no
-      // matter how the data was originally sorted
-      ksort($Request, SORT_STRING);
-
-      // Generate a signature by taking all the request data values (we're not
-      // interested in the keys), delimiting them with a dash (to avoid hash
-      // collisions) and making it all lower case as to ensure consistent hash
-      // generation
-      $Signature = hash_hmac('sha256', strtolower(implode('-', $Request)), $Secret);
-
-      return $Signature;
-   }
-
-   /**
-    * Get a user ID using either a username or an email
-    *
-    * Note: if both a username and an email are specified, only the username
-    * will be used. This is to prevent abusing of the function by passing two
-    * parameters at a time and hoping to get a User ID.
-    *
-    * @since   0.1.0
-    * @access  protected
-    * @param   string $Username  Username of the user whose ID we wish to get
-    * @param   string $Email     Email of the user whose ID we wish to get
-    * @return  int|null          User ID if a username or an email has been
-    *                            specified, otherwise NULL
-    * @static
-    */
-   protected static function GetUserID($Username, $Email)
-   {
-      // Instantiate a new user model
-      $UserModel = new UserModel();
-
-      // Look up the user ID using a username if one has been specified
-      if(isset($Username))
-         return $UserModel->GetByUsername($Username)->UserID;
-
-      // Look up the user ID using an email if one has been specified
-      if(isset($Email))
-         return $UserModel->GetByEmail($Email)->UserID;
-
-      return NULL;
-   }
-
-   /**
-    * Delegate methods to a specified API class
-    *
-    * This function takes a request URI and an HTTP method and uses these to
-    * delegate an action to the specified API class. In return, the API returns
-    * an array of data which we later to map the request to an application or
-    * plugin controller.
-    *
-    * @since   0.1.0
-    * @access  protected
-    * @param   string $Path   The full request path excluding queries
-    * @param   string $Method The request method issued by the client
-    * @param   string $Class  The class that we wish to delegate an action to
-    * @return  array          An array of data returned by the API class
-    * @static
-    */
-   protected static function MethodHandler($Path, $Method, $Class)
-   {
-      $Request    = Gdn::Request();
-      $Arguments  = $Request->Export('Arguments');
-
-      // Change response format depending on HTTP_ACCEPT
-      $Accept     = $Arguments['server']['HTTP_ACCEPT'];
-      $Format     = (strpos($Accept, 'json')) ? 'json' : 'xml';
-
-      // Parameters to be passed on to the API class
-      $Parameters = array();
-      $Parameters['Format']   = $Format;
-      $Parameters['Path']     = $Path;
-
-      switch(strtolower($Method)) {
-
-         case 'get':
-            $Data = $Class->Get($Parameters);
-            break;
-
-         case 'post':
-            $Data = $Class->Post($Parameters);
-
-            // Combine the POST request with any custom arguments
-            if (isset($Data['Arguments'])) {
-               $Merged = array_merge($_POST, $Data['Arguments']);
-               $Request->SetRequestArguments(Gdn_Request::INPUT_POST, $Merged);
-            }
-
-            $_POST = $Request->Post();
-
-            break;
-
-         case 'put':
-            $Data = $Class->Put($Parameters);
-
-            // Garden can't handle PUT requests by default, so trick
-            // it into thinking that this is actually a POST
-            $Request->RequestMethod('post');
-
-            // Parse any form data and store it
-            $_PUT = self::ParseFormData();
-
-            // Combine the PUT request with any custom arguments
-            if (isset($Data['Arguments'])) {
-               $Merged = array_merge($_PUT, $Data['Arguments']);
-               $Request->SetRequestArguments(Gdn_Request::INPUT_POST, $Merged);
-            } else {
-               $Request->SetRequestArguments(Gdn_Request::INPUT_POST, $_PUT);
-            }
-
-            $_POST = $Request->Post();
-
-            break;
-
-         case 'delete':
-            $Data = $Class->Delete($Parameters);
-
-            // Garden can't handle DELETE requests by default, so trick
-            // it into thinking that this is actually a POST
-            $Request->RequestMethod('post');
-
-            // Combine the DELETE request with any custom arguments
-            if (isset($Data['Arguments'])) {
-               $Arguments = $Data['Arguments'];
-               $Request->SetRequestArguments(Gdn_Request::INPUT_POST, $Arguments);
-            }
-
-            $_POST = $Request->Post();
-
-            break;
-
-      }
-
-      return $Data;
-   }
-
-   /**
-    * Map the API request to the appropriate controller
-    *
+    * Initialize the API Explorer
+    * 
     * @since   0.1.0
     * @access  public
     */
-   public function _Dispatch()
+   public function Initialize()
    {
-      $Request    = Gdn::Request();
-      $Session    = Gdn::Session();
-      $URI        = $Request->RequestURI();
-      $URI        = strtolower($URI);
-      $Path       = explode('/', $URI);
-      $Call       = NULL;
-      $Resource   = NULL;
+      parent::Initialize();
 
-      // Set the call and resource paths if they exists
-      (!isset($Path[0])) ?: $Call      = $Path[0];
-      (!isset($Path[1])) ?: $Resource  = $Path[1];
+      // Build the head asset
+      $this->Head = new HeadModule($this);
 
-      // Abandon the dispatch is this isn't an API call with a valid resource
-      if (empty($Call) || $Call != 'api' || empty($Resource)) return;
+      // Swagger UI
+      $this->AddJsFile('jquery-1.8.0.min.js');
+      $this->AddJsFile('jquery.slideto.min.js');
+      $this->AddJsFile('jquery.slideto.min.js');
+      $this->AddJsFile('jquery.wiggle.min.js');
+      $this->AddJsFile('jquery.ba-bbq.min.js');
+      $this->AddJsFile('handlebars-1.0.rc.1.js');
+      $this->AddJsFile('underscore-min.js');
+      $this->AddJsFile('backbone-min.js');
+      $this->AddJsFile('swagger.js');
+      $this->AddJsFile('highlight.7.3.pack.js');
+      $this->AddJsFile('swagger-ui.js');
 
-      // Abandon dispatch if any of these methods are requested
-      $Abandon    = array('resources', 'wiki', 'session');
-      foreach ($Abandon as $Method) if ($Resource == $Method) return;
+      // Bootstrap
+      $this->AddJsFile('bootstrap-dropdown.js');
 
-      // Turn requested resource into API class and store it
-      $Class      = $Resource . 'API';
+      // Default stylesheet
+      $this->AddCssFile('api.css');
+   }
 
-      // Make sure that the requested API class exists
-      if (!class_exists($Class))
-         throw new Exception("No such API class found", 404);
-
-      // Instantiate the requested API class
-      $Class      = new $Class;
-
-      // Make sure that the requested API class extends the API Mapper
-      if (!is_subclass_of($Class, 'APIMapper'))
-         throw new Exception("API class must extend the API Mapper", 401); 
-
-      // Get the request method issued by the client
-      $Method     = $Request->RequestMethod();
-      
-      // Use the MethodHandler to get data from the API class
-      $Data       = self::MethodHandler($Path, $Method, $Class);
-
-      // Make sure that the API class returns a resource
-      if (!isset($Data['Resource']))
-         throw new Exception("No resource has been defined", 500);
-
-      // Authenticate the request if no valid session exists
-      if (isset($Data['Authenticate']) && !Gdn::Session()->IsValid()) {
-
-         $Authentication = strtolower($Data['Authenticate']);
-
-         // If authentication is required, authenticate the client
-         if ($Authentication == 'required') self::Authenticate();
-
-         // If authentication is optional, only authenticate the client if a
-         // username or an email has been specified in the request
-         if ($Authentication == 'optional') {
-            $Username   = GetIncomingValue('username');
-            $Email      = GetIncomingValue('email');
-            if (!empty($Username) || !empty($Email)) self::Authenticate();
-         }
-      }
-
-      // Map the request to the specified URI
-      $Request->WithURI($Data['Resource']);
+   public function Index()
+   {
+      self::Explorer();
    }
 
    /**
-    * Parse raw Form Data and return it as an array
-    *
+    * API documentation and visualization using Swagger UI
+    * 
     * @since   0.1.0
     * @access  public
-    * @return  array Parsed array of data derived from the raw Form Data
-    *                submitted in the request.
-    * @static
     */
-   public static function ParseFormData()
+   public function Explorer()
    {
-      // Fetch PUT content and determine Boundary
-      $RawData    = file_get_contents('php://input');
-      $Boundary   = substr($RawData, 0, strpos($RawData, "\r\n"));
+      // Set page title
+      $this->Title(T('Vanilla API'));
 
-      if(empty($Boundary)){
-         parse_str($RawData, $Data);
-         return $Data;
+      // Vanilla 2.1 goodie - sections!
+      if (method_exists('Gdn_Theme', 'Section'))
+         Gdn_Theme::Section('APIDocumentation');
+
+      $this->MasterView = 'api';
+      $this->Render();
+   }
+
+   /**
+    * Usage and development documentation from the Github wiki
+    * 
+    * @since   0.1.0
+    * @access  public
+    * @param   string $Wiki
+    */
+   public function Wiki($Wiki = NULL)
+   {
+      // Vanilla 2.1 goodie - sections!
+      if (method_exists('Gdn_Theme', 'Section')) Gdn_Theme::Section('APIWiki');
+
+      // Define the API Wiki remote feed and local cache
+      $RemoteData = 'https://github.com/kasperisager/VanillaAPI/wiki.atom';
+      $CacheData  = PATH_CACHE . '/API/wiki_entries.cache';
+
+      // If the cache folder hasn't been create yet, create it
+      if (!is_dir(PATH_CACHE . '/API')) mkdir(PATH_CACHE . '/API');
+
+      // If no cache data is found or the cache data is older than 1 hour,
+      // pull in the remote feed and cache it
+      if (!file_exists($CacheData) || time() - filemtime($CacheData) >= 3600)
+         file_put_contents($CacheData, file_get_contents($RemoteData));
+
+      // Get the contents of the cache or use the remote feed if caching has
+      // been turned off in the configuration
+      $Data = file_get_contents(C('API.Wiki.Cache') ? $CacheData : $RemoteData);
+      $Data = self::Sanitize(simplexml_load_string($Data));
+
+      // Regex for matching relative images and links
+      $Href = "#(<\s*a\s+[^>]*href\s*=\s*[\"'])(?!http)([^\"'>]+)([\"'>]+)#";
+      $Src  = "#(<\s*img\s+[^>]*src\s*=\s*[\"'])(?!http)([^\"'>]+)([\"'>]+)#";
+
+      $Entries = array();
+
+      foreach ($Data['entry'] as $Entry) {
+
+         $Title   = Gdn_Format::Clean($Entry['title']);
+         $Content = Gdn_Format::Raw($Entry['content']);
+         $Updated = Gdn_Format::FuzzyTime($Entry['updated']);
+
+         $Content = preg_replace($Href, '$1https://github.com$2$3', $Content);
+         $Content = preg_replace($Src, '$1https://github.com$2$3', $Content);
+
+         $Page = array();
+         $Page['Title']    = ucfirst($Title);
+         $Page['Content']  = $Content;
+         $Page['Updated']  = $Updated;
+
+         $Entries[$Title] = $Page;
+
       }
 
-      // Fetch each part
-      $Parts = array_slice(explode($Boundary, $RawData), 1);
-      $PutData = array();
+      if ($Wiki) {
 
-      foreach ($Parts as $Part) {
-         // If this is the last part, break
-         if ($Part == "--\r\n") break; 
+         if (!isset($Entries[$Wiki]))
+            throw new Exception("Entry not found", 404);
+            
+         $Entry = $Entries[$Wiki];
+         $Title = $Entry['Title'];
 
-         // Separate content from headers
-         $Part = ltrim($Part, "\r\n");
-         list($RawHeaders, $PutBody) = explode("\r\n\r\n", $Part, 2);
+         $this->Title(T($Title));
+         $this->SetData('Entry', $Entry);
 
-         // Parse the headers list
-         $RawHeaders = explode("\r\n", $RawHeaders);
-         $headers    = array();
-         foreach ($RawHeaders as $header) {
-            list($Name, $Value) = explode(':', $header);
-            $headers[strtolower($Name)] = ltrim($Value, ' '); 
-         } 
+      } else {
+         $this->Title(T('Wiki'));
+         $this->SetData('Entry', $Entries['home']);
+      }
 
-         // Parse the Content-Disposition to get the field name, etc.
-         if (isset($headers['content-disposition'])) {
-            $filename = null;
-            preg_match(
-               '/^(.+); *name="([^"]+)"(; *filename="([^"]+)")?/', 
-               $headers['content-disposition'], 
-               $Matches
-            );
-            list(, $Type, $Name) = $Matches;
-            isset($Matches[4]) and $filename = $Matches[4]; 
+      $this->MasterView = 'api';
+      $this->Render();
+   }
 
-            // handle your fields here
-            switch ($Name) {
-               // this is a file upload
-               case 'userfile':
-                  file_put_contents($filename, $PutBody);
-                  break;
+   /**
+    * Vanilla API Resource Listing
+    *
+    * Resource listing used to get information about each information about
+    * each controller and output this as JSON for Swagger UI to read
+    * 
+    * @since   0.1.0
+    * @access  public
+    * @param   string $Resource
+    */
+   public function Resources($Resource = NULL)
+   {
+      $this->DeliveryType(DELIVERY_TYPE_DATA);
+      $this->DeliveryMethod(DELIVERY_METHOD_JSON);
 
-               // default for all other files is to populate $PutData
-               default: 
-                  $PutData[$Name] = substr(
-                     $PutBody, 0, strlen($PutBody) - 2
-                  );
-                  break;
-            } 
+      $Root       = PATH_ROOT;
+      $Cache      = PATH_CACHE . DS . 'API';
+      $Data       = array();
+      $Data       = array_merge(self::Meta(), $Data);
+
+      // Crawl the entire installation and cache all API documentation
+      // unless caching of docs has been turned off
+      if (C('API.Docs.Cache')) {
+         $PhpFileCache = new PhpFileCache($Cache, '.cache');
+         $Swagger = new \Swagger\Swagger($Root, NULL, $PhpFileCache);
+      } else {
+         $Swagger = Swagger::discover($Root);
+      }
+
+      if ($Resource) {
+
+         // Get the cached registry
+         $Registry = $Swagger->getRegistry();
+
+         // If a resource doesn't exist throw a "Not Found"
+         if (!isset($Registry['/' . $Resource]->apis))
+            throw new Exception("Resource not found", 404);
+
+         // Find the requested resource in the registry
+         $Resource = $Registry['/' . $Resource]->apis;
+
+         $Data['apis']  = $Resource;
+         $this->SetData($Data);
+
+      } else {
+
+         // Get the resource list
+         $Resources = $Swagger->getResourceList(TRUE, FALSE);
+
+         $Listing = array();
+
+         foreach ($Resources['apis'] as $Api) {
+            // Trim .{format} from resource path since we only want
+            // to deliver JSON and not XML to Swagger UI
+            $Path = str_replace('.{format}', NULL, $Api['path']);
+
+            $Resource = array();
+            $Resource['path'] = $Path;
+
+            $Listing[] = $Resource;
          }
 
+         $Data['apis']  = $Listing;
+         $this->SetData($Data);
+
       }
 
-      return $PutData;
+      $this->RenderData();
    }
 }

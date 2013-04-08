@@ -1,21 +1,9 @@
-<?php
-/**
- * Session API
- *
- * @author     Kasper Kronborg Isager <kasperisager@gmail.com>
- * @copyright  Copyright 2013 © Kasper Kronborg Isager
- * @license    http://opensource.org/licenses/MIT MIT
- */
+<?php if (!defined('APPLICATION')) exit();
 
-if (!defined('APPLICATION')) exit();
-
-use Swagger\Annotations as SWG;
+//use Swagger\Annotations as SWG;
 
 /**
- * Session API
- *
- * This method is not used for anything besides documentation purposes as the
- * API controller takes care of exposing the session object
+ * Locales API
  *
  * @package    API
  * @since      0.1.0
@@ -24,28 +12,17 @@ use Swagger\Annotations as SWG;
  * @license    http://opensource.org/licenses/MIT MIT
  *
  * @SWG\resource(
- *   resourcePath="/session"
+ *   resourcePath="/locales"
  * )
  */
-class SessionAPI extends APIMapper
+class API_Class_Locales extends API_Mapper
 {
    /**
-    * Info about current user session
-    *
-    * GET /session
+    * GET
     *
     * @since   0.1.0
     * @access  public
     * @param   array $Parameters
-    *
-    * @SWG\api(
-    *   path="/session",
-    *   @SWG\operation(
-    *     httpMethod="GET",
-    *     nickname="GetSession",
-    *     summary="Information about the current user session"
-    *   )
-    * )
     */
    public function Get($Parameters)
    {

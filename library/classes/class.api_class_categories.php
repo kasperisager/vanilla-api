@@ -1,13 +1,4 @@
-<?php
-/**
- * Categories API
- *
- * @author     Kasper Kronborg Isager <kasperisager@gmail.com>
- * @copyright  Copyright 2013 © Kasper Kronborg Isager
- * @license    http://opensource.org/licenses/MIT MIT
- */
-
-if (!defined('APPLICATION')) exit();
+<?php if (!defined('APPLICATION')) exit();
 
 use Swagger\Annotations as SWG;
 
@@ -24,7 +15,7 @@ use Swagger\Annotations as SWG;
  *   resourcePath="/categories"
  * )
  */
-class CategoriesAPI extends APIMapper
+class API_Class_Categories extends API_Mapper
 {
    /**
     * Retrieve categories
@@ -43,8 +34,8 @@ class CategoriesAPI extends APIMapper
 
       $Format = $Parameters['Format'];
 
-      if (isset($ID))   return self::_GetById($Format, $ID);
-      if (!isset($ID))  return self::_GetAll($Format);
+      if (isset($ID))   return self::GetById($Format, $ID);
+      if (!isset($ID))  return self::GetAll($Format);
    }
 
    /**
@@ -53,9 +44,10 @@ class CategoriesAPI extends APIMapper
     * GET /categories
     *
     * @since   0.1.0
-    * @access  protected
+    * @access  public
     * @param   string $Format
     * @return  array
+    * @static
     *
     * @SWG\api(
     *   path="/categories",
@@ -66,7 +58,7 @@ class CategoriesAPI extends APIMapper
     *   )
     * )
     */
-   protected function _GetAll($Format)
+   public static function GetAll($Format)
    {
       $Return = array();
       $Return['Resource']     = 'vanilla/categories.' . $Format . '/all';
@@ -81,10 +73,11 @@ class CategoriesAPI extends APIMapper
     * GET /categories/:id
     *
     * @since   0.1.0
-    * @access  protected
+    * @access  public
     * @param   string   $Format
     * @param   int      $ID
     * @return  array
+    * @static
     *
     * @SWG\api(
     *   path="/categories/{id}",
@@ -103,7 +96,7 @@ class CategoriesAPI extends APIMapper
     *   )
     * )
     */
-   protected function _GetById($Format, $ID)
+   public static function GetById($Format, $ID)
    {
       $Return = array();
       $Return['Resource']     = 'vanilla/categories.' . $Format . DS . $ID;

@@ -1,18 +1,9 @@
-<?php
-/**
- * Messages API
- *
- * @author     Kasper Kronborg Isager <kasperisager@gmail.com>
- * @copyright  Copyright 2013 © Kasper Kronborg Isager
- * @license    http://opensource.org/licenses/MIT MIT
- */
-
-if (!defined('APPLICATION')) exit();
+<?php if (!defined('APPLICATION')) exit();
 
 use Swagger\Annotations as SWG;
 
 /**
- * Messages API
+ * Configuration API
  *
  * @package    API
  * @since      0.1.0
@@ -21,15 +12,15 @@ use Swagger\Annotations as SWG;
  * @license    http://opensource.org/licenses/MIT MIT
  *
  * @SWG\resource(
- *   resourcePath="/messages"
+ *   resourcePath="/configuration"
  * )
  */
-class MessagesAPI extends APIMapper
+class API_Class_Configuration extends API_Mapper
 {
    /**
     * Retrieve Vanilla configuration
     *
-    * GET /messages
+    * GET /configuration
     *
     * @since   0.1.0
     * @access  public
@@ -37,11 +28,11 @@ class MessagesAPI extends APIMapper
     * @return  array
     *
     * @SWG\api(
-    *   path="/messages",
+    *   path="/configuration",
     *   @SWG\operation(
     *     httpMethod="GET",
-    *     nickname="GetMessages",
-    *     summary="Get all of a user's messages"
+    *     nickname="GetConfig",
+    *     summary="Get the current forum configuration"
     *   )
     * )
     */
@@ -50,7 +41,8 @@ class MessagesAPI extends APIMapper
       $Format = $Parameters['Format'];
 
       $Return = array();
-      $Return['Resource'] = 'messages/all.' . $Format;
+      $Return['Resource'] = 'dashboard/settings/configuration.' . $Format;
+      $Return['Authenticate'] = 'Required';
 
       return $Return;
    }

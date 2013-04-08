@@ -1,18 +1,9 @@
-<?php
-/**
- * Configuration API
- *
- * @author     Kasper Kronborg Isager <kasperisager@gmail.com>
- * @copyright  Copyright 2013 © Kasper Kronborg Isager
- * @license    http://opensource.org/licenses/MIT MIT
- */
+<?php if (!defined('APPLICATION')) exit();
 
-if (!defined('APPLICATION')) exit();
-
-use Swagger\Annotations as SWG;
+//use Swagger\Annotations as SWG;
 
 /**
- * Configuration API
+ * Activity API
  *
  * @package    API
  * @since      0.1.0
@@ -21,39 +12,21 @@ use Swagger\Annotations as SWG;
  * @license    http://opensource.org/licenses/MIT MIT
  *
  * @SWG\resource(
- *   resourcePath="/configuration"
+ *   resourcePath="/activity"
  * )
  */
-class ConfigurationAPI extends APIMapper
+class API_Class_Activity extends API_Mapper
 {
    /**
-    * Retrieve Vanilla configuration
-    *
-    * GET /configuration
+    * GET
     *
     * @since   0.1.0
     * @access  public
     * @param   array $Parameters
-    * @return  array
-    *
-    * @SWG\api(
-    *   path="/configuration",
-    *   @SWG\operation(
-    *     httpMethod="GET",
-    *     nickname="GetConfig",
-    *     summary="Get the current forum configuration"
-    *   )
-    * )
     */
    public function Get($Parameters)
    {
-      $Format = $Parameters['Format'];
-
-      $Return = array();
-      $Return['Resource'] = 'dashboard/settings/configuration.' . $Format;
-      $Return['Authenticate'] = 'Required';
-
-      return $Return;
+      throw new Exception("Method Not Implemented", 501);
    }
 
    /**

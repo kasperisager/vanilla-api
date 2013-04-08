@@ -3,19 +3,16 @@
 use Sami\Sami;
 use Symfony\Component\Finder\Finder;
 
-$iterator = Finder::create()
+$Iterator = Finder::create()
    ->files()
    ->name('*.php')
-   ->exclude('vendors')
-   ->exclude('components')
-   ->exclude('build')
-   ->exclude('cache')
-   ->in(__DIR__)
+   ->in(__DIR__ . '/library')
 ;
 
-return new Sami($iterator, array(
+return new Sami($Iterator, array(
    'title'                 => 'Vanilla API',
    'build_dir'             => __DIR__ . '/build',
    'cache_dir'             => __DIR__ . '/cache',
+   'simulate_namespaces'   => true,
    'default_opened_level'  => 2,
 ));

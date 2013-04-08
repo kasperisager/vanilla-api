@@ -1,13 +1,4 @@
-<?php
-/**
- * Bans API
- *
- * @author     Kasper Kronborg Isager <kasperisager@gmail.com>
- * @copyright  Copyright 2013 © Kasper Kronborg Isager
- * @license    http://opensource.org/licenses/MIT MIT
- */
-
-if (!defined('APPLICATION')) exit();
+<?php if (!defined('APPLICATION')) exit();
 
 //use Swagger\Annotations as SWG;
 
@@ -24,7 +15,7 @@ if (!defined('APPLICATION')) exit();
  *   resourcePath="/bans"
  * )
  */
-class BansAPI extends APIMapper
+class API_Class_Bans extends API_Mapper
 {
    /**
     * GET

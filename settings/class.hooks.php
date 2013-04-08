@@ -1,13 +1,4 @@
-<?php
-/**
- * Hooks
- *
- * @author     Kasper Kronborg Isager <kasperisager@gmail.com>
- * @copyright  Copyright 2013 © Kasper Kronborg Isager
- * @license    http://opensource.org/licenses/MIT MIT
- */
-
-if (!defined('APPLICATION')) exit();
+<?php if (!defined('APPLICATION')) exit();
 
 /**
  * API hooks for hooking into Garden and its applications
@@ -33,8 +24,26 @@ class APIHooks implements Gdn_IPlugin
     */
    public function Gdn_Dispatcher_BeforeDispatch_Handler()
    {
-      $API = new APIController();
-      $API->_Dispatch();
+      $API_Engine = new API_Engine();
+      $Request    = Gdn::Request();
+      $URI        = $Request->RequestURI();
+      $URI        = strtolower($URI);
+      $Path       = explode('/', $URI);
+      $Call       = NULL;
+      $Resource   = NULL;
+
+      // Set the call and resource paths if they exists
+      (!isset($Path[0])) ?: $Call      = $Path[0];
+      (!isset($Path[1])) ?: $Resource  = $Path[1];
+
+      // Abandon the dispatch is this isn't an API call with a valid resource
+      if (empty($Call) || $Call != 'api' || empty($Resource)) return;
+
+      // Abandon the dispatch if any of these methods are requested
+      $Abandon    = array('resources', 'wiki', 'session');
+      foreach ($Abandon as $Method) if ($Resource == $Method) return;
+
+      $API_Engine->Dispatch();
    }
 
    /**
@@ -100,12 +109,12 @@ class APIHooks implements Gdn_IPlugin
     * Generates a Universally Unique Identifier, version 4
     *
     * @since   0.1.0
-    * @access  protected
+    * @access  public
     * @link    http://en.wikipedia.org/wiki/UUID
     * @return  string A UUID, made up of 32 hex digits and 4 hyphens.
     * @static
     */
-   protected static function UUIDSecure()
+   public static function UUIDSecure()
    {
       return sprintf( '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
          // 32 bits for "time_low"

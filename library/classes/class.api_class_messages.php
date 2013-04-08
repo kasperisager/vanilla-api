@@ -1,18 +1,9 @@
-<?php
-/**
- * Themes API
- *
- * @author     Kasper Kronborg Isager <kasperisager@gmail.com>
- * @copyright  Copyright 2013 © Kasper Kronborg Isager
- * @license    http://opensource.org/licenses/MIT MIT
- */
+<?php if (!defined('APPLICATION')) exit();
 
-if (!defined('APPLICATION')) exit();
-
-//use Swagger\Annotations as SWG;
+use Swagger\Annotations as SWG;
 
 /**
- * Themes API
+ * Messages API
  *
  * @package    API
  * @since      0.1.0
@@ -21,21 +12,38 @@ if (!defined('APPLICATION')) exit();
  * @license    http://opensource.org/licenses/MIT MIT
  *
  * @SWG\resource(
- *   resourcePath="/themes"
+ *   resourcePath="/messages"
  * )
  */
-class ThemesAPI extends APIMapper
+class API_Class_Messages extends API_Mapper
 {
    /**
-    * GET
+    * Retrieve Vanilla configuration
+    *
+    * GET /messages
     *
     * @since   0.1.0
     * @access  public
     * @param   array $Parameters
+    * @return  array
+    *
+    * @SWG\api(
+    *   path="/messages",
+    *   @SWG\operation(
+    *     httpMethod="GET",
+    *     nickname="GetMessages",
+    *     summary="Get all of a user's messages"
+    *   )
+    * )
     */
    public function Get($Parameters)
    {
-      throw new Exception("Method Not Implemented", 501);
+      $Format = $Parameters['Format'];
+
+      $Return = array();
+      $Return['Resource'] = 'messages/all.' . $Format;
+
+      return $Return;
    }
 
    /**

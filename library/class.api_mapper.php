@@ -1,13 +1,4 @@
-<?php
-/**
- * API Mapper
- *
- * @author     Kasper Kronborg Isager <kasperisager@gmail.com>
- * @copyright  Copyright 2013 © Kasper Kronborg Isager
- * @license    http://opensource.org/licenses/MIT MIT
- */
-
-if (!defined('APPLICATION')) exit();
+<?php if (!defined('APPLICATION')) exit();
 
 /**
  * Abstract Mapper class used for defining API resources
@@ -27,27 +18,27 @@ if (!defined('APPLICATION')) exit();
  * @license    http://opensource.org/licenses/MIT MIT
  * @abstract
  */
-abstract class APIMapper
+abstract class API_Mapper
 {
    /**
     * GET
     *
     * @since   0.1.0
-    * @access  protected
+    * @access  public
     * @param   array $Parameters
     * @abstract
     */
-   abstract protected function Get($Parameters);
+   abstract public function Get($Parameters);
 
    /**
     * POST
     *
     * @since   0.1.0
-    * @access  protected
+    * @access  public
     * @param   array $Parameters
     * @abstract
     */
-   abstract protected function Post($Parameters);
+   abstract public function Post($Parameters);
 
    /**
     * PUT
@@ -57,7 +48,7 @@ abstract class APIMapper
     * @param   array $Parameters
     * @abstract
     */
-   abstract protected function Put($Parameters);
+   abstract public function Put($Parameters);
 
    /**
     * DELETE
@@ -67,5 +58,5 @@ abstract class APIMapper
     * @param   array $Parameters
     * @abstract
     */
-   abstract protected function Delete($Parameters);
+   abstract public function Delete($Parameters);
 }

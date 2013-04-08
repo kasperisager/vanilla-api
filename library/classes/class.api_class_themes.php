@@ -1,18 +1,9 @@
-<?php
-/**
- * Locales API
- *
- * @author     Kasper Kronborg Isager <kasperisager@gmail.com>
- * @copyright  Copyright 2013 © Kasper Kronborg Isager
- * @license    http://opensource.org/licenses/MIT MIT
- */
-
-if (!defined('APPLICATION')) exit();
+<?php if (!defined('APPLICATION')) exit();
 
 //use Swagger\Annotations as SWG;
 
 /**
- * Locales API
+ * Themes API
  *
  * @package    API
  * @since      0.1.0
@@ -21,10 +12,10 @@ if (!defined('APPLICATION')) exit();
  * @license    http://opensource.org/licenses/MIT MIT
  *
  * @SWG\resource(
- *   resourcePath="/locales"
+ *   resourcePath="/themes"
  * )
  */
-class LocalesAPI extends APIMapper
+class API_Class_Themes extends API_Mapper
 {
    /**
     * GET

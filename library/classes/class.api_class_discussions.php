@@ -1,13 +1,4 @@
-<?php
-/**
- * Discussions API
- *
- * @author     Kasper Kronborg Isager <kasperisager@gmail.com>
- * @copyright  Copyright 2013 © Kasper Kronborg Isager
- * @license    http://opensource.org/licenses/MIT MIT
- */
-
-if (!defined('APPLICATION')) exit();
+<?php if (!defined('APPLICATION')) exit();
 
 use Swagger\Annotations as SWG;
 
@@ -24,7 +15,7 @@ use Swagger\Annotations as SWG;
  *   resourcePath="/discussions"
  * )
  */
-class DiscussionsAPI extends APIMapper
+class API_Class_Discussions extends API_Mapper
 {
    /**
     * Retrieve discussions
@@ -55,7 +46,7 @@ class DiscussionsAPI extends APIMapper
     * GET /discussions
     *
     * @since   0.1.0
-    * @access  protected
+    * @access  public
     * @param   string $Format
     * @return  array
     *
@@ -68,7 +59,7 @@ class DiscussionsAPI extends APIMapper
     *   )
     * )
     */
-   protected function GetAll($Format)
+   public static function GetAll($Format)
    {
       $Return = array();
       $Return['Resource'] = 'vanilla/discussions.' . $Format;
@@ -82,10 +73,11 @@ class DiscussionsAPI extends APIMapper
     * GET /discussions/:id
     *
     * @since   0.1.0
-    * @access  protected
+    * @access  public
     * @param   string   $Format
     * @param   int      $ID
     * @return  array
+    * @static
     *
     * @SWG\api(
     *   path="/discussions/{id}",
@@ -96,7 +88,7 @@ class DiscussionsAPI extends APIMapper
     *   )
     * )
     */
-   protected function GetById($Format, $ID)
+   public static function GetById($Format, $ID)
    {
       $Return = array();
       $Return['Resource'] = 'vanilla/discussion.' . $Format . DS . $ID;
@@ -108,11 +100,11 @@ class DiscussionsAPI extends APIMapper
     * Retrieve a the current user's bookmarked discussions
     *
     * @since   0.1.0
-    * @access  protected
+    * @access  public
     * @param   string $Format
     * @return  array
     */
-   protected function GetBookmarks($Format)
+   public static function GetBookmarks($Format)
    {
       $Return = array();
       $Return['Resource'] = 'vanilla/discussions/bookmarked.' . $Format;
@@ -124,11 +116,12 @@ class DiscussionsAPI extends APIMapper
     * Retrieve discussions created by the current user
     * 
     * @since   0.1.0
-    * @access  protected
+    * @access  public
     * @param   string $Format
     * @return  array
+    * @static
     */
-   protected function GetMine($Format)
+   public static function GetMine($Format)
    {
       $Return = array();
       $Return['Resource'] = 'vanilla/discussions/mine.' . $Format;
@@ -166,9 +159,10 @@ class DiscussionsAPI extends APIMapper
     * POST /discussions
     *
     * @since   0.1.0
-    * @access  protected
+    * @access  public
     * @param   string $Format
     * @return  array
+    * @static
     * 
     * @SWG\api(
     *   path="/discussions",
@@ -179,7 +173,7 @@ class DiscussionsAPI extends APIMapper
     *   )
     * )
     */
-   protected function PostDiscussion($Format)
+   public static function PostDiscussion($Format)
    {
       $Return = array();
       $Return['Resource'] = 'vanilla/post/discussion.' . $Format;
@@ -191,10 +185,11 @@ class DiscussionsAPI extends APIMapper
     * Create a new comment
     *
     * @since   0.1.0
-    * @access  protected
+    * @access  public
     * @param   string   $Format
     * @param   int      $ID
     * @return  array
+    * @static
     *
     * @SWG\api(
     *   path="/discussions/{id}/comments",
@@ -205,7 +200,7 @@ class DiscussionsAPI extends APIMapper
     *   )
     * )
     */
-   protected function PostComment($Format, $ID)
+   public static function PostComment($Format, $ID)
    {
       $Return = array();
       $Return['Arguments']['DiscussionID'] = $ID;
@@ -245,10 +240,11 @@ class DiscussionsAPI extends APIMapper
     * PUT /discussions/:id
     *
     * @since   0.1.0
-    * @access  protected
+    * @access  public
     * @param   string   $Format
     * @param   int      $ID
     * @return  array
+    * @static
     *
     * @SWG\api(
     *   path="/discussions/{id}",
@@ -259,7 +255,7 @@ class DiscussionsAPI extends APIMapper
     *   )
     * )
     */
-   protected function PutDiscussion($Format, $ID)
+   public static function PutDiscussion($Format, $ID)
    {
       $Return = array();
       $Return['Arguments']['DiscussionID'] = $ID;
@@ -275,10 +271,11 @@ class DiscussionsAPI extends APIMapper
     * PUT /discussions/comments/:id
     *
     * @since   0.1.0
-    * @access  protected
+    * @access  public
     * @param   string   $Format
     * @param   int      $ID
     * @return  array
+    * @static
     *
     * @SWG\api(
     *   path="/discussions/comments/{id}",
@@ -289,7 +286,7 @@ class DiscussionsAPI extends APIMapper
     *   )
     * )
     */
-   protected function PutComment($Format, $ID)
+   public static function PutComment($Format, $ID)
    {
       $Return = array();
       $Return['Arguments']['CommentID'] = $ID;
@@ -333,6 +330,7 @@ class DiscussionsAPI extends APIMapper
     * @param   string   $Format
     * @param   int      $ID
     * @return  array
+    * @static
     *
     * @SWG\api(
     *   path="/discussions/{id}",
@@ -343,7 +341,7 @@ class DiscussionsAPI extends APIMapper
     *   )
     * )
     */
-   protected function DeleteDiscussion($Format, $ID)
+   public static function DeleteDiscussion($Format, $ID)
    {
       $Return = array();
       $Return['Arguments']['TransientKey'] = Gdn::Session()->TransientKey();
@@ -362,6 +360,7 @@ class DiscussionsAPI extends APIMapper
     * @param   string   $Format
     * @param   int      $ID
     * @return  array
+    * @static
     *
     * @SWG\api(
     *   path="/discussions/comments/{id}",
@@ -372,7 +371,7 @@ class DiscussionsAPI extends APIMapper
     *   )
     * )
     */
-   protected function DeleteComment($Format, $ID)
+   public static function DeleteComment($Format, $ID)
    {
       $Return = array();
       $TransientKey = Gdn::Session()->TransientKey();

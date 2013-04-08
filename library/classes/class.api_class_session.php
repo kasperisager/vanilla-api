@@ -1,18 +1,12 @@
-<?php
+<?php if (!defined('APPLICATION')) exit();
+
+use Swagger\Annotations as SWG;
+
 /**
- * Activity API
+ * Session API
  *
- * @author     Kasper Kronborg Isager <kasperisager@gmail.com>
- * @copyright  Copyright 2013 © Kasper Kronborg Isager
- * @license    http://opensource.org/licenses/MIT MIT
- */
-
-if (!defined('APPLICATION')) exit();
-
-//use Swagger\Annotations as SWG;
-
-/**
- * Activity API
+ * This method is not used for anything besides documentation purposes as the
+ * API controller takes care of exposing the session object
  *
  * @package    API
  * @since      0.1.0
@@ -21,17 +15,28 @@ if (!defined('APPLICATION')) exit();
  * @license    http://opensource.org/licenses/MIT MIT
  *
  * @SWG\resource(
- *   resourcePath="/activity"
+ *   resourcePath="/session"
  * )
  */
-class ActivityAPI extends APIMapper
+class API_Class_Session extends API_Mapper
 {
    /**
-    * GET
+    * Info about current user session
+    *
+    * GET /session
     *
     * @since   0.1.0
     * @access  public
     * @param   array $Parameters
+    *
+    * @SWG\api(
+    *   path="/session",
+    *   @SWG\operation(
+    *     httpMethod="GET",
+    *     nickname="GetSession",
+    *     summary="Information about the current user session"
+    *   )
+    * )
     */
    public function Get($Parameters)
    {

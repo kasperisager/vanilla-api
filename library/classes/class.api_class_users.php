@@ -1,13 +1,4 @@
-<?php
-/**
- * Users API
- *
- * @author     Kasper Kronborg Isager <kasperisager@gmail.com>
- * @copyright  Copyright 2013 © Kasper Kronborg Isager
- * @license    http://opensource.org/licenses/MIT MIT
- */
-
-if (!defined('APPLICATION')) exit();
+<?php if (!defined('APPLICATION')) exit();
 
 use Swagger\Annotations as SWG;
 
@@ -24,7 +15,7 @@ use Swagger\Annotations as SWG;
  *   resourcePath="/users"
  * )
  */
-class UsersAPI extends APIMapper
+class API_Class_Users extends API_Mapper
 {
    /**
     * Retrieve users
@@ -42,9 +33,9 @@ class UsersAPI extends APIMapper
       $Format  = $Parameters['Format'];
 
       if ($ID) {
-         return self::_GetById($Format, $ID);
+         return self::GetById($Format, $ID);
       } else {
-         return self::_GetAll($Format);
+         return self::GetAll($Format);
       }
    }
 
@@ -52,9 +43,10 @@ class UsersAPI extends APIMapper
     * Find all users
     *
     * @since   0.1.0
-    * @access  protected
+    * @access  public
     * @param   string $Format
     * @return  array
+    * @static
     * 
     * @SWG\api(
     *   path="/users",
@@ -66,7 +58,7 @@ class UsersAPI extends APIMapper
     *   )
     * )
     */
-   protected function _GetAll($Format)
+   public static function GetAll($Format)
    {
       $Return = array();
       $Return['Resource'] = 'dashboard/user/summary.' . $Format;
@@ -78,10 +70,11 @@ class UsersAPI extends APIMapper
     * Find a specific user
     *
     * @since   0.1.0
-    * @access  protected
+    * @access  public
     * @param   string   $Format
     * @param   int      $ID
     * @return  array
+    * @static
     *
     * @SWG\api(
     *   path="/users/{id}",
@@ -93,7 +86,7 @@ class UsersAPI extends APIMapper
     *   )
     * )
     */
-   protected function _GetById($Format, $ID)
+   public static function GetById($Format, $ID)
    {
       $Return = array();
       $Return['Arguments']['userid'] = $ID;
