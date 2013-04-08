@@ -1,14 +1,8 @@
 .DS_Store
-phpdoc
 vendors
 build
 cache
-js
 composer.lock
 composer.phar
-components
-node_modules
 *.sublime-project
 *.sublime-workspace
-*.log
-design/api.css
