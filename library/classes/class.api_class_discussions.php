@@ -1,7 +1,5 @@
 <?php if (!defined('APPLICATION')) exit();
 
-use Swagger\Annotations as SWG;
-
 /**
  * Discussions API
  *
@@ -10,10 +8,6 @@ use Swagger\Annotations as SWG;
  * @author     Kasper Kronborg Isager <kasperisager@gmail.com>
  * @copyright  Copyright 2013 © Kasper Kronborg Isager
  * @license    http://opensource.org/licenses/MIT MIT
- *
- * @SWG\resource(
- *   resourcePath="/discussions"
- * )
  */
 class API_Class_Discussions extends API_Mapper
 {
@@ -49,15 +43,6 @@ class API_Class_Discussions extends API_Mapper
     * @access  public
     * @param   string $Format
     * @return  array
-    *
-    * @SWG\api(
-    *   path="/discussions",
-    *   @SWG\operation(
-    *     httpMethod="GET",
-    *     nickname="GetAll",
-    *     summary="Find all discussions"
-    *   )
-    * )
     */
    public static function GetAll($Format)
    {
@@ -78,15 +63,6 @@ class API_Class_Discussions extends API_Mapper
     * @param   int      $ID
     * @return  array
     * @static
-    *
-    * @SWG\api(
-    *   path="/discussions/{id}",
-    *   @SWG\operation(
-    *     httpMethod="GET",
-    *     nickname="GetById",
-    *     summary="Find a specific discussion"
-    *   )
-    * )
     */
    public static function GetById($Format, $ID)
    {
@@ -163,15 +139,6 @@ class API_Class_Discussions extends API_Mapper
     * @param   string $Format
     * @return  array
     * @static
-    * 
-    * @SWG\api(
-    *   path="/discussions",
-    *   @SWG\operation(
-    *     httpMethod="POST",
-    *     nickname="PostDiscussion",
-    *     summary="Create a new discussion"
-    *   )
-    * )
     */
    public static function PostDiscussion($Format)
    {
@@ -190,15 +157,6 @@ class API_Class_Discussions extends API_Mapper
     * @param   int      $ID
     * @return  array
     * @static
-    *
-    * @SWG\api(
-    *   path="/discussions/{id}/comments",
-    *   @SWG\operation(
-    *     httpMethod="POST",
-    *     nickname="PostComment",
-    *     summary="Create a new comment"
-    *   )
-    * )
     */
    public static function PostComment($Format, $ID)
    {
@@ -245,15 +203,6 @@ class API_Class_Discussions extends API_Mapper
     * @param   int      $ID
     * @return  array
     * @static
-    *
-    * @SWG\api(
-    *   path="/discussions/{id}",
-    *   @SWG\operation(
-    *     httpMethod="PUT",
-    *     nickname="PutDiscussion",
-    *     summary="Update an existing discussion"
-    *   )
-    * )
     */
    public static function PutDiscussion($Format, $ID)
    {
@@ -276,15 +225,6 @@ class API_Class_Discussions extends API_Mapper
     * @param   int      $ID
     * @return  array
     * @static
-    *
-    * @SWG\api(
-    *   path="/discussions/comments/{id}",
-    *   @SWG\operation(
-    *     httpMethod="PUT",
-    *     nickname="PutComment",
-    *     summary="Update an existing comment"
-    *   )
-    * )
     */
    public static function PutComment($Format, $ID)
    {
@@ -331,15 +271,6 @@ class API_Class_Discussions extends API_Mapper
     * @param   int      $ID
     * @return  array
     * @static
-    *
-    * @SWG\api(
-    *   path="/discussions/{id}",
-    *   @SWG\operation(
-    *     httpMethod="DELETE",
-    *     nickname="DeleteDiscussion",
-    *     summary="Delete an existing discussion"
-    *   )
-    * )
     */
    public static function DeleteDiscussion($Format, $ID)
    {
@@ -361,15 +292,6 @@ class API_Class_Discussions extends API_Mapper
     * @param   int      $ID
     * @return  array
     * @static
-    *
-    * @SWG\api(
-    *   path="/discussions/comments/{id}",
-    *   @SWG\operation(
-    *     httpMethod="DELETE",
-    *     nickname="DeleteComment",
-    *     summary="Delete an existing comment"
-    *   )
-    * )
     */
    public static function DeleteComment($Format, $ID)
    {

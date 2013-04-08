@@ -1,7 +1,5 @@
 <?php if (!defined('APPLICATION')) exit();
 
-//use Swagger\Annotations as SWG;
-
 /**
  * Activity API
  *
@@ -10,10 +8,6 @@
  * @author     Kasper Kronborg Isager <kasperisager@gmail.com>
  * @copyright  Copyright 2013 © Kasper Kronborg Isager
  * @license    http://opensource.org/licenses/MIT MIT
- *
- * @SWG\resource(
- *   resourcePath="/activity"
- * )
  */
 class API_Class_Activity extends API_Mapper
 {

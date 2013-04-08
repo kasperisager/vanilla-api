@@ -1,7 +1,5 @@
 <?php if (!defined('APPLICATION')) exit();
 
-use Swagger\Annotations as SWG;
-
 /**
  * Categories API
  *
@@ -10,10 +8,6 @@ use Swagger\Annotations as SWG;
  * @author     Kasper Kronborg Isager <kasperisager@gmail.com>
  * @copyright  Copyright 2013 © Kasper Kronborg Isager
  * @license    http://opensource.org/licenses/MIT MIT
- *
- * @SWG\resource(
- *   resourcePath="/categories"
- * )
  */
 class API_Class_Categories extends API_Mapper
 {
@@ -48,15 +42,6 @@ class API_Class_Categories extends API_Mapper
     * @param   string $Format
     * @return  array
     * @static
-    *
-    * @SWG\api(
-    *   path="/categories",
-    *   @SWG\operation(
-    *     httpMethod="GET",
-    *     nickname="GetAll",
-    *     summary="Find all categories"
-    *   )
-    * )
     */
    public static function GetAll($Format)
    {
@@ -78,23 +63,6 @@ class API_Class_Categories extends API_Mapper
     * @param   int      $ID
     * @return  array
     * @static
-    *
-    * @SWG\api(
-    *   path="/categories/{id}",
-    *   @SWG\operation(
-    *     httpMethod="GET",
-    *     nickname="GetAll",
-    *     summary="Find a specific category",
-    *     @SWG\parameter(
-    *       allowMultiple="false",
-    *       name="ID",
-    *       description="ID of category that needs to be fetched",
-    *       paramType="path",
-    *       required="true",
-    *       dataType="int"
-    *     )
-    *   )
-    * )
     */
    public static function GetById($Format, $ID)
    {
@@ -114,15 +82,6 @@ class API_Class_Categories extends API_Mapper
     * @access  public
     * @param   array $Parameters
     * @return  array
-    *
-    * @SWG\api(
-    *   path="/categories",
-    *   @SWG\operation(
-    *     httpMethod="POST",
-    *     nickname="Post",
-    *     summary="Create a new category"
-    *   )
-    * )
     */
    public function Post($Parameters)
    {
@@ -143,39 +102,6 @@ class API_Class_Categories extends API_Mapper
     * @access  public
     * @param   array $Parameters
     * @return  array
-    *
-    * @SWG\api(
-    *   path="/categories/{id}",
-    *   @SWG\operation(
-    *     httpMethod="PUT",
-    *     nickname="Put",
-    *     summary="Update an existing category",
-    *     @SWG\parameter(
-    *       allowMultiple="false",
-    *       name="ID",
-    *       description="ID of category that needs to be updated",
-    *       paramType="path",
-    *       required="true",
-    *       dataType="int"
-    *     ),
-    *     @SWG\parameter(
-    *       allowMultiple="false",
-    *       name="Name",
-    *       description="Existing or new name of the category",
-    *       paramType="body",
-    *       required="true",
-    *       dataType="string"
-    *     ),
-    *     @SWG\parameter(
-    *       allowMultiple="false",
-    *       name="UrlCode",
-    *       description="Existing or new URL code of the category",
-    *       paramType="body",
-    *       required="true",
-    *       dataType="string"
-    *     )
-    *   )
-    * )
     */
    public function Put($Parameters)
    {
@@ -199,23 +125,6 @@ class API_Class_Categories extends API_Mapper
     * @access  public
     * @param   array $Parameters
     * @return  array
-    *
-    * @SWG\api(
-    *   path="/categories/{id}",
-    *   @SWG\operation(
-    *     httpMethod="DELETE",
-    *     nickname="Delete",
-    *     summary="Delete an existing category",
-    *     @SWG\parameter(
-    *       allowMultiple="false",
-    *       name="ID",
-    *       description="ID of category that needs to be deleted",
-    *       paramType="path",
-    *       required="true",
-    *       dataType="int"
-    *     )
-    *   )
-    * )
     */
    public function Delete($Parameters)
    {

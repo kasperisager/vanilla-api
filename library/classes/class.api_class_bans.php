@@ -1,7 +1,5 @@
 <?php if (!defined('APPLICATION')) exit();
 
-//use Swagger\Annotations as SWG;
-
 /**
  * Bans API
  *
@@ -10,10 +8,6 @@
  * @author     Kasper Kronborg Isager <kasperisager@gmail.com>
  * @copyright  Copyright 2013 © Kasper Kronborg Isager
  * @license    http://opensource.org/licenses/MIT MIT
- *
- * @SWG\resource(
- *   resourcePath="/bans"
- * )
  */
 class API_Class_Bans extends API_Mapper
 {

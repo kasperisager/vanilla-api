@@ -1,7 +1,5 @@
 <?php if (!defined('APPLICATION')) exit();
 
-use Swagger\Annotations as SWG;
-
 /**
  * Users API
  *
@@ -10,10 +8,6 @@ use Swagger\Annotations as SWG;
  * @author     Kasper Kronborg Isager <kasperisager@gmail.com>
  * @copyright  Copyright 2013 © Kasper Kronborg Isager
  * @license    http://opensource.org/licenses/MIT MIT
- *
- * @SWG\resource(
- *   resourcePath="/users"
- * )
  */
 class API_Class_Users extends API_Mapper
 {
@@ -47,16 +41,6 @@ class API_Class_Users extends API_Mapper
     * @param   string $Format
     * @return  array
     * @static
-    * 
-    * @SWG\api(
-    *   path="/users",
-    *   @SWG\operation(
-    *     httpMethod="GET",
-    *     path="/users",
-    *     nickname="GetAll",
-    *     summary="Get a list of all registered users"
-    *   )
-    * )
     */
    public static function GetAll($Format)
    {
@@ -75,16 +59,6 @@ class API_Class_Users extends API_Mapper
     * @param   int      $ID
     * @return  array
     * @static
-    *
-    * @SWG\api(
-    *   path="/users/{id}",
-    *   @SWG\operation(
-    *     httpMethod="GET",
-    *     path="/users",
-    *     nickname="GetById",
-    *     summary="Get a specific user"
-    *   )
-    * )
     */
    public static function GetById($Format, $ID)
    {

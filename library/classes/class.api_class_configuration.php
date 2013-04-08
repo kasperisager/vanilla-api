@@ -1,7 +1,5 @@
 <?php if (!defined('APPLICATION')) exit();
 
-use Swagger\Annotations as SWG;
-
 /**
  * Configuration API
  *
@@ -10,10 +8,6 @@ use Swagger\Annotations as SWG;
  * @author     Kasper Kronborg Isager <kasperisager@gmail.com>
  * @copyright  Copyright 2013 © Kasper Kronborg Isager
  * @license    http://opensource.org/licenses/MIT MIT
- *
- * @SWG\resource(
- *   resourcePath="/configuration"
- * )
  */
 class API_Class_Configuration extends API_Mapper
 {
@@ -26,15 +20,6 @@ class API_Class_Configuration extends API_Mapper
     * @access  public
     * @param   array $Parameters
     * @return  array
-    *
-    * @SWG\api(
-    *   path="/configuration",
-    *   @SWG\operation(
-    *     httpMethod="GET",
-    *     nickname="GetConfig",
-    *     summary="Get the current forum configuration"
-    *   )
-    * )
     */
    public function Get($Parameters)
    {
