@@ -32,10 +32,10 @@ class API_Autoload
     * Using the GetClass function, Autoload checks if the specified class is a
     * core API class and if it is, it includes the class in the autoloader.
     *
-    * @access  protected
+    * @access  public
     * @param   string $Class  The class to be included in the autoloader
     */
-   protected function Autoload($Class)
+   public function Autoload($Class)
    {
       $Autoload   = $this->GetClass($Class);
       if ($Autoload) include_once $Autoload;
