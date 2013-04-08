@@ -1,6 +1,7 @@
 {
   "require": {
-    "zircote/swagger-php": "0.6.*@dev"
+    "zircote/swagger-php": "0.6.*@dev",
+    "sami/sami": "1.0.*@dev"
   },
   "config": {
     "vendor-dir": "vendors"
