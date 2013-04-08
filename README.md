@@ -35,7 +35,13 @@ In the end, you can look at Vanilla API as being an application that sits of top
 
 ## Configuration
 
-The API can be configured through the dashboard using the "Application Interface" menu found in the "Forums Settings" section. Here you can see the main API endpoint, you can adjust the request expiration (5 minutes by default) and you can re-generate the application secret used for signature based authentication. Please be aware that there's no way for you to manually set the application secret - it enforces using a UUID v4 key which is a randomly generated, cryptographically secure string. This means that when re-generating the secret, there's no way for you to undo it so caution is advised.
+The API can be configured through the dashboard using the "Application Interface" menu found in the "Forums Settings" section. Here you can see the main API endpoint and you can re-generate the application secret used for signature based authentication. Please be aware that there's no way for you to manually set the application secret - it enforces using a UUID v4 key which is a randomly generated, cryptographically secure string.
+
+Should you wish to change to request expiration time, you can do this using the following configuration statement:
+
+```php
+$Configuration['API']['Expiration'] = 5 * 60; // Defaults to 5 minutes
+```
 
 ## Authentication
 
