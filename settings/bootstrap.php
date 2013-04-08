@@ -1,6 +1,6 @@
 <?php
 /**
- * Application Bootstrap
+ * Bootstrap
  *
  * @author     Kasper Kronborg Isager <kasperisager@gmail.com>
  * @copyright  Copyright 2013 © Kasper Kronborg Isager

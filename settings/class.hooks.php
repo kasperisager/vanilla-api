@@ -1,12 +1,12 @@
 <?php
 /**
- * API Hooks
+ * Hooks
  *
  * @author     Kasper Kronborg Isager <kasperisager@gmail.com>
  * @copyright  Copyright 2013 © Kasper Kronborg Isager
  * @license    http://opensource.org/licenses/MIT MIT
  */
-namespace API\Settings;
+//namespace API\Settings;
 
 /**
  * API hooks for hooking into Garden and its applications

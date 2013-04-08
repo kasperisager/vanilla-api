@@ -6,7 +6,7 @@
  * @copyright  Copyright 2013 © Kasper Kronborg Isager
  * @license    http://opensource.org/licenses/MIT MIT
  */
-namespace API\Controllers;
+//namespace API\Controllers;
 
 if (!defined('APPLICATION')) exit();
 

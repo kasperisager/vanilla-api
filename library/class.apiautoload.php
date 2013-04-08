@@ -6,7 +6,7 @@
  * @copyright  Copyright 2013 © Kasper Kronborg Isager
  * @license    http://opensource.org/licenses/MIT MIT
  */
-namespace API\Library;
+//namespace API\Library;
 
 if (!defined('APPLICATION')) exit();
 
