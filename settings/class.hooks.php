@@ -8,6 +8,8 @@
  */
 //namespace API\Settings;
 
+if (!defined('APPLICATION')) exit();
+
 /**
  * API hooks for hooking into Garden and its applications
  *
