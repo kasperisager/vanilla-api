@@ -1,4 +1,14 @@
-<?php if (!defined('APPLICATION')) exit();
+<?php
+/**
+ * Docs Controller
+ *
+ * @author     Kasper Kronborg Isager <kasperisager@gmail.com>
+ * @copyright  Copyright 2013 © Kasper Kronborg Isager
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+namespace API\Controllers;
+
+if (!defined('APPLICATION')) exit();
 
 // Load SwaggerSwagger and PhpFileCache
 use Swagger\Swagger;
@@ -12,7 +22,7 @@ use \Doctrine\Common\Cache\PhpFileCache;
  * which runs on the front end. It also integrates with the public Github Wiki
  * to users have easy access to documentation directly in the API Explorer.
  *
- * @package    API\Controllers
+ * @package    API
  * @since      0.1.0
  * @author     Kasper Kronborg Isager <kasperisager@gmail.com>
  * @copyright  Copyright 2013 © Kasper Kronborg Isager

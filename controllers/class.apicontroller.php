@@ -1,4 +1,14 @@
-<?php if (!defined('APPLICATION')) exit();
+<?php
+/**
+ * API Controller
+ *
+ * @author     Kasper Kronborg Isager <kasperisager@gmail.com>
+ * @copyright  Copyright 2013 © Kasper Kronborg Isager
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+namespace API\Controllers;
+
+if (!defined('APPLICATION')) exit();
 
 /**
  * The main API controller
@@ -6,7 +16,7 @@
  * This class handles authentication and delegation of API requests and their
  * corresponding methods.
  *
- * @package    API\Controllers
+ * @package    API
  * @since      0.1.0
  * @author     Kasper Kronborg Isager <kasperisager@gmail.com>
  * @copyright  Copyright 2013 © Kasper Kronborg Isager
@@ -24,7 +34,9 @@ class APIController extends Gdn_Controller
    public $Uses = array('DocsController');
 
    /**
-    * Do-nothing construct to let children constructs bubble up.
+    * Do-nothing construct 
+    * 
+    * Let children constructs bubble up.
     *
     * @since   0.1.0
     * @access  public
@@ -35,7 +47,9 @@ class APIController extends Gdn_Controller
    }
 
    /**
-    * Do-nothing intialize to let children initializers bubble up.
+    * Do-nothing intialize
+    * 
+    * Let children initializers bubble up.
     * 
     * @since   0.1.0
     * @access  public

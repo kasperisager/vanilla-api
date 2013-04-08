@@ -1,15 +1,23 @@
-<?php if (!defined('APPLICATION')) exit();
-
+<?php
 /**
  * API Autoloader
  *
- * Register the vendor library as well as the core API class autoloaders
+ * @author     Kasper Kronborg Isager <kasperisager@gmail.com>
+ * @copyright  Copyright 2013 © Kasper Kronborg Isager
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+namespace API\Library;
+
+if (!defined('APPLICATION')) exit();
+
+/**
+ * Register vendor and class autoloaders
  * 
  * The latter is merely for the sake of being able to have a more semantic and
  * clean directory structure where all API classes live within their own folder
  * inside the library directory.
  *
- * @package    API\Library
+ * @package    API
  * @since      0.1.0
  * @author     Kasper Kronborg Isager <kasperisager@gmail.com>
  * @copyright  Copyright 2013 © Kasper Kronborg Isager

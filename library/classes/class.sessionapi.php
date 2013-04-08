@@ -1,4 +1,14 @@
-<?php if (!defined('APPLICATION')) exit();
+<?php
+/**
+ * Session API
+ *
+ * @author     Kasper Kronborg Isager <kasperisager@gmail.com>
+ * @copyright  Copyright 2013 © Kasper Kronborg Isager
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+namespace API\Library\Classes;
+
+if (!defined('APPLICATION')) exit();
 
 use Swagger\Annotations as SWG;
 
@@ -8,7 +18,7 @@ use Swagger\Annotations as SWG;
  * This method is not used for anything besides documentation purposes as the
  * API controller takes care of exposing the session object
  *
- * @package    API\Library\Classes
+ * @package    API
  * @since      0.1.0
  * @author     Kasper Kronborg Isager <kasperisager@gmail.com>
  * @copyright  Copyright 2013 © Kasper Kronborg Isager

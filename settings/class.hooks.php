@@ -1,4 +1,12 @@
-<?php if (!defined('APPLICATION')) exit();
+<?php
+/**
+ * API Hooks
+ *
+ * @author     Kasper Kronborg Isager <kasperisager@gmail.com>
+ * @copyright  Copyright 2013 © Kasper Kronborg Isager
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+namespace API\Settings;
 
 /**
  * API hooks for hooking into Garden and its applications
@@ -8,7 +16,7 @@
  * handle API request mapping and also hooks the dashboard settings controller
  * to render the Application Interface settings menu.
  *
- * @package    API\Settings
+ * @package    API
  * @since      0.1.0
  * @author     Kasper Kronborg Isager <kasperisager@gmail.com>
  * @copyright  Copyright 2013 © Kasper Kronborg Isager
