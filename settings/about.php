@@ -1,7 +1,7 @@
 <?php
 
 $ApplicationInfo['API'] = array(
-   'Name'         => 'Vanilla API'
+   'Name'         => 'Vanilla API',
    'Description'  => 'RESTful API for Vanilla that responds in JSON and XML.',
    'Version'      => '0.0.0-dev',
    'Url'          => 'https://github.com/kasperisager/VanillaAPI',
