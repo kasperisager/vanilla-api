@@ -1,6 +1,6 @@
 {
   "name": "VanillaAPI",
-  "description": "Description",
+  "description": "RESTful API for Vanilla that responds in JSON and XML",
   "version": "0.1.0",
   "private": true,
   "author": {
