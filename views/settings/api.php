@@ -13,8 +13,7 @@
    <h2><?php echo T('Need More Help?') ?></h2>
    <ul>
       <?php
-      echo Wrap(Anchor('Visit the API Explorer',      'api'), 'li');
-      echo Wrap(Anchor('Read the API documentation',  'api/wiki'), 'li');
+      echo Wrap(Anchor('Read the API documentation', 'https://github.com/kasperisager/VanillaAPI/wiki'), 'li');
       ?>
    </ul>
 </div>

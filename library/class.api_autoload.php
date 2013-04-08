@@ -1,9 +1,9 @@
 <?php if (!defined('APPLICATION')) exit();
 
 /**
- * Register vendor and class autoloaders
+ * Register class autoloader
  *
- * The latter is merely for the sake of being able to have a more semantic and
+ * This is merely for the sake of being able to have a more semantic and
  * clean directory structure where all API classes live within their own folder
  * inside the library directory.
  *
@@ -16,13 +16,12 @@
 class API_Autoload
 {
    /**
-    * Load vendor libraries autoloader and register core API class autoloader
+    * Register core API class autoloader
     *
     * @access public
     */
    public function __construct()
    {
-      require PATH_APPLICATIONS . DS . 'api/vendors/autoload.php';
       spl_autoload_register(array($this, 'Autoload'));
    }
 
