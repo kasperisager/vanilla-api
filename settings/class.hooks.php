@@ -64,7 +64,7 @@ class APIHooks implements Gdn_IPlugin
          $Secret  = C('API.Secret');
          $Regen   = $Sender->Form->ButtonExists('Re-generate');
 
-         if ($Regen) $Secret = self::UUIDSecure();
+         if ($Regen) $Secret = API_Engine::UUIDSecure();
 
          $Save = array();
          $Save['API.Secret'] = $Secret;
@@ -106,38 +106,6 @@ class APIHooks implements Gdn_IPlugin
    }
 
    /**
-    * Generates a Universally Unique Identifier, version 4
-    *
-    * @since   0.1.0
-    * @access  public
-    * @link    http://en.wikipedia.org/wiki/UUID
-    * @return  string A UUID, made up of 32 hex digits and 4 hyphens.
-    * @static
-    */
-   public static function UUIDSecure()
-   {
-      return sprintf( '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
-         // 32 bits for "time_low"
-         mt_rand(0, 0xffff), mt_rand(0, 0xffff),
-
-         // 16 bits for "time_mid"
-         mt_rand(0, 0xffff),
-
-         // 16 bits for "time_hi_and_version",
-         // four most significant bits holds version number 4
-         mt_rand(0, 0x0fff) | 0x4000,
-
-         // 16 bits, 8 bits for "clk_seq_hi_res",
-         // 8 bits for "clk_seq_low",
-         // two most significant bits holds zero and one for variant DCE1.1
-         mt_rand(0, 0x3fff) | 0x8000,
-
-         // 48 bits for "node"
-         mt_rand(0, 0xffff), mt_rand(0, 0xffff), mt_rand(0, 0xffff)
-      );
-   }
-
-   /**
     * Code to be run upon enabling the API
     *
     * @since   0.1.0
@@ -145,7 +113,7 @@ class APIHooks implements Gdn_IPlugin
     */
    public function Setup()
    {
-      if (!C('API.Secret')) SaveToConfig('API.Secret', self::UUIDSecure());
+      if (!C('API.Secret')) SaveToConfig('API.Secret', API_Engine::UUIDSecure());
 
       if (!Gdn::PluginManager()->CheckPlugin('Logger'))
          throw new Exception("Please install Logger before enabling the API");
