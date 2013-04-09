@@ -11,9 +11,12 @@ A super early version of a RESTful API for Vanilla that responds in JSON and XML
 
 To get started using Vanilla API, either:
 - [Download the latest release](https://github.com/kasperisager/VanillaAPI/archive/master.zip)
-- Clone the repository directly into your Vanilla `applications` directory:  
-`$ cd /path/to/vanilla/applications/`
-`$ git clone git://github.com/kasperisager/VanillaAPI.git`
+- Clone the repository directly into your Vanilla `applications` directory:
+
+```sh
+$ cd /path/to/vanilla/applications/
+$ git clone git://github.com/kasperisager/VanillaAPI.git
+```
 
 When you've done this, make sure the newly created folder is named `api` and not `VanillaAPI`. Now simply go to your dashboard, enable the API in the "Applications" menu and you're all set!
 
