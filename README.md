@@ -109,7 +109,7 @@ It's important that we lowercase the request data as to ensure consistent hash g
 
 ```sh
 METHOD /api/endpoint/:id?query=value&username=johndoe&email=example@mail.com&timestamp= [timestamp]&token=[generated hash]
-´´´
+```
 
 #### Security precautions
 
