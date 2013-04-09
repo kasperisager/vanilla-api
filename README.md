@@ -11,9 +11,12 @@ A super early version of a RESTful API for Vanilla that responds in JSON and XML
 
 To get started using Vanilla API, either:
 - [Download the latest release](https://github.com/kasperisager/VanillaAPI/archive/master.zip)
-- Clone the repository directly into your Vanilla `applications` directory:  
-`$ cd /path/to/vanilla/applications/`  
-`$ git clone git://github.com/kasperisager/VanillaAPI.git`
+- Clone the repository directly into your Vanilla `applications` directory:
+
+```sh
+$ cd /path/to/vanilla/applications/
+$ git clone git://github.com/kasperisager/VanillaAPI.git
+```
 
 When you've done this, make sure the newly created folder is named `api` and not `VanillaAPI`. Now simply go to your dashboard, enable the API in the "Applications" menu and you're all set!
 
@@ -22,7 +25,8 @@ When you've done this, make sure the newly created folder is named `api` and not
 The application source is well-documented and the API comes bundled with [Sami](https://github.com/fabpot/Sami) for generating the documentation. You will however need to install Sami first after which you can generate the documentation:
 
 ```sh
-$ composer install && php vendors/sami/sami/sami.php update config.php -v
+$ composer install
+$ php vendors/sami/sami/sami.php update config.php -v
 ```
 
 If the Composer installation fails, if might be a good idea to [read the instructions](http://getcomposer.org/doc/00-intro.md#installation-nix) on how to use Composer. When you've got it all up and running, navigate to http://your-domain.com/applications/api/build to read the generated documentation.
@@ -37,63 +41,19 @@ In the end, you can look at Vanilla API as being an application that sits of top
 
 The API can be configured through the dashboard using the "Application Interface" menu found in the "Forums Settings" section. Here you can see the main API endpoint and you can re-generate the application secret used for signature based authentication. Please be aware that there's no way for you to manually set the application secret - it enforces using a UUID v4 key which is a randomly generated, cryptographically secure string.
 
-Should you wish to change to request expiration time, you can do this using the following configuration statement:
-
-```php
-$Configuration['API']['Expiration'] = 5 * 60; // Defaults to 5 minutes
-```
+[Read more about configuration](http://kasperisager.github.io/VanillaAPI/#Configuration)
 
 ## Authentication
 
-Vanilla API support two different authentications methods: A semi-stateless session based method as well as a stateless signature based method. The two are completely compatible so you are free to chose between one or other or use them both for different aspects of the same application. Both methods are also highly secure so you won't necessarily need to perform them over HTTPS although it _is_ highly recommended doing so.
+Vanilla API supports two different authentication methods: A semi-stateless session based method as well as a stateless signature based method. The two are completely compatible so you are free to chose between one or other or use them both for different aspects of the same application. Both methods are also highly secure so you won't necessarily need to perform them over HTTPS although it _is_ highly recommended doing so.
 
-### Session based authentication
-
-There's nothing too fancy about the session based authentication method from an API point of view: This method is in fact just the default Vanilla authentication. It is semi-stateless in the sense that when authenticating with the server, each client gets assigned a cookie which initiates a session. If a client accesses the API with a valid session, he or she can freely interface with Vanilla using the API, only restricted by their permissions.
-
-Should you wish to use the session based authentication method, you'll need to use one of the many SSO solutions available for Vanilla to authenticate users from within your application. I have a custom SSO API class planned but it's not going to be ready anytime soon.
-
-### Signature based authentication
-
-The signature based authentication method is similar to that used by [Amazon Web Services](http://aws.amazon.com/articles/1928#HTTP). To make an API call, you'll need 3 things: A public key, a private key and a signature (also referred to as _token_). The public key can be either the username or the email of the user making the request whilst the private key is an application secret generated for you upon enabling Vanilla API __*__. The signature is an HMAC-SHA256 hash created by combining the public and the private key with any queries you want to pass along with your request and then signing it all with a Unix timestamp (UTC).
-
-The request is then sent along to the server and the signature recreated using the information sent with the request. The server then compares its generated signature with the one from the request - if these match, then the client is considered legitimate and an authenticated session is started for the duration of the request.
-
-#### Implementations
-
-Coming soon...
-
-#### Security precautions
-
-It is highly recommended to include the HTTP method as well the request URI in your query, and thus in the hash generation as well, as this can help prevent man-in-the-middle attacks where an attacker could potentially modify the endpoint you are operating on as well as the HTTP method.
+[Read more about authentication](http://kasperisager.github.io/VanillaAPI/#Authentication)
 
 ## Extending
 
-Vanilla API allows you to easily integrate your own plugins and applications with the API Mapper - it's as simple as creating a new API class and putting it anywhere in your application or plugin where the Garden autoloader can find it. Once I've established the final architecture for v0.1.0, I'll describe the whole process in depth. Here's how it looks so far:
+Vanilla API allows you to easily integrate your own plugins and applications with the API Mapper - it's as simple as creating a new API class and putting it anywhere in your application or plugin where the Garden autoloader can find it. You can also write your own autoloader which is what I've done for loading the core API classes - this merely because I'm pretty nit-picky when it comes to my folder structure.
 
-In `class.api_class_foo.php` placed in your application's or plugin's `library` directory:
-
-```php
-<?php if (!defined('APPLICATION')) exit();
-
-/**
- * Foo API
- *
- * Description of Foo API
- *
- * @package    [name]
- * @since      [version]
- * @author     [author] <[email]>
- * @copyright  [description]
- * @license    [url] [description]
- */
-class API_Class_Foo implements API_IMapper
-{
-   // API operations go here
-}
-```
-
-More coming soon...
+[Read more about extending the API](http://kasperisager.github.io/VanillaAPI/#Extending)
 
 ## Issue tracking
 

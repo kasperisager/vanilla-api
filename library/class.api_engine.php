@@ -308,9 +308,9 @@ class API_Engine
       // Instantiate the requested API class
       $Class      = new $Class;
 
-      // Make sure that the requested API class implement the API Mapper interace
-      if (!is_subclass_of($Class, 'API_IMapper'))
-         throw new Exception("API class must implement the API Mapper interface", 401); 
+      // Make sure that the requested API class extend the API Mapper class
+      if (!is_subclass_of($Class, 'API_Mapper'))
+         throw new Exception("API class must extend the API Mapper class", 401); 
 
       // Get the request method issued by the client
       $Method     = $Request->RequestMethod();

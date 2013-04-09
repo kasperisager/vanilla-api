@@ -9,7 +9,7 @@
  * @copyright  Copyright 2013 © Kasper Kronborg Isager
  * @license    http://opensource.org/licenses/MIT MIT
  */
-class API_Class_Discussions implements API_IMapper
+class API_Class_Discussions extends API_Mapper
 {
    /**
     * Retrieve discussions
