@@ -14,5 +14,6 @@ return new Sami($Iterator, array(
    'build_dir'             => __DIR__ . '/build',
    'cache_dir'             => __DIR__ . '/cache',
    'simulate_namespaces'   => true,
+   'include_parent_data'   => false,
    'default_opened_level'  => 2,
 ));
