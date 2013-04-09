@@ -14,7 +14,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  * @abstract
  */
-class API_Mapper extends API_Engine
+class API_Mapper
 {
    /**
     * API class GET operation
@@ -23,12 +23,12 @@ class API_Mapper extends API_Engine
     * The GET method only allows returning an API resource map.
     *
     * @since   0.1.0
-    * @access  protected
+    * @access  public
     * @param   array $Parameters Array of parameters defined in the API engine
     * @return  array An array containing a 'Resource' key with the URI to be 
     *                requested for the API call.
     */
-   protected function Get($Parameters)
+   public function Get($Parameters)
    {
       throw new Exception("Method Not Implemented", 501);
    }
@@ -41,14 +41,14 @@ class API_Mapper extends API_Engine
     * will be included with the rest of the Form Data sent in the request body.
     *
     * @since   0.1.0
-    * @access  protected
+    * @access  public
     * @param   array $Parameters Array of parameters defined in the API engine
     * @return  array An array containing a 'Resource' key with the URI to be 
     *                requested for the API call. Also allows you to include an
     *                'Arguments' array containing key-value pairs to be included
     *                with the Form Data of the request body.
     */
-   protected function Post($Parameters)
+   public function Post($Parameters)
    {
       throw new Exception("Method Not Implemented", 501);
    }
@@ -61,14 +61,14 @@ class API_Mapper extends API_Engine
     * will be included with the rest of the Form Data sent in the request body.
     * 
     * @since   0.1.0
-    * @access  protected
+    * @access  public
     * @param   array $Parameters Array of parameters defined in the API engine
     * @return  array An array containing a 'Resource' key with the URI to be 
     *                requested for the API call. Also allows you to include an
     *                'Arguments' array containing key-value pairs to be included
     *                with the Form Data of the request body.
     */
-   protected function Put($Parameters)
+   public function Put($Parameters)
    {
       throw new Exception("Method Not Implemented", 501);
    }
@@ -83,14 +83,14 @@ class API_Mapper extends API_Engine
     * included in the custom request arguments.
     *
     * @since   0.1.0
-    * @access  protected
+    * @access  public
     * @param   array $Parameters Array of parameters defined in the API engine
     * @return  array An array containing a 'Resource' key with the URI to be 
     *                requested for the API call. Also allows you to include an
     *                'Arguments' array containing key-value pairs to be included
     *                with the Form Data of the request body.
     */
-   protected function Delete($Parameters)
+   public function Delete($Parameters)
    {
       throw new Exception("Method Not Implemented", 501);
    }
