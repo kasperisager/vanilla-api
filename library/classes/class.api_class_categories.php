@@ -19,17 +19,17 @@ class API_Class_Categories extends API_Mapper
     *
     * @since   0.1.0
     * @access  public
-    * @param   array $Parameters
+    * @param   array $Path
     * @return  array
     */
-   public function Get($Parameters)
+   public function Get($Path)
    {
-      if (isset($Parameters['Path'][2])) $ID = $Parameters['Path'][2];
+      if (isset($Path[2])) $ID = $Path[2];
 
-      $Format = $Parameters['Format'];
-
-      if (isset($ID))   return self::GetById($Format, $ID);
-      if (!isset($ID))  return self::GetAll($Format);
+      if (isset($ID))
+         return self::GetById($ID);
+      else
+         return self::GetAll();
    }
 
    /**
@@ -39,15 +39,14 @@ class API_Class_Categories extends API_Mapper
     *
     * @since   0.1.0
     * @access  public
-    * @param   string $Format
     * @return  array
     * @static
     */
-   public static function GetAll($Format)
+   public static function GetAll()
    {
       $Return = array();
-      $Return['Resource']     = 'vanilla/categories.' . $Format . '/all';
-      $Return['Authenticate'] = 'Optional';
+      $Return['Controller']   = 'Categories';
+      $Return['Method']       = 'All';
 
       return $Return;
    }
@@ -59,16 +58,16 @@ class API_Class_Categories extends API_Mapper
     *
     * @since   0.1.0
     * @access  public
-    * @param   string   $Format
-    * @param   int      $ID
+    * @param   int $ID
     * @return  array
     * @static
     */
-   public static function GetById($Format, $ID)
+   public static function GetById($ID)
    {
       $Return = array();
-      $Return['Resource']     = 'vanilla/categories.' . $Format . DS . $ID;
-      $Return['Authenticate'] = 'Optional';
+      $Return['Controller']   = 'Categories';
+      $Return['Method']       = NULL;
+      $Return['Arguments']    = array($ID);
 
       return $Return;
    }
@@ -80,15 +79,16 @@ class API_Class_Categories extends API_Mapper
     *
     * @since   0.1.0
     * @access  public
-    * @param   array $Parameters
+    * @param   array $Path
     * @return  array
     */
-   public function Post($Parameters)
+   public function Post($Path)
    {
-      $Format = $Parameters['Format'];
+      Gdn_Autoloader::AttachApplication('Vanilla');
 
       $Return = array();
-      $Return['Map'] = 'vanilla/settings/addcategory.' . $Format;
+      $Return['Controller']   = 'Settings';
+      $Return['Method']       = 'AddCategory';
 
       return $Return;
    }
@@ -100,18 +100,25 @@ class API_Class_Categories extends API_Mapper
     *
     * @since   0.1.0
     * @access  public
-    * @param   array $Parameters
+    * @param   array $Path
     * @return  array
     */
-   public function Put($Parameters)
+   public function Put($Path)
    {
-      $ID      = $Parameters['Path'][2];
-      $Format  = $Parameters['Format'];
+      if (!isset($Path[2]))
+         throw new Exception("No ID defined", 401);
+
+      $ID = $Path[2];
+
+      // Make sure the correct application is loaded
+      Gdn_Autoloader::AttachApplication('Vanilla');
 
       $Return = array();
+      $Return['Controller']                  = 'Settings';
+      $Return['Method']                      = 'EditCategory';
+      $Return['Arguments']                   = array($ID);
       $Return['Arguments']['CategoryID']     = $ID;
       $Return['Arguments']['TransientKey']   = Gdn::Session()->TransientKey();
-      $Return['Resource'] = 'vanilla/settings/editcategory.' . $Format . DS . $ID;
 
       return $Return;
    }
@@ -123,18 +130,25 @@ class API_Class_Categories extends API_Mapper
     *
     * @since   0.1.0
     * @access  public
-    * @param   array $Parameters
+    * @param   array $Path
     * @return  array
     */
-   public function Delete($Parameters)
+   public function Delete($Path)
    {
-      $ID      = $Parameters['Path'][2];
-      $Format  = $Parameters['Format'];
+      if (!isset($Path[2]))
+         throw new Exception("No ID defined", 401);
+
+      $ID = $Path[2];
+
+      // Make sure the correct application is loaded
+      Gdn_Autoloader::AttachApplication('Vanilla');
 
       $Return = array();
-      $Return['Arguments']['CategoryID']  = $ID;
-      $Return['Arguments']['TransientKey'] = Gdn::Session()->TransientKey();
-      $Return['Resource'] = 'vanilla/settings/deletecategory.' . $Format . DS . $ID;
+      $Return['Controller']                  = 'Settings';
+      $Return['Method']                      = 'DeleteCategory';
+      $Return['Arguments']                   = array($ID);
+      $Return['Arguments']['CategoryID']     = $ID;
+      $Return['Arguments']['TransientKey']   = Gdn::Session()->TransientKey();
 
       return $Return;
    }
