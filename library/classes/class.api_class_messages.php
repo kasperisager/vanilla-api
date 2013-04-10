@@ -12,21 +12,20 @@
 class API_Class_Messages extends API_Mapper
 {
    /**
-    * Retrieve Vanilla configuration
+    * Retrieve messages
     *
     * GET /messages
     *
     * @since   0.1.0
     * @access  public
-    * @param   array $Parameters
+    * @param   array $Path
     * @return  array
     */
-   public function Get($Parameters)
+   public function Get($Path)
    {
-      $Format = $Parameters['Format'];
-
       $Return = array();
-      $Return['Resource'] = 'messages/all.' . $Format;
+      $Return['Controller']   = 'Messages';
+      $Return['Method']       = 'All';
 
       return $Return;
    }
