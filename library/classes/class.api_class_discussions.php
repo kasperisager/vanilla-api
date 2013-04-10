@@ -19,19 +19,17 @@ class API_Class_Discussions extends API_Mapper
     *
     * @since   0.1.0
     * @access  public
-    * @param   array $Parameters
+    * @param   array $Path
     * @return  array
     */
-   public function Get($Parameters)
+   public function Get($Path)
    {
-      $ID      = $Parameters['Path'][2];
-      $Format  = $Parameters['Format'];
+      if (isset($Path[2])) $ID = $Path[2];
 
-      if (isset($ID)) {
-         return self::GetById($Format, $ID);
-      } else {
-         return self::GetAll($Format);
-      }
+      if (isset($ID))
+         return self::GetById($ID);
+      else
+         return self::GetAll();
    }
 
    /**
@@ -41,13 +39,13 @@ class API_Class_Discussions extends API_Mapper
     *
     * @since   0.1.0
     * @access  public
-    * @param   string $Format
     * @return  array
+    * @static
     */
-   public static function GetAll($Format)
+   public static function GetAll()
    {
       $Return = array();
-      $Return['Resource'] = 'vanilla/discussions.' . $Format;
+      $Return['Controller'] = 'Discussions';
 
       return $Return;
    }
@@ -59,15 +57,15 @@ class API_Class_Discussions extends API_Mapper
     *
     * @since   0.1.0
     * @access  public
-    * @param   string   $Format
-    * @param   int      $ID
+    * @param   int $ID
     * @return  array
     * @static
     */
-   public static function GetById($Format, $ID)
+   public static function GetById($ID)
    {
       $Return = array();
-      $Return['Resource'] = 'vanilla/discussion.' . $Format . DS . $ID;
+      $Return['Controller']   = 'Discussion';
+      $Return['Arguments']    = array($ID);
 
       return $Return;
    }
@@ -79,11 +77,14 @@ class API_Class_Discussions extends API_Mapper
     * @access  public
     * @param   string $Format
     * @return  array
+    * @static
     */
-   public static function GetBookmarks($Format)
+   public static function GetBookmarks()
    {
       $Return = array();
-      $Return['Resource'] = 'vanilla/discussions/bookmarked.' . $Format;
+      $Return['Controller']   = 'Discussions';
+      $Return['Method']       = 'Bookmarked';
+      $Return['Arguments']    = array($ID);
 
       return $Return;
    }
@@ -93,14 +94,15 @@ class API_Class_Discussions extends API_Mapper
     * 
     * @since   0.1.0
     * @access  public
-    * @param   string $Format
     * @return  array
     * @static
     */
-   public static function GetMine($Format)
+   public static function GetMine()
    {
       $Return = array();
-      $Return['Resource'] = 'vanilla/discussions/mine.' . $Format;
+      $Return['Controller']   = 'Discussions';
+      $Return['Method']       = 'Mine';
+      $Return['Arguments']    = array($ID);
 
       return $Return;
    }
@@ -113,20 +115,18 @@ class API_Class_Discussions extends API_Mapper
     *
     * @since   0.1.0
     * @access  public
-    * @param   array $Parameters
+    * @param   array $Path
     * @return  array
     */
-   public function Post($Parameters)
+   public function Post($Path)
    {
-      $ID      = $Parameters['Path'][2];
-      $Comment = $Parameters['Path'][3];
-      $Format  = $Parameters['Format'];
+      if (isset($Path[2])) $ID      = $Path[2];
+      if (isset($Path[3])) $Comment = $Path[3];
 
-      if (isset($ID) && isset($Comment) && $Comment == 'comments') {
-         return self::PostComment($Format, $ID);
-      } else {
-         return self::PostDiscussion($Format);
-      }
+      if (isset($ID) && isset($Comment) && $Comment == 'comments')
+         return self::PostComment($ID);
+      else
+         return self::PostDiscussion();
    }
 
    /**
@@ -136,14 +136,14 @@ class API_Class_Discussions extends API_Mapper
     *
     * @since   0.1.0
     * @access  public
-    * @param   string $Format
     * @return  array
     * @static
     */
-   public static function PostDiscussion($Format)
+   public static function PostDiscussion()
    {
       $Return = array();
-      $Return['Resource'] = 'vanilla/post/discussion.' . $Format;
+      $Return['Controller']   = 'Post';
+      $Return['Method']       = 'Discussion';
 
       return $Return;
    }
@@ -153,17 +153,18 @@ class API_Class_Discussions extends API_Mapper
     *
     * @since   0.1.0
     * @access  public
-    * @param   string   $Format
-    * @param   int      $ID
+    * @param   int $ID
     * @return  array
     * @static
     */
-   public static function PostComment($Format, $ID)
+   public static function PostComment($ID)
    {
       $Return = array();
-      $Return['Arguments']['DiscussionID'] = $ID;
-      $Return['Arguments']['TransientKey'] = Gdn::Session()->TransientKey();
-      $Return['Resource'] = 'vanilla/post/comment.' . $Format . DS . $ID;
+      $Return['Controller']                  = 'Post';
+      $Return['Method']                      = 'Comment';
+      $Return['Arguments']                   = array($ID);
+      $Return['Arguments']['DiscussionID']   = $ID;
+      $Return['Arguments']['TransientKey']   = Gdn::Session()->TransientKey();
 
       return $Return;
    }
@@ -176,19 +177,21 @@ class API_Class_Discussions extends API_Mapper
     *
     * @since   0.1.0
     * @access  public
-    * @param   array $Parameters
+    * @param   array $Path
     * @return  array
     */
-   public function Put($Parameters)
+   public function Put($Path)
    {
-      $ID      = $Parameters['Path'][2];
-      $Format  = $Parameters['Format'];
+      if (!isset($Path[2]))
+         throw new Exception("No ID defined", 401);
+
+      $ID = $Path[2];
 
       if (isset($ID) && $ID == 'comments') {
-         $ID = $Parameters['Path'][3];
-         return self::PutComment($Format, $ID);
+         $ID = $Path[3];
+         return self::PutComment($ID);
       } elseif (isset($ID)) {
-         return self::PutDiscussion($Format, $ID);
+         return self::PutDiscussion($ID);
       }
    }
 
@@ -199,17 +202,18 @@ class API_Class_Discussions extends API_Mapper
     *
     * @since   0.1.0
     * @access  public
-    * @param   string   $Format
-    * @param   int      $ID
+    * @param   int $ID
     * @return  array
     * @static
     */
-   public static function PutDiscussion($Format, $ID)
+   public static function PutDiscussion($ID)
    {
       $Return = array();
-      $Return['Arguments']['DiscussionID'] = $ID;
-      $Return['Arguments']['TransientKey'] = Gdn::Session()->TransientKey();
-      $Return['Resource'] = 'vanilla/post/editdiscussion.' . $Format . DS . $ID;
+      $Return['Controller']                  = 'Post';
+      $Return['Method']                      = 'EditDiscussion';
+      $Return['Arguments']                   = array($ID);
+      $Return['Arguments']['DiscussionID']   = $ID;
+      $Return['Arguments']['TransientKey']   = Gdn::Session()->TransientKey();
 
       return $Return;
    }
@@ -221,17 +225,18 @@ class API_Class_Discussions extends API_Mapper
     *
     * @since   0.1.0
     * @access  public
-    * @param   string   $Format
-    * @param   int      $ID
+    * @param   int $ID
     * @return  array
     * @static
     */
-   public static function PutComment($Format, $ID)
+   public static function PutComment($ID)
    {
       $Return = array();
-      $Return['Arguments']['CommentID'] = $ID;
-      $Return['Arguments']['TransientKey'] = Gdn::Session()->TransientKey();
-      $Return['Resource'] = 'vanilla/post/editcomment.' . $Format . DS . $ID;
+      $Return['Controller']                  = 'Post';
+      $Return['Method']                      = 'EditComment';
+      $Return['Arguments']                   = array($ID);
+      $Return['Arguments']['CommentID']      = $ID;
+      $Return['Arguments']['TransientKey']   = Gdn::Session()->TransientKey();
 
       return $Return;
    }
@@ -244,19 +249,21 @@ class API_Class_Discussions extends API_Mapper
     *
     * @since   0.1.0
     * @access  public
-    * @param   array $Parameters
+    * @param   array $Path
     * @return  array
     */
-   public function Delete($Parameters)
+   public function Delete($Path)
    {
-      $ID      = $Parameters['Path'][2];
-      $Format  = $Parameters['Format'];
+      if (!isset($Path[2]))
+         throw new Exception("No ID defined", 401);
+
+      $ID = $Path[2];
 
       if (isset($ID) && $ID == 'comments') {
-         $ID = $Parameters['Path'][3];
-         return self::DeleteComment($Format, $ID);
+         $ID = $Path[3];
+         return self::DeleteComment($ID);
       } elseif (isset($ID)) {
-         return self::DeleteDiscussion($Format, $ID);
+         return self::DeleteDiscussion($ID);
       }
    }
 
@@ -267,16 +274,17 @@ class API_Class_Discussions extends API_Mapper
     *
     * @since   0.1.0
     * @access  public
-    * @param   string   $Format
-    * @param   int      $ID
+    * @param   int $ID
     * @return  array
     * @static
     */
-   public static function DeleteDiscussion($Format, $ID)
+   public static function DeleteDiscussion($ID)
    {
       $Return = array();
-      $Return['Arguments']['TransientKey'] = Gdn::Session()->TransientKey();
-      $Return['Resource'] = 'vanilla/discussion/delete.' . $Format . DS . $ID;
+      $Return['Controller']                  = 'Discussion';
+      $Return['Method']                      = 'Delete';
+      $Return['Arguments']                   = array($ID);
+      $Return['Arguments']['TransientKey']   = Gdn::Session()->TransientKey();
 
       return $Return;
    }
@@ -288,16 +296,18 @@ class API_Class_Discussions extends API_Mapper
     *
     * @since   0.1.0
     * @access  public
-    * @param   string   $Format
-    * @param   int      $ID
+    * @param   int $ID
     * @return  array
     * @static
     */
-   public static function DeleteComment($Format, $ID)
+   public static function DeleteComment($ID)
    {
-      $Return = array();
       $TransientKey = Gdn::Session()->TransientKey();
-      $Return['Resource'] = 'vanilla/discussion/deletecomment.' . $Format . DS . $ID . DS . $TransientKey;
+
+      $Return = array();
+      $Return['Controller']                  = 'Discussion';
+      $Return['Method']                      = 'DeleteComment';
+      $Return['Arguments']                   = array($ID, $TransientKey);
 
       return $Return;
    }
