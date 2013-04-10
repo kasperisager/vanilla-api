@@ -346,7 +346,7 @@ class API_Engine
       }
 
       $Controller = $Data['Controller'];
-      $Method     = $Data['Method'];
+      (isset($Data['Method'])) ? $Method = $Data['Method'] : $Method = NULL;
 
       (isset($Data['Arguments'])) ? $Args = $Data['Arguments'] : $Args = array();
 
