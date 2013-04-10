@@ -18,19 +18,17 @@ class API_Class_Users extends API_Mapper
     *
     * @since   0.1.0
     * @access  public
-    * @param   array $Parameters
+    * @param   array $Path
     * @return  array
     */
-   public function Get($Parameters)
+   public function Get($Path)
    {
-      $ID      = $Parameters['Path'][2];
-      $Format  = $Parameters['Format'];
+      if (isset($Path[2])) $ID = $Path[2];
 
-      if ($ID) {
-         return self::GetById($Format, $ID);
-      } else {
-         return self::GetAll($Format);
-      }
+      if (isset($ID))
+         return self::GetById($ID);
+      else
+         return self::GetAll();
    }
 
    /**
@@ -38,14 +36,14 @@ class API_Class_Users extends API_Mapper
     *
     * @since   0.1.0
     * @access  public
-    * @param   string $Format
     * @return  array
     * @static
     */
-   public static function GetAll($Format)
+   public static function GetAll()
    {
       $Return = array();
-      $Return['Resource'] = 'dashboard/user/summary.' . $Format;
+      $Return['Controller']   = 'User';
+      $Return['Method']       = 'Summary';
       
       return $Return;
    }
@@ -55,16 +53,16 @@ class API_Class_Users extends API_Mapper
     *
     * @since   0.1.0
     * @access  public
-    * @param   string   $Format
-    * @param   int      $ID
+    * @param   int $ID
     * @return  array
     * @static
     */
-   public static function GetById($Format, $ID)
+   public static function GetById($ID)
    {
       $Return = array();
-      $Return['Arguments']['userid'] = $ID;
-      $Return['Resource'] = 'dashboard/profile.' . $Format . DS . $ID . DS . 'false';
+      $Return['Controller']            = 'Profile';
+      $Return['Arguments']             = array($ID);
+      $Return['Arguments']['userid']   = $ID;
       
       return $Return;
    }
