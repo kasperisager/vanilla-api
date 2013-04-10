@@ -18,15 +18,16 @@ class API_Class_Configuration extends API_Mapper
     *
     * @since   0.1.0
     * @access  public
-    * @param   array $Parameters
+    * @param   array $Path
     * @return  array
     */
-   public function Get($Parameters)
+   public function Get($Path)
    {
-      $Format = $Parameters['Format'];
+      Gdn_Autoloader::AttachApplication('Dashboard');
 
       $Return = array();
-      $Return['Resource'] = 'dashboard/settings/configuration.' . $Format;
+      $Return['Controller']   = 'Settings';
+      $Return['Method']       = 'Configuration';
       $Return['Authenticate'] = 'Required';
 
       return $Return;
