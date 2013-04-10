@@ -213,19 +213,26 @@ class API_Engine
       $Accept     = $Arguments['server']['HTTP_ACCEPT'];
       $Format     = (strpos($Accept, 'json')) ? 'json' : 'xml';
 
-      // Parameters to be passed on to the API class
-      $Parameters = array();
-      $Parameters['Format']   = $Format;
-      $Parameters['Path']     = $Path;
+      $Request->WithDeliveryType(DELIVERY_TYPE_DATA);
+
+      switch ($Format) {
+         case 'json':
+            $Request->WithDeliveryMethod(DELIVERY_METHOD_JSON);
+            break;
+
+         case 'xml':
+            $Request->WithDeliveryMethod(DELIVERY_METHOD_XML);
+            break;
+      }
 
       switch(strtolower($Method)) {
 
          case 'get':
-            $Data = $Class->Get($Parameters);
+            $Data = $Class->Get($Path);
             break;
 
          case 'post':
-            $Data = $Class->Post($Parameters);
+            $Data = $Class->Post($Path);
 
             // Combine the POST request with any custom arguments
             if (isset($Data['Arguments'])) {
@@ -238,7 +245,7 @@ class API_Engine
             break;
 
          case 'put':
-            $Data = $Class->Put($Parameters);
+            $Data = $Class->Put($Path);
 
             // Garden can't handle PUT requests by default, so trick
             // it into thinking that this is actually a POST
@@ -260,7 +267,7 @@ class API_Engine
             break;
 
          case 'delete':
-            $Data = $Class->Delete($Parameters);
+            $Data = $Class->Delete($Path);
 
             // Garden can't handle DELETE requests by default, so trick
             // it into thinking that this is actually a POST
@@ -318,29 +325,33 @@ class API_Engine
       // Use the MethodHandler to get data from the API class
       $Data       = self::MethodHandler($Path, $Method, $Class);
 
-      // Make sure that the API class returns a resource
-      if (!isset($Data['Resource']))
-         throw new Exception("No resource has been defined", 500);
+      // Make sure that the API class returns a controller definition
+      if (!isset($Data['Controller']))
+         throw new Exception("No controller has been defined", 500);
 
       // Authenticate the request if no valid session exists
       if (isset($Data['Authenticate']) && !Gdn::Session()->IsValid()) {
 
-         $Authentication = strtolower($Data['Authenticate']);
-
          // If authentication is required, authenticate the client
-         if ($Authentication == 'required') self::Authenticate();
+         if ($Data['Authenticate']) self::Authenticate();
+
+      } elseif (!Gdn::Session()->IsValid()) {
 
          // If authentication is optional, only authenticate the client if a
          // username or an email has been specified in the request
-         if ($Authentication == 'optional') {
-            $Username   = GetIncomingValue('username');
-            $Email      = GetIncomingValue('email');
-            if (!empty($Username) || !empty($Email)) self::Authenticate();
-         }
+         $Username   = GetIncomingValue('username');
+         $Email      = GetIncomingValue('email');
+         if (!empty($Username) || !empty($Email)) self::Authenticate();
+
       }
 
-      // Map the request to the specified URI
-      $Request->WithURI($Data['Resource']);
+      $Controller = $Data['Controller'];
+      $Method     = $Data['Method'];
+
+      (isset($Data['Arguments'])) ? $Args = $Data['Arguments'] : $Args = array();
+
+      // Map the request to the specified controller method
+      $Request->WithControllerMethod($Controller, $Method, $Args);
    }
 
    /**
