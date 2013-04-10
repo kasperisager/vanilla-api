@@ -66,7 +66,6 @@ class API_Class_Categories extends API_Mapper
    {
       $Return = array();
       $Return['Controller']   = 'Categories';
-      $Return['Method']       = NULL;
       $Return['Arguments']    = array($ID);
 
       return $Return;
