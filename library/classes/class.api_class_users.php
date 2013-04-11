@@ -25,10 +25,11 @@ class API_Class_Users extends API_Mapper
    {
       if (isset($Path[2])) $ID = $Path[2];
 
-      if (isset($ID))
+      if (isset($ID)) {
          return self::GetById($ID);
-      else
+      } else {
          return self::GetAll();
+      }
    }
 
    /**
