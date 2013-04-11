@@ -7,6 +7,9 @@
  * clean directory structure where all API classes live within their own folder
  * inside the library directory.
  *
+ * Based on initial work by Diego Zanella
+ * @link    http://careers.stackoverflow.com/diegozanella
+ *
  * @package    API
  * @since      0.1.0
  * @author     Kasper Kronborg Isager <kasperisager@gmail.com>

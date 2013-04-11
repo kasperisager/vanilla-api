@@ -22,6 +22,9 @@ class API_Engine
     * way it got generated on the client. If the server signature and client
     * token match, the client is considered legimate and the request is served.
     *
+    * Based on initial work by Diego Zanella
+    * @link    http://careers.stackoverflow.com/diegozanella
+    *
     * @since   0.1.0
     * @access  public
     * @static
@@ -99,6 +102,9 @@ class API_Engine
     * can then be used to validate incoming API calls as only the client and
     * server knows the secret key used for creating the hash.
     *
+    * Based on initial work by Diego Zanella
+    * @link    http://careers.stackoverflow.com/diegozanella
+    *
     * @since   0.1.0
     * @access  public
     * @param   array $Request Array of request data uesd for generating the
@@ -131,6 +137,9 @@ class API_Engine
     * Note: if both a username and an email are specified, only the username
     * will be used. This is to prevent abusing of the function by passing two
     * parameters at a time and hoping to get a User ID.
+    *
+    * Based on initial work by Diego Zanella
+    * @link    http://careers.stackoverflow.com/diegozanella
     *
     * @since   0.1.0
     * @access  public
