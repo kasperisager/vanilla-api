@@ -1,4 +1,11 @@
 <?php if (!defined('APPLICATION')) exit();
 
-// Autoload core API classes
-$APIAutoloader = new API_Autoload();
+// Register API library with the Garden Autoloader
+$Map        = Gdn_Autoloader::MAP_LIBRARY;
+$Context    = Gdn_Autoloader::CONTEXT_APPLICATION;
+$Path       = PATH_APPLICATIONS . DS . 'api/library';
+
+$Options    = array();
+$Options['Extension'] = 'api';
+
+Gdn_Autoloader::RegisterMap($Map, $Context, $Path, $Options);

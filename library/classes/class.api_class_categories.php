@@ -26,10 +26,11 @@ class API_Class_Categories extends API_Mapper
    {
       if (isset($Path[2])) $ID = $Path[2];
 
-      if (isset($ID))
+      if (isset($ID)) {
          return self::GetById($ID);
-      else
+      } else {
          return self::GetAll();
+      }
    }
 
    /**
@@ -104,8 +105,9 @@ class API_Class_Categories extends API_Mapper
     */
    public function Put($Path)
    {
-      if (!isset($Path[2]))
+      if (!isset($Path[2])) {
          throw new Exception("No ID defined", 401);
+      }
 
       $ID = $Path[2];
 
@@ -134,8 +136,9 @@ class API_Class_Categories extends API_Mapper
     */
    public function Delete($Path)
    {
-      if (!isset($Path[2]))
+      if (!isset($Path[2])) {
          throw new Exception("No ID defined", 401);
+      }
 
       $ID = $Path[2];
 

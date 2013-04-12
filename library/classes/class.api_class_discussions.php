@@ -26,10 +26,11 @@ class API_Class_Discussions extends API_Mapper
    {
       if (isset($Path[2])) $ID = $Path[2];
 
-      if (isset($ID))
+      if (isset($ID)) {
          return self::GetById($ID);
-      else
+      } else {
          return self::GetAll();
+      }
    }
 
    /**
@@ -123,10 +124,11 @@ class API_Class_Discussions extends API_Mapper
       if (isset($Path[2])) $ID      = $Path[2];
       if (isset($Path[3])) $Comment = $Path[3];
 
-      if (isset($ID) && isset($Comment) && $Comment == 'comments')
+      if (isset($ID) && isset($Comment) && $Comment == 'comments') {
          return self::PostComment($ID);
-      else
+      } else {
          return self::PostDiscussion();
+      }
    }
 
    /**
@@ -254,8 +256,9 @@ class API_Class_Discussions extends API_Mapper
     */
    public function Delete($Path)
    {
-      if (!isset($Path[2]))
+      if (!isset($Path[2])) {
          throw new Exception("No ID defined", 401);
+      }
 
       $ID = $Path[2];
 

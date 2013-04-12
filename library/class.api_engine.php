@@ -22,6 +22,9 @@ class API_Engine
     * way it got generated on the client. If the server signature and client
     * token match, the client is considered legimate and the request is served.
     *
+    * Based on initial work by Diego Zanella
+    * @link    http://careers.stackoverflow.com/diegozanella
+    *
     * @since   0.1.0
     * @access  public
     * @static
@@ -39,8 +42,9 @@ class API_Engine
       $Token         = GetIncomingValue('token');
 
       // Make sure that the query actually contains data
-      if (!isset($ParsedURL['query']))
+      if (!isset($ParsedURL['query'])) {
          throw new Exception("No authentication query defined", 401);
+      }
 
       // Now that we're sure the query conatins some data, turn this data into
       // an array which we will later use to analyze each part of the query
@@ -51,20 +55,24 @@ class API_Engine
       unset($Request['token']);
 
       // Make sure that either a username or an email has been passed
-      if (empty($Username) && empty($Email))
+      if (empty($Username) && empty($Email)) {
          throw new Exception("Username or email must be specified", 401);
+      }
 
       // Make sure that the query contains a timestamp
-      if (empty($Timestamp))
+      if (empty($Timestamp)) {
          throw new Exception("A timestamp must be specified", 401);
+      }
 
       // Make sure that this timestamp is still valid
-      if ((abs($Timestamp - time())) > C('API.Expiration'))
+      if ((abs($Timestamp - time())) > C('API.Expiration')) {
          throw new Exception("The request is no longer valid", 401);
+      }
 
       // Make sure that the query contains a token
-      if (empty($Token))
+      if (empty($Token)) {
          throw new Exception("A token must be specified", 401);
+      }
 
       // Now we check for a username and email (we've already made sure that at
       // least one of them have been passed) and set them if they exist
@@ -75,16 +83,18 @@ class API_Engine
       $UserID        = self::GetUserID($Username, $Email);
 
       // Make sure that the user actually exists
-      if (!isset($UserID))
+      if (!isset($UserID)) {
          throw new Exception("The specified user doesn't exist", 401);
+      }
 
       // Generate a signature from the passed data the same way it was
       // generated on the client
       $Signature     = self::Signature($Request);
       
       // Make sure that the client token and the server signature match
-      if ($Token != $Signature)
+      if ($Token != $Signature) {
          throw new Exception("Token and signature do not match", 401);
+      }
 
       // Now that we've thoroughly verified the client, start a session for the
       // duration of the request using the User ID we specified earlier
@@ -98,6 +108,9 @@ class API_Engine
     * generates an HMAC hash using a specified application secret. The hash
     * can then be used to validate incoming API calls as only the client and
     * server knows the secret key used for creating the hash.
+    *
+    * Based on initial work by Diego Zanella
+    * @link    http://careers.stackoverflow.com/diegozanella
     *
     * @since   0.1.0
     * @access  public
@@ -132,6 +145,9 @@ class API_Engine
     * will be used. This is to prevent abusing of the function by passing two
     * parameters at a time and hoping to get a User ID.
     *
+    * Based on initial work by Diego Zanella
+    * @link    http://careers.stackoverflow.com/diegozanella
+    *
     * @since   0.1.0
     * @access  public
     * @param   string $Username  Username of the user whose ID we wish to get
@@ -146,12 +162,14 @@ class API_Engine
       $UserModel = new UserModel();
 
       // Look up the user ID using a username if one has been specified
-      if(isset($Username))
+      if(isset($Username)) {
          return $UserModel->GetByUsername($Username)->UserID;
+      }
 
       // Look up the user ID using an email if one has been specified
-      if(isset($Email))
+      if(isset($Email)) {
          return $UserModel->GetByEmail($Email)->UserID;
+      }
 
       return NULL;
    }
@@ -309,15 +327,17 @@ class API_Engine
       $Class      = 'API_Class_' . ucfirst($Resource);
 
       // Make sure that the requested API class exists
-      if (!class_exists($Class))
+      if (!class_exists($Class)) {
          throw new Exception("No such API class found", 404);
+      }
 
       // Instantiate the requested API class
       $Class      = new $Class;
 
       // Make sure that the requested API class extend the API Mapper class
-      if (!is_subclass_of($Class, 'API_Mapper'))
-         throw new Exception("API class must extend the API Mapper class", 401); 
+      if (!is_subclass_of($Class, 'API_Mapper')) {
+         throw new Exception("API class must extend the API Mapper class", 401);
+      }
 
       // Get the request method issued by the client
       $Method     = $Request->RequestMethod();
@@ -326,8 +346,9 @@ class API_Engine
       $Data       = self::MethodHandler($Path, $Method, $Class);
 
       // Make sure that the API class returns a controller definition
-      if (!isset($Data['Controller']))
+      if (!isset($Data['Controller'])) {
          throw new Exception("No controller has been defined", 500);
+      }
 
       // Authenticate the request if no valid session exists
       if (isset($Data['Authenticate']) && !Gdn::Session()->IsValid()) {
