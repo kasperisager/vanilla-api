@@ -1,15 +1,20 @@
 {
-  "folders":
-  [
-    {
-      "name": "Vanilla API",
-      "path": ".",
-      "file_exclude_patterns":
-      [
-        "*.gitignore",
-        "*.sublime-project",
-        "*.sublime-workspace"
-      ]
-    }
-  ]
+   "folders":
+   [
+      {
+         "name": "Vanilla API",
+         "path": ".",
+         "file_exclude_patterns":
+         [
+            "*.gitignore",
+            "*.sublime-project",
+            "*.sublime-workspace"
+         ]
+      }
+   ],
+   "settings":
+   {
+      "tab_size": 3,
+      "detect_indentation": false
+   }
 }

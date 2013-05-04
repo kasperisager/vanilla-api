@@ -1,7 +1,7 @@
 <?php if (!defined('APPLICATION')) exit();
 
 /**
- * Messages API
+ * Conversations API
  *
  * @package    API
  * @since      0.1.0
@@ -9,12 +9,12 @@
  * @copyright  Copyright 2013 © Kasper Kronborg Isager
  * @license    http://opensource.org/licenses/MIT MIT
  */
-class API_Class_Messages extends API_Mapper
+class API_Class_Conversations extends API_Mapper
 {
    /**
-    * Retrieve messages
+    * Retrieve conversations
     *
-    * GET /messages
+    * GET /conversations
     *
     * @since   0.1.0
     * @access  public
@@ -29,4 +29,6 @@ class API_Class_Messages extends API_Mapper
 
       return $Return;
    }
+
+   
 }
