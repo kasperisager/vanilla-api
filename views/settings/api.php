@@ -9,14 +9,17 @@
    }
 </style>
 
-<!--<div class="Help Aside">
+<div class="Help Aside">
    <h2><?php echo T('Need More Help?') ?></h2>
    <ul>
       <?php
-      echo Wrap(Anchor('Read the API documentation', 'https://github.com/kasperisager/VanillaAPI/wiki'), 'li');
+      echo Wrap(Anchor('Read the API documentation', 'http://code.webhutt.com/vanillaapi/wiki#repo-content'), 'li');
+      ?>
+      <?php
+      echo Wrap(Anchor('Read the class documentation', '/applications/api/docs/build'), 'li');
       ?>
    </ul>
-</div>-->
+</div>
 
 <h1><?php echo T($this->Data('Title')) ?></h1>
 
