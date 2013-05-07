@@ -16,6 +16,12 @@
 class API_Mapper
 {
    /**
+    * [$API description]
+    * @var array
+    */
+   private $API = array();
+   
+   /**
     * API class GET operation
     *
     * This method will be run when a GET request is sent to a given API class.
