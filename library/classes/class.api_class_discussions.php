@@ -172,15 +172,14 @@ class API_Class_Discussions extends API_Mapper
     */
    public function Put($Path)
    {
-      if (!isset($Path[2]))
-         throw new Exception("No ID defined", 401);
+      if (!isset($Path[2])) throw new Exception("No ID defined", 401);
 
       $ID = $Path[2];
 
-      if (isset($ID) && $ID == 'comments') {
+      if ($ID == 'comments') {
          $ID = $Path[3];
          return self::PutComment($ID);
-      } elseif (isset($ID)) {
+      } else {
          return self::PutDiscussion($ID);
       }
    }

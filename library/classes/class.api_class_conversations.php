@@ -27,6 +27,4 @@ class API_Class_Conversations extends API_Mapper
       $API['Method']       = 'All';
       return $API;
    }
-
-   
 }

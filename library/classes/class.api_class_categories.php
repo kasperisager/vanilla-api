@@ -104,9 +104,7 @@ class API_Class_Categories extends API_Mapper
    {
       Gdn_Autoloader::AttachApplication('Vanilla');
 
-      if (!isset($Path[2])) {
-         throw new Exception("No ID defined", 401);
-      }
+      if (!isset($Path[2])) throw new Exception("No ID defined", 401);
 
       $ID = $Path[2];
 
