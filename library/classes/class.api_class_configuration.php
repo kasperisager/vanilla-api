@@ -25,11 +25,10 @@ class API_Class_Configuration extends API_Mapper
    {
       Gdn_Autoloader::AttachApplication('Dashboard');
 
-      $Return = array();
-      $Return['Controller']   = 'Settings';
-      $Return['Method']       = 'Configuration';
-      $Return['Authenticate'] = TRUE;
+      $API['Controller']   = 'Settings';
+      $API['Method']       = 'Configuration';
+      $API['Authenticate'] = TRUE;
 
-      return $Return;
+      return $API;
    }
 }

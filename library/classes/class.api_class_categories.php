@@ -45,11 +45,10 @@ class API_Class_Categories extends API_Mapper
     */
    public static function GetAll()
    {
-      $Return = array();
-      $Return['Controller']   = 'Categories';
-      $Return['Method']       = 'All';
+      $API['Controller']   = 'Categories';
+      $API['Method']       = 'All';
 
-      return $Return;
+      return $API;
    }
 
    /**
@@ -65,11 +64,10 @@ class API_Class_Categories extends API_Mapper
     */
    public static function GetById($ID)
    {
-      $Return = array();
-      $Return['Controller']   = 'Categories';
-      $Return['Arguments']    = array($ID);
+      $API['Controller']   = 'Categories';
+      $API['Arguments']    = array($ID);
 
-      return $Return;
+      return $API;
    }
 
    /**
@@ -86,11 +84,10 @@ class API_Class_Categories extends API_Mapper
    {
       Gdn_Autoloader::AttachApplication('Vanilla');
 
-      $Return = array();
-      $Return['Controller']   = 'Settings';
-      $Return['Method']       = 'AddCategory';
+      $API['Controller']   = 'Settings';
+      $API['Method']       = 'AddCategory';
 
-      return $Return;
+      return $API;
    }
 
    /**
@@ -113,14 +110,13 @@ class API_Class_Categories extends API_Mapper
 
       $ID = $Path[2];
 
-      $Return = array();
-      $Return['Controller']                  = 'Settings';
-      $Return['Method']                      = 'EditCategory';
-      $Return['Arguments']                   = array($ID);
-      $Return['Arguments']['CategoryID']     = $ID;
-      $Return['Arguments']['TransientKey']   = Gdn::Session()->TransientKey();
+      $API['Controller']                  = 'Settings';
+      $API['Method']                      = 'EditCategory';
+      $API['Arguments']                   = array($ID);
+      $API['Arguments']['CategoryID']     = $ID;
+      $API['Arguments']['TransientKey']   = Gdn::Session()->TransientKey();
 
-      return $Return;
+      return $API;
    }
 
    /**
@@ -143,13 +139,12 @@ class API_Class_Categories extends API_Mapper
 
       $ID = $Path[2];
 
-      $Return = array();
-      $Return['Controller']                  = 'Settings';
-      $Return['Method']                      = 'DeleteCategory';
-      $Return['Arguments']                   = array($ID);
-      $Return['Arguments']['CategoryID']     = $ID;
-      $Return['Arguments']['TransientKey']   = Gdn::Session()->TransientKey();
+      $API['Controller']                  = 'Settings';
+      $API['Method']                      = 'DeleteCategory';
+      $API['Arguments']                   = array($ID);
+      $API['Arguments']['CategoryID']     = $ID;
+      $API['Arguments']['TransientKey']   = Gdn::Session()->TransientKey();
 
-      return $Return;
+      return $API;
    }
 }

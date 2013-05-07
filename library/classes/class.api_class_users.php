@@ -45,11 +45,9 @@ class API_Class_Users extends API_Mapper
     */
    public static function GetAll()
    {
-      $Return = array();
-      $Return['Controller']   = 'User';
-      $Return['Method']       = 'Summary';
-      
-      return $Return;
+      $API['Controller']   = 'User';
+      $API['Method']       = 'Summary';
+      return $API;
    }
 
    /**
@@ -65,11 +63,9 @@ class API_Class_Users extends API_Mapper
     */
    public static function GetById($ID)
    {
-      $Return = array();
-      $Return['Controller']            = 'Profile';
-      $Return['Arguments']             = array($ID);
-      $Return['Arguments']['userid']   = $ID;
-      
-      return $Return;
+      $API['Controller']            = 'Profile';
+      $API['Arguments']             = array($ID);
+      $API['Arguments']['userid']   = $ID;
+      return $API;
    }
 }

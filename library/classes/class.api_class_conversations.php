@@ -23,11 +23,9 @@ class API_Class_Conversations extends API_Mapper
     */
    public function Get($Path)
    {
-      $Return = array();
-      $Return['Controller']   = 'Messages';
-      $Return['Method']       = 'All';
-
-      return $Return;
+      $API['Controller']   = 'Messages';
+      $API['Method']       = 'All';
+      return $API;
    }
 
    
