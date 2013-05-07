@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="robots" content="index, follow, all" />
+        <title>API_Class_Discussions | Vanilla API</title>
+                    <link rel="stylesheet" type="text/css" href="stylesheet.css">
+                            </head>
+        <body id="class">
+            <div class="header">
+        <ul>
+            <li><a href="classes.html">Classes</a></li>
+                        <li><a href="interfaces.html">Interfaces</a></li>
+            <li><a href="doc-index.html">Index</a></li>
+            
+        </ul>
+
+        <div id="title">Vanilla API</div>
+
+            <div class="type">Class</div>
+    <h1><a href=".html"></a>API_Class_Discussions</h1>
+    </div>
+        <div class="content">
+                <p>class    <strong>API_Class_Discussions</strong>        extends <a href="API_Mapper.html"><abbr title="API_Mapper">API_Mapper</abbr></a></p>
+
+            <div class="description">
+            <p>Discussions API</p>
+            <p></p>
+        </div>
+    
+    
+    
+            <h2>Methods</h2>
+
+            <table>
+                    <tr>
+                <td class="type">
+                    array
+                </td>
+                <td class="last">
+                    <a href="#method_Get">Get</a>(array $Path)
+                    <p>Retrieve discussions</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    static&nbsp;array
+                </td>
+                <td class="last">
+                    <a href="#method_GetAll">GetAll</a>()
+                    <p>Find all discussions</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    static&nbsp;array
+                </td>
+                <td class="last">
+                    <a href="#method_GetById">GetById</a>(int $ID)
+                    <p>Find a specific discussion</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    static&nbsp;array
+                </td>
+                <td class="last">
+                    <a href="#method_GetBookmarks">GetBookmarks</a>()
+                    <p>Retrieve a the current user&#039;s bookmarked discussions</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    static&nbsp;array
+                </td>
+                <td class="last">
+                    <a href="#method_GetMine">GetMine</a>()
+                    <p>Retrieve discussions created by the current user</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    array
+                </td>
+                <td class="last">
+                    <a href="#method_Post">Post</a>(array $Path)
+                    <p>Create discussions and comments</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    static&nbsp;array
+                </td>
+                <td class="last">
+                    <a href="#method_PostDiscussion">PostDiscussion</a>()
+                    <p>Create a new discussion</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    static&nbsp;array
+                </td>
+                <td class="last">
+                    <a href="#method_PostComment">PostComment</a>(int $ID)
+                    <p>Create a new comment</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    array
+                </td>
+                <td class="last">
+                    <a href="#method_Put">Put</a>(array $Path)
+                    <p>Update and alter discussions</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    static&nbsp;array
+                </td>
+                <td class="last">
+                    <a href="#method_PutDiscussion">PutDiscussion</a>(int $ID)
+                    <p>Update an existing discussion</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    static&nbsp;array
+                </td>
+                <td class="last">
+                    <a href="#method_PutComment">PutComment</a>(int $ID)
+                    <p>Update an existing comment</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    array
+                </td>
+                <td class="last">
+                    <a href="#method_Delete">Delete</a>(array $Path)
+                    <p>Remove discussions and comments</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    static&nbsp;array
+                </td>
+                <td class="last">
+                    <a href="#method_DeleteDiscussion">DeleteDiscussion</a>(int $ID)
+                    <p>Remove a discussion</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    static&nbsp;array
+                </td>
+                <td class="last">
+                    <a href="#method_DeleteComment">DeleteComment</a>(int $ID)
+                    <p>Remove a discussion</p>
+                </td>
+                <td></td>
+            </tr>
+            </table>
+
+
+        <h2>Details</h2>
+
+                        <h3 id="method_Get">
+        <div class="location">at line 25</div>
+        <code>            public            array
+    <strong>Get</strong>(array $Path)</code>
+    </h3>
+    <div class="details">
+        <p>Retrieve discussions</p>
+        <p>GET /discussions<br />
+ GET /discussions/:id</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td>array</td>
+                <td>$Path</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_GetAll">
+        <div class="location">at line 46</div>
+        <code>        static    public            array
+    <strong>GetAll</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>Find all discussions</p>
+        <p>GET /discussions</p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_GetById">
+        <div class="location">at line 65</div>
+        <code>        static    public            array
+    <strong>GetById</strong>(int $ID)</code>
+    </h3>
+    <div class="details">
+        <p>Find a specific discussion</p>
+        <p>GET /discussions/:id</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td>int</td>
+                <td>$ID</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_GetBookmarks">
+        <div class="location">at line 83</div>
+        <code>        static    public            array
+    <strong>GetBookmarks</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>Retrieve a the current user&#039;s bookmarked discussions</p>
+        <p></p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_GetMine">
+        <div class="location">at line 101</div>
+        <code>        static    public            array
+    <strong>GetMine</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>Retrieve discussions created by the current user</p>
+        <p></p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_Post">
+        <div class="location">at line 122</div>
+        <code>            public            array
+    <strong>Post</strong>(array $Path)</code>
+    </h3>
+    <div class="details">
+        <p>Create discussions and comments</p>
+        <p>POST /discussions<br />
+ POST /discussions/:id/comments</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td>array</td>
+                <td>$Path</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_PostDiscussion">
+        <div class="location">at line 144</div>
+        <code>        static    public            array
+    <strong>PostDiscussion</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>Create a new discussion</p>
+        <p>POST /discussions</p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_PostComment">
+        <div class="location">at line 162</div>
+        <code>        static    public            array
+    <strong>PostComment</strong>(int $ID)</code>
+    </h3>
+    <div class="details">
+        <p>Create a new comment</p>
+        <p></p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td>int</td>
+                <td>$ID</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_Put">
+        <div class="location">at line 185</div>
+        <code>            public            array
+    <strong>Put</strong>(array $Path)</code>
+    </h3>
+    <div class="details">
+        <p>Update and alter discussions</p>
+        <p>PUT /discussions/:id<br />
+ PUT /discussions/comments/:id</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td>array</td>
+                <td>$Path</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_PutDiscussion">
+        <div class="location">at line 211</div>
+        <code>        static    public            array
+    <strong>PutDiscussion</strong>(int $ID)</code>
+    </h3>
+    <div class="details">
+        <p>Update an existing discussion</p>
+        <p>PUT /discussions/:id</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td>int</td>
+                <td>$ID</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_PutComment">
+        <div class="location">at line 234</div>
+        <code>        static    public            array
+    <strong>PutComment</strong>(int $ID)</code>
+    </h3>
+    <div class="details">
+        <p>Update an existing comment</p>
+        <p>PUT /discussions/comments/:id</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td>int</td>
+                <td>$ID</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_Delete">
+        <div class="location">at line 257</div>
+        <code>            public            array
+    <strong>Delete</strong>(array $Path)</code>
+    </h3>
+    <div class="details">
+        <p>Remove discussions and comments</p>
+        <p>DELETE /discussions/:id<br />
+ DELETE /discussions/comments/:id</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td>array</td>
+                <td>$Path</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_DeleteDiscussion">
+        <div class="location">at line 284</div>
+        <code>        static    public            array
+    <strong>DeleteDiscussion</strong>(int $ID)</code>
+    </h3>
+    <div class="details">
+        <p>Remove a discussion</p>
+        <p>DELETE /discussions/:id</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td>int</td>
+                <td>$ID</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_DeleteComment">
+        <div class="location">at line 306</div>
+        <code>        static    public            array
+    <strong>DeleteComment</strong>(int $ID)</code>
+    </h3>
+    <div class="details">
+        <p>Remove a discussion</p>
+        <p>DELETE /discussions/comments/:id</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td>int</td>
+                <td>$ID</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+    
+            </div>
+            <div id="footer">
+        Generated by <a href="http://sami.sensiolabs.org/" target="_top">Sami, the API Documentation Generator</a>.
+    </div>
+    </body>
+</html>

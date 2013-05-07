@@ -9,14 +9,14 @@
    }
 </style>
 
-<div class="Help Aside">
+<!--<div class="Help Aside">
    <h2><?php echo T('Need More Help?') ?></h2>
    <ul>
       <?php
       echo Wrap(Anchor('Read the API documentation', 'https://github.com/kasperisager/VanillaAPI/wiki'), 'li');
       ?>
    </ul>
-</div>
+</div>-->
 
 <h1><?php echo T($this->Data('Title')) ?></h1>
 

@@ -1,8 +1,0 @@
-{
-   "require": {
-      "sami/sami": "1.0.*@dev"
-   },
-   "config": {
-      "vendor-dir": "vendors"
-   }
-}

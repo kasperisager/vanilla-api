@@ -28,7 +28,7 @@ class API_Class_Configuration extends API_Mapper
       $Return = array();
       $Return['Controller']   = 'Settings';
       $Return['Method']       = 'Configuration';
-      $Return['Authenticate'] = 'Required';
+      $Return['Authenticate'] = TRUE;
 
       return $Return;
    }

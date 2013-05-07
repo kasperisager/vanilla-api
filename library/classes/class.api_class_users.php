@@ -15,6 +15,7 @@ class API_Class_Users extends API_Mapper
     * Retrieve users
     *
     * GET /users
+    * GET /users/:id
     *
     * @since   0.1.0
     * @access  public
@@ -35,6 +36,8 @@ class API_Class_Users extends API_Mapper
    /**
     * Find all users
     *
+    * GET /users
+    *
     * @since   0.1.0
     * @access  public
     * @return  array
@@ -51,6 +54,8 @@ class API_Class_Users extends API_Mapper
 
    /**
     * Find a specific user
+    *
+    * GET /users/:id
     *
     * @since   0.1.0
     * @access  public

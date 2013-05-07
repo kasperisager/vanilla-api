@@ -312,9 +312,8 @@ class API_Engine
     * @since   0.1.0
     * @access  public
     */
-   public function Dispatch()
+   public function Dispatch($Request)
    {
-      $Request    = Gdn::Request();
       $Session    = Gdn::Session();
       $URI        = $Request->RequestURI();
       $URI        = strtolower($URI);
@@ -373,6 +372,11 @@ class API_Engine
 
       // Map the request to the specified controller method
       $Request->WithControllerMethod($Controller, $Method, $Args);
+   }
+
+   public function Exception($Exception)
+   {
+      return;
    }
 
    /**

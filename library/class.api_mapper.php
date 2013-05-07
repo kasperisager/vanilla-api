@@ -12,7 +12,6 @@
  * @author     Kasper Kronborg Isager <kasperisager@gmail.com>
  * @copyright  Copyright 2013 © Kasper Kronborg Isager
  * @license    http://opensource.org/licenses/MIT MIT
- * @abstract
  */
 class API_Mapper
 {
@@ -20,15 +19,14 @@ class API_Mapper
     * API class GET operation
     *
     * This method will be run when a GET request is sent to a given API class.
-    * The GET method only allows returning an API resource map.
+    * The GET method only allows returning an API controller and method.
     *
     * @since   0.1.0
     * @access  public
-    * @param   array $Parameters Array of parameters defined in the API engine
-    * @return  array An array containing a 'Resource' key with the URI to be 
-    *                requested for the API call.
+    * @param   array $Path
+    * @return  array
     */
-   public function Get($Parameters)
+   public function Get($Path)
    {
       throw new Exception("Method Not Implemented", 501);
    }
@@ -42,13 +40,10 @@ class API_Mapper
     *
     * @since   0.1.0
     * @access  public
-    * @param   array $Parameters Array of parameters defined in the API engine
-    * @return  array An array containing a 'Resource' key with the URI to be 
-    *                requested for the API call. Also allows you to include an
-    *                'Arguments' array containing key-value pairs to be included
-    *                with the Form Data of the request body.
+    * @param   array $Path
+    * @return  array
     */
-   public function Post($Parameters)
+   public function Post($Path)
    {
       throw new Exception("Method Not Implemented", 501);
    }
@@ -62,13 +57,10 @@ class API_Mapper
     * 
     * @since   0.1.0
     * @access  public
-    * @param   array $Parameters Array of parameters defined in the API engine
-    * @return  array An array containing a 'Resource' key with the URI to be 
-    *                requested for the API call. Also allows you to include an
-    *                'Arguments' array containing key-value pairs to be included
-    *                with the Form Data of the request body.
+    * @param   array $Path
+    * @return  array
     */
-   public function Put($Parameters)
+   public function Put($Path)
    {
       throw new Exception("Method Not Implemented", 501);
    }
@@ -84,13 +76,10 @@ class API_Mapper
     *
     * @since   0.1.0
     * @access  public
-    * @param   array $Parameters Array of parameters defined in the API engine
-    * @return  array An array containing a 'Resource' key with the URI to be 
-    *                requested for the API call. Also allows you to include an
-    *                'Arguments' array containing key-value pairs to be included
-    *                with the Form Data of the request body.
+    * @param   array $Path
+    * @return  array
     */
-   public function Delete($Parameters)
+   public function Delete($Path)
    {
       throw new Exception("Method Not Implemented", 501);
    }

@@ -24,7 +24,6 @@ class APIHooks implements Gdn_IPlugin
     */
    public function Gdn_Dispatcher_BeforeDispatch_Handler()
    {
-      $API_Engine = new API_Engine();
       $Request    = Gdn::Request();
       $URI        = $Request->RequestURI();
       $URI        = strtolower($URI);
@@ -39,7 +38,13 @@ class APIHooks implements Gdn_IPlugin
       // Abandon the dispatch is this isn't an API call with a valid resource
       if (empty($Call) || $Call != 'api' || empty($Resource)) return;
 
-      $API_Engine->Dispatch();
+      $API_Engine = new API_Engine();
+
+      try {
+         $API_Engine->Dispatch($Request);
+      } catch (Exception $Exception) {
+         $API_Engine->Exception($Exception);
+      }
    }
 
    /**
@@ -110,9 +115,6 @@ class APIHooks implements Gdn_IPlugin
    public function Setup()
    {
       if (!C('API.Secret')) SaveToConfig('API.Secret', API_Engine::UUIDSecure());
-
-      if (!Gdn::PluginManager()->CheckPlugin('Logger'))
-         throw new Exception("Please install Logger before enabling the API");
 
       $ApplicationInfo = array();
       include CombinePaths(array(PATH_APPLICATIONS . DS . 'api/settings/about.php'));

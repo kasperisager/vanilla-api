@@ -73,7 +73,7 @@ class API_Class_Categories extends API_Mapper
    }
 
    /**
-    * Creat categories
+    * Create categories
     *
     * POST /categories
     *
@@ -105,14 +105,13 @@ class API_Class_Categories extends API_Mapper
     */
    public function Put($Path)
    {
+      Gdn_Autoloader::AttachApplication('Vanilla');
+
       if (!isset($Path[2])) {
          throw new Exception("No ID defined", 401);
       }
 
       $ID = $Path[2];
-
-      // Make sure the correct application is loaded
-      Gdn_Autoloader::AttachApplication('Vanilla');
 
       $Return = array();
       $Return['Controller']                  = 'Settings';
@@ -136,14 +135,13 @@ class API_Class_Categories extends API_Mapper
     */
    public function Delete($Path)
    {
+      Gdn_Autoloader::AttachApplication('Vanilla');
+
       if (!isset($Path[2])) {
          throw new Exception("No ID defined", 401);
       }
 
       $ID = $Path[2];
-
-      // Make sure the correct application is loaded
-      Gdn_Autoloader::AttachApplication('Vanilla');
 
       $Return = array();
       $Return['Controller']                  = 'Settings';

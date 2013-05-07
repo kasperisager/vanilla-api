@@ -6,7 +6,7 @@ use Symfony\Component\Finder\Finder;
 $Iterator = Finder::create()
    ->files()
    ->name('*.php')
-   ->in(__DIR__ . '/library')
+   ->in(__DIR__ . '/../library')
 ;
 
 return new Sami($Iterator, array(
