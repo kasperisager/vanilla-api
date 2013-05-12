@@ -11,5 +11,5 @@
  */
 class API_Class_Bans extends API_Mapper
 {
-   
+
 }

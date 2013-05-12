@@ -7,7 +7,7 @@ To get started using Vanilla API, either:
 
 * __[Download the latest release](https://bitbucket.org/kasperisager/vanillaapi/get/master.zip)__
 * Clone the repository directly into your Vanilla `applications` directory:
- 
+
 ```sh
 $ git clone git://github.com/kasperisager/VanillaAPI.git api
 ```

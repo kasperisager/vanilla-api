@@ -20,7 +20,7 @@ class API_Mapper
     * @var array
     */
    private $API = array();
-   
+
    /**
     * API class GET operation
     *
