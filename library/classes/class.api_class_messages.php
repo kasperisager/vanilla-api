@@ -23,8 +23,7 @@ class API_Class_Messages extends API_Mapper
     */
    public function Get($Path)
    {
-      $API['Controller']   = 'Messages';
-      $API['Method']       = 'All';
-      return $API;
+      $this->API['Controller']   = 'Messages';
+      $this->API['Method']       = 'All';
    }
 }

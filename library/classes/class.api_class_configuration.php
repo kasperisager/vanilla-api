@@ -19,16 +19,13 @@ class API_Class_Configuration extends API_Mapper
     * @since   0.1.0
     * @access  public
     * @param   array $Path
-    * @return  array
     */
    public function Get($Path)
    {
       Gdn_Autoloader::AttachApplication('Dashboard');
 
-      $API['Controller']   = 'Settings';
-      $API['Method']       = 'Configuration';
-      $API['Authenticate'] = TRUE;
-
-      return $API;
+      $this->API['Controller']   = 'Settings';
+      $this->API['Method']       = 'Configuration';
+      $this->API['Authenticate'] = TRUE;
    }
 }

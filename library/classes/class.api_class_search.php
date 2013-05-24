@@ -13,7 +13,6 @@ class API_Class_Search extends API_Mapper
 {
    public function Get($Path)
    {
-      $API['Controller'] = 'Search';
-      return $API;
+      $this->API['Controller'] = 'Search';
    }
 }

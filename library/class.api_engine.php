@@ -224,16 +224,18 @@ class API_Engine
     */
    public static function MethodHandler($Path, $Method, $Class)
    {
-      $Request    = Gdn::Request();
+      $Request = Gdn::Request();
 
       switch(strtolower($Method)) {
 
          case 'get':
-            $Data = $Class->Get($Path);
+            $Class->Get($Path);
+            $Data = $Class->API;
             break;
 
          case 'post':
-            $Data = $Class->Post($Path);
+            $Class->Post($Path);
+            $Data = $Class->API;
 
             // Combine the POST request with any custom arguments
             if (isset($Data['Arguments'])) {
@@ -246,7 +248,8 @@ class API_Engine
             break;
 
          case 'put':
-            $Data = $Class->Put($Path);
+            $Class->Put($Path);
+            $Data = $Class->API;
 
             // Garden can't handle PUT requests by default, so trick
             // it into thinking that this is actually a POST
@@ -268,7 +271,8 @@ class API_Engine
             break;
 
          case 'delete':
-            $Data = $Class->Delete($Path);
+            $Class->Delete($Path);
+            $Data = $Class->API;
 
             // Garden can't handle DELETE requests by default, so trick
             // it into thinking that this is actually a POST
@@ -355,15 +359,13 @@ class API_Engine
 
       // Map the request to the specified controller method
       $Request->WithControllerMethod($Controller, $Method, $Args);
-
-      self::HeaderFormat($Request);
    }
 
-   public function Exception($Request, $Exception)
-   {
-      self::HeaderFormat($Request);
-   }
-
+   /**
+    * Set the header format based on the Request object's HTTP_ACCEPT header
+    *
+    * @param object $Request
+    */
    public function HeaderFormat($Request)
    {
       $Arguments  = $Request->Export('Arguments');

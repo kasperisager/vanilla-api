@@ -20,16 +20,15 @@ class API_Class_Categories extends API_Mapper
     * @since   0.1.0
     * @access  public
     * @param   array $Path
-    * @return  array
     */
    public function Get($Path)
    {
       if (isset($Path[2])) $ID = $Path[2];
 
       if (isset($ID)) {
-         return self::GetById($ID);
+         self::GetById($ID);
       } else {
-         return self::GetAll();
+         self::GetAll();
       }
    }
 
@@ -40,15 +39,12 @@ class API_Class_Categories extends API_Mapper
     *
     * @since   0.1.0
     * @access  public
-    * @return  array
     * @static
     */
    public static function GetAll()
    {
-      $API['Controller']   = 'Categories';
-      $API['Method']       = 'All';
-
-      return $API;
+      $this->API['Controller']   = 'Categories';
+      $this->API['Method']       = 'All';
    }
 
    /**
@@ -59,15 +55,12 @@ class API_Class_Categories extends API_Mapper
     * @since   0.1.0
     * @access  public
     * @param   int $ID
-    * @return  array
     * @static
     */
    public static function GetById($ID)
    {
-      $API['Controller']   = 'Categories';
-      $API['Arguments']    = array($ID);
-
-      return $API;
+      $this->API['Controller']   = 'Categories';
+      $this->API['Arguments']    = array($ID);
    }
 
    /**
@@ -78,16 +71,13 @@ class API_Class_Categories extends API_Mapper
     * @since   0.1.0
     * @access  public
     * @param   array $Path
-    * @return  array
     */
    public function Post($Path)
    {
       Gdn_Autoloader::AttachApplication('Vanilla');
 
-      $API['Controller']   = 'Settings';
-      $API['Method']       = 'AddCategory';
-
-      return $API;
+      $this->API['Controller']   = 'Settings';
+      $this->API['Method']       = 'AddCategory';
    }
 
    /**
@@ -98,7 +88,6 @@ class API_Class_Categories extends API_Mapper
     * @since   0.1.0
     * @access  public
     * @param   array $Path
-    * @return  array
     */
    public function Put($Path)
    {
@@ -108,13 +97,11 @@ class API_Class_Categories extends API_Mapper
 
       $ID = $Path[2];
 
-      $API['Controller']                  = 'Settings';
-      $API['Method']                      = 'EditCategory';
-      $API['Arguments']                   = array($ID);
-      $API['Arguments']['CategoryID']     = $ID;
-      $API['Arguments']['TransientKey']   = Gdn::Session()->TransientKey();
-
-      return $API;
+      $this->API['Controller']                  = 'Settings';
+      $this->API['Method']                      = 'EditCategory';
+      $this->API['Arguments']                   = array($ID);
+      $this->API['Arguments']['CategoryID']     = $ID;
+      $this->API['Arguments']['TransientKey']   = Gdn::Session()->TransientKey();
    }
 
    /**
@@ -125,7 +112,6 @@ class API_Class_Categories extends API_Mapper
     * @since   0.1.0
     * @access  public
     * @param   array $Path
-    * @return  array
     */
    public function Delete($Path)
    {
@@ -137,12 +123,10 @@ class API_Class_Categories extends API_Mapper
 
       $ID = $Path[2];
 
-      $API['Controller']                  = 'Settings';
-      $API['Method']                      = 'DeleteCategory';
-      $API['Arguments']                   = array($ID);
-      $API['Arguments']['CategoryID']     = $ID;
-      $API['Arguments']['TransientKey']   = Gdn::Session()->TransientKey();
-
-      return $API;
+      $this->API['Controller']                  = 'Settings';
+      $this->API['Method']                      = 'DeleteCategory';
+      $this->API['Arguments']                   = array($ID);
+      $this->API['Arguments']['CategoryID']     = $ID;
+      $this->API['Arguments']['TransientKey']   = Gdn::Session()->TransientKey();
    }
 }

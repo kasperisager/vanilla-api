@@ -13,16 +13,14 @@ class API_Class_Roles extends API_Mapper
 {
    public function Get($Path)
    {
-      $API['Controller'] = 'Role';
-      return $API;
+      $this->API['Controller'] = 'Role';
    }
 
    public function Post($Path)
    {
-      $API['Controller']                  = 'Role';
-      $API['Method']                      = 'Add';
-      $API['Arguments']['TransientKey']   = Gdn::Session()->TransientKey();
-      return $API;
+      $this->API['Controller']                  = 'Role';
+      $this->API['Method']                      = 'Add';
+      $this->API['Arguments']['TransientKey']   = Gdn::Session()->TransientKey();
    }
 
    public function Put($Path)
@@ -31,11 +29,10 @@ class API_Class_Roles extends API_Mapper
 
       $ID = $Path[2];
 
-      $API['Controller']                  = 'Role';
-      $API['Method']                      = 'Edit';
-      $API['Arguments']                   = array($ID);
-      $API['Arguments']['TransientKey']   = Gdn::Session()->TransientKey();
-      return $API;
+      $this->API['Controller']                  = 'Role';
+      $this->API['Method']                      = 'Edit';
+      $this->API['Arguments']                   = array($ID);
+      $this->API['Arguments']['TransientKey']   = Gdn::Session()->TransientKey();
    }
 
    public function Delete($Path)
@@ -44,10 +41,9 @@ class API_Class_Roles extends API_Mapper
 
       $ID = $Path[2];
 
-      $API['Controller']                  = 'Role';
-      $API['Method']                      = 'Delete';
-      $API['Arguments']                   = array($ID);
-      $API['Arguments']['TransientKey']   = Gdn::Session()->TransientKey();
-      return $API;
+      $this->API['Controller']                  = 'Role';
+      $this->API['Method']                      = 'Delete';
+      $this->API['Arguments']                   = array($ID);
+      $this->API['Arguments']['TransientKey']   = Gdn::Session()->TransientKey();
    }
 }

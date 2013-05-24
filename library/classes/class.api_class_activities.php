@@ -16,23 +16,21 @@ class API_Class_Activities extends API_Mapper
       if (isset($Path[2])) $ID = $Path[2];
 
       if (isset($ID)) {
-         return self::GetById($ID);
+         self::GetById($ID);
       } else {
-         return self::GetAll();
+         self::GetAll();
       }
    }
 
    public function GetAll()
    {
-      $API['Controller'] = 'Activity';
-      return $API;
+      $this->API['Controller'] = 'Activity';
    }
 
    public function GetById($ID)
    {
-      $API['Controller']   = 'Activity';
-      $API['Method']       = 'Item';
-      $API['Arguments']    = array($ID);
-      return $API;
+      $this->API['Controller']   = 'Activity';
+      $this->API['Method']       = 'Item';
+      $this->API['Arguments']    = array($ID);
    }
 }

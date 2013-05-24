@@ -38,11 +38,8 @@ class APIHooks implements Gdn_IPlugin
       // Abandon the dispatch is this isn't an API call with a valid resource
       if (empty($Call) || $Call != 'api' || empty($Resource)) return;
 
-      try {
-         API_Engine::Dispatch($Request);
-      } catch (Exception $Exception) {
-         API_Engine::Exception($Request, $Exception);
-      }
+      API_Engine::HeaderFormat($Request);
+      API_Engine::Dispatch($Request);
    }
 
    /**

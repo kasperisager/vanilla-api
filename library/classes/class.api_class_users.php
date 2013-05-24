@@ -20,16 +20,15 @@ class API_Class_Users extends API_Mapper
     * @since   0.1.0
     * @access  public
     * @param   array $Path
-    * @return  array
     */
    public function Get($Path)
    {
       if (isset($Path[2])) $ID = $Path[2];
 
       if (isset($ID)) {
-         return self::GetById($ID);
+         self::GetById($ID);
       } else {
-         return self::GetAll();
+         self::GetAll();
       }
    }
 
@@ -40,14 +39,12 @@ class API_Class_Users extends API_Mapper
     *
     * @since   0.1.0
     * @access  public
-    * @return  array
     * @static
     */
    public static function GetAll()
    {
-      $API['Controller']   = 'User';
-      $API['Method']       = 'Summary';
-      return $API;
+      $this->API['Controller']   = 'User';
+      $this->API['Method']       = 'Summary';
    }
 
    /**
@@ -58,14 +55,12 @@ class API_Class_Users extends API_Mapper
     * @since   0.1.0
     * @access  public
     * @param   int $ID
-    * @return  array
     * @static
     */
    public static function GetById($ID)
    {
-      $API['Controller']            = 'Profile';
-      $API['Arguments']             = array($ID);
-      $API['Arguments']['userid']   = $ID;
-      return $API;
+      $this->API['Controller']            = 'Profile';
+      $this->API['Arguments']             = array($ID);
+      $this->API['Arguments']['userid']   = $ID;
    }
 }

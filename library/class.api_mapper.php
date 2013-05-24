@@ -13,13 +13,16 @@
  * @copyright  Copyright 2013 © Kasper Kronborg Isager
  * @license    http://opensource.org/licenses/MIT MIT
  */
-class API_Mapper
+class API_Mapper extends API_Engine
 {
    /**
-    * [$API description]
-    * @var array
+    * API property containing information about the API called by the client
+    *
+    * @since   1.0.0
+    * @access  protected
+    * @var     object
     */
-   private $API = array();
+   protected $API;
 
    /**
     * API class GET operation
@@ -60,7 +63,7 @@ class API_Mapper
     * This method will be run when a PUT request is sent to a given API class.
     * The PUT method allows you to return an array of custom arguments which
     * will be included with the rest of the Form Data sent in the request body.
-    * 
+    *
     * @since   0.1.0
     * @access  public
     * @param   array $Path
