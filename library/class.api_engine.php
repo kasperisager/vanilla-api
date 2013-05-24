@@ -80,7 +80,7 @@ class API_Engine
       (empty($Email))    ?: $Email     = $Request['email'];
 
       // Get the ID of the client (user) sending the request
-      $UserID        = self::GetUserID($Username, $Email);
+      $UserID = self::GetUserID($Username, $Email);
 
       // Make sure that the user actually exists
       if (!isset($UserID)) {
@@ -89,8 +89,8 @@ class API_Engine
 
       // Generate a signature from the passed data the same way it was
       // generated on the client
-      $Signature     = self::Signature($Request);
-      
+      $Signature = self::Signature($Request);
+
       // Make sure that the client token and the server signature match
       if ($Token != $Signature) {
          throw new Exception("Token and signature do not match", 401);
@@ -98,7 +98,7 @@ class API_Engine
 
       // Now that we've thoroughly verified the client, start a session for the
       // duration of the request using the User ID we specified earlier
-      Gdn::Session()->Start(intval($UserID), FALSE);
+      if ($Token == $Signature) Gdn::Session()->Start(intval($UserID), FALSE);
    }
 
    /**
@@ -224,33 +224,18 @@ class API_Engine
     */
    public static function MethodHandler($Path, $Method, $Class)
    {
-      $Request    = Gdn::Request();
-      $Arguments  = $Request->Export('Arguments');
-
-      // Change response format depending on HTTP_ACCEPT
-      $Accept     = $Arguments['server']['HTTP_ACCEPT'];
-      $Format     = (strpos($Accept, 'json')) ? 'json' : 'xml';
-
-      $Request->WithDeliveryType(DELIVERY_TYPE_DATA);
-
-      switch ($Format) {
-         case 'json':
-            $Request->WithDeliveryMethod(DELIVERY_METHOD_JSON);
-            break;
-
-         case 'xml':
-            $Request->WithDeliveryMethod(DELIVERY_METHOD_XML);
-            break;
-      }
+      $Request = Gdn::Request();
 
       switch(strtolower($Method)) {
 
          case 'get':
-            $Data = $Class->Get($Path);
+            $Class->Get($Path);
+            $Data = $Class->API;
             break;
 
          case 'post':
-            $Data = $Class->Post($Path);
+            $Class->Post($Path);
+            $Data = $Class->API;
 
             // Combine the POST request with any custom arguments
             if (isset($Data['Arguments'])) {
@@ -263,7 +248,8 @@ class API_Engine
             break;
 
          case 'put':
-            $Data = $Class->Put($Path);
+            $Class->Put($Path);
+            $Data = $Class->API;
 
             // Garden can't handle PUT requests by default, so trick
             // it into thinking that this is actually a POST
@@ -285,7 +271,8 @@ class API_Engine
             break;
 
          case 'delete':
-            $Data = $Class->Delete($Path);
+            $Class->Delete($Path);
+            $Data = $Class->API;
 
             // Garden can't handle DELETE requests by default, so trick
             // it into thinking that this is actually a POST
@@ -323,7 +310,7 @@ class API_Engine
       (!isset($Path[1])) ? $Resource = NULL : $Resource = $Path[1];
 
       // Turn requested resource into API class and store it
-      $Class      = 'API_Class_' . ucfirst($Resource);
+      $Class = 'API_Class_' . ucfirst($Resource);
 
       // Make sure that the requested API class exists
       if (!class_exists($Class)) {
@@ -331,7 +318,7 @@ class API_Engine
       }
 
       // Instantiate the requested API class
-      $Class      = new $Class;
+      $Class = new $Class;
 
       // Make sure that the requested API class extend the API Mapper class
       if (!is_subclass_of($Class, 'API_Mapper')) {
@@ -339,10 +326,10 @@ class API_Engine
       }
 
       // Get the request method issued by the client
-      $Method     = $Request->RequestMethod();
-      
+      $Method = $Request->RequestMethod();
+
       // Use the MethodHandler to get data from the API class
-      $Data       = self::MethodHandler($Path, $Method, $Class);
+      $Data = self::MethodHandler($Path, $Method, $Class);
 
       // Make sure that the API class returns a controller definition
       if (!isset($Data['Controller'])) {
@@ -374,9 +361,30 @@ class API_Engine
       $Request->WithControllerMethod($Controller, $Method, $Args);
    }
 
-   public function Exception($Exception)
+   /**
+    * Set the header format based on the Request object's HTTP_ACCEPT header
+    *
+    * @param object $Request
+    */
+   public function HeaderFormat($Request)
    {
-      return;
+      $Arguments  = $Request->Export('Arguments');
+
+      // Change response format depending on HTTP_ACCEPT
+      $Accept     = $Arguments['server']['HTTP_ACCEPT'];
+      $Format     = (strpos($Accept, 'json')) ? 'json' : 'xml';
+
+      $Request->WithDeliveryType(DELIVERY_TYPE_DATA);
+
+      switch ($Format) {
+         case 'json':
+            $Request->WithDeliveryMethod(DELIVERY_METHOD_JSON);
+            break;
+
+         case 'xml':
+            $Request->WithDeliveryMethod(DELIVERY_METHOD_XML);
+            break;
+      }
    }
 
    /**
@@ -400,12 +408,12 @@ class API_Engine
       }
 
       // Fetch each part
-      $Parts = array_slice(explode($Boundary, $RawData), 1);
+      $Parts   = array_slice(explode($Boundary, $RawData), 1);
       $PutData = array();
 
       foreach ($Parts as $Part) {
          // If this is the last part, break
-         if ($Part == "--\r\n") break; 
+         if ($Part == "--\r\n") break;
 
          // Separate content from headers
          $Part = ltrim($Part, "\r\n");
@@ -416,19 +424,19 @@ class API_Engine
          $headers    = array();
          foreach ($RawHeaders as $header) {
             list($Name, $Value) = explode(':', $header);
-            $headers[strtolower($Name)] = ltrim($Value, ' '); 
-         } 
+            $headers[strtolower($Name)] = ltrim($Value, ' ');
+         }
 
          // Parse the Content-Disposition to get the field name, etc.
          if (isset($headers['content-disposition'])) {
             $filename = null;
             preg_match(
-               '/^(.+); *name="([^"]+)"(; *filename="([^"]+)")?/', 
-               $headers['content-disposition'], 
+               '/^(.+); *name="([^"]+)"(; *filename="([^"]+)")?/',
+               $headers['content-disposition'],
                $Matches
             );
             list(, $Type, $Name) = $Matches;
-            isset($Matches[4]) and $filename = $Matches[4]; 
+            isset($Matches[4]) and $filename = $Matches[4];
 
             // handle your fields here
             switch ($Name) {
@@ -438,12 +446,12 @@ class API_Engine
                   break;
 
                // default for all other files is to populate $PutData
-               default: 
+               default:
                   $PutData[$Name] = substr(
                      $PutBody, 0, strlen($PutBody) - 2
                   );
                   break;
-            } 
+            }
          }
 
       }

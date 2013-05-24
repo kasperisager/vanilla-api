@@ -20,16 +20,15 @@ class API_Class_Discussions extends API_Mapper
     * @since   0.1.0
     * @access  public
     * @param   array $Path
-    * @return  array
     */
    public function Get($Path)
    {
       if (isset($Path[2])) $ID = $Path[2];
 
       if (isset($ID)) {
-         return self::GetById($ID);
+         self::GetById($ID);
       } else {
-         return self::GetAll();
+         self::GetAll();
       }
    }
 
@@ -40,15 +39,11 @@ class API_Class_Discussions extends API_Mapper
     *
     * @since   0.1.0
     * @access  public
-    * @return  array
     * @static
     */
    public static function GetAll()
    {
-      $Return = array();
-      $Return['Controller'] = 'Discussions';
-
-      return $Return;
+      $this->API['Controller'] = 'Discussions';
    }
 
    /**
@@ -59,16 +54,12 @@ class API_Class_Discussions extends API_Mapper
     * @since   0.1.0
     * @access  public
     * @param   int $ID
-    * @return  array
     * @static
     */
    public static function GetById($ID)
    {
-      $Return = array();
-      $Return['Controller']   = 'Discussion';
-      $Return['Arguments']    = array($ID);
-
-      return $Return;
+      $this->API['Controller']   = 'Discussion';
+      $this->API['Arguments']    = array($ID);
    }
 
    /**
@@ -77,35 +68,27 @@ class API_Class_Discussions extends API_Mapper
     * @since   0.1.0
     * @access  public
     * @param   string $Format
-    * @return  array
     * @static
     */
    public static function GetBookmarks()
    {
-      $Return = array();
-      $Return['Controller']   = 'Discussions';
-      $Return['Method']       = 'Bookmarked';
-      $Return['Arguments']    = array($ID);
-
-      return $Return;
+      $this->API['Controller']   = 'Discussions';
+      $this->API['Method']       = 'Bookmarked';
+      $this->API['Arguments']    = array($ID);
    }
 
    /**
     * Retrieve discussions created by the current user
-    * 
+    *
     * @since   0.1.0
     * @access  public
-    * @return  array
     * @static
     */
    public static function GetMine()
    {
-      $Return = array();
-      $Return['Controller']   = 'Discussions';
-      $Return['Method']       = 'Mine';
-      $Return['Arguments']    = array($ID);
-
-      return $Return;
+      $this->API['Controller']   = 'Discussions';
+      $this->API['Method']       = 'Mine';
+      $this->API['Arguments']    = array($ID);
    }
 
    /**
@@ -117,7 +100,6 @@ class API_Class_Discussions extends API_Mapper
     * @since   0.1.0
     * @access  public
     * @param   array $Path
-    * @return  array
     */
    public function Post($Path)
    {
@@ -125,9 +107,9 @@ class API_Class_Discussions extends API_Mapper
       if (isset($Path[3])) $Comment = $Path[3];
 
       if (isset($ID) && isset($Comment) && $Comment == 'comments') {
-         return self::PostComment($ID);
+         self::PostComment($ID);
       } else {
-         return self::PostDiscussion();
+         self::PostDiscussion();
       }
    }
 
@@ -138,16 +120,12 @@ class API_Class_Discussions extends API_Mapper
     *
     * @since   0.1.0
     * @access  public
-    * @return  array
     * @static
     */
    public static function PostDiscussion()
    {
-      $Return = array();
-      $Return['Controller']   = 'Post';
-      $Return['Method']       = 'Discussion';
-
-      return $Return;
+      $this->API['Controller']   = 'Post';
+      $this->API['Method']       = 'Discussion';
    }
 
    /**
@@ -156,19 +134,15 @@ class API_Class_Discussions extends API_Mapper
     * @since   0.1.0
     * @access  public
     * @param   int $ID
-    * @return  array
     * @static
     */
    public static function PostComment($ID)
    {
-      $Return = array();
-      $Return['Controller']                  = 'Post';
-      $Return['Method']                      = 'Comment';
-      $Return['Arguments']                   = array($ID);
-      $Return['Arguments']['DiscussionID']   = $ID;
-      $Return['Arguments']['TransientKey']   = Gdn::Session()->TransientKey();
-
-      return $Return;
+      $this->API['Controller']                  = 'Post';
+      $this->API['Method']                      = 'Comment';
+      $this->API['Arguments']                   = array($ID);
+      $this->API['Arguments']['DiscussionID']   = $ID;
+      $this->API['Arguments']['TransientKey']   = Gdn::Session()->TransientKey();
    }
 
    /**
@@ -180,20 +154,18 @@ class API_Class_Discussions extends API_Mapper
     * @since   0.1.0
     * @access  public
     * @param   array $Path
-    * @return  array
     */
    public function Put($Path)
    {
-      if (!isset($Path[2]))
-         throw new Exception("No ID defined", 401);
+      if (!isset($Path[2])) throw new Exception("No ID defined", 401);
 
       $ID = $Path[2];
 
-      if (isset($ID) && $ID == 'comments') {
+      if ($ID == 'comments') {
          $ID = $Path[3];
-         return self::PutComment($ID);
-      } elseif (isset($ID)) {
-         return self::PutDiscussion($ID);
+         self::PutComment($ID);
+      } else {
+         self::PutDiscussion($ID);
       }
    }
 
@@ -205,19 +177,15 @@ class API_Class_Discussions extends API_Mapper
     * @since   0.1.0
     * @access  public
     * @param   int $ID
-    * @return  array
     * @static
     */
    public static function PutDiscussion($ID)
    {
-      $Return = array();
-      $Return['Controller']                  = 'Post';
-      $Return['Method']                      = 'EditDiscussion';
-      $Return['Arguments']                   = array($ID);
-      $Return['Arguments']['DiscussionID']   = $ID;
-      $Return['Arguments']['TransientKey']   = Gdn::Session()->TransientKey();
-
-      return $Return;
+      $this->API['Controller']                  = 'Post';
+      $this->API['Method']                      = 'EditDiscussion';
+      $this->API['Arguments']                   = array($ID);
+      $this->API['Arguments']['DiscussionID']   = $ID;
+      $this->API['Arguments']['TransientKey']   = Gdn::Session()->TransientKey();
    }
 
    /**
@@ -228,19 +196,15 @@ class API_Class_Discussions extends API_Mapper
     * @since   0.1.0
     * @access  public
     * @param   int $ID
-    * @return  array
     * @static
     */
    public static function PutComment($ID)
    {
-      $Return = array();
-      $Return['Controller']                  = 'Post';
-      $Return['Method']                      = 'EditComment';
-      $Return['Arguments']                   = array($ID);
-      $Return['Arguments']['CommentID']      = $ID;
-      $Return['Arguments']['TransientKey']   = Gdn::Session()->TransientKey();
-
-      return $Return;
+      $this->API['Controller']                  = 'Post';
+      $this->API['Method']                      = 'EditComment';
+      $this->API['Arguments']                   = array($ID);
+      $this->API['Arguments']['CommentID']      = $ID;
+      $this->API['Arguments']['TransientKey']   = Gdn::Session()->TransientKey();
    }
 
    /**
@@ -252,7 +216,6 @@ class API_Class_Discussions extends API_Mapper
     * @since   0.1.0
     * @access  public
     * @param   array $Path
-    * @return  array
     */
    public function Delete($Path)
    {
@@ -264,9 +227,9 @@ class API_Class_Discussions extends API_Mapper
 
       if (isset($ID) && $ID == 'comments') {
          $ID = $Path[3];
-         return self::DeleteComment($ID);
+         self::DeleteComment($ID);
       } elseif (isset($ID)) {
-         return self::DeleteDiscussion($ID);
+         self::DeleteDiscussion($ID);
       }
    }
 
@@ -278,18 +241,14 @@ class API_Class_Discussions extends API_Mapper
     * @since   0.1.0
     * @access  public
     * @param   int $ID
-    * @return  array
     * @static
     */
    public static function DeleteDiscussion($ID)
    {
-      $Return = array();
-      $Return['Controller']                  = 'Discussion';
-      $Return['Method']                      = 'Delete';
-      $Return['Arguments']                   = array($ID);
-      $Return['Arguments']['TransientKey']   = Gdn::Session()->TransientKey();
-
-      return $Return;
+      $this->API['Controller']                  = 'Discussion';
+      $this->API['Method']                      = 'Delete';
+      $this->API['Arguments']                   = array($ID);
+      $this->API['Arguments']['TransientKey']   = Gdn::Session()->TransientKey();
    }
 
    /**
@@ -307,11 +266,8 @@ class API_Class_Discussions extends API_Mapper
    {
       $TransientKey = Gdn::Session()->TransientKey();
 
-      $Return = array();
-      $Return['Controller']                  = 'Discussion';
-      $Return['Method']                      = 'DeleteComment';
-      $Return['Arguments']                   = array($ID, $TransientKey);
-
-      return $Return;
+      $this->API['Controller']   = 'Discussion';
+      $this->API['Method']       = 'DeleteComment';
+      $this->API['Arguments']    = array($ID, $TransientKey);
    }
 }

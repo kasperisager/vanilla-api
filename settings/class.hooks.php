@@ -38,13 +38,8 @@ class APIHooks implements Gdn_IPlugin
       // Abandon the dispatch is this isn't an API call with a valid resource
       if (empty($Call) || $Call != 'api' || empty($Resource)) return;
 
-      $API_Engine = new API_Engine();
-
-      try {
-         $API_Engine->Dispatch($Request);
-      } catch (Exception $Exception) {
-         $API_Engine->Exception($Exception);
-      }
+      API_Engine::HeaderFormat($Request);
+      API_Engine::Dispatch($Request);
    }
 
    /**
@@ -59,7 +54,7 @@ class APIHooks implements Gdn_IPlugin
     */
    public function SettingsController_API_Create($Sender) {
       $Sender->Permission('Garden.Settings.Manage');
-      
+
       if ($Sender->Form->AuthenticatedPostBack()) {
 
          $Secret  = C('API.Secret');
@@ -69,7 +64,7 @@ class APIHooks implements Gdn_IPlugin
 
          $Save = array();
          $Save['API.Secret'] = $Secret;
-         
+
          if ($Sender->Form->ErrorCount() == 0) {
             SaveToConfig($Save);
             if ($Regen) {
@@ -86,18 +81,18 @@ class APIHooks implements Gdn_IPlugin
          $Data['Secret'] = C('API.Secret');
          $Sender->Form->SetData($Data);
       }
-      
+
       $Sender->AddSideMenu();
       $Sender->SetData('Title', 'Application Interface');
       $Sender->Render('API', 'settings', 'api');
    }
-   
+
    /**
     * Renders menu link in the dashboard sidebar
     *
     * @since   0.1.0
     * @access  public
-    * @param   Gdn_Controller $Sender 
+    * @param   Gdn_Controller $Sender
     */
    public function Base_GetAppSettingsMenuItems_Handler($Sender) {
       $Menu = $Sender->EventArguments['SideMenu'];
@@ -119,6 +114,6 @@ class APIHooks implements Gdn_IPlugin
       $ApplicationInfo = array();
       include CombinePaths(array(PATH_APPLICATIONS . DS . 'api/settings/about.php'));
       $Version = ArrayValue('Version', ArrayValue('API', $ApplicationInfo, array()), 'Undefined');
-      SaveToConfig('API.Version', $Version);  
+      SaveToConfig('API.Version', $Version);
    }
 }
