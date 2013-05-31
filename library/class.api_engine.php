@@ -370,6 +370,13 @@ class API_Engine
    {
       $Arguments = $Request->Export('Arguments');
 
+      // CORS support
+      if (C('API.CORS')) {
+         $Headers = 'Origin, X-Requested-With, Content-Type, Accept';
+         header('Access-Control-Allow-Origin: *');
+         header('Access-Control-Allow-Headers: ' . $Headers);
+      }
+
       // Change response format depending on HTTP_ACCEPT
       $Accept = $Arguments['server']['HTTP_ACCEPT'];
       $Format = ($Accept == 'application/xml') ? 'xml' : 'json';
