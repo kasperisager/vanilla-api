@@ -39,9 +39,8 @@ class API_Class_Categories extends API_Mapper
     *
     * @since   0.1.0
     * @access  public
-    * @static
     */
-   public static function GetAll()
+   public function GetAll()
    {
       $this->API['Controller']   = 'Categories';
       $this->API['Method']       = 'All';
@@ -55,9 +54,8 @@ class API_Class_Categories extends API_Mapper
     * @since   0.1.0
     * @access  public
     * @param   int $ID
-    * @static
     */
-   public static function GetById($ID)
+   public function GetById($ID)
    {
       $this->API['Controller']   = 'Categories';
       $this->API['Arguments']    = array($ID);

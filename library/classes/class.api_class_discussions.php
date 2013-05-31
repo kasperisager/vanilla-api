@@ -39,9 +39,8 @@ class API_Class_Discussions extends API_Mapper
     *
     * @since   0.1.0
     * @access  public
-    * @static
     */
-   public static function GetAll()
+   public function GetAll()
    {
       $this->API['Controller'] = 'Discussions';
    }
@@ -54,9 +53,8 @@ class API_Class_Discussions extends API_Mapper
     * @since   0.1.0
     * @access  public
     * @param   int $ID
-    * @static
     */
-   public static function GetById($ID)
+   public function GetById($ID)
    {
       $this->API['Controller']   = 'Discussion';
       $this->API['Arguments']    = array($ID);
@@ -68,9 +66,8 @@ class API_Class_Discussions extends API_Mapper
     * @since   0.1.0
     * @access  public
     * @param   string $Format
-    * @static
     */
-   public static function GetBookmarks()
+   public function GetBookmarks()
    {
       $this->API['Controller']   = 'Discussions';
       $this->API['Method']       = 'Bookmarked';
@@ -82,9 +79,8 @@ class API_Class_Discussions extends API_Mapper
     *
     * @since   0.1.0
     * @access  public
-    * @static
     */
-   public static function GetMine()
+   public function GetMine()
    {
       $this->API['Controller']   = 'Discussions';
       $this->API['Method']       = 'Mine';
@@ -120,9 +116,8 @@ class API_Class_Discussions extends API_Mapper
     *
     * @since   0.1.0
     * @access  public
-    * @static
     */
-   public static function PostDiscussion()
+   public function PostDiscussion()
    {
       $this->API['Controller']   = 'Post';
       $this->API['Method']       = 'Discussion';
@@ -134,9 +129,8 @@ class API_Class_Discussions extends API_Mapper
     * @since   0.1.0
     * @access  public
     * @param   int $ID
-    * @static
     */
-   public static function PostComment($ID)
+   public function PostComment($ID)
    {
       $this->API['Controller']                  = 'Post';
       $this->API['Method']                      = 'Comment';
@@ -177,9 +171,8 @@ class API_Class_Discussions extends API_Mapper
     * @since   0.1.0
     * @access  public
     * @param   int $ID
-    * @static
     */
-   public static function PutDiscussion($ID)
+   public function PutDiscussion($ID)
    {
       $this->API['Controller']                  = 'Post';
       $this->API['Method']                      = 'EditDiscussion';
@@ -196,9 +189,8 @@ class API_Class_Discussions extends API_Mapper
     * @since   0.1.0
     * @access  public
     * @param   int $ID
-    * @static
     */
-   public static function PutComment($ID)
+   public function PutComment($ID)
    {
       $this->API['Controller']                  = 'Post';
       $this->API['Method']                      = 'EditComment';
@@ -241,9 +233,8 @@ class API_Class_Discussions extends API_Mapper
     * @since   0.1.0
     * @access  public
     * @param   int $ID
-    * @static
     */
-   public static function DeleteDiscussion($ID)
+   public function DeleteDiscussion($ID)
    {
       $this->API['Controller']                  = 'Discussion';
       $this->API['Method']                      = 'Delete';
@@ -260,9 +251,8 @@ class API_Class_Discussions extends API_Mapper
     * @access  public
     * @param   int $ID
     * @return  array
-    * @static
     */
-   public static function DeleteComment($ID)
+   public function DeleteComment($ID)
    {
       $TransientKey = Gdn::Session()->TransientKey();
 
