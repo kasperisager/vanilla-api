@@ -368,11 +368,11 @@ class API_Engine
     */
    public function HeaderFormat($Request)
    {
-      $Arguments  = $Request->Export('Arguments');
+      $Arguments = $Request->Export('Arguments');
 
       // Change response format depending on HTTP_ACCEPT
-      $Accept     = $Arguments['server']['HTTP_ACCEPT'];
-      $Format     = (strpos($Accept, 'json')) ? 'json' : 'xml';
+      $Accept = $Arguments['server']['HTTP_ACCEPT'];
+      $Format = ($Accept == 'application/xml') ? 'xml' : 'json';
 
       $Request->WithDeliveryType(DELIVERY_TYPE_DATA);
 
