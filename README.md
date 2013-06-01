@@ -5,25 +5,14 @@
 
 To get started using Vanilla API, either:
 
-* __[Download the latest release](https://bitbucket.org/kasperisager/vanillaapi/get/master.zip)__
+* __[Download the latest release](https://github.com/kasperisager/vanilla-api/archive/master.zip)__
 * Clone the repository directly into your Vanilla `applications` directory:
 
 ```sh
-$ git clone git://github.com/kasperisager/VanillaAPI.git api
+$ git clone git://github.com/kasperisager/vanilla-api.git api
 ```
 
-When you've done this, make sure the newly created folder is named `api` and not `VanillaAPI`. Now simply go to your dashboard, enable the API in the "Applications" menu and you're all set!
-
-### Generating documentation
-
-The application source is well-documented and the API comes bundled with [Sami](https://github.com/fabpot/Sami) for generating the documentation. You will however need to install Sami first after which you can generate the documentation:
-
-```sh
-$ composer install
-$ php vendors/sami/sami/sami.php update config.php -v
-```
-
-If the Composer installation fails, if might be a good idea to [read the instructions](http://getcomposer.org/doc/00-intro.md#installation-nix) on how to use Composer. When you've got it all up and running, navigate to http://your-domain.com/applications/api/build to read the generated documentation.
+When you've done this, make sure the newly created folder is named `api` and not `vanilla-api`. Now simply go to your dashboard, enable Vanilla API in the "Applications" menu and you're all set!
 
 ## How does it work?
 
@@ -41,29 +30,23 @@ Should you wish to change to request expiration time, you can do this using the 
 <?php $Configuration['API']['Expiration'] = 5 * 60; // Defaults to 5 minutes
 ```
 
-### [Authentication](http://code.webhutt.com/vanillaapi/wiki/Authentication#repo-content)
+### [Authentication](https://github.com/kasperisager/vanilla-api/wiki/Authentication)
 
 Vanilla API supports two different authentication methods: A semi-stateless session based method as well as a stateless signature based method. The two are completely compatible so you are free to chose between one or other or use them both for different aspects of the same application. Both methods are also highly secure so you won't necessarily need to perform them over HTTPS although it is highly recommended doing so.
 
-__[Read more about authentication](http://code.webhutt.com/vanillaapi/wiki/Authentication#repo-content)__
+[__Read more about authentication__](https://github.com/kasperisager/vanilla-api/wiki/Authentication)
 
-### [Extending](http://code.webhutt.com/vanillaapi/wiki/Extending#repo-content)
+### [Extending](https://github.com/kasperisager/vanilla-api/wiki/Extending)
 
 Vanilla API allows you to easily integrate your own plugins and applications with the API Mapper - it's as simple as creating a new API class and putting it anywhere in your application or plugin where the Garden autoloader can find it. You can also write your own autoloader which is what I've done for loading the core API classes - this merely because I'm pretty nit-picky when it comes to my folder structure.
 
-__[Read more about extending the API](http://code.webhutt.com/vanillaapi/wiki/Extending#repo-content)__
+[__Read more about extending the API__](https://github.com/kasperisager/vanilla-api/wiki/Extending)
 
-### [Issue tracking](http://code.webhutt.com/vanillaapi/issues)
-If you come across any bugs or if you have a feature request, please file an issue using the Bitbucket Issue tracker. Vanilla API won't be supported through http://vanillaforums.org so please stick to using Bitbucket for inquires about bugs and feature requests. Thanks!
+### [Issue tracking](https://github.com/kasperisager/vanilla-api/issues)
+If you come across any bugs or if you have a feature request, please file an issue using the Github Issue tracker. Vanilla API won't be supported through http://vanillaforums.org so please stick to using Github for inquires about bugs and feature requests. Thanks!
 
-__[File a new issue or feature request](http://code.webhutt.com/vanillaapi/issues/new)__
-
-### [Changelog](http://code.webhutt.com/vanillaapi/pull-requests)
-
-I use pull-requests on Bitbucket to handle merging new code into the master branch so take a look at the closed pull-requests to see exact changes between each version.
-
-__[Look through the closed pull-requests](http://code.webhutt.com/vanillaapi/pull-requests)__
+[__File a new issue or feature request__](https://github.com/kasperisager/vanilla-api/issues/new)
 
 ---
 
-Copyright 2013 © __[Kasper K. Isager](http://webhutt.com)__. Licensed under the terms of the __[MIT License](http://code.webhutt.com/vanillaapi/wiki/License#repo-content)__
+Copyright 2013 © [__Kasper K. Isager__](http://webhutt.com). Licensed under the terms of the [__MIT License__](LICENSE.md)__
