@@ -301,10 +301,10 @@ class API_Engine
     */
    public function Dispatch($Request)
    {
-      $Session    = Gdn::Session();
-      $URI        = $Request->RequestURI();
-      $URI        = strtolower($URI);
-      $Path       = explode('/', $URI);
+      $Session = Gdn::Session();
+      $URI     = $Request->RequestURI();
+      $URI     = strtolower($URI);
+      $Path    = explode('/', $URI);
 
       // Get the requested resource
       (!isset($Path[1])) ? $Resource = NULL : $Resource = $Path[1];
