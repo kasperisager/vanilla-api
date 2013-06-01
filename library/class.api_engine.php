@@ -366,7 +366,7 @@ class API_Engine
     *
     * @param object $Request
     */
-   public function HeaderFormat($Request)
+   public function SetHeaders($Request)
    {
       $Arguments = $Request->Export('Arguments');
 
