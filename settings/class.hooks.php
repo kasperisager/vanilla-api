@@ -97,7 +97,7 @@ class APIHooks implements Gdn_IPlugin
     *
     * @since   0.1.0
     * @access  public
-    * @param   Gdn_Controller $Sender
+    * @param   object $Sender
     */
    public function Base_GetAppSettingsMenuItems_Handler($Sender) {
       $Menu = $Sender->EventArguments['SideMenu'];

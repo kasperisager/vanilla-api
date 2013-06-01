@@ -364,7 +364,9 @@ class API_Engine
    /**
     * Set the header format based on the Request object's HTTP_ACCEPT header
     *
-    * @param object $Request
+    * @since   1.0.0
+    * @access  public
+    * @param   object $Request
     */
    public function SetHeaders($Request)
    {
