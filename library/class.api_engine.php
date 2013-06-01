@@ -371,7 +371,7 @@ class API_Engine
       $Arguments = $Request->Export('Arguments');
 
       // CORS support
-      if (C('API.CORS')) {
+      if (C('API.AllowCORS')) {
          $Headers = 'Origin, X-Requested-With, Content-Type, Accept';
          header('Access-Control-Allow-Origin: *');
          header('Access-Control-Allow-Headers: ' . $Headers);
