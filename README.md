@@ -49,4 +49,4 @@ If you come across any bugs or if you have a feature request, please file an iss
 
 ---
 
-Copyright 2013 © [__Kasper K. Isager__](http://webhutt.com). Licensed under the terms of the [__MIT License__](LICENSE.md)__
+Copyright 2013 © [__Kasper K. Isager__](http://webhutt.com). Licensed under the terms of the [__MIT License__](LICENSE.md)
