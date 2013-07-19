@@ -12,7 +12,7 @@
  * @copyright  Copyright 2013 © Kasper Kronborg Isager
  * @license    http://opensource.org/licenses/MIT MIT
  */
-class API_Engine
+class APIEngine
 {
    /**
     * Token-based, per-request authentication
@@ -310,7 +310,7 @@ class API_Engine
       (!isset($Path[1])) ? $Resource = NULL : $Resource = $Path[1];
 
       // Turn requested resource into API class and store it
-      $Class = 'API_Class_' . ucfirst($Resource);
+      $Class = ucfirst($Resource) . 'API';
 
       // Make sure that the requested API class exists
       if (!class_exists($Class)) {
@@ -321,7 +321,7 @@ class API_Engine
       $Class = new $Class;
 
       // Make sure that the requested API class extend the API Mapper class
-      if (!is_subclass_of($Class, 'API_Mapper')) {
+      if (!is_subclass_of($Class, 'APIMapper')) {
          throw new Exception("API class must extend the API Mapper class", 401);
       }
 
@@ -353,8 +353,8 @@ class API_Engine
       }
 
       $Controller = $Data['Controller'];
-      (isset($Data['Method'])) ? $Method = $Data['Method'] : $Method = NULL;
 
+      (isset($Data['Method'])) ? $Method = $Data['Method'] : $Method = NULL;
       (isset($Data['Arguments'])) ? $Args = $Data['Arguments'] : $Args = array();
 
       // Map the request to the specified controller method

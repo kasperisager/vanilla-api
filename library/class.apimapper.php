@@ -13,12 +13,12 @@
  * @copyright  Copyright 2013 © Kasper Kronborg Isager
  * @license    http://opensource.org/licenses/MIT MIT
  */
-class API_Mapper extends API_Engine
+class APIMapper extends APIEngine
 {
    /**
     * API property containing information about the API called by the client
     *
-    * @since   1.0.0
+    * @since   0.1.0
     * @access  protected
     * @var     object
     */

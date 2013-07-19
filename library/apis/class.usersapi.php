@@ -9,7 +9,7 @@
  * @copyright  Copyright 2013 © Kasper Kronborg Isager
  * @license    http://opensource.org/licenses/MIT MIT
  */
-class API_Class_Users extends API_Mapper
+class UsersAPI extends APIMapper
 {
    /**
     * Retrieve users

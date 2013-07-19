@@ -9,7 +9,7 @@
  * @copyright  Copyright 2013 © Kasper Kronborg Isager
  * @license    http://opensource.org/licenses/MIT MIT
  */
-class API_Class_Activities extends API_Mapper
+class ActivitiesAPI extends APIMapper
 {
    public function Get($Path)
    {

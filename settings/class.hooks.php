@@ -32,19 +32,22 @@ class APIHooks implements Gdn_IPlugin
       $Resource   = NULL;
 
       // Allow enabling JSONP using API.AllowJSONP
-      if (C('API.AllowJSONP')) {
-         SaveToConfig('Garden.AllowJSONP', TRUE, FALSE);
-      }
+      if (C('API.AllowJSONP')) SaveToConfig('Garden.AllowJSONP', TRUE, FALSE);
 
       // Set the call and resource paths if they exists
       (!isset($Path[0])) ?: $Call      = $Path[0];
       (!isset($Path[1])) ?: $Resource  = $Path[1];
 
-      // Abandon the dispatch is this isn't an API call with a valid resource
+      // Abandon the dispatch if this isn't an API call with a valid resource
       if (empty($Call) || $Call != 'api' || empty($Resource)) return;
 
-      API_Engine::SetHeaders($Request);
-      API_Engine::Dispatch($Request);
+      APIEngine::SetHeaders($Request);
+
+      try {
+         APIEngine::Dispatch($Request);
+      } catch (Exception $Exception) {
+         $Request->WithControllerMethod('API', 'Exception');
+      }
    }
 
    /**
