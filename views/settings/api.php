@@ -15,9 +15,6 @@
       <?php
       echo Wrap(Anchor('Read the API documentation', 'http://code.webhutt.com/vanillaapi/wiki#repo-content'), 'li');
       ?>
-      <?php
-      echo Wrap(Anchor('Read the class documentation', '/applications/api/docs/build'), 'li');
-      ?>
    </ul>
 </div>
 
