@@ -2,9 +2,9 @@
 
 $ApplicationInfo['API'] = array(
    'Name'         => 'Vanilla API',
-   'Description'  => 'RESTful API for Vanilla that responds in JSON and XML.',
+   'Description'  => 'Highly extensible RESTful API for Vanilla that responds in JSON or XML and includes support for JSONP and CORS',
    'Version'      => '0.0.7-dev',
-   'Url'          => 'https://code.webhutt.com/vanillaapi',
+   'Url'          => 'https://github.com/kasperisager/vanilla-api',
    'Author'       => 'Kasper Kronborg Isager',
    'AuthorEmail'  => 'kasperisager@gmail.com',
    'AuthorUrl'    => 'https://webhutt.com',
