@@ -358,12 +358,12 @@ class APIEngine
       $Method = (isset($Data['Method'])) ? $Data['Method'] : NULL;
 
       // If arguments are supplied, set them. Otherwise they're an empty array
-      $Args = (isset($Data['Args'])) ? $Data['Args'] : array();
+      $Arguments = (isset($Data['Arguments'])) ? $Data['Arguments'] : array();
 
       // If an application is supplied, set it. Otherwise it's null
       $Application = (isset($Data['Application'])) ? $Data['Application'] : NULL;
 
-      $URI = self::MatchURI($Application, $Controller, $Method, $Args);
+      $URI = self::MatchURI($Application, $Controller, $Method, $Arguments);
 
       // Map the request to the specified URI
       $Request->WithURI($URI);
@@ -404,14 +404,20 @@ class APIEngine
       }
    }
 
-   public function MatchURI($Application, $Controller, $Method, $Args)
+   /**
+    * [MatchURI description]
+    *
+    * @param [type] $Application [description]
+    * @param [type] $Controller  [description]
+    * @param [type] $Method      [description]
+    * @param [type] $Arguments   [description]
+    */
+   public function MatchURI($Application, $Controller, $Method, $Arguments)
    {
       $Method = is_null($Method) ? 'Index' : $Method;
 
-      $URI = array_merge(array($Application, $Controller, $Method), $Args);
+      $URI = array_merge(array($Application, $Controller, $Method), $Arguments);
       $URI = strtolower(trim(implode('/', $URI), '/'));
-
-      //var_dump($URI); exit;
 
       return $URI;
    }
