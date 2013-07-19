@@ -307,7 +307,7 @@ class APIEngine
       $Path    = explode('/', $URI);
 
       // Get the requested resource
-      (!isset($Path[1])) ? $Resource = NULL : $Resource = $Path[1];
+      $Resource = (!isset($Path[1])) ? NULL : $Path[1];
 
       // Turn requested resource into API class and store it
       $Class = ucfirst($Resource) . 'API';
@@ -354,11 +354,19 @@ class APIEngine
 
       $Controller = $Data['Controller'];
 
-      (isset($Data['Method'])) ? $Method = $Data['Method'] : $Method = NULL;
-      (isset($Data['Arguments'])) ? $Args = $Data['Arguments'] : $Args = array();
+      // If a method is supplied, set it. Otherwise it's null
+      $Method = (isset($Data['Method'])) ? $Data['Method'] : NULL;
 
-      // Map the request to the specified controller method
-      $Request->WithControllerMethod($Controller, $Method, $Args);
+      // If arguments are supplied, set them. Otherwise they're an empty array
+      $Args = (isset($Data['Args'])) ? $Data['Args'] : array();
+
+      // If an application is supplied, set it. Otherwise it's null
+      $Application = (isset($Data['Application'])) ? $Data['Application'] : NULL;
+
+      $URI = self::MatchURI($Application, $Controller, $Method, $Args);
+
+      // Map the request to the specified URI
+      $Request->WithURI($URI);
    }
 
    /**
@@ -394,6 +402,18 @@ class APIEngine
             $Request->WithDeliveryMethod(DELIVERY_METHOD_XML);
             break;
       }
+   }
+
+   public function MatchURI($Application, $Controller, $Method, $Args)
+   {
+      $Method = is_null($Method) ? 'Index' : $Method;
+
+      $URI = array_merge(array($Application, $Controller, $Method), $Args);
+      $URI = strtolower(trim(implode('/', $URI), '/'));
+
+      //var_dump($URI); exit;
+
+      return $URI;
    }
 
    /**

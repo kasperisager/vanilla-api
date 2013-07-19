@@ -46,7 +46,16 @@ class APIHooks implements Gdn_IPlugin
       try {
          APIEngine::Dispatch($Request);
       } catch (Exception $Exception) {
-         $Request->WithControllerMethod('API', 'Exception');
+
+         // The Exception method will need a code and a message
+         $Code    = $Exception->getCode();
+         $Message = $Exception->getMessage();
+
+         // Set the header depending on the exception code
+         header("HTTP/1.0 $Code", TRUE, $Code);
+
+         // Call the Exception method if an exception is thrown
+         $Request->WithControllerMethod('API', 'Exception', array($Code, $Message));
       }
    }
 

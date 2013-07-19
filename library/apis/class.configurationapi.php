@@ -22,8 +22,7 @@ class ConfigurationAPI extends APIMapper
     */
    public function Get($Path)
    {
-      Gdn_Autoloader::AttachApplication('Dashboard');
-
+      $this->API['Application']  = 'Dashboard';
       $this->API['Controller']   = 'Settings';
       $this->API['Method']       = 'Configuration';
       $this->API['Authenticate'] = TRUE;
