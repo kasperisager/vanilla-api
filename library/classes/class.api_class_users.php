@@ -61,4 +61,11 @@ class API_Class_Users extends API_Mapper
       $this->API['Arguments']             = array($ID);
       $this->API['Arguments']['userid']   = $ID;
    }
+
+   public function Post($Path)
+   {
+      $this->API['Controller']   = 'User';
+      $this->API['Method']       = 'Add';
+      $this->API['Arguments']['TransientKey']   = Gdn::Session()->TransientKey();
+   }
 }
