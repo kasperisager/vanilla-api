@@ -52,8 +52,10 @@ class DiscussionsAPI extends APIMapper
     */
    public function GetById($ID)
    {
-      $this->API['Controller']                  = 'Discussion';
-      $this->API['Arguments']['DiscussionID']   = $ID;
+      $this->API['Controller']  = 'Discussion';
+      $this->API['Arguments']   = array(
+         'DiscussionID' => $ID
+         );
    }
 
    /**
@@ -126,10 +128,12 @@ class DiscussionsAPI extends APIMapper
     */
    public function PostComment($ID)
    {
-      $this->API['Controller']                  = 'Post';
-      $this->API['Method']                      = 'Comment';
-      $this->API['Arguments']['DiscussionID']   = $ID;
-      $this->API['Arguments']['TransientKey']   = Gdn::Session()->TransientKey();
+      $this->API['Controller']  = 'Post';
+      $this->API['Method']      = 'Comment';
+      $this->API['Arguments']   = array(
+         'DiscussionID' => $ID,
+         'TransientKey' => Gdn::Session()->TransientKey()
+         );
    }
 
    /**
@@ -144,7 +148,9 @@ class DiscussionsAPI extends APIMapper
     */
    public function Put($Path)
    {
-      if (!isset($Path[2])) throw new Exception("No ID defined", 401);
+      if (!isset($Path[2])) {
+         throw new Exception("No ID defined", 401);
+      }
 
       $ID = $Path[2];
 
@@ -167,10 +173,12 @@ class DiscussionsAPI extends APIMapper
     */
    public function PutDiscussion($ID)
    {
-      $this->API['Controller']                  = 'Post';
-      $this->API['Method']                      = 'EditDiscussion';
-      $this->API['Arguments']['DiscussionID']   = $ID;
-      $this->API['Arguments']['TransientKey']   = Gdn::Session()->TransientKey();
+      $this->API['Controller']  = 'Post';
+      $this->API['Method']      = 'EditDiscussion';
+      $this->API['Arguments']   = array(
+         'DiscussionID'] => $ID,
+         'TransientKey'] => Gdn::Session()->TransientKey()
+         );
    }
 
    /**
@@ -184,10 +192,12 @@ class DiscussionsAPI extends APIMapper
     */
    public function PutComment($ID)
    {
-      $this->API['Controller']                  = 'Post';
-      $this->API['Method']                      = 'EditComment';
-      $this->API['Arguments']['CommentID']      = $ID;
-      $this->API['Arguments']['TransientKey']   = Gdn::Session()->TransientKey();
+      $this->API['Controller']   = 'Post';
+      $this->API['Method']       = 'EditComment';
+      $this->API['Arguments']    = array(
+         'CommentID'    => $ID,
+         'TransientKey' => Gdn::Session()->TransientKey()
+         );
    }
 
    /**
@@ -227,10 +237,12 @@ class DiscussionsAPI extends APIMapper
     */
    public function DeleteDiscussion($ID)
    {
-      $this->API['Controller']                  = 'Discussion';
-      $this->API['Method']                      = 'Delete';
-      $this->API['Arguments']['DiscussionID']   = $ID;
-      $this->API['Arguments']['TransientKey']   = Gdn::Session()->TransientKey();
+      $this->API['Controller']   = 'Discussion';
+      $this->API['Method']       = 'Delete';
+      $this->API['Arguments']    = array(
+         'DiscussionID' => $ID,
+         'TransientKey' => Gdn::Session()->TransientKey()
+         );
    }
 
    /**
@@ -245,11 +257,11 @@ class DiscussionsAPI extends APIMapper
     */
    public function DeleteComment($ID)
    {
-      $TransientKey = Gdn::Session()->TransientKey();
-
-      $this->API['Controller']                  = 'Discussion';
-      $this->API['Method']                      = 'DeleteComment';
-      $this->API['Arguments']['CommentID']      = $ID;
-      $this->API['Arguments']['TransientKey']   = Gdn::Session()->TransientKey();
+      $this->API['Controller']   = 'Discussion';
+      $this->API['Method']       = 'DeleteComment';
+      $this->API['Arguments']    = array(
+         'CommentID'    => $ID,
+         'TransientKey' => Gdn::Session()->TransientKey()
+         );
    }
 }

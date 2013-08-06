@@ -15,11 +15,7 @@ class ActivitiesAPI extends APIMapper
    {
       if (isset($Path[2])) $ID = $Path[2];
 
-      if (isset($ID)) {
-         self::GetById($ID);
-      } else {
-         self::GetAll();
-      }
+      (isset($ID)) ? self::GetById($ID) : self::GetAll();
    }
 
    public function GetAll()
@@ -31,6 +27,8 @@ class ActivitiesAPI extends APIMapper
    {
       $this->API['Controller']   = 'Activity';
       $this->API['Method']       = 'Item';
-      $this->API['Arguments']    = array($ID);
+      $this->API['Arguments']    = array(
+         'ActivityID' => $ID
+         );
    }
 }

@@ -53,8 +53,10 @@ class CategoriesAPI extends APIMapper
     */
    public function GetById($ID)
    {
-      $this->API['Controller']               = 'Categories';
-      $this->API['Arguments']['CategoryID']  = $ID;
+      $this->API['Controller']   = 'Categories';
+      $this->API['Arguments']    = array(
+         'CategoryID' => $ID
+         );
    }
 
    /**
@@ -68,8 +70,7 @@ class CategoriesAPI extends APIMapper
     */
    public function Post($Path)
    {
-      Gdn_Autoloader::AttachApplication('Vanilla');
-
+      $this->API['Application']  = 'Vanilla';
       $this->API['Controller']   = 'Settings';
       $this->API['Method']       = 'AddCategory';
    }
@@ -85,15 +86,19 @@ class CategoriesAPI extends APIMapper
     */
    public function Put($Path)
    {
-      if (!isset($Path[2])) throw new Exception("No ID defined", 401);
+      if (!isset($Path[2])) {
+         throw new Exception("No ID defined", 401);
+      }
 
       $ID = $Path[2];
 
-      $this->API['Application']                 = 'Vanilla';
-      $this->API['Controller']                  = 'Settings';
-      $this->API['Method']                      = 'EditCategory';
-      $this->API['Arguments']['CategoryID']     = $ID;
-      $this->API['Arguments']['TransientKey']   = Gdn::Session()->TransientKey();
+      $this->API['Application']  = 'Vanilla';
+      $this->API['Controller']   = 'Settings';
+      $this->API['Method']       = 'EditCategory';
+      $this->API['Arguments']    = array(
+         'CategoryID'   => $ID,
+         'TransientKey' => Gdn::Session()->TransientKey()
+         );
    }
 
    /**
@@ -107,14 +112,18 @@ class CategoriesAPI extends APIMapper
     */
    public function Delete($Path)
    {
-      if (!isset($Path[2])) throw new Exception("No ID defined", 401);
+      if (!isset($Path[2])) {
+         throw new Exception("No ID defined", 401);
+      }
 
       $ID = $Path[2];
 
-      $this->API['Application']                 = 'Vanilla';
-      $this->API['Controller']                  = 'Settings';
-      $this->API['Method']                      = 'DeleteCategory';
-      $this->API['Arguments']['CategoryID']     = $ID;
-      $this->API['Arguments']['TransientKey']   = Gdn::Session()->TransientKey();
+      $this->API['Application']  = 'Vanilla';
+      $this->API['Controller']   = 'Settings';
+      $this->API['Method']       = 'DeleteCategory';
+      $this->API['Arguments']    = array(
+         'CategoryID'   => $ID,
+         'TransientKey' => Gdn::Session()->TransientKey()
+         );
    }
 }

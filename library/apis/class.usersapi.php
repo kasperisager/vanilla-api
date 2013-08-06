@@ -57,15 +57,18 @@ class UsersAPI extends APIMapper
     */
    public function GetById($ID)
    {
-      $this->API['Controller']            = 'Profile';
-      $this->API['Arguments']             = array($ID);
-      $this->API['Arguments']['userid']   = $ID;
+      $this->API['Controller']   = 'Profile';
+      $this->API['Arguments']    = array(
+         'userid' => $ID
+         );
    }
 
    public function Post($Path)
    {
       $this->API['Controller']   = 'User';
       $this->API['Method']       = 'Add';
-      $this->API['Arguments']['TransientKey']   = Gdn::Session()->TransientKey();
+      $this->API['Arguments']    = array(
+         'TransientKey' => Gdn::Session()->TransientKey()
+         );
    }
 }

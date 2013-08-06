@@ -25,8 +25,7 @@ class APIHooks implements Gdn_IPlugin
    public function Gdn_Dispatcher_BeforeDispatch_Handler()
    {
       $Request    = Gdn::Request();
-      $URI        = $Request->RequestURI();
-      $URI        = strtolower($URI);
+      $URI        = strtolower($Request->RequestURI());
       $Path       = explode('/', $URI);
       $Call       = NULL;
       $Resource   = NULL;
@@ -34,7 +33,7 @@ class APIHooks implements Gdn_IPlugin
       // Allow enabling JSONP using API.AllowJSONP
       if (C('API.AllowJSONP')) SaveToConfig('Garden.AllowJSONP', TRUE, FALSE);
 
-      // Set the call and resource paths if they exists
+      // Set the call and resource paths if they exist
       (!isset($Path[0])) ?: $Call      = $Path[0];
       (!isset($Path[1])) ?: $Resource  = $Path[1];
 
@@ -86,8 +85,8 @@ class APIHooks implements Gdn_IPlugin
             SaveToConfig($Save);
             if ($Regen) {
                $Sender->InformMessage(
-                  '<span class="InformSprite Refresh"></span>
-                  Refresh the page to see the new Application Secret.',
+                  '<span class="InformSprite Refresh"></span>'
+                  . T("Refresh the page to see the new Application Secret."),
                   'Dismissable HasSprite'
                );
             }
@@ -100,7 +99,7 @@ class APIHooks implements Gdn_IPlugin
       }
 
       $Sender->AddSideMenu();
-      $Sender->SetData('Title', 'Application Interface');
+      $Sender->SetData('Title', T("Application Interface"));
       $Sender->Render('API', 'settings', 'api');
    }
 
@@ -113,7 +112,7 @@ class APIHooks implements Gdn_IPlugin
     */
    public function Base_GetAppSettingsMenuItems_Handler($Sender) {
       $Menu = $Sender->EventArguments['SideMenu'];
-      $Menu->AddLink('Site Settings', T('Application Interface'),
+      $Menu->AddLink('Site Settings', T("Application Interface"),
                      'dashboard/settings/api', 'Garden.Settings.Manage'
       );
    }

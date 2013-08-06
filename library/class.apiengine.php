@@ -43,7 +43,7 @@ class APIEngine
 
       // Make sure that the query actually contains data
       if (!isset($ParsedURL['query'])) {
-         throw new Exception("No authentication query defined", 401);
+         throw new Exception(T("No authentication query defined"), 401);
       }
 
       // Now that we're sure the query conatins some data, turn this data into
@@ -56,22 +56,22 @@ class APIEngine
 
       // Make sure that either a username or an email has been passed
       if (empty($Username) && empty($Email)) {
-         throw new Exception("Username or email must be specified", 401);
+         throw new Exception(T("Username or email must be specified"), 401);
       }
 
       // Make sure that the query contains a timestamp
       if (empty($Timestamp)) {
-         throw new Exception("A timestamp must be specified", 401);
+         throw new Exception(T("A timestamp must be specified"), 401);
       }
 
       // Make sure that this timestamp is still valid
       if ((abs($Timestamp - time())) > C('API.Expiration')) {
-         throw new Exception("The request is no longer valid", 401);
+         throw new Exception(T("The request is no longer valid"), 401);
       }
 
       // Make sure that the query contains a token
       if (empty($Token)) {
-         throw new Exception("A token must be specified", 401);
+         throw new Exception(T("A token must be specified"), 401);
       }
 
       // Now we check for a username and email (we've already made sure that at
@@ -84,7 +84,7 @@ class APIEngine
 
       // Make sure that the user actually exists
       if (!isset($UserID)) {
-         throw new Exception("The specified user doesn't exist", 401);
+         throw new Exception(T("The specified user doesn't exist"), 401);
       }
 
       // Generate a signature from the passed data the same way it was
@@ -93,7 +93,7 @@ class APIEngine
 
       // Make sure that the client token and the server signature match
       if ($Token != $Signature) {
-         throw new Exception("Token and signature do not match", 401);
+         throw new Exception(T("Token and signature do not match"), 401);
       }
 
       // Now that we've thoroughly verified the client, start a session for the
@@ -363,10 +363,11 @@ class APIEngine
       // If an application is supplied, set it. Otherwise it's null
       $Application = (isset($Data['Application'])) ? $Data['Application'] : NULL;
 
-      $URI = self::MatchURI($Application, $Controller, $Method, $Arguments);
+      // Attach the correct application if one has been set
+      if ($Application) Gdn_Autoloader::AttachApplication($Application);
 
       // Map the request to the specified URI
-      $Request->WithURI($URI);
+      $Request->WithControllerMethod($Controller, $Method, $Arguments);
    }
 
    /**
