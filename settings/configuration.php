@@ -4,3 +4,5 @@
 // All of the settings defined here can be overridden in the /conf/config.php file.
 
 $Configuration['API']['Expiration'] = 5 * 60;
+$Configuration['API']['AllowJSONP'] = FALSE;
+$Configuration['API']['AllowCORS']  = FALSE;

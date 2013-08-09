@@ -10,13 +10,10 @@
 </style>
 
 <div class="Help Aside">
-   <h2><?php echo T('Need More Help?') ?></h2>
+   <h2><?php echo T("Need More Help?") ?></h2>
    <ul>
       <?php
-      echo Wrap(Anchor('Read the API documentation', 'http://code.webhutt.com/vanillaapi/wiki#repo-content'), 'li');
-      ?>
-      <?php
-      echo Wrap(Anchor('Read the class documentation', '/applications/api/docs/build'), 'li');
+      echo Wrap(Anchor(T("Read the API documentation"), 'http://code.webhutt.com/vanillaapi/wiki#repo-content'), 'li');
       ?>
    </ul>
 </div>
@@ -31,23 +28,23 @@ echo $Form->Errors();
 
 <ul>
    <li>
-      <?php echo $Form->Label('Endpoint', 'Endpoint'); ?>
+      <?php echo $Form->Label(T("Endpoint"), 'Endpoint'); ?>
       <div class="Info">
-         <p><?php echo T('You can access your forum\'s Application Interface (API) through this endpoint URL') ?></p>
+         <p><?php echo T("You can access your forum's Application Interface (API) through this endpoint URL") ?></p>
       </div>
       <div class="Endpoint">
          <blockquote><?php echo Gdn::Request()->Domain() ?>/api/</blockquote>
       </div>
    </li>
    <li>
-      <?php echo $Form->Label('Application Secret', 'Secret'); ?>
+      <?php echo $Form->Label(T("Application Secret"), 'Secret'); ?>
       <div class="Info">
-         <p><?php echo T('This is the Application Secret used for signature based authentication. <b>Keep it secret!</b>') ?></p>
-         <small><?php echo sprintf(T('Clicking "Re-generate" will generate a new UUID v4 key. Please refer to %s for more information'), Anchor(T('this article'), 'http://en.wikipedia.org/wiki/Uuid')) ?></small>
+         <p><?php echo T("This is the Application Secret used for signature based authentication. <b>Keep it secret!</b>") ?></p>
+         <small><?php echo sprintf(T("Clicking \"Re-generate\" will generate a new UUID v4 key. Please refer to %s for more information"), Anchor(T("this article"), 'http://en.wikipedia.org/wiki/Uuid')) ?></small>
       </div>
       <?php
       echo $Form->TextBox('Secret', array('class' => 'InputBox BigInput', 'readonly' => 'readonly'));
-      echo $Form->Button('Re-generate');
+      echo $Form->Button(T("Re-generate"));
       ?>
    </li>
 </ul>
