@@ -11,11 +11,29 @@
  */
 class RolesAPI extends APIMapper
 {
+   /**
+    * Retrieve roles
+    *
+    * GET /roles
+    *
+    * @since   0.1.0
+    * @access  public
+    * @param   array $Path
+    */
    public function Get($Path)
    {
       $this->API['Controller'] = 'Role';
    }
 
+   /**
+    * Create roles
+    *
+    * POST /roles
+    *
+    * @since   0.1.0
+    * @access  public
+    * @param   array $Path
+    */
    public function Post($Path)
    {
       $this->API['Controller']   = 'Role';
@@ -25,6 +43,15 @@ class RolesAPI extends APIMapper
          );
    }
 
+   /**
+    * Update an existing role
+    *
+    * PUT /roles/:id
+    *
+    * @since   0.1.0
+    * @access  public
+    * @param   array $Path
+    */
    public function Put($Path)
    {
       if (!isset($Path[2])) {
@@ -41,6 +68,15 @@ class RolesAPI extends APIMapper
          );
    }
 
+   /**
+    * Delete an existing role
+    *
+    * DELETE /users/:id
+    *
+    * @since   0.1.0
+    * @access  public
+    * @param   array $Path
+    */
    public function Delete($Path)
    {
       if (!isset($Path[2])) {

@@ -64,6 +64,15 @@ class UsersAPI extends APIMapper
          );
    }
 
+   /**
+    * Create a new user
+    *
+    * POST /users
+    *
+    * @since   0.1.0
+    * @access  public
+    * @param   array $Path
+    */
    public function Post($Path)
    {
       $this->API['Controller']   = 'User';

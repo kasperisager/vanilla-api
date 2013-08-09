@@ -1,27 +1,24 @@
 <?php if (!defined('APPLICATION')) exit();
 
 /**
- * A brief description of the controller.
+ * API Controller
  *
- * Your app will automatically be able to find any models from your app when you instantiate them.
- * You can also access the UserModel and RoleModel (in Dashboard) from anywhere in the framework.
+ * This controller mainly handles rendering data from the API engine
  *
- * @since 1.0
- * @package Skeleton
+ * @package    API
+ * @since      0.1.0
+ * @author     Kasper Kronborg Isager <kasperisager@gmail.com>
+ * @copyright  Copyright 2013 © Kasper Kronborg Isager
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 class APIController extends Gdn_Controller
 {
    /**
-    * Always called by dispatcher before controller's requested method.
+    * Output exceptions in either JSON or XML
     *
-    * @since 1.0
-    * @access public
+    * @param [type] $Code    [description]
+    * @param [type] $Message [description]
     */
-   public function Initialize()
-   {
-      parent::Initialize();
-   }
-
    public function Exception($Code, $Message)
    {
       $this->SetData(array(

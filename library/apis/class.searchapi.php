@@ -11,6 +11,15 @@
  */
 class SearchAPI extends APIMapper
 {
+   /**
+    * Get search results
+    *
+    * GET /search
+    *
+    * @since   0.1.0
+    * @access  public
+    * @param   array $Path
+    */
    public function Get($Path)
    {
       $this->API['Controller'] = 'Search';
