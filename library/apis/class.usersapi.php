@@ -59,7 +59,8 @@ class UsersAPI extends APIMapper
    {
       $this->API['Controller']   = 'Profile';
       $this->API['Arguments']    = array(
-         'userid' => $ID
+         'User'   => $ID,
+         'UserID' => $ID
          );
    }
 
