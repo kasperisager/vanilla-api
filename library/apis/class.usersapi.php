@@ -42,8 +42,7 @@ class UsersAPI extends APIMapper
     */
    public function GetAll()
    {
-      $this->API['Controller']   = 'User';
-      $this->API['Method']       = 'Summary';
+      $this->API['Controller'] = 'User';
    }
 
    /**
@@ -78,6 +77,56 @@ class UsersAPI extends APIMapper
       $this->API['Controller']   = 'User';
       $this->API['Method']       = 'Add';
       $this->API['Arguments']    = array(
+         'TransientKey' => Gdn::Session()->TransientKey()
+         );
+   }
+
+   /**
+    * Update an existing user
+    *
+    * PUT /users/:id
+    *
+    * @since   0.1.0
+    * @access  public
+    * @param   array $Path
+    */
+   public function Put($Path)
+   {
+      if (!isset($Path[2])) {
+         throw new Exception("No ID defined", 401);
+      }
+
+      $ID = $Path[2];
+
+      $this->API['Controller']   = 'User';
+      $this->API['Method']       = 'Edit';
+      $this->API['Arguments']    = array(
+         'UserID'       => $ID,
+         'TransientKey' => Gdn::Session()->TransientKey()
+         );
+   }
+
+   /**
+    * Delete an existing user
+    *
+    * DELETE /users/:id
+    *
+    * @since   0.1.0
+    * @access  public
+    * @param   array $Path
+    */
+   public function Delete($Path)
+   {
+      if (!isset($Path[2])) {
+         throw new Exception("No ID defined", 401);
+      }
+
+      $ID = $Path[2];
+
+      $this->API['Controller']   = 'User';
+      $this->API['Method']       = 'Delete';
+      $this->API['Arguments']    = array(
+         'UserID'       => $ID,
          'TransientKey' => Gdn::Session()->TransientKey()
          );
    }
