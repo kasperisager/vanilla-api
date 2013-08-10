@@ -71,7 +71,7 @@ class RolesAPI extends APIMapper
    /**
     * Delete an existing role
     *
-    * DELETE /users/:id
+    * DELETE /roles/:id
     *
     * @since   0.1.0
     * @access  public

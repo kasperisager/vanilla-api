@@ -298,6 +298,7 @@ class APIEngine
     *
     * @since   0.1.0
     * @access  public
+    * @param   object $Request
     */
    public function Dispatch($Request)
    {
@@ -471,7 +472,6 @@ class APIEngine
                   break;
             }
          }
-
       }
 
       return $PutData;
