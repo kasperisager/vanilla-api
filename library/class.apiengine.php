@@ -406,24 +406,6 @@ class APIEngine
    }
 
    /**
-    * [MatchURI description]
-    *
-    * @param [type] $Application [description]
-    * @param [type] $Controller  [description]
-    * @param [type] $Method      [description]
-    * @param [type] $Arguments   [description]
-    */
-   public function MatchURI($Application, $Controller, $Method, $Arguments)
-   {
-      $Method = is_null($Method) ? 'Index' : $Method;
-
-      $URI = array_merge(array($Application, $Controller, $Method), $Arguments);
-      $URI = strtolower(trim(implode('/', $URI), '/'));
-
-      return $URI;
-   }
-
-   /**
     * Parse raw Form Data and return it as an array
     *
     * @since   0.1.0
