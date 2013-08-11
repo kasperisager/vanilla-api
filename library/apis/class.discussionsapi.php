@@ -176,8 +176,8 @@ class DiscussionsAPI extends APIMapper
       $this->API['Controller']  = 'Post';
       $this->API['Method']      = 'EditDiscussion';
       $this->API['Arguments']   = array(
-         'DiscussionID'] => $ID,
-         'TransientKey'] => Gdn::Session()->TransientKey()
+         'DiscussionID' => $ID,
+         'TransientKey' => Gdn::Session()->TransientKey()
          );
    }
 
