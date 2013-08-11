@@ -1,7 +1,1 @@
 .DS_Store
-docs/vendor
-docs/cache
-docs/composer.lock
-docs/composer.phar
-*.sublime-project
-*.sublime-workspace
