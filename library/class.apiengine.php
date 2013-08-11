@@ -315,7 +315,7 @@ class APIEngine
 
       // Make sure that the requested API class exists
       if (!class_exists($Class)) {
-         throw new Exception("No such API class found", 404);
+         throw new Exception("No such API found", 404);
       }
 
       // Instantiate the requested API class
@@ -323,7 +323,7 @@ class APIEngine
 
       // Make sure that the requested API class extend the API Mapper class
       if (!is_subclass_of($Class, 'APIMapper')) {
-         throw new Exception("API class must extend the API Mapper class", 401);
+         throw new Exception("APIs must extend the API Mapper", 401);
       }
 
       // Get the request method issued by the client
@@ -336,6 +336,8 @@ class APIEngine
       if (!isset($Data['Controller'])) {
          throw new Exception("No controller has been defined", 500);
       }
+
+      $Controller = $Data['Controller'];
 
       // Authenticate the request if no valid session exists
       if (isset($Data['Authenticate']) && !Gdn::Session()->IsValid()) {
@@ -352,8 +354,6 @@ class APIEngine
          if (!empty($Username) || !empty($Email)) self::Authenticate();
 
       }
-
-      $Controller = $Data['Controller'];
 
       // If a method is supplied, set it. Otherwise it's null
       $Method = (isset($Data['Method'])) ? $Data['Method'] : NULL;
