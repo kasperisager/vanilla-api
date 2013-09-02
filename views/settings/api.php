@@ -13,7 +13,7 @@
    <h2><?php echo T("Need More Help?") ?></h2>
    <ul>
       <?php
-      echo Wrap(Anchor(T("Read the API documentation"), 'http://code.webhutt.com/vanillaapi/wiki#repo-content'), 'li');
+      echo Wrap(Anchor(T("Read the API documentation"), 'https://github.com/kasperisager/vanilla-api/wiki'), 'li');
       ?>
    </ul>
 </div>

@@ -12,8 +12,8 @@ $Definition["Token and signature do not match"] = "Token and signature do not ma
 
 // Dispatch error messages
 
-$Definition["No such API class found"] = "No such API class found";
-$Definition["API class must extend the API Mapper class"] = "API class must extend the API Mapper class";
+$Definition["No such API found"] = "No such API found";
+$Definition["APIs must extend the API Mapper"] = "APIs must extend the API Mapper";
 $Definition["No controller has been defined"] = "No controller has been defined";
 
 // Mapper error messages
