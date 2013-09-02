@@ -33,7 +33,6 @@ class APIMapper extends APIEngine
     * @since   0.1.0
     * @access  public
     * @param   array $Path
-    * @return  array
     */
    public function Get($Path)
    {
@@ -50,7 +49,6 @@ class APIMapper extends APIEngine
     * @since   0.1.0
     * @access  public
     * @param   array $Path
-    * @return  array
     */
    public function Post($Path)
    {
@@ -67,7 +65,6 @@ class APIMapper extends APIEngine
     * @since   0.1.0
     * @access  public
     * @param   array $Path
-    * @return  array
     */
    public function Put($Path)
    {
@@ -86,7 +83,6 @@ class APIMapper extends APIEngine
     * @since   0.1.0
     * @access  public
     * @param   array $Path
-    * @return  array
     */
    public function Delete($Path)
    {

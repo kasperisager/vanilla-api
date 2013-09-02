@@ -76,7 +76,7 @@ class APIHooks implements Gdn_IPlugin
          $Secret  = C('API.Secret');
          $Regen   = $Sender->Form->ButtonExists('Re-generate');
 
-         if ($Regen) $Secret = API_Engine::UUIDSecure();
+         if ($Regen) $Secret = APIEngine::UUIDSecure();
 
          $Save = array();
          $Save['API.Secret'] = $Secret;
@@ -125,7 +125,7 @@ class APIHooks implements Gdn_IPlugin
     */
    public function Setup()
    {
-      if (!C('API.Secret')) SaveToConfig('API.Secret', API_Engine::UUIDSecure());
+      if (!C('API.Secret')) SaveToConfig('API.Secret', APIEngine::UUIDSecure());
 
       $ApplicationInfo = array();
       include CombinePaths(array(PATH_APPLICATIONS . DS . 'api/settings/about.php'));
