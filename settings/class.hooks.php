@@ -27,8 +27,8 @@ class APIHooks implements Gdn_IPlugin
       $Request    = Gdn::Request();
       $URI        = strtolower($Request->RequestURI());
       $Path       = explode('/', $URI);
-      $Call       = NULL;
-      $Resource   = NULL;
+      $Call       = FALSE;
+      $Resource   = FALSE;
 
       // Allow enabling JSONP using API.AllowJSONP
       if (C('API.AllowJSONP')) SaveToConfig('Garden.AllowJSONP', TRUE, FALSE);
@@ -38,12 +38,12 @@ class APIHooks implements Gdn_IPlugin
       (!isset($Path[1])) ?: $Resource  = $Path[1];
 
       // Abandon the dispatch if this isn't an API call with a valid resource
-      if (empty($Call) || $Call != 'api' || empty($Resource)) return;
+      if (!$Call || $Call != 'api' || !$Resource) return;
 
       APIEngine::SetHeaders($Request);
 
       try {
-         APIEngine::Dispatch($Request);
+         APIEngine::DispatchRequest($Request);
       } catch (Exception $Exception) {
 
          // The Exception method will need a code and a message
@@ -76,7 +76,7 @@ class APIHooks implements Gdn_IPlugin
          $Secret  = C('API.Secret');
          $Regen   = $Sender->Form->ButtonExists('Re-generate');
 
-         if ($Regen) $Secret = APIEngine::UUIDSecure();
+         if ($Regen) $Secret = APIEngine::GenerateUniqueID();
 
          $Save = array();
          $Save['API.Secret'] = $Secret;
@@ -108,7 +108,7 @@ class APIHooks implements Gdn_IPlugin
     *
     * @since   0.1.0
     * @access  public
-    * @param   object $Sender
+    * @param   Gdn_Controller $Sender
     */
    public function Base_GetAppSettingsMenuItems_Handler($Sender) {
       $Menu = $Sender->EventArguments['SideMenu'];
@@ -125,7 +125,7 @@ class APIHooks implements Gdn_IPlugin
     */
    public function Setup()
    {
-      if (!C('API.Secret')) SaveToConfig('API.Secret', APIEngine::UUIDSecure());
+      if (!C('API.Secret')) SaveToConfig('API.Secret', APIEngine::GenerateUniqueID());
 
       $ApplicationInfo = array();
       include CombinePaths(array(PATH_APPLICATIONS . DS . 'api/settings/about.php'));

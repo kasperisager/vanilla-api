@@ -7,6 +7,9 @@
  * DELETE operations. If a given method is not extended by the API class, a 501
  * Method Not Implemented error will simply be thrown.
  *
+ * TODO: Create helper functions for dealing with query paths in API classes
+ *       E.g. $Value = (isset($Path[n])) ? $Path[n] : FALSE;
+ *
  * @package    API
  * @since      0.1.0
  * @author     Kasper Kronborg Isager <kasperisager@gmail.com>
@@ -32,9 +35,9 @@ class APIMapper extends APIEngine
     *
     * @since   0.1.0
     * @access  public
-    * @param   array $Path
+    * @throws  Exception
     */
-   public function Get($Path)
+   public function Get()
    {
       throw new Exception("Method Not Implemented", 501);
    }
@@ -48,9 +51,9 @@ class APIMapper extends APIEngine
     *
     * @since   0.1.0
     * @access  public
-    * @param   array $Path
+    * @throws  Exception
     */
-   public function Post($Path)
+   public function Post()
    {
       throw new Exception("Method Not Implemented", 501);
    }
@@ -64,9 +67,9 @@ class APIMapper extends APIEngine
     *
     * @since   0.1.0
     * @access  public
-    * @param   array $Path
+    * @throws  Exception
     */
-   public function Put($Path)
+   public function Put()
    {
       throw new Exception("Method Not Implemented", 501);
    }
@@ -82,9 +85,9 @@ class APIMapper extends APIEngine
     *
     * @since   0.1.0
     * @access  public
-    * @param   array $Path
+    * @throws  Exception
     */
-   public function Delete($Path)
+   public function Delete()
    {
       throw new Exception("Method Not Implemented", 501);
    }

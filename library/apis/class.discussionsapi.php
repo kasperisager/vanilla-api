@@ -23,64 +23,24 @@ class DiscussionsAPI extends APIMapper
     */
    public function Get($Path)
    {
-      if (isset($Path[2])) $ID = $Path[2];
+      $ID = (isset($Path[2])) ? $Path[2] : FALSE;
 
-      (isset($ID)) ? self::GetById($ID) : self::GetAll();
-   }
+      if ($ID) {
 
-   /**
-    * Find all discussions
-    *
-    * GET /discussions
-    *
-    * @since   0.1.0
-    * @access  public
-    */
-   public function GetAll()
-   {
-      $this->API['Controller'] = 'Discussions';
-   }
-
-   /**
-    * Find a specific discussion
-    *
-    * GET /discussions/:id
-    *
-    * @since   0.1.0
-    * @access  public
-    * @param   int $ID
-    */
-   public function GetById($ID)
-   {
-      $this->API['Controller']  = 'Discussion';
-      $this->API['Arguments']   = array(
-         'DiscussionID' => $ID
+         $this->API['Controller'] = 'Discussion';
+         $this->API['Arguments']  = array(
+            'DiscussionID' => $ID
          );
-   }
 
-   /**
-    * Retrieve a the current user's bookmarked discussions
-    *
-    * @since   0.1.0
-    * @access  public
-    * @param   string $Format
-    */
-   public function GetBookmarks()
-   {
-      $this->API['Controller']   = 'Discussions';
-      $this->API['Method']       = 'Bookmarked';
-   }
+      } else {
 
-   /**
-    * Retrieve discussions created by the current user
-    *
-    * @since   0.1.0
-    * @access  public
-    */
-   public function GetMine()
-   {
-      $this->API['Controller']   = 'Discussions';
-      $this->API['Method']       = 'Mine';
+         $this->API['Controller'] = 'Discussions';
+
+         //$this->API['Method'] = 'Bookmarked';
+
+         //$this->API['Method'] = 'Mine';
+
+      }
    }
 
    /**
@@ -95,45 +55,24 @@ class DiscussionsAPI extends APIMapper
     */
    public function Post($Path)
    {
-      if (isset($Path[2])) $ID      = $Path[2];
-      if (isset($Path[3])) $Comment = $Path[3];
+      $this->API['Controller'] = 'Post';
 
-      if (isset($ID) && isset($Comment) && $Comment == 'comments') {
-         self::PostComment($ID);
-      } else {
-         self::PostDiscussion();
-      }
-   }
+      $ID      = (isset($Path[2])) ? $Path[2] : FALSE;
+      $Comment = (isset($Path[3])) ? $Path[3] : FALSE;
 
-   /**
-    * Create a new discussion
-    *
-    * POST /discussions
-    *
-    * @since   0.1.0
-    * @access  public
-    */
-   public function PostDiscussion()
-   {
-      $this->API['Controller']   = 'Post';
-      $this->API['Method']       = 'Discussion';
-   }
+      if ($ID && $Comment && $Comment == 'comments') {
 
-   /**
-    * Create a new comment
-    *
-    * @since   0.1.0
-    * @access  public
-    * @param   int $ID
-    */
-   public function PostComment($ID)
-   {
-      $this->API['Controller']  = 'Post';
-      $this->API['Method']      = 'Comment';
-      $this->API['Arguments']   = array(
-         'DiscussionID' => $ID,
-         'TransientKey' => Gdn::Session()->TransientKey()
+         $this->API['Method']    = 'Comment';
+         $this->API['Arguments'] = array(
+            'DiscussionID' => $ID,
+            'TransientKey' => Gdn::Session()->TransientKey()
          );
+
+      } else {
+
+         $this->API['Method'] = 'Discussion';
+
+      }
    }
 
    /**
@@ -145,59 +84,38 @@ class DiscussionsAPI extends APIMapper
     * @since   0.1.0
     * @access  public
     * @param   array $Path
+    * @throws  Exception
     */
    public function Put($Path)
    {
-      if (!isset($Path[2])) {
+      $ID = (isset($Path[2])) ? $Path[2] : FALSE;
+
+      if (!$ID) {
          throw new Exception("No ID defined", 401);
       }
 
-      $ID = $Path[2];
+      $this->API['Controller'] = 'Post';
+      $this->API['Arguments']  = array(
+         'TransientKey' => Gdn::Session()->TransientKey()
+      );
 
       if ($ID == 'comments') {
-         $ID = $Path[3];
-         self::PutComment($ID);
+
+         $ID = (isset($Path[3])) ? $Path[3] : FALSE;
+
+         $this->API['Method']    = 'EditComment';
+         $this->API['Arguments'] = array(
+            'CommentID' => $ID
+         );
+
       } else {
-         self::PutDiscussion($ID);
+
+         $this->API['Method']    = 'EditDiscussion';
+         $this->API['Arguments'] = array(
+            'DiscussionID' => $ID
+         );
+
       }
-   }
-
-   /**
-    * Update an existing discussion
-    *
-    * PUT /discussions/:id
-    *
-    * @since   0.1.0
-    * @access  public
-    * @param   int $ID
-    */
-   public function PutDiscussion($ID)
-   {
-      $this->API['Controller']  = 'Post';
-      $this->API['Method']      = 'EditDiscussion';
-      $this->API['Arguments']   = array(
-         'DiscussionID' => $ID,
-         'TransientKey' => Gdn::Session()->TransientKey()
-         );
-   }
-
-   /**
-    * Update an existing comment
-    *
-    * PUT /discussions/comments/:id
-    *
-    * @since   0.1.0
-    * @access  public
-    * @param   int $ID
-    */
-   public function PutComment($ID)
-   {
-      $this->API['Controller']   = 'Post';
-      $this->API['Method']       = 'EditComment';
-      $this->API['Arguments']    = array(
-         'CommentID'    => $ID,
-         'TransientKey' => Gdn::Session()->TransientKey()
-         );
    }
 
    /**
@@ -209,59 +127,37 @@ class DiscussionsAPI extends APIMapper
     * @since   0.1.0
     * @access  public
     * @param   array $Path
+    * @throws  Exception
     */
    public function Delete($Path)
    {
-      if (!isset($Path[2])) {
+      $ID = (isset($Path[2])) ? $Path[2] : FALSE;
+
+      if (!$ID) {
          throw new Exception("No ID defined", 401);
       }
 
-      $ID = $Path[2];
+      $this->API['Controller'] = 'Discussion';
+      $this->API['Arguments']  = array(
+         'TransientKey' => Gdn::Session()->TransientKey()
+      );
 
-      if (isset($ID) && $ID == 'comments') {
-         $ID = $Path[3];
-         self::DeleteComment($ID);
-      } elseif (isset($ID)) {
-         self::DeleteDiscussion($ID);
+      if ($ID == 'comments') {
+
+         $ID = (isset($Path[3])) ? $Path[3] : FALSE;
+
+         $this->API['Method']    = 'DeleteComment';
+         $this->API['Arguments'] = array(
+            'CommentID'    => $ID,
+         );
+
+      } else {
+
+         $this->API['Method']    = 'Delete';
+         $this->API['Arguments'] = array(
+            'DiscussionID' => $ID,
+         );
+
       }
-   }
-
-   /**
-    * Remove a discussion
-    *
-    * DELETE /discussions/:id
-    *
-    * @since   0.1.0
-    * @access  public
-    * @param   int $ID
-    */
-   public function DeleteDiscussion($ID)
-   {
-      $this->API['Controller']   = 'Discussion';
-      $this->API['Method']       = 'Delete';
-      $this->API['Arguments']    = array(
-         'DiscussionID' => $ID,
-         'TransientKey' => Gdn::Session()->TransientKey()
-         );
-   }
-
-   /**
-    * Remove a discussion
-    *
-    * DELETE /discussions/comments/:id
-    *
-    * @since   0.1.0
-    * @access  public
-    * @param   int $ID
-    * @return  array
-    */
-   public function DeleteComment($ID)
-   {
-      $this->API['Controller']   = 'Discussion';
-      $this->API['Method']       = 'DeleteComment';
-      $this->API['Arguments']    = array(
-         'CommentID'    => $ID,
-         'TransientKey' => Gdn::Session()->TransientKey()
-         );
    }
 }

@@ -36,11 +36,11 @@ class RolesAPI extends APIMapper
     */
    public function Post($Path)
    {
-      $this->API['Controller']   = 'Role';
-      $this->API['Method']       = 'Add';
-      $this->API['Arguments']    = array(
+      $this->API['Controller'] = 'Role';
+      $this->API['Method']     = 'Add';
+      $this->API['Arguments']  = array(
          'TransientKey' => Gdn::Session()->TransientKey()
-         );
+      );
    }
 
    /**
@@ -51,21 +51,22 @@ class RolesAPI extends APIMapper
     * @since   0.1.0
     * @access  public
     * @param   array $Path
+    * @throws  Exception
     */
    public function Put($Path)
    {
-      if (!isset($Path[2])) {
+      $ID = (isset($Path[2])) ? $Path[2] : FALSE;
+
+      if (!$ID) {
          throw new Exception("No ID defined", 401);
       }
 
-      $ID = $Path[2];
-
-      $this->API['Controller']   = 'Role';
-      $this->API['Method']       = 'Edit';
-      $this->API['Arguments']    = array(
+      $this->API['Controller'] = 'Role';
+      $this->API['Method']     = 'Edit';
+      $this->API['Arguments']  = array(
          'RoleID'       => $ID,
          'TransientKey' => Gdn::Session()->TransientKey()
-         );
+      );
    }
 
    /**
@@ -76,20 +77,21 @@ class RolesAPI extends APIMapper
     * @since   0.1.0
     * @access  public
     * @param   array $Path
+    * @throws  Exception
     */
    public function Delete($Path)
    {
-      if (!isset($Path[2])) {
+      $ID = (isset($Path[2])) ? $Path[2] : FALSE;
+
+      if (!$ID) {
          throw new Exception("No ID defined", 401);
       }
 
-      $ID = $Path[2];
-
-      $this->API['Controller']   = 'Role';
-      $this->API['Method']       = 'Delete';
-      $this->API['Arguments']    = array(
+      $this->API['Controller'] = 'Role';
+      $this->API['Method']     = 'Delete';
+      $this->API['Arguments']  = array(
          'RoleID'       => $ID,
          'TransientKey' => Gdn::Session()->TransientKey()
-         );
+      );
    }
 }

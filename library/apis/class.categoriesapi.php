@@ -23,40 +23,21 @@ class CategoriesAPI extends APIMapper
     */
    public function Get($Path)
    {
-      if (isset($Path[2])) $ID = $Path[2];
+      $this->API['Controller'] = 'Categories';
 
-      (isset($ID)) ? self::GetById($ID) : self::GetAll();
-   }
+      $ID = (isset($Path[2])) ? $Path[2] : FALSE;
 
-   /**
-    * Find all categories
-    *
-    * GET /categories
-    *
-    * @since   0.1.0
-    * @access  public
-    */
-   public function GetAll()
-   {
-      $this->API['Controller']   = 'Categories';
-      $this->API['Method']       = 'All';
-   }
+      if ($ID) {
 
-   /**
-    * Find a specific category
-    *
-    * GET /categories/:id
-    *
-    * @since   0.1.0
-    * @access  public
-    * @param   int $ID
-    */
-   public function GetById($ID)
-   {
-      $this->API['Controller']   = 'Categories';
-      $this->API['Arguments']    = array(
-         'CategoryID' => $ID
+         $this->API['Arguments'] = array(
+            'CategoryID' => $ID
          );
+
+      } else {
+
+         $this->API['Method'] = 'All';
+
+      }
    }
 
    /**
@@ -70,9 +51,9 @@ class CategoriesAPI extends APIMapper
     */
    public function Post($Path)
    {
-      $this->API['Application']  = 'Vanilla';
-      $this->API['Controller']   = 'Settings';
-      $this->API['Method']       = 'AddCategory';
+      $this->API['Application'] = 'Vanilla';
+      $this->API['Controller']  = 'Settings';
+      $this->API['Method']      = 'AddCategory';
    }
 
    /**
@@ -83,22 +64,23 @@ class CategoriesAPI extends APIMapper
     * @since   0.1.0
     * @access  public
     * @param   array $Path
+    * @throws  Exception
     */
    public function Put($Path)
    {
-      if (!isset($Path[2])) {
+      $ID = (isset($Path[2])) ? $Path[2] : FALSE;
+
+      if (!$ID) {
          throw new Exception("No ID defined", 401);
       }
 
-      $ID = $Path[2];
-
-      $this->API['Application']  = 'Vanilla';
-      $this->API['Controller']   = 'Settings';
-      $this->API['Method']       = 'EditCategory';
-      $this->API['Arguments']    = array(
+      $this->API['Application'] = 'Vanilla';
+      $this->API['Controller']  = 'Settings';
+      $this->API['Method']      = 'EditCategory';
+      $this->API['Arguments']   = array(
          'CategoryID'   => $ID,
          'TransientKey' => Gdn::Session()->TransientKey()
-         );
+      );
    }
 
    /**
@@ -109,21 +91,22 @@ class CategoriesAPI extends APIMapper
     * @since   0.1.0
     * @access  public
     * @param   array $Path
+    * @throws  Exception
     */
    public function Delete($Path)
    {
-      if (!isset($Path[2])) {
+      $ID = (isset($Path[2])) ? $Path[2] : FALSE;
+
+      if (!$ID) {
          throw new Exception("No ID defined", 401);
       }
 
-      $ID = $Path[2];
-
-      $this->API['Application']  = 'Vanilla';
-      $this->API['Controller']   = 'Settings';
-      $this->API['Method']       = 'DeleteCategory';
-      $this->API['Arguments']    = array(
+      $this->API['Application'] = 'Vanilla';
+      $this->API['Controller']  = 'Settings';
+      $this->API['Method']      = 'DeleteCategory';
+      $this->API['Arguments']   = array(
          'CategoryID'   => $ID,
          'TransientKey' => Gdn::Session()->TransientKey()
-         );
+      );
    }
 }
