@@ -23,39 +23,17 @@ class ActivitiesAPI extends APIMapper
     */
    public function Get($Path)
    {
-      if (isset($Path[2])) $ID = $Path[2];
-
-      (isset($ID)) ? self::GetById($ID) : self::GetAll();
-   }
-
-   /**
-    * Retrieve all activity items
-    *
-    * GET /activities
-    *
-    * @since   0.1.0
-    * @access  public
-    */
-   public function GetAll()
-   {
       $this->API['Controller'] = 'Activity';
-   }
 
-   /**
-    * Retrieve a specific activity item
-    *
-    * GET /activities/:id
-    *
-    * @since   0.1.0
-    * @access  public
-    * @param   int $ID
-    */
-   public function GetById($ID)
-   {
-      $this->API['Controller']   = 'Activity';
-      $this->API['Method']       = 'Item';
-      $this->API['Arguments']    = array(
-         'ActivityID' => $ID
+      $ID = (isset($Path[2])) ? $Path[2] : FALSE;
+
+      if ($ID) {
+
+         $this->API['Method']    = 'Item';
+         $this->API['Arguments'] = array(
+            'ActivityID' => $ID
          );
+
+      }
    }
 }
