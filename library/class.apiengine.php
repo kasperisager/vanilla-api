@@ -55,6 +55,10 @@ class APIEngine
       // the server signature
       unset($Request['token']);
 
+      // Unset DeliveryType and DeliveryMethod
+      unset($Request['DeliveryType']);
+      unset($Request['DeliveryMethod']);
+
       // Make sure that either a username or an email has been passed
       if (empty($Username) && empty($Email)) {
          throw new Exception(T("Username or email must be specified"), 401);
@@ -86,6 +90,8 @@ class APIEngine
       // Generate a signature from the passed data the same way it was
       // generated on the client
       $Signature = self::GenerateSignature($Request);
+
+      //var_dump($Request); exit;
 
       // Make sure that the client token and the server signature match
       if ($Token != $Signature) {
