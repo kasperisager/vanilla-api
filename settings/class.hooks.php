@@ -24,28 +24,27 @@ class APIHooks implements Gdn_IPlugin
     */
    public function Gdn_Dispatcher_BeforeDispatch_Handler()
    {
-      $Request    = Gdn::Request();
-      $URI        = strtolower($Request->RequestURI());
-      $Path       = explode('/', $URI);
-      $Call       = NULL;
-      $Resource   = NULL;
+      $Request = Gdn::Request();
+      $URI     = strtolower($Request->RequestURI());
+      $Path    = explode('/', $URI);
 
       // Allow enabling JSONP using API.AllowJSONP
-      if (C('API.AllowJSONP')) SaveToConfig('Garden.AllowJSONP', TRUE, FALSE);
+      if (C('API.AllowJSONP')) {
+         SaveToConfig('Garden.AllowJSONP', TRUE, FALSE);
+      }
 
       // Set the call and resource paths if they exist
-      (!isset($Path[0])) ?: $Call      = $Path[0];
-      (!isset($Path[1])) ?: $Resource  = $Path[1];
+      $Call     = (isset($Path[0])) ? $Path[0] : FALSE;
+      $Resource = (isset($Path[1])) ? $Path[1] : FALSE;
 
       // Abandon the dispatch if this isn't an API call with a valid resource
-      if (empty($Call) || $Call != 'api' || empty($Resource)) return;
+      if (!$Call || $Call != 'api' || !$Resource) return;
 
       APIEngine::SetHeaders($Request);
 
       try {
-         APIEngine::Dispatch($Request);
+         APIEngine::DispatchRequest($Request);
       } catch (Exception $Exception) {
-
          // The Exception method will need a code and a message
          $Code    = $Exception->getCode();
          $Message = $Exception->getMessage();
@@ -68,15 +67,16 @@ class APIHooks implements Gdn_IPlugin
     * @access  public
     * @param   SettingsController $Sender
     */
-   public function SettingsController_API_Create($Sender) {
+   public function SettingsController_API_Create($Sender)
+   {
       $Sender->Permission('Garden.Settings.Manage');
 
       if ($Sender->Form->AuthenticatedPostBack()) {
 
-         $Secret  = C('API.Secret');
-         $Regen   = $Sender->Form->ButtonExists('Re-generate');
+         $Secret = C('API.Secret');
+         $Regen  = $Sender->Form->ButtonExists('Re-generate');
 
-         if ($Regen) $Secret = APIEngine::UUIDSecure();
+         if ($Regen) $Secret = APIEngine::GenerateUniqueID();
 
          $Save = array();
          $Save['API.Secret'] = $Secret;
@@ -108,12 +108,13 @@ class APIHooks implements Gdn_IPlugin
     *
     * @since   0.1.0
     * @access  public
-    * @param   object $Sender
+    * @param   Gdn_Controller $Sender
     */
-   public function Base_GetAppSettingsMenuItems_Handler($Sender) {
+   public function Base_GetAppSettingsMenuItems_Handler($Sender)
+   {
       $Menu = $Sender->EventArguments['SideMenu'];
       $Menu->AddLink('Site Settings', T("Application Interface"),
-                     'dashboard/settings/api', 'Garden.Settings.Manage'
+         'dashboard/settings/api', 'Garden.Settings.Manage'
       );
    }
 
@@ -125,7 +126,9 @@ class APIHooks implements Gdn_IPlugin
     */
    public function Setup()
    {
-      if (!C('API.Secret')) SaveToConfig('API.Secret', APIEngine::UUIDSecure());
+      if (!C('API.Secret')) {
+         SaveToConfig('API.Secret', APIEngine::GenerateUniqueID());
+      }
 
       $ApplicationInfo = array();
       include CombinePaths(array(PATH_APPLICATIONS . DS . 'api/settings/about.php'));

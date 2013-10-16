@@ -27,9 +27,10 @@ class APIEngine
     *
     * @since   0.1.0
     * @access  public
+    * @throws  Exception
     * @static
     */
-   public static function Authenticate()
+   public static function AuthenticateRequest()
    {
       $Request       = Gdn::Request();
       $PathAndQuery  = $Request->PathAndQuery();
@@ -54,6 +55,10 @@ class APIEngine
       // the server signature
       unset($Request['token']);
 
+      // Unset DeliveryType and DeliveryMethod
+      unset($Request['DeliveryType']);
+      unset($Request['DeliveryMethod']);
+
       // Make sure that either a username or an email has been passed
       if (empty($Username) && empty($Email)) {
          throw new Exception(T("Username or email must be specified"), 401);
@@ -74,22 +79,17 @@ class APIEngine
          throw new Exception(T("A token must be specified"), 401);
       }
 
-      // Now we check for a username and email (we've already made sure that at
-      // least one of them have been passed) and set them if they exist
-      (empty($Username)) ?: $Username  = $Request['username'];
-      (empty($Email))    ?: $Email     = $Request['email'];
-
       // Get the ID of the client (user) sending the request
       $UserID = self::GetUserID($Username, $Email);
 
-      // Make sure that the user actually exists
+      // Throw an error if no user was found
       if (!isset($UserID)) {
          throw new Exception(T("The specified user doesn't exist"), 401);
       }
 
       // Generate a signature from the passed data the same way it was
       // generated on the client
-      $Signature = self::Signature($Request);
+      $Signature = self::GenerateSignature($Request);
 
       // Make sure that the client token and the server signature match
       if ($Token != $Signature) {
@@ -120,7 +120,7 @@ class APIEngine
     *                         data
     * @static
     */
-   public static function Signature($Request)
+   public static function GenerateSignature($Request)
    {
       // Get the application secret used for generating the hash
       $Secret = C('API.Secret');
@@ -136,6 +136,38 @@ class APIEngine
       $Signature = hash_hmac('sha256', strtolower(implode('-', $Request)), $Secret);
 
       return $Signature;
+   }
+
+   /**
+    * Generates a Universally Unique Identifier, version 4
+    *
+    * @since   0.1.0
+    * @access  public
+    * @link    http://en.wikipedia.org/wiki/UUID
+    * @return  string A UUID, made up of 32 hex digits and 4 hyphens.
+    * @static
+    */
+   public static function GenerateUniqueID()
+   {
+      return sprintf( '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
+         // 32 bits for "time_low"
+         mt_rand(0, 0xffff), mt_rand(0, 0xffff),
+
+         // 16 bits for "time_mid"
+         mt_rand(0, 0xffff),
+
+         // 16 bits for "time_hi_and_version",
+         // four most significant bits holds version number 4
+         mt_rand(0, 0x0fff) | 0x4000,
+
+         // 16 bits, 8 bits for "clk_seq_hi_res",
+         // 8 bits for "clk_seq_low",
+         // two most significant bits holds zero and one for variant DCE1.1
+         mt_rand(0, 0x3fff) | 0x8000,
+
+         // 48 bits for "node"
+         mt_rand(0, 0xffff), mt_rand(0, 0xffff), mt_rand(0, 0xffff)
+      );
    }
 
    /**
@@ -175,38 +207,6 @@ class APIEngine
    }
 
    /**
-    * Generates a Universally Unique Identifier, version 4
-    *
-    * @since   0.1.0
-    * @access  public
-    * @link    http://en.wikipedia.org/wiki/UUID
-    * @return  string A UUID, made up of 32 hex digits and 4 hyphens.
-    * @static
-    */
-   public static function UUIDSecure()
-   {
-      return sprintf( '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
-         // 32 bits for "time_low"
-         mt_rand(0, 0xffff), mt_rand(0, 0xffff),
-
-         // 16 bits for "time_mid"
-         mt_rand(0, 0xffff),
-
-         // 16 bits for "time_hi_and_version",
-         // four most significant bits holds version number 4
-         mt_rand(0, 0x0fff) | 0x4000,
-
-         // 16 bits, 8 bits for "clk_seq_hi_res",
-         // 8 bits for "clk_seq_low",
-         // two most significant bits holds zero and one for variant DCE1.1
-         mt_rand(0, 0x3fff) | 0x8000,
-
-         // 48 bits for "node"
-         mt_rand(0, 0xffff), mt_rand(0, 0xffff), mt_rand(0, 0xffff)
-      );
-   }
-
-   /**
     * Delegate methods to a specified API class
     *
     * This function takes a request URI and an HTTP method and uses these to
@@ -216,15 +216,15 @@ class APIEngine
     *
     * @since   0.1.0
     * @access  public
-    * @param   string $Path   The full request path excluding queries
-    * @param   string $Method The request method issued by the client
-    * @param   string $Class  The class that we wish to delegate an action to
-    * @return  array          An array of data returned by the API class
+    * @param   Gdn_Request $Request The request object
+    * @param   string      $Method  The request method issued by the client
+    * @param   object      $Class   The class that we wish to delegate an action to
+    * @return  array                An array of data returned by the API class
     * @static
     */
-   public static function MethodHandler($Path, $Method, $Class)
+   public static function DelegateMethodToClass($Request, $Method, $Class)
    {
-      $Request = Gdn::Request();
+      $Path = self::TranslateRequestToPath($Request);
 
       switch(strtolower($Method)) {
 
@@ -294,21 +294,36 @@ class APIEngine
    }
 
    /**
+    * Translate a Request object to a URI path array
+    *
+    * @since   0.1.0
+    * @access  public
+    * @param   Gdn_Request $Request The request object
+    * @return  array                The full URI path array
+    */
+   public static function TranslateRequestToPath($Request)
+   {
+      $URI  = strtolower($Request->RequestURI());
+      $Path = explode('/', $URI);
+
+      return $Path;
+   }
+
+   /**
     * Map the API request to the appropriate controller
     *
     * @since   0.1.0
     * @access  public
-    * @param   object $Request
+    * @param   Gdn_Request $Request The request object
+    * @throws  Exception
+    * @static
     */
-   public function Dispatch($Request)
+   public static function DispatchRequest($Request)
    {
-      $Session = Gdn::Session();
-      $URI     = $Request->RequestURI();
-      $URI     = strtolower($URI);
-      $Path    = explode('/', $URI);
+      $Path = self::TranslateRequestToPath($Request);
 
       // Get the requested resource
-      $Resource = (!isset($Path[1])) ? NULL : $Path[1];
+      $Resource = (isset($Path[1])) ? $Path[1] : FALSE;
 
       // Turn requested resource into API class and store it
       $Class = ucfirst($Resource) . 'API';
@@ -330,7 +345,7 @@ class APIEngine
       $Method = $Request->RequestMethod();
 
       // Use the MethodHandler to get data from the API class
-      $Data = self::MethodHandler($Path, $Method, $Class);
+      $Data = self::DelegateMethodToClass($Request, $Method, $Class);
 
       // Make sure that the API class returns a controller definition
       if (!isset($Data['Controller'])) {
@@ -343,7 +358,7 @@ class APIEngine
       if (isset($Data['Authenticate']) && !Gdn::Session()->IsValid()) {
 
          // If authentication is required, authenticate the client
-         if ($Data['Authenticate']) self::Authenticate();
+         if ($Data['Authenticate']) self::AuthenticateRequest();
 
       } elseif (!Gdn::Session()->IsValid()) {
 
@@ -351,7 +366,7 @@ class APIEngine
          // username or an email has been specified in the request
          $Username   = GetIncomingValue('username');
          $Email      = GetIncomingValue('email');
-         if (!empty($Username) || !empty($Email)) self::Authenticate();
+         if ($Username || $Email) self::AuthenticateRequest();
 
       }
 
@@ -376,9 +391,10 @@ class APIEngine
     *
     * @since   1.0.0
     * @access  public
-    * @param   object $Request
+    * @param   Gdn_Request $Request The request object
+    * @static
     */
-   public function SetHeaders($Request)
+   public static function SetHeaders($Request)
    {
       $Arguments = $Request->Export('Arguments');
 
