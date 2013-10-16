@@ -91,8 +91,6 @@ class APIEngine
       // generated on the client
       $Signature = self::GenerateSignature($Request);
 
-      //var_dump($Request); exit;
-
       // Make sure that the client token and the server signature match
       if ($Token != $Signature) {
          throw new Exception(T("Token and signature do not match"), 401);
