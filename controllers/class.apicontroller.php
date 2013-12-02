@@ -13,21 +13,21 @@
  */
 class APIController extends Gdn_Controller
 {
-   /**
-    * Output exceptions in either JSON or XML
-    *
-    * @since   0.1.0
-    * @access  public
-    * @param   int    $Code    Error code
-    * @param   string $Message Error message
-    */
-   public function Exception($Code, $Message)
-   {
-      $this->SetData(array(
-         'Code'      => intval($Code),
-         'Exception' => $Message
-      ));
+    /**
+     * Output exceptions in either JSON or XML
+     *
+     * @since   0.1.0
+     * @access  public
+     * @param   int    $Code    Error code
+     * @param   string $Message Error message
+     */
+    public function Exception($Code, $Message)
+    {
+        $this->SetData(array(
+            'Code'      => intval($Code),
+            'Exception' => $Message
+        ));
 
-      $this->Render();
-   }
+        $this->Render();
+    }
 }

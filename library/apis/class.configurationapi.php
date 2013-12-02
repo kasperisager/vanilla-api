@@ -11,20 +11,20 @@
  */
 class ConfigurationAPI extends APIMapper
 {
-   /**
-    * Retrieve Vanilla configuration
-    *
-    * GET /configuration
-    *
-    * @since   0.1.0
-    * @access  public
-    * @param   array $Path
-    */
-   public function Get($Path)
-   {
-      $this->API['Application']  = 'Dashboard';
-      $this->API['Controller']   = 'Settings';
-      $this->API['Method']       = 'Configuration';
-      $this->API['Authenticate'] = TRUE;
-   }
+    /**
+     * Retrieve Vanilla configuration
+     *
+     * GET /configuration
+     *
+     * @since   0.1.0
+     * @access  public
+     * @param   array $Path
+     */
+    public function Get($Path)
+    {
+        $this->API['Application']  = 'Dashboard';
+        $this->API['Controller']   = 'Settings';
+        $this->API['Method']       = 'Configuration';
+        $this->API['Authenticate'] = TRUE;
+    }
 }

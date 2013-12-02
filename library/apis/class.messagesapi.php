@@ -11,18 +11,18 @@
  */
 class MessagesAPI extends APIMapper
 {
-   /**
-    * Retrieve messages
-    *
-    * GET /messages
-    *
-    * @since   0.1.0
-    * @access  public
-    * @param   array $Path
-    */
-   public function Get($Path)
-   {
-      $this->API['Controller'] = 'Messages';
-      $this->API['Method']     = 'All';
-   }
+    /**
+     * Retrieve messages
+     *
+     * GET /messages
+     *
+     * @since   0.1.0
+     * @access  public
+     * @param   array $Path
+     */
+    public function Get($Path)
+    {
+        $this->API['Controller'] = 'Messages';
+        $this->API['Method']     = 'All';
+    }
 }

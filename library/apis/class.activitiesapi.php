@@ -11,29 +11,29 @@
  */
 class ActivitiesAPI extends APIMapper
 {
-   /**
-    * Retrieve activity items
-    *
-    * GET /activities
-    * GET /activities/:id
-    *
-    * @since   0.1.0
-    * @access  public
-    * @param   array $Path
-    */
-   public function Get($Path)
-   {
-      $this->API['Controller'] = 'Activity';
+    /**
+     * Retrieve activity items
+     *
+     * GET /activities
+     * GET /activities/:id
+     *
+     * @since   0.1.0
+     * @access  public
+     * @param   array $Path
+     */
+    public function Get($Path)
+    {
+        $this->API['Controller'] = 'Activity';
 
-      $ID = (isset($Path[2])) ? $Path[2] : FALSE;
+        $ID = (isset($Path[2])) ? $Path[2] : FALSE;
 
-      if ($ID) {
+        if ($ID) {
 
-         $this->API['Method']    = 'Item';
-         $this->API['Arguments'] = array(
-            'ActivityID' => $ID
-         );
+            $this->API['Method']    = 'Item';
+            $this->API['Arguments'] = array(
+                'ActivityID' => $ID
+            );
 
-      }
-   }
+        }
+    }
 }
