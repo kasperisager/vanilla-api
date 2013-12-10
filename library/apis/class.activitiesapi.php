@@ -28,12 +28,53 @@ class ActivitiesAPI extends APIMapper
         $ID = (isset($Path[2])) ? $Path[2] : FALSE;
 
         if ($ID) {
-
             $this->API['Method']    = 'Item';
             $this->API['Arguments'] = array(
                 'ActivityID' => $ID
             );
-
         }
+    }
+
+    /**
+     * Post an activity item
+     *
+     * POST /activity
+     *
+     * @since   0.1.0
+     * @access  public
+     * @param   array $Path
+     */
+    public function Post($Path)
+    {
+        $this->API['Controller']   = 'Activity';
+        $this->API['Method']       = 'Post';
+        $this->API['Authenticate'] = TRUE;
+    }
+
+    /**
+     * Remove an activity item
+     *
+     * DELETE /activity/:id
+     *
+     * @since   0.1.0
+     * @access  public
+     * @param   array $Path
+     * @throws  Exception
+     */
+    public function Delete($Path)
+    {
+        $ID = (isset($Path[2])) ? $Path[2] : FALSE;
+
+        if (!$ID) {
+            throw new Exception("No ID defined", 401);
+        }
+
+        $this->API['Controller'] = 'Activity';
+        $this->API['Method']     = 'Delete';
+        $this->API['Arguments']  = array(
+            'DiscussionID' => $ID,
+            'TransientKey' => Gdn::Session()->TransientKey()
+        );
+        $this->API['Authenticate'] = TRUE;
     }
 }
