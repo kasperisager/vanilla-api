@@ -25,7 +25,7 @@ class APIController extends Gdn_Controller
     {
         $this->SetData(array(
             'Code'      => intval($Code),
-            'Exception' => $Message
+            'Exception' => T($Message)
         ));
 
         $this->Render();
