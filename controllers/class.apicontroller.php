@@ -14,7 +14,7 @@
 class APIController extends Gdn_Controller
 {
     /**
-     * Output exceptions in either JSON or XML
+     * Output API exceptions
      *
      * @since  0.1.0
      * @access public
