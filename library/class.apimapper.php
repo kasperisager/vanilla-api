@@ -17,16 +17,16 @@
  * @license   http://opensource.org/licenses/MIT MIT
  * @abstract
  */
-class APIMapper extends APIEngine
+abstract class APIMapper
 {
     /**
      * API property containing information about the API called by the client
      *
      * @since  0.1.0
-     * @access protected
+     * @access public
      * @var    object
      */
-    protected $API;
+    public $API;
 
     /**
      * API class GET operation
