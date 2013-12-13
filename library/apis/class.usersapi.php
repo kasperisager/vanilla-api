@@ -3,11 +3,11 @@
 /**
  * Users API
  *
- * @package    API
- * @since      0.1.0
- * @author     Kasper Kronborg Isager <kasperisager@gmail.com>
- * @copyright  Copyright 2013 © Kasper Kronborg Isager
- * @license    http://opensource.org/licenses/MIT MIT
+ * @package   API
+ * @since     0.1.0
+ * @author    Kasper Kronborg Isager <kasperisager@gmail.com>
+ * @copyright Copyright 2013 © Kasper Kronborg Isager
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 class UsersAPI extends APIMapper
 {
@@ -17,9 +17,9 @@ class UsersAPI extends APIMapper
      * GET /users
      * GET /users/:id
      *
-     * @since   0.1.0
-     * @access  public
-     * @param   array $Path
+     * @since  0.1.0
+     * @access public
+     * @param  array $Path
      */
     public function Get($Path)
     {
@@ -45,9 +45,9 @@ class UsersAPI extends APIMapper
      *
      * POST /users
      *
-     * @since   0.1.0
-     * @access  public
-     * @param   array $Path
+     * @since  0.1.0
+     * @access public
+     * @param  array $Path
      */
     public function Post($Path)
     {
@@ -63,10 +63,10 @@ class UsersAPI extends APIMapper
      *
      * PUT /users/:id
      *
-     * @since   0.1.0
-     * @access  public
-     * @param   array $Path
-     * @throws  Exception
+     * @since  0.1.0
+     * @access public
+     * @param  array $Path
+     * @throws Exception
      */
     public function Put($Path)
     {
@@ -89,10 +89,10 @@ class UsersAPI extends APIMapper
      *
      * DELETE /users/:id
      *
-     * @since   0.1.0
-     * @access  public
-     * @param   array $Path
-     * @throws  Exception
+     * @since  0.1.0
+     * @access public
+     * @param  array $Path
+     * @throws Exception
      */
     public function Delete($Path)
     {

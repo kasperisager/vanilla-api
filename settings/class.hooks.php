@@ -8,11 +8,11 @@
  * handle API request mapping and also hooks the dashboard settings controller
  * to render the Application Interface settings menu.
  *
- * @package    API
- * @since      0.1.0
- * @author     Kasper Kronborg Isager <kasperisager@gmail.com>
- * @copyright  Copyright 2013 © Kasper Kronborg Isager
- * @license    http://opensource.org/licenses/MIT MIT
+ * @package   API
+ * @since     0.1.0
+ * @author    Kasper Kronborg Isager <kasperisager@gmail.com>
+ * @copyright Copyright 2013 © Kasper Kronborg Isager
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 class APIHooks implements Gdn_IPlugin
 {
@@ -21,8 +21,8 @@ class APIHooks implements Gdn_IPlugin
     /**
      * Code to be run upon enabling the API
      *
-     * @since   0.1.0
-     * @access  public
+     * @since  0.1.0
+     * @access public
      */
     public function Setup()
     {
@@ -41,8 +41,8 @@ class APIHooks implements Gdn_IPlugin
     /**
      * Map an API request to a resource
      *
-     * @since   0.1.0
-     * @access  public
+     * @since  0.1.0
+     * @access public
      */
     public function Gdn_Dispatcher_BeforeDispatch_Handler()
     {
@@ -85,9 +85,9 @@ class APIHooks implements Gdn_IPlugin
      * This function sets up and renders a settings page where the API
      * configuration can be changed.
      *
-     * @since   0.1.0
-     * @access  public
-     * @param   SettingsController $Sender
+     * @since  0.1.0
+     * @access public
+     * @param  SettingsController $Sender
      */
     public function SettingsController_API_Create($Sender)
     {
@@ -128,9 +128,9 @@ class APIHooks implements Gdn_IPlugin
     /**
      * Renders menu link in the dashboard sidebar
      *
-     * @since   0.1.0
-     * @access  public
-     * @param   Gdn_Controller $Sender
+     * @since  0.1.0
+     * @access public
+     * @param  Gdn_Controller $Sender
      */
     public function Base_GetAppSettingsMenuItems_Handler($Sender)
     {

@@ -3,11 +3,11 @@
 /**
  * Categories API
  *
- * @package    API
- * @since      0.1.0
- * @author     Kasper Kronborg Isager <kasperisager@gmail.com>
- * @copyright  Copyright 2013 © Kasper Kronborg Isager
- * @license    http://opensource.org/licenses/MIT MIT
+ * @package   API
+ * @since     0.1.0
+ * @author    Kasper Kronborg Isager <kasperisager@gmail.com>
+ * @copyright Copyright 2013 © Kasper Kronborg Isager
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 class CategoriesAPI extends APIMapper
 {
@@ -17,9 +17,9 @@ class CategoriesAPI extends APIMapper
      * GET /categories
      * GET /categories/:id
      *
-     * @since   0.1.0
-     * @access  public
-     * @param   array $Path
+     * @since  0.1.0
+     * @access public
+     * @param  array $Path
      */
     public function Get($Path)
     {
@@ -45,9 +45,9 @@ class CategoriesAPI extends APIMapper
      *
      * POST /categories
      *
-     * @since   0.1.0
-     * @access  public
-     * @param   array $Path
+     * @since  0.1.0
+     * @access public
+     * @param  array $Path
      */
     public function Post($Path)
     {
@@ -61,10 +61,10 @@ class CategoriesAPI extends APIMapper
      *
      * PUT /categories/:id
      *
-     * @since   0.1.0
-     * @access  public
-     * @param   array $Path
-     * @throws  Exception
+     * @since  0.1.0
+     * @access public
+     * @param  array $Path
+     * @throws Exception
      */
     public function Put($Path)
     {
@@ -88,10 +88,10 @@ class CategoriesAPI extends APIMapper
      *
      * DELETE /categories/:id
      *
-     * @since   0.1.0
-     * @access  public
-     * @param   array $Path
-     * @throws  Exception
+     * @since  0.1.0
+     * @access public
+     * @param  array $Path
+     * @throws Exception
      */
     public function Delete($Path)
     {

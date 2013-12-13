@@ -6,11 +6,11 @@
  * This class handles authentication and delegation of API requests and their
  * corresponding methods.
  *
- * @package    API
- * @since      0.1.0
- * @author     Kasper Kronborg Isager <kasperisager@gmail.com>
- * @copyright  Copyright 2013 © Kasper Kronborg Isager
- * @license    http://opensource.org/licenses/MIT MIT
+ * @package   API
+ * @since     0.1.0
+ * @author    Kasper Kronborg Isager <kasperisager@gmail.com>
+ * @copyright Copyright 2013 © Kasper Kronborg Isager
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 class APIEngine
 {
@@ -25,22 +25,22 @@ class APIEngine
      * Based on initial work by Diego Zanella
      * @link    http://careers.stackoverflow.com/diegozanella
      *
-     * @since   0.1.0
-     * @access  public
-     * @throws  Exception
+     * @since  0.1.0
+     * @access public
+     * @throws Exception
      * @static
      */
     public static function AuthenticateRequest()
     {
-        $Request       = Gdn::Request();
-        $PathAndQuery  = $Request->PathAndQuery();
-        $ParsedURL     = parse_url($PathAndQuery);
+        $Request      = Gdn::Request();
+        $PathAndQuery = $Request->PathAndQuery();
+        $ParsedURL    = parse_url($PathAndQuery);
 
         // Get the values we need for authentication
-        $Username      = GetIncomingValue('username');
-        $Email         = GetIncomingValue('email');
-        $Timestamp     = GetIncomingValue('timestamp');
-        $Token         = GetIncomingValue('token');
+        $Username  = GetIncomingValue('username');
+        $Email     = GetIncomingValue('email');
+        $Timestamp = GetIncomingValue('timestamp');
+        $Token     = GetIncomingValue('token');
 
         // Make sure that the query actually contains data
         if (!isset($ParsedURL['query'])) {
@@ -112,14 +112,14 @@ class APIEngine
      * server knows the secret key used for creating the hash.
      *
      * Based on initial work by Diego Zanella
-     * @link    http://careers.stackoverflow.com/diegozanella
+     * @link http://careers.stackoverflow.com/diegozanella
      *
-     * @since   0.1.0
-     * @access  public
-     * @param   array $Request Array of request data uesd for generating the
-     *                         signature hash
-     * @return  string         An HMAC-SHA256 hash generated from the request
-     *                         data
+     * @since  0.1.0
+     * @access public
+     * @param  array $Request Array of request data uesd for generating the
+     *                        signature hash
+     * @return string         An HMAC-SHA256 hash generated from the request
+     *                        data
      * @static
      */
     public static function GenerateSignature($Request)
@@ -143,10 +143,10 @@ class APIEngine
     /**
      * Generates a Universally Unique Identifier, version 4
      *
-     * @since   0.1.0
-     * @access  public
-     * @link    http://en.wikipedia.org/wiki/UUID
-     * @return  string A UUID, made up of 32 hex digits and 4 hyphens.
+     * @since  0.1.0
+     * @access public
+     * @link   http://en.wikipedia.org/wiki/UUID
+     * @return string A UUID, made up of 32 hex digits and 4 hyphens.
      * @static
      */
     public static function GenerateUniqueID()
@@ -180,14 +180,14 @@ class APIEngine
      * parameters at a time and hoping to get a User ID.
      *
      * Based on initial work by Diego Zanella
-     * @link    http://careers.stackoverflow.com/diegozanella
+     * @link http://careers.stackoverflow.com/diegozanella
      *
-     * @since   0.1.0
-     * @access  public
-     * @param   string $Username  Username of the user whose ID we wish to get
-     * @param   string $Email     Email of the user whose ID we wish to get
-     * @return  int|null          User ID if a username or an email has been
-     *                            specified, otherwise NULL
+     * @since  0.1.0
+     * @access public
+     * @param  string $Username  Username of the user whose ID we wish to get
+     * @param  string $Email     Email of the user whose ID we wish to get
+     * @return int|null          User ID if a username or an email has been
+     *                           specified, otherwise NULL
      * @static
      */
     public static function GetUserID($Username, $Email)
@@ -216,12 +216,12 @@ class APIEngine
      * an array of data which we later to map the request to an application or
      * plugin controller.
      *
-     * @since   0.1.0
-     * @access  public
-     * @param   Gdn_Request $Request The request object
-     * @param   string      $Method  The request method issued by the client
-     * @param   object      $Class   The class that we wish to delegate an action to
-     * @return  array                An array of data returned by the API class
+     * @since  0.1.0
+     * @access public
+     * @param  Gdn_Request $Request The request object
+     * @param  string      $Method  The request method issued by the client
+     * @param  object      $Class   The class that we wish to delegate an action to
+     * @return array                An array of data returned by the API class
      * @static
      */
     public static function DelegateMethodToClass($Request, $Method, $Class)
@@ -298,10 +298,10 @@ class APIEngine
     /**
      * Translate a Request object to a URI path array
      *
-     * @since   0.1.0
-     * @access  public
-     * @param   Gdn_Request $Request The request object
-     * @return  array                The full URI path array
+     * @since  0.1.0
+     * @access public
+     * @param  Gdn_Request $Request The request object
+     * @return array                The full URI path array
      * @static
      */
     public static function TranslateRequestToPath($Request)
@@ -315,10 +315,10 @@ class APIEngine
     /**
      * Map the API request to the appropriate controller
      *
-     * @since   0.1.0
-     * @access  public
-     * @param   Gdn_Request $Request The request object
-     * @throws  Exception
+     * @since  0.1.0
+     * @access public
+     * @param  Gdn_Request $Request The request object
+     * @throws Exception
      * @static
      */
     public static function DispatchRequest($Request)
@@ -367,8 +367,8 @@ class APIEngine
 
             // If authentication is optional, only authenticate the client if a
             // username or an email has been specified in the request
-            $Username   = GetIncomingValue('username');
-            $Email      = GetIncomingValue('email');
+            $Username = GetIncomingValue('username');
+            $Email    = GetIncomingValue('email');
             if ($Username || $Email) self::AuthenticateRequest();
 
         }
@@ -392,9 +392,9 @@ class APIEngine
     /**
      * Set the header format based on the Request object's HTTP_ACCEPT header
      *
-     * @since   1.0.0
-     * @access  public
-     * @param   Gdn_Request $Request The request object
+     * @since  1.0.0
+     * @access public
+     * @param  Gdn_Request $Request The request object
      * @static
      */
     public static function SetHeaders($Request)
@@ -428,10 +428,10 @@ class APIEngine
     /**
      * Parse raw Form Data and return it as an array
      *
-     * @since   0.1.0
-     * @access  public
-     * @return  array Parsed array of data derived from the raw Form Data
-     *                submitted in the request.
+     * @since  0.1.0
+     * @access public
+     * @return array Parsed array of data derived from the raw Form Data
+     *               submitted in the request.
      * @static
      */
     public static function ParseFormData()

@@ -17,9 +17,9 @@ class DiscussionsAPI extends APIMapper
      * GET /discussions
      * GET /discussions/:id
      *
-     * @since   0.1.0
-     * @access  public
-     * @param   array $Path
+     * @since  0.1.0
+     * @access public
+     * @param  array $Path
      */
     public function Get($Path)
     {
@@ -49,9 +49,9 @@ class DiscussionsAPI extends APIMapper
      * POST /discussions
      * POST /discussions/:id/comments
      *
-     * @since   0.1.0
-     * @access  public
-     * @param   array $Path
+     * @since  0.1.0
+     * @access public
+     * @param  array $Path
      */
     public function Post($Path)
     {
@@ -81,10 +81,10 @@ class DiscussionsAPI extends APIMapper
      * PUT /discussions/:id
      * PUT /discussions/comments/:id
      *
-     * @since   0.1.0
-     * @access  public
-     * @param   array $Path
-     * @throws  Exception
+     * @since  0.1.0
+     * @access public
+     * @param  array $Path
+     * @throws Exception
      */
     public function Put($Path)
     {
@@ -124,10 +124,10 @@ class DiscussionsAPI extends APIMapper
      * DELETE /discussions/:id
      * DELETE /discussions/comments/:id
      *
-     * @since   0.1.0
-     * @access  public
-     * @param   array $Path
-     * @throws  Exception
+     * @since  0.1.0
+     * @access public
+     * @param  array $Path
+     * @throws Exception
      */
     public function Delete($Path)
     {

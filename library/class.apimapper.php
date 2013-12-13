@@ -10,20 +10,21 @@
  * @todo Create helper functions for dealing with query paths in API classes
  *       E.g. $Value = (isset($Path[n])) ? $Path[n] : FALSE;
  *
- * @package    API
- * @since      0.1.0
- * @author     Kasper Kronborg Isager <kasperisager@gmail.com>
- * @copyright  Copyright 2013 © Kasper Kronborg Isager
- * @license    http://opensource.org/licenses/MIT MIT
+ * @package   API
+ * @since     0.1.0
+ * @author    Kasper Kronborg Isager <kasperisager@gmail.com>
+ * @copyright Copyright 2013 © Kasper Kronborg Isager
+ * @license   http://opensource.org/licenses/MIT MIT
+ * @abstract
  */
 class APIMapper extends APIEngine
 {
     /**
      * API property containing information about the API called by the client
      *
-     * @since   0.1.0
-     * @access  protected
-     * @var     object
+     * @since  0.1.0
+     * @access protected
+     * @var    object
      */
     protected $API;
 
@@ -33,9 +34,9 @@ class APIMapper extends APIEngine
      * This method will be run when a GET request is sent to a given API class.
      * The GET method only allows returning an API controller and method.
      *
-     * @since   0.1.0
-     * @access  public
-     * @throws  Exception
+     * @since  0.1.0
+     * @access public
+     * @throws Exception
      */
     public function Get()
     {
@@ -49,9 +50,9 @@ class APIMapper extends APIEngine
      * The POST method allows you to return an array of custom arguments which
      * will be included with the rest of the Form Data sent in the request body.
      *
-     * @since   0.1.0
-     * @access  public
-     * @throws  Exception
+     * @since  0.1.0
+     * @access public
+     * @throws Exception
      */
     public function Post()
     {
@@ -65,9 +66,9 @@ class APIMapper extends APIEngine
      * The PUT method allows you to return an array of custom arguments which
      * will be included with the rest of the Form Data sent in the request body.
      *
-     * @since   0.1.0
-     * @access  public
-     * @throws  Exception
+     * @since  0.1.0
+     * @access public
+     * @throws Exception
      */
     public function Put()
     {
@@ -83,9 +84,9 @@ class APIMapper extends APIEngine
      * meaning that all data required for processing the request will have to be
      * included in the custom request arguments.
      *
-     * @since   0.1.0
-     * @access  public
-     * @throws  Exception
+     * @since  0.1.0
+     * @access public
+     * @throws Exception
      */
     public function Delete()
     {
