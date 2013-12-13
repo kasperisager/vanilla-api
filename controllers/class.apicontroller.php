@@ -18,11 +18,14 @@ class APIController extends Gdn_Controller
      *
      * @since  0.1.0
      * @access public
-     * @param  int    $Code    Error code
-     * @param  string $Message Error message
+     * @param  int|string $Code    Error code
+     * @param  string     $Message Error message
      */
     public function Exception($Code, $Message)
     {
+        // Set the header depending on the exception code
+        header("HTTP/1.0 $Code", TRUE, $Code);
+
         $this->SetData(array(
             'Code'      => intval($Code),
             'Exception' => T($Message)
