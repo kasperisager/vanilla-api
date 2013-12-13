@@ -16,6 +16,28 @@
  */
 class APIHooks implements Gdn_IPlugin
 {
+    /// Methods ///
+
+    /**
+     * Code to be run upon enabling the API
+     *
+     * @since   0.1.0
+     * @access  public
+     */
+    public function Setup()
+    {
+        if (!C('API.Secret')) {
+            SaveToConfig('API.Secret', APIEngine::GenerateUniqueID());
+        }
+
+        $ApplicationInfo = array();
+        include CombinePaths(array(PATH_APPLICATIONS . DS . 'api/settings/about.php'));
+        $Version = ArrayValue('Version', ArrayValue('API', $ApplicationInfo, array()), 'Undefined');
+        SaveToConfig('API.Version', $Version);
+    }
+
+    /// Event Handlers ///
+
     /**
      * Map an API request to a resource
      *
@@ -116,23 +138,5 @@ class APIHooks implements Gdn_IPlugin
         $Menu->AddLink('Site Settings', T("Application Interface"),
             'dashboard/settings/api', 'Garden.Settings.Manage'
         );
-    }
-
-    /**
-     * Code to be run upon enabling the API
-     *
-     * @since   0.1.0
-     * @access  public
-     */
-    public function Setup()
-    {
-        if (!C('API.Secret')) {
-            SaveToConfig('API.Secret', APIEngine::GenerateUniqueID());
-        }
-
-        $ApplicationInfo = array();
-        include CombinePaths(array(PATH_APPLICATIONS . DS . 'api/settings/about.php'));
-        $Version = ArrayValue('Version', ArrayValue('API', $ApplicationInfo, array()), 'Undefined');
-        SaveToConfig('API.Version', $Version);
     }
 }
