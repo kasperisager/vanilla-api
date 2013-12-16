@@ -1,6 +1,3 @@
-> ##### __Notice__
-> The Vanilla API is still undergoing development and gets rewritten every so often. Do therefore __not__ use it for __anything__ just yet. You're more than welcome to take a look at the source though and any contribution would be greatly appreciated!
-
 ## Getting started
 
 To get started using Vanilla API, either:
