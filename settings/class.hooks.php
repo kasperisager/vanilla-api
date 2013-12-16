@@ -62,8 +62,8 @@ class APIHooks implements Gdn_IPlugin
         }
 
         // Set the call and resource paths if they exist
-        $Call     = (isset($Path[0])) ? $Path[0] : FALSE;
-        $Resource = (isset($Path[1])) ? $Path[1] : FALSE;
+        $Call     = val(0, $Path);
+        $Resource = val(1, $Path);
 
         // Abandon the dispatch if this isn't an API call with a valid resource
         if (!$Call || $Call != 'api' || !$Resource) return;

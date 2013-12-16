@@ -324,7 +324,7 @@ class APIEngine
         $Path = self::TranslateRequestToPath($Request);
 
         // Get the requested resource
-        $Resource = (isset($Path[1])) ? $Path[1] : FALSE;
+        $Resource = val(1, $Path);
 
         // Turn requested resource into API class and store it
         $Class = ucfirst($Resource) . 'API';
@@ -372,13 +372,13 @@ class APIEngine
         }
 
         // If a method is supplied, set it. Otherwise it's null
-        $Method = (isset($Data['Method'])) ? $Data['Method'] : NULL;
+        $Method = val('Method', $Data, NULL);
 
         // If arguments are supplied, set them. Otherwise they're an empty array
-        $Arguments = (isset($Data['Arguments'])) ? $Data['Arguments'] : array();
+        $Arguments = val('Arguments', $Data, array());
 
         // If an application is supplied, set it. Otherwise it's null
-        $Application = (isset($Data['Application'])) ? $Data['Application'] : NULL;
+        $Application = val('Application', $Data, NULL);
 
         // Attach the correct application if one has been set
         if ($Application) Gdn_Autoloader::AttachApplication($Application);

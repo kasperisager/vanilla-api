@@ -7,9 +7,6 @@
  * DELETE operations. If a given method is not extended by the API class, a 501
  * Method Not Implemented error will simply be thrown.
  *
- * @todo Create helper functions for dealing with query paths in API classes
- *       E.g. $Value = (isset($Path[n])) ? $Path[n] : FALSE;
- *
  * @package   API
  * @since     0.1.0
  * @author    Kasper Kronborg Isager <kasperisager@gmail.com>

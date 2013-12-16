@@ -23,7 +23,7 @@ class UsersAPI extends APIMapper
      */
     public function Get($Path)
     {
-        $ID = (isset($Path[2])) ? $Path[2] : FALSE;
+        $ID = val(2, $Path);
 
         if (!$ID) {
 
@@ -70,7 +70,7 @@ class UsersAPI extends APIMapper
      */
     public function Put($Path)
     {
-        $ID = (isset($Path[2])) ? $Path[2] : FALSE;
+        $ID = val(2, $Path);
 
         if (!$ID) {
             throw new Exception("No ID defined", 401);
@@ -96,7 +96,7 @@ class UsersAPI extends APIMapper
      */
     public function Delete($Path)
     {
-        $ID = (isset($Path[2])) ? $Path[2] : FALSE;
+        $ID = val(2, $Path);
 
         if (!$ID) {
             throw new Exception("No ID defined", 401);

@@ -25,7 +25,7 @@ class ActivitiesAPI extends APIMapper
     {
         $this->API['Controller'] = 'Activity';
 
-        $ID = (isset($Path[2])) ? $Path[2] : FALSE;
+        $ID = val(2, $Path);
 
         if ($ID) {
             $this->API['Method']    = 'Item';
@@ -63,7 +63,7 @@ class ActivitiesAPI extends APIMapper
      */
     public function Delete($Path)
     {
-        $ID = (isset($Path[2])) ? $Path[2] : FALSE;
+        $ID = val(2, $Path);
 
         if (!$ID) {
             throw new Exception("No ID defined", 401);

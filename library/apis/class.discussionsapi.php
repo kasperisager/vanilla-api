@@ -23,7 +23,7 @@ class DiscussionsAPI extends APIMapper
      */
     public function Get($Path)
     {
-        $ID = (isset($Path[2])) ? $Path[2] : FALSE;
+        $ID = val(2, $Path);
 
         if ($ID) {
 
@@ -57,8 +57,8 @@ class DiscussionsAPI extends APIMapper
     {
         $this->API['Controller'] = 'Post';
 
-        $ID      = (isset($Path[2])) ? $Path[2] : FALSE;
-        $Comment = (isset($Path[3])) ? $Path[3] : FALSE;
+        $ID      = val(2, $Path);
+        $Comment = val(3, $Path);
 
         if ($ID && $Comment && $Comment == 'comments') {
 
@@ -88,7 +88,7 @@ class DiscussionsAPI extends APIMapper
      */
     public function Put($Path)
     {
-        $ID = (isset($Path[2])) ? $Path[2] : FALSE;
+        $ID = val(2, $Path);
 
         if (!$ID) {
             throw new Exception("No ID defined", 401);
@@ -101,7 +101,7 @@ class DiscussionsAPI extends APIMapper
 
         if ($ID == 'comments') {
 
-            $ID = (isset($Path[3])) ? $Path[3] : FALSE;
+            $ID = val(3, $Path);
 
             $this->API['Method']    = 'EditComment';
             $this->API['Arguments'] = array(
@@ -131,7 +131,7 @@ class DiscussionsAPI extends APIMapper
      */
     public function Delete($Path)
     {
-        $ID = (isset($Path[2])) ? $Path[2] : FALSE;
+        $ID = val(2, $Path);
 
         if (!$ID) {
             throw new Exception("No ID defined", 401);
@@ -144,7 +144,7 @@ class DiscussionsAPI extends APIMapper
 
         if ($ID == 'comments') {
 
-            $ID = (isset($Path[3])) ? $Path[3] : FALSE;
+            $ID = val(3, $Path);
 
             $this->API['Method']    = 'DeleteComment';
             $this->API['Arguments'] = array(

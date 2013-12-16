@@ -55,7 +55,7 @@ class RolesAPI extends APIMapper
      */
     public function Put($Path)
     {
-        $ID = (isset($Path[2])) ? $Path[2] : FALSE;
+        $ID = val(2, $Path);
 
         if (!$ID) {
             throw new Exception("No ID defined", 401);
@@ -81,7 +81,7 @@ class RolesAPI extends APIMapper
      */
     public function Delete($Path)
     {
-        $ID = (isset($Path[2])) ? $Path[2] : FALSE;
+        $ID = val(2, $Path);
 
         if (!$ID) {
             throw new Exception("No ID defined", 401);
