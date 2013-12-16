@@ -196,12 +196,12 @@ class APIEngine
         $UserModel = new UserModel();
 
         // Look up the user ID using a username if one has been specified
-        if(isset($Username)) {
+        if (isset($Username)) {
             return $UserModel->GetByUsername($Username)->UserID;
         }
 
         // Look up the user ID using an email if one has been specified
-        if(isset($Email)) {
+        if (isset($Email)) {
             return $UserModel->GetByEmail($Email)->UserID;
         }
 
@@ -228,8 +228,7 @@ class APIEngine
     {
         $Path = self::TranslateRequestToPath($Request);
 
-        switch(strtolower($Method)) {
-
+        switch (strtolower($Method)) {
             case 'get':
                 $Class->Get($Path);
                 $Data = $Class->API;
@@ -289,7 +288,6 @@ class APIEngine
                 $_POST = $Request->Post();
 
                 break;
-
         }
 
         return $Data;
@@ -437,11 +435,12 @@ class APIEngine
     public static function ParseFormData()
     {
         // Fetch PUT content and determine Boundary
-        $RawData    = file_get_contents('php://input');
-        $Boundary   = substr($RawData, 0, strpos($RawData, "\r\n"));
+        $RawData  = file_get_contents('php://input');
+        $Boundary = substr($RawData, 0, strpos($RawData, "\r\n"));
 
-        if (empty($Boundary)){
+        if (empty($Boundary)) {
             parse_str($RawData, $Data);
+
             return $Data;
         }
 
@@ -460,6 +459,7 @@ class APIEngine
             // Parse the headers list
             $RawHeaders = explode("\r\n", $RawHeaders);
             $headers    = array();
+
             foreach ($RawHeaders as $header) {
                 list($Name, $Value) = explode(':', $header);
                 $headers[strtolower($Name)] = ltrim($Value, ' ');
@@ -476,14 +476,14 @@ class APIEngine
                 list(, $Type, $Name) = $Matches;
                 isset($Matches[4]) and $filename = $Matches[4];
 
-                // handle your fields here
+                // Handle your fields here
                 switch ($Name) {
-                    // this is a file upload
+                    // This is a file upload
                     case 'userfile':
                         file_put_contents($filename, $PutBody);
                         break;
 
-                    // default for all other files is to populate $PutData
+                    // Default for all other files is to populate $PutData
                     default:
                         $PutData[$Name] = substr(
                             $PutBody, 0, strlen($PutBody) - 2
