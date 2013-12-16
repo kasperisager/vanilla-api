@@ -30,9 +30,15 @@ class APIHooks implements Gdn_IPlugin
             SaveToConfig('API.Secret', APIEngine::GenerateUniqueID());
         }
 
+        // Empty fallback array
         $ApplicationInfo = array();
-        include CombinePaths(array(PATH_APPLICATIONS . DS . 'api/settings/about.php'));
-        $Version = ArrayValue('Version', ArrayValue('API', $ApplicationInfo, array()), 'Undefined');
+
+        // Load the API application info
+        include PATH_APPLICATIONS . DS . 'api/settings/about.php';
+
+        $APIInfo = ArrayValue('API', $ApplicationInfo, array());
+        $Version = ArrayValue('Version', $APIInfo, 'Undefined');
+
         SaveToConfig('API.Version', $Version);
     }
 
