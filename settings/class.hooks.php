@@ -71,6 +71,7 @@ class APIHooks implements Gdn_IPlugin
         APIEngine::SetHeaders($Request);
 
         try {
+            // Attempt dispatching the API request
             APIEngine::DispatchRequest($Request);
         } catch (Exception $Exception) {
             // The Exception method will need a code and a message
@@ -118,7 +119,6 @@ class APIHooks implements Gdn_IPlugin
                     );
                 }
             }
-
         } else {
             $Data = array();
             $Data['Secret'] = C('API.Secret');
