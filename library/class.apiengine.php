@@ -80,7 +80,7 @@ class APIEngine
         }
 
         // Get the ID of the client (user) sending the request
-        $UserID = self::GetUserID($Username, $Email);
+        $UserID = static::GetUserID($Username, $Email);
 
         // Throw an error if no user was found
         if (!isset($UserID)) {
@@ -89,7 +89,7 @@ class APIEngine
 
         // Generate a signature from the passed data the same way it was
         // generated on the client
-        $Signature = self::GenerateSignature($Request);
+        $Signature = static::GenerateSignature($Request);
 
         // Make sure that the client token and the server signature match
         if ($Token != $Signature) {
@@ -226,7 +226,7 @@ class APIEngine
      */
     public static function DelegateMethodToClass($Request, $Method, $Class)
     {
-        $Path = self::TranslateRequestToPath($Request);
+        $Path = static::TranslateRequestToPath($Request);
 
         switch (strtolower($Method)) {
             case 'get':
@@ -257,7 +257,7 @@ class APIEngine
                 $Request->RequestMethod('post');
 
                 // Parse any form data and store it
-                $_PUT = self::ParseFormData();
+                $_PUT = static::ParseFormData();
 
                 // Combine the PUT request with any custom arguments
                 if (isset($Data['Arguments'])) {
@@ -321,7 +321,7 @@ class APIEngine
      */
     public static function DispatchRequest($Request)
     {
-        $Path = self::TranslateRequestToPath($Request);
+        $Path = static::TranslateRequestToPath($Request);
 
         // Get the requested resource
         $Resource = val(1, $Path);
@@ -346,7 +346,7 @@ class APIEngine
         $Method = $Request->RequestMethod();
 
         // Use the MethodHandler to get data from the API class
-        $Data = self::DelegateMethodToClass($Request, $Method, $Class);
+        $Data = static::DelegateMethodToClass($Request, $Method, $Class);
 
         // Make sure that the API class returns a controller definition
         if (!isset($Data['Controller'])) {
@@ -359,7 +359,7 @@ class APIEngine
         if (isset($Data['Authenticate']) && !Gdn::Session()->IsValid()) {
 
             // If authentication is required, authenticate the client
-            if ($Data['Authenticate']) self::AuthenticateRequest();
+            if ($Data['Authenticate']) static::AuthenticateRequest();
 
         } elseif (!Gdn::Session()->IsValid()) {
 
@@ -367,7 +367,7 @@ class APIEngine
             // username or an email has been specified in the request
             $Username = GetIncomingValue('username');
             $Email    = GetIncomingValue('email');
-            if ($Username || $Email) self::AuthenticateRequest();
+            if ($Username || $Email) static::AuthenticateRequest();
 
         }
 
