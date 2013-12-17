@@ -244,8 +244,8 @@ final class APIEngine
                 $Data = $Class->API;
 
                 // Combine the POST request with any custom arguments
-                if (isset($Data['Arguments'])) {
-                    $Merged = array_merge($_POST, $Data['Arguments']);
+                if ($Arguments = val('Arguments', $Data)) {
+                    $Merged = array_merge($_POST, $Arguments);
                     $Request->SetRequestArguments(Gdn_Request::INPUT_POST, $Merged);
                 }
 
@@ -257,7 +257,7 @@ final class APIEngine
                 $Class->Put($Path);
                 $Data = $Class->API;
 
-                // Garden can't handle PUT requests by default, so trick
+                // Garden can't process PUT requests by default, so trick
                 // it into thinking that this is actually a POST
                 $Request->RequestMethod('post');
 
@@ -265,8 +265,8 @@ final class APIEngine
                 $_PUT = static::ParseFormData();
 
                 // Combine the PUT request with any custom arguments
-                if (isset($Data['Arguments'])) {
-                    $Merged = array_merge($_PUT, $Data['Arguments']);
+                if ($Arguments = val('Arguments', $Data)) {
+                    $Merged = array_merge($_PUT, $Arguments);
                     $Request->SetRequestArguments(Gdn_Request::INPUT_POST, $Merged);
                 } else {
                     $Request->SetRequestArguments(Gdn_Request::INPUT_POST, $_PUT);
@@ -280,13 +280,12 @@ final class APIEngine
                 $Class->Delete($Path);
                 $Data = $Class->API;
 
-                // Garden can't handle DELETE requests by default, so trick
+                // Garden can't process DELETE requests by default, so trick
                 // it into thinking that this is actually a POST
                 $Request->RequestMethod('post');
 
                 // Combine the DELETE request with any custom arguments
-                if (isset($Data['Arguments'])) {
-                    $Arguments = $Data['Arguments'];
+                if ($Arguments = val('Arguments', $Data)) {
                     $Request->SetRequestArguments(Gdn_Request::INPUT_POST, $Arguments);
                 }
 
@@ -344,46 +343,44 @@ final class APIEngine
 
         // Make sure that the requested API class extend the API Mapper class
         if (!is_subclass_of($Class, 'APIMapper')) {
-            throw new Exception("APIs must extend the API Mapper", 401);
+            throw new Exception("APIs must be subclassed from the API Mapper", 401);
         }
 
         // Get the request method issued by the client
         $Method = $Request->RequestMethod();
 
-        // Use the MethodHandler to get data from the API class
+        // Get data from the requested API class
         $Data = static::DelegateMethodToClass($Request, $Method, $Class);
 
         // Make sure that the API class returns a controller definition
-        if (!isset($Data['Controller'])) {
+        if (!$Controller = val('Controller', $Data)) {
             throw new Exception("No controller has been defined", 500);
         }
 
-        $Controller = $Data['Controller'];
-
-        // Authenticate the request if no valid session exists
-        if (isset($Data['Authenticate']) && !Gdn::Session()->IsValid()) {
-
+        // Attempt authentication if no valid session exists
+        if (!Gdn::Session()->IsValid()) {
             // If authentication is required, authenticate the client
-            if ($Data['Authenticate']) static::AuthenticateRequest();
-
-        } elseif (!Gdn::Session()->IsValid()) {
-
+            if (val('Authenticate', $Data)) {
+                static::AuthenticateRequest();
+            }
             // If authentication is optional, only authenticate the client if a
             // username or an email has been specified in the request
-            $Username = GetIncomingValue('username');
-            $Email    = GetIncomingValue('email');
-            if ($Username || $Email) static::AuthenticateRequest();
+            else {
+                $Username = GetIncomingValue('username');
+                $Email    = GetIncomingValue('email');
 
+                if ($Username || $Email) static::AuthenticateRequest();
+            }
         }
 
-        // If a method is supplied, set it. Otherwise it's null
-        $Method = val('Method', $Data, NULL);
+        // If a method is supplied, set it. Otherwise it's "Index"
+        $Method = val('Method', $Data, 'Index');
 
         // If arguments are supplied, set them. Otherwise they're an empty array
         $Arguments = val('Arguments', $Data, array());
 
-        // If an application is supplied, set it. Otherwise it's null
-        $Application = val('Application', $Data, NULL);
+        // If an application is supplied, set it. Otherwise it's false
+        $Application = val('Application', $Data, FALSE);
 
         // Attach the correct application if one has been set
         if ($Application) Gdn_Autoloader::AttachApplication($Application);
@@ -413,7 +410,7 @@ final class APIEngine
 
         // Change response format depending on HTTP_ACCEPT
         $Accept = $Arguments['server']['HTTP_ACCEPT'];
-        $Format = ($Accept == 'application/xml') ? 'xml' : 'json';
+        $Format = (strtolower($Accept) == 'application/xml') ? 'xml' : 'json';
 
         $Request->WithDeliveryType(DELIVERY_TYPE_DATA);
 
