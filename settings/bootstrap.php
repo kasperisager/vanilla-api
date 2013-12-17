@@ -1,4 +1,4 @@
-<?php if (!defined('APPLICATION')) exit();
+<?php if (!defined('APPLICATION')) exit;
 
 // Register API library with the Garden Autoloader
 $Map     = Gdn_Autoloader::MAP_LIBRARY;
