@@ -19,9 +19,10 @@ class SearchAPI extends APIMapper
      * @since  0.1.0
      * @access public
      * @param  array $Path
+     * @static
      */
-    public function Get($Path)
+    public static function Get($Path)
     {
-        $this->API['Controller'] = 'Search';
+        static::$Controller = 'Search';
     }
 }

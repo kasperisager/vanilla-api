@@ -19,10 +19,11 @@ class MessagesAPI extends APIMapper
      * @since  0.1.0
      * @access public
      * @param  array $Path
+     * @static
      */
-    public function Get($Path)
+    public static function Get($Path)
     {
-        $this->API['Controller'] = 'Messages';
-        $this->API['Method']     = 'All';
+        static::$Controller = 'Messages';
+        static::$Method     = 'All';
     }
 }

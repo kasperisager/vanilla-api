@@ -20,16 +20,17 @@ class ActivitiesAPI extends APIMapper
      * @since  0.1.0
      * @access public
      * @param  array $Path
+     * @static
      */
-    public function Get($Path)
+    public static function Get($Path)
     {
-        $this->API['Controller'] = 'Activity';
+        static::$Controller = 'Activity';
 
-        $ID = val(2, $Path);
+        ;
 
-        if ($ID) {
-            $this->API['Method']    = 'Item';
-            $this->API['Arguments'] = array(
+        if ($ID = val(2, $Path)) {
+            static::$Method    = 'Item';
+            static::$Arguments = array(
                 'ActivityID' => $ID
             );
         }
@@ -43,12 +44,13 @@ class ActivitiesAPI extends APIMapper
      * @since  0.1.0
      * @access public
      * @param  array $Path
+     * @static
      */
-    public function Post($Path)
+    public static function Post($Path)
     {
-        $this->API['Controller']   = 'Activity';
-        $this->API['Method']       = 'Post';
-        $this->API['Authenticate'] = TRUE;
+        static::$Controller   = 'Activity';
+        static::$Method       = 'Post';
+        static::$Authenticate = TRUE;
     }
 
     /**
@@ -60,21 +62,20 @@ class ActivitiesAPI extends APIMapper
      * @access public
      * @param  array $Path
      * @throws Exception
+     * @static
      */
-    public function Delete($Path)
+    public static function Delete($Path)
     {
-        $ID = val(2, $Path);
-
-        if (!$ID) {
+        if (!$ID = val(2, $Path)) {
             throw new Exception("No ID defined", 401);
         }
 
-        $this->API['Controller'] = 'Activity';
-        $this->API['Method']     = 'Delete';
-        $this->API['Arguments']  = array(
+        static::$Controller = 'Activity';
+        static::$Method     = 'Delete';
+        static::$Arguments  = array(
             'DiscussionID' => $ID,
             'TransientKey' => Gdn::Session()->TransientKey()
         );
-        $this->API['Authenticate'] = TRUE;
+        static::$Authenticate = TRUE;
     }
 }

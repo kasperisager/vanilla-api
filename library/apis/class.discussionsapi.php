@@ -20,25 +20,24 @@ class DiscussionsAPI extends APIMapper
      * @since  0.1.0
      * @access public
      * @param  array $Path
+     * @static
      */
-    public function Get($Path)
+    public static function Get($Path)
     {
-        $ID = val(2, $Path);
+        if ($ID = val(2, $Path)) {
 
-        if ($ID) {
-
-            $this->API['Controller'] = 'Discussion';
-            $this->API['Arguments']  = array(
+            static::$Controller = 'Discussion';
+            static::$Arguments  = array(
                 'DiscussionID' => $ID
             );
 
         } else {
 
-            $this->API['Controller'] = 'Discussions';
+            static::$Controller = 'Discussions';
 
-            //$this->API['Method'] = 'Bookmarked';
+            //static::$Method = 'Bookmarked';
 
-            //$this->API['Method'] = 'Mine';
+            //static::$Method = 'Mine';
 
         }
     }
@@ -52,25 +51,26 @@ class DiscussionsAPI extends APIMapper
      * @since  0.1.0
      * @access public
      * @param  array $Path
+     * @static
      */
-    public function Post($Path)
+    public static function Post($Path)
     {
-        $this->API['Controller'] = 'Post';
+        static::$Controller = 'Post';
 
         $ID      = val(2, $Path);
         $Comment = val(3, $Path);
 
         if ($ID && $Comment && $Comment == 'comments') {
 
-            $this->API['Method']    = 'Comment';
-            $this->API['Arguments'] = array(
+            static::$Method    = 'Comment';
+            static::$Arguments = array(
                 'DiscussionID' => $ID,
                 'TransientKey' => Gdn::Session()->TransientKey()
             );
 
         } else {
 
-            $this->API['Method'] = 'Discussion';
+            static::$Method = 'Discussion';
 
         }
     }
@@ -85,17 +85,18 @@ class DiscussionsAPI extends APIMapper
      * @access public
      * @param  array $Path
      * @throws Exception
+     * @static
      */
-    public function Put($Path)
+    public static function Put($Path)
     {
-        $ID = val(2, $Path);
+        ;
 
-        if (!$ID) {
+        if (!$ID = val(2, $Path)) {
             throw new Exception("No ID defined", 401);
         }
 
-        $this->API['Controller'] = 'Post';
-        $this->API['Arguments']  = array(
+        static::$Controller = 'Post';
+        static::$Arguments  = array(
             'TransientKey' => Gdn::Session()->TransientKey()
         );
 
@@ -103,15 +104,15 @@ class DiscussionsAPI extends APIMapper
 
             $ID = val(3, $Path);
 
-            $this->API['Method']    = 'EditComment';
-            $this->API['Arguments'] = array(
+            static::$Method    = 'EditComment';
+            static::$Arguments = array(
                 'CommentID' => $ID
             );
 
         } else {
 
-            $this->API['Method']    = 'EditDiscussion';
-            $this->API['Arguments'] = array(
+            static::$Method    = 'EditDiscussion';
+            static::$Arguments = array(
                 'DiscussionID' => $ID
             );
 
@@ -128,17 +129,18 @@ class DiscussionsAPI extends APIMapper
      * @access public
      * @param  array $Path
      * @throws Exception
+     * @static
      */
-    public function Delete($Path)
+    public static function Delete($Path)
     {
-        $ID = val(2, $Path);
+        ;
 
-        if (!$ID) {
+        if (!$ID = val(2, $Path)) {
             throw new Exception("No ID defined", 401);
         }
 
-        $this->API['Controller'] = 'Discussion';
-        $this->API['Arguments']  = array(
+        static::$Controller = 'Discussion';
+        static::$Arguments  = array(
             'TransientKey' => Gdn::Session()->TransientKey()
         );
 
@@ -146,15 +148,15 @@ class DiscussionsAPI extends APIMapper
 
             $ID = val(3, $Path);
 
-            $this->API['Method']    = 'DeleteComment';
-            $this->API['Arguments'] = array(
+            static::$Method    = 'DeleteComment';
+            static::$Arguments = array(
                 'CommentID'    => $ID,
             );
 
         } else {
 
-            $this->API['Method']    = 'Delete';
-            $this->API['Arguments'] = array(
+            static::$Method    = 'Delete';
+            static::$Arguments = array(
                 'DiscussionID' => $ID,
             );
 

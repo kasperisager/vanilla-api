@@ -19,10 +19,11 @@ class RolesAPI extends APIMapper
      * @since  0.1.0
      * @access public
      * @param  array $Path
+     * @static
      */
-    public function Get($Path)
+    public static function Get($Path)
     {
-        $this->API['Controller'] = 'Role';
+        static::$Controller = 'Role';
     }
 
     /**
@@ -33,12 +34,13 @@ class RolesAPI extends APIMapper
      * @since  0.1.0
      * @access public
      * @param  array $Path
+     * @static
      */
-    public function Post($Path)
+    public static function Post($Path)
     {
-        $this->API['Controller'] = 'Role';
-        $this->API['Method']     = 'Add';
-        $this->API['Arguments']  = array(
+        static::$Controller = 'Role';
+        static::$Method     = 'Add';
+        static::$Arguments  = array(
             'TransientKey' => Gdn::Session()->TransientKey()
         );
     }
@@ -52,18 +54,17 @@ class RolesAPI extends APIMapper
      * @access public
      * @param  array $Path
      * @throws Exception
+     * @static
      */
-    public function Put($Path)
+    public static function Put($Path)
     {
-        $ID = val(2, $Path);
-
-        if (!$ID) {
+        if (!$ID = val(2, $Path)) {
             throw new Exception("No ID defined", 401);
         }
 
-        $this->API['Controller'] = 'Role';
-        $this->API['Method']     = 'Edit';
-        $this->API['Arguments']  = array(
+        static::$Controller = 'Role';
+        static::$Method     = 'Edit';
+        static::$Arguments  = array(
             'RoleID'       => $ID,
             'TransientKey' => Gdn::Session()->TransientKey()
         );
@@ -78,18 +79,17 @@ class RolesAPI extends APIMapper
      * @access public
      * @param  array $Path
      * @throws Exception
+     * @static
      */
-    public function Delete($Path)
+    public static function Delete($Path)
     {
-        $ID = val(2, $Path);
-
-        if (!$ID) {
+        if (!$ID = val(2, $Path)) {
             throw new Exception("No ID defined", 401);
         }
 
-        $this->API['Controller'] = 'Role';
-        $this->API['Method']     = 'Delete';
-        $this->API['Arguments']  = array(
+        static::$Controller = 'Role';
+        static::$Method     = 'Delete';
+        static::$Arguments  = array(
             'RoleID'       => $ID,
             'TransientKey' => Gdn::Session()->TransientKey()
         );

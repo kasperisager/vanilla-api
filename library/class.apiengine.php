@@ -217,84 +217,56 @@ final class APIEngine
      * Delegate methods to a specified API class
      *
      * This function takes a request URI and an HTTP method and uses these to
-     * delegate an action to the specified API class. In return, the API returns
-     * an array of data which we later to map the request to an application or
-     * plugin controller.
+     * delegate an action to the specified API class.
      *
      * @since  0.1.0
      * @access public
      * @param  Gdn_Request $Request The request object
      * @param  string      $Method  The request method issued by the client
      * @param  object      $Class   The class that we wish to delegate an action to
-     * @return array                An array of data returned by the API class
      * @static
      */
     public static function DelegateMethodToClass($Request, $Method, $Class)
     {
         $Path = static::TranslateRequestToPath($Request);
 
+        // To be merged with the API arguments
+        $Merge = array();
+
         switch (strtolower($Method)) {
             case 'get':
-                $Class->Get($Path);
-                $Data = $Class->API;
+                $Class::Get($Path);
+                return; // There's nothing more to a GET request
                 break;
 
             case 'post':
-                $Class->Post($Path);
-                $Data = $Class->API;
-
-                // Combine the POST request with any custom arguments
-                if ($Arguments = val('Arguments', $Data)) {
-                    $Merged = array_merge($_POST, $Arguments);
-                    $Request->SetRequestArguments(Gdn_Request::INPUT_POST, $Merged);
-                }
-
-                $_POST = $Request->Post();
-
+                $Class::Post($Path);
+                $Merge = $_POST; // Merge in POST data
                 break;
 
             case 'put':
-                $Class->Put($Path);
-                $Data = $Class->API;
-
-                // Garden can't process PUT requests by default, so trick
-                // it into thinking that this is actually a POST
-                $Request->RequestMethod('post');
-
-                // Parse any form data and store it
-                $_PUT = static::ParseFormData();
-
-                // Combine the PUT request with any custom arguments
-                if ($Arguments = val('Arguments', $Data)) {
-                    $Merged = array_merge($_PUT, $Arguments);
-                    $Request->SetRequestArguments(Gdn_Request::INPUT_POST, $Merged);
-                } else {
-                    $Request->SetRequestArguments(Gdn_Request::INPUT_POST, $_PUT);
-                }
-
-                $_POST = $Request->Post();
-
+                $Class::Put($Path);
+                $Merge = static::ParseFormData(); // Parse and merge in form data
                 break;
 
             case 'delete':
-                $Class->Delete($Path);
-                $Data = $Class->API;
-
-                // Garden can't process DELETE requests by default, so trick
-                // it into thinking that this is actually a POST
-                $Request->RequestMethod('post');
-
-                // Combine the DELETE request with any custom arguments
-                if ($Arguments = val('Arguments', $Data)) {
-                    $Request->SetRequestArguments(Gdn_Request::INPUT_POST, $Arguments);
-                }
-
-                $_POST = $Request->Post();
-
+                $Class::Delete($Path);
                 break;
         }
 
-        return $Data;
+        $Arguments = $Class::$Arguments;
+
+        // Garden can't process PUT and DELETE requests by default, so trick
+        // it into thinking that this is actually a POST no matter what
+        $Request->RequestMethod('post');
+
+        // Set request arguments as merged results on the API arguments as well
+        // as any method-specific arguments that might have been set above
+        $Request->SetRequestArguments(Gdn_Request::INPUT_POST, array_merge($Merge, $Arguments));
+
+        // Set the PHP $_POST variable as the result of any form data picked up
+        // by Garden
+        $_POST = $Request->Post();
     }
 
     /**
@@ -338,9 +310,6 @@ final class APIEngine
             throw new Exception("The requested API was not found", 404);
         }
 
-        // Instantiate the requested API class
-        $Class = new $Class;
-
         // Make sure that the requested API class extend the API Mapper class
         if (!is_subclass_of($Class, 'APIMapper')) {
             throw new Exception("APIs must be subclassed from the API Mapper", 401);
@@ -349,18 +318,18 @@ final class APIEngine
         // Get the request method issued by the client
         $Method = $Request->RequestMethod();
 
-        // Get data from the requested API class
-        $Data = static::DelegateMethodToClass($Request, $Method, $Class);
+        // Delegate request to an API class based on the HTTP method
+        static::DelegateMethodToClass($Request, $Method, $Class);
 
         // Make sure that the API class returns a controller definition
-        if (!$Controller = val('Controller', $Data)) {
+        if (!$Controller = $Class::$Controller) {
             throw new Exception("No controller has been defined in the API", 500);
         }
 
         // Attempt authentication if no valid session exists
         if (!Gdn::Session()->IsValid()) {
             // If authentication is required, authenticate the client
-            if (val('Authenticate', $Data)) {
+            if ($Class::$Authenticate) {
                 static::AuthenticateRequest();
             }
             // If authentication is optional, only authenticate the client if a
@@ -373,14 +342,9 @@ final class APIEngine
             }
         }
 
-        // If a method is supplied, set it. Otherwise it's "Index"
-        $Method = val('Method', $Data, 'Index');
-
-        // If arguments are supplied, set them. Otherwise they're an empty array
-        $Arguments = val('Arguments', $Data, array());
-
-        // If an application is supplied, set it. Otherwise it's false
-        $Application = val('Application', $Data, FALSE);
+        $Method      = $Class::$Method;
+        $Arguments   = $Class::$Arguments;
+        $Application = $Class::$Application;
 
         // Attach the correct application if one has been set
         if ($Application) Gdn_Autoloader::AttachApplication($Application);
@@ -462,29 +426,29 @@ final class APIEngine
 
             // Parse the headers list
             $RawHeaders = explode("\r\n", $RawHeaders);
-            $headers    = array();
+            $Headers    = array();
 
-            foreach ($RawHeaders as $header) {
-                list($Name, $Value) = explode(':', $header);
-                $headers[strtolower($Name)] = ltrim($Value, ' ');
+            foreach ($RawHeaders as $Header) {
+                list($Name, $Value) = explode(':', $Header);
+                $Headers[strtolower($Name)] = ltrim($Value, ' ');
             }
 
             // Parse the Content-Disposition to get the field name, etc.
-            if (isset($headers['content-disposition'])) {
-                $filename = null;
+            if (isset($Headers['content-disposition'])) {
+                $Filename = null;
                 preg_match(
                     '/^(.+); *name="([^"]+)"(; *filename="([^"]+)")?/',
-                    $headers['content-disposition'],
+                    $Headers['content-disposition'],
                     $Matches
                 );
                 list(, $Type, $Name) = $Matches;
-                isset($Matches[4]) and $filename = $Matches[4];
+                isset($Matches[4]) and $Filename = $Matches[4];
 
                 // Handle your fields here
                 switch ($Name) {
                     // This is a file upload
                     case 'userfile':
-                        file_put_contents($filename, $PutBody);
+                        file_put_contents($Filename, $PutBody);
                         break;
 
                     // Default for all other files is to populate $PutData

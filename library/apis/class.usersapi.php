@@ -21,22 +21,22 @@ class UsersAPI extends APIMapper
      * @access public
      * @param  array $Path
      */
-    public function Get($Path)
+    public static function Get($Path)
     {
         $ID = val(2, $Path);
 
-        if (!$ID) {
-
-            $this->API['Controller'] = 'Profile';
-            $this->API['Arguments']  = array(
+        if (is_numeric($ID)) {
+            static::$Controller = 'Profile';
+            static::$Arguments  = array(
                 'User'   => $ID,
                 'UserID' => $ID
             );
-
+        } elseif (strtolower($ID) == 'summary') {
+            static::$Controller = 'User';
+            static::$Method     = 'Summary';
         } else {
-
-            $this->API['Controller'] = 'User';
-
+            static::$Authenticate = TRUE;
+            static::$Controller   = 'User';
         }
     }
 
@@ -49,11 +49,11 @@ class UsersAPI extends APIMapper
      * @access public
      * @param  array $Path
      */
-    public function Post($Path)
+    public static function Post($Path)
     {
-        $this->API['Controller'] = 'User';
-        $this->API['Method']     = 'Add';
-        $this->API['Arguments']  = array(
+        static::$Controller = 'User';
+        static::$Method     = 'Add';
+        static::$Arguments  = array(
             'TransientKey' => Gdn::Session()->TransientKey()
         );
     }
@@ -68,17 +68,15 @@ class UsersAPI extends APIMapper
      * @param  array $Path
      * @throws Exception
      */
-    public function Put($Path)
+    public static function Put($Path)
     {
-        $ID = val(2, $Path);
-
-        if (!$ID) {
+        if (!$ID = val(2, $Path)) {
             throw new Exception("No ID defined", 401);
         }
 
-        $this->API['Controller'] = 'User';
-        $this->API['Method']     = 'Edit';
-        $this->API['Arguments']  = array(
+        static::$Controller = 'User';
+        static::$Method     = 'Edit';
+        static::$Arguments  = array(
             'UserID'       => $ID,
             'TransientKey' => Gdn::Session()->TransientKey()
         );
@@ -94,17 +92,15 @@ class UsersAPI extends APIMapper
      * @param  array $Path
      * @throws Exception
      */
-    public function Delete($Path)
+    public static function Delete($Path)
     {
-        $ID = val(2, $Path);
-
-        if (!$ID) {
+        if (!$ID = val(2, $Path)) {
             throw new Exception("No ID defined", 401);
         }
 
-        $this->API['Controller'] = 'User';
-        $this->API['Method']     = 'Delete';
-        $this->API['Arguments']  = array(
+        static::$Controller = 'User';
+        static::$Method     = 'Delete';
+        static::$Arguments  = array(
             'UserID'       => $ID,
             'TransientKey' => Gdn::Session()->TransientKey()
         );

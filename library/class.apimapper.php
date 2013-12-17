@@ -17,25 +17,73 @@
 abstract class APIMapper
 {
     /**
-     * API property containing information about the API called by the client
+     * Controller to call when requesting the API.
      *
      * @since  0.1.0
      * @access public
-     * @var    object
+     * @var    string|null
+     * @static
      */
-    public $API;
+    public static $Controller;
+
+    /**
+     * Method to call on the controller specified earlier.
+     *
+     * @since  0.1.0
+     * @access public
+     * @var    string
+     * @static
+     */
+    public static $Method = 'Index';
+
+    /**
+     * Application in which the controller can be found (Optional).
+     *
+     * Useful for when dealing with non-uniquely named controller such as the
+     * "Settings" controller that exists in both the "Vanilla" and "Dashboard"
+     * applications.
+     *
+     * In case no application is explicitly specified, Garden will simply look
+     * for whichever application that contains the specified controller.
+     *
+     * @since  0.1.0
+     * @access public
+     * @var    string|null
+     * @static
+     */
+    public static $Application;
+
+    /**
+     * Array of named arguments to pass along to the controller method.
+     *
+     * @since  0.1.0
+     * @access public
+     * @var    array
+     * @static
+     */
+    public static $Arguments = array();
+
+    /**
+     * Whether or not to force user authentication.
+     *
+     * @since  0.1.0
+     * @access public
+     * @var    boolean
+     * @static
+     */
+    public static $Authenticate = FALSE;
 
     /**
      * API class GET operation
      *
      * This method will be run when a GET request is sent to a given API class.
-     * The GET method only allows returning an API controller and method.
      *
      * @since  0.1.0
      * @access public
      * @throws Exception
+     * @static
      */
-    public function Get()
+    public static function Get()
     {
         throw new Exception("Method Not Implemented", 501);
     }
@@ -44,14 +92,15 @@ abstract class APIMapper
      * API class POST operation
      *
      * This method will be run when a POST request is sent to a given API class.
-     * The POST method allows you to return an array of custom arguments which
-     * will be included with the rest of the Form Data sent in the request body.
+     * Allows passing along Form Data with the request which will be merged with
+     * any custom arguments set on the API property.
      *
      * @since  0.1.0
      * @access public
      * @throws Exception
+     * @static
      */
-    public function Post()
+    public static function Post()
     {
         throw new Exception("Method Not Implemented", 501);
     }
@@ -60,14 +109,15 @@ abstract class APIMapper
      * API class PUT operation
      *
      * This method will be run when a PUT request is sent to a given API class.
-     * The PUT method allows you to return an array of custom arguments which
-     * will be included with the rest of the Form Data sent in the request body.
+     * Allows passing along Form Data with the request which will be merged with
+     * any custom arguments set on the API property.
      *
      * @since  0.1.0
      * @access public
      * @throws Exception
+     * @static
      */
-    public function Put()
+    public static function Put()
     {
         throw new Exception("Method Not Implemented", 501);
     }
@@ -76,16 +126,15 @@ abstract class APIMapper
      * API class DELETE operation
      *
      * This method will be run when a DELETE request is sent to a given API class.
-     * The DELETE method allows you to return an array of custom arguments but
-     * doesn't allow for sending any Form Data directly in the request body
-     * meaning that all data required for processing the request will have to be
-     * included in the custom request arguments.
+     * This method does not allow Form Data so any arguments you wish to pass
+     * along to a given controller method must be set on the API property.
      *
      * @since  0.1.0
      * @access public
      * @throws Exception
+     * @static
      */
-    public function Delete()
+    public static function Delete()
     {
         throw new Exception("Method Not Implemented", 501);
     }

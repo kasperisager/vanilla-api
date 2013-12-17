@@ -19,12 +19,13 @@ class ConfigurationAPI extends APIMapper
      * @since  0.1.0
      * @access public
      * @param  array $Path
+     * @static
      */
-    public function Get($Path)
+    public static function Get($Path)
     {
-        $this->API['Application']  = 'Dashboard';
-        $this->API['Controller']   = 'Settings';
-        $this->API['Method']       = 'Configuration';
-        $this->API['Authenticate'] = TRUE;
+        static::$Application  = 'Dashboard';
+        static::$Controller   = 'Settings';
+        static::$Method       = 'Configuration';
+        static::$Authenticate = TRUE;
     }
 }
