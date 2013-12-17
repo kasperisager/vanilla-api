@@ -49,7 +49,7 @@ final class APIEngine
 
         // Make sure that the query actually contains data
         if (!isset($ParsedURL['query'])) {
-            throw new Exception(T("No authentication query defined"), 401);
+            throw new Exception("No authentication query defined", 401);
         }
 
         // Now that we're sure the query conatins some data, turn this data into
@@ -66,22 +66,22 @@ final class APIEngine
 
         // Make sure that either a username or an email has been passed
         if (empty($Username) && empty($Email)) {
-            throw new Exception(T("Authentication required: Username or email must be specified"), 401);
+            throw new Exception("Authentication required: Username or email must be specified", 401);
         }
 
         // Make sure that the query contains a timestamp
         if (empty($Timestamp)) {
-            throw new Exception(T("Authentication failed: A timestamp must be specified"), 401);
+            throw new Exception("Authentication failed: A timestamp must be specified", 401);
         }
 
         // Make sure that this timestamp is still valid
         if ((abs($Timestamp - time())) > C('API.Expiration')) {
-            throw new Exception(T("Authentication failed: The request is no longer valid"), 401);
+            throw new Exception("Authentication failed: The request is no longer valid", 401);
         }
 
         // Make sure that the query contains a token
         if (empty($Token)) {
-            throw new Exception(T("Authentication failed: A token must be specified"), 401);
+            throw new Exception("Authentication failed: A token must be specified", 401);
         }
 
         // Get the ID of the client (user) sending the request
@@ -89,7 +89,7 @@ final class APIEngine
 
         // Throw an error if no user was found
         if (!isset($UserID)) {
-            throw new Exception(T("Authentication failed: The specified user doesn't exist"), 401);
+            throw new Exception("Authentication failed: The specified user doesn't exist", 401);
         }
 
         // Generate a signature from the passed data the same way it was
@@ -98,7 +98,7 @@ final class APIEngine
 
         // Make sure that the client token and the server signature match
         if ($Token != $Signature) {
-            throw new Exception(T("Authentication failed: Token and signature do not match"), 401);
+            throw new Exception("Authentication failed: Token and signature do not match", 401);
         }
 
         // Now that we've thoroughly verified the client, start a session for the
