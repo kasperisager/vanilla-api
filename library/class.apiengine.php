@@ -335,7 +335,7 @@ final class APIEngine
 
         // Make sure that the requested API class exists
         if (!class_exists($Class)) {
-            throw new Exception("No such API found", 404);
+            throw new Exception("The requested API was not found", 404);
         }
 
         // Instantiate the requested API class
@@ -354,7 +354,7 @@ final class APIEngine
 
         // Make sure that the API class returns a controller definition
         if (!$Controller = val('Controller', $Data)) {
-            throw new Exception("No controller has been defined", 500);
+            throw new Exception("No controller has been defined in the API", 500);
         }
 
         // Attempt authentication if no valid session exists
