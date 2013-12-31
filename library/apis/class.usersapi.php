@@ -21,6 +21,7 @@ class UsersAPI extends APIMapper
      * @since  0.1.0
      * @access public
      * @param  array $Path
+     * @static
      */
     public static function Get($Path)
     {
@@ -49,6 +50,7 @@ class UsersAPI extends APIMapper
      * @since  0.1.0
      * @access public
      * @param  array $Path
+     * @static
      */
     public static function Post($Path)
     {
@@ -68,6 +70,7 @@ class UsersAPI extends APIMapper
      * @access public
      * @param  array $Path
      * @throws Exception
+     * @static
      */
     public static function Put($Path)
     {
@@ -92,6 +95,7 @@ class UsersAPI extends APIMapper
      * @access public
      * @param  array $Path
      * @throws Exception
+     * @static
      */
     public static function Delete($Path)
     {
