@@ -286,6 +286,16 @@ final class APIEngine
      */
     public static function DispatchRequest($Request)
     {
+        // Attempt authentication if no valid session exists
+        if (!Gdn::Session()->IsValid()) {
+            $Username = GetIncomingValue('username');
+            $Email    = GetIncomingValue('email');
+
+            // Only authenticate the client if a username or an email has been
+            // specified in the request
+            if ($Username || $Email) static::AuthenticateRequest($Request);
+        }
+
         $Path = static::TranslateRequestToPath($Request);
 
         // Get the requested resource
@@ -312,20 +322,10 @@ final class APIEngine
             throw new Exception("No controller has been defined in the API", 500);
         }
 
-        // Attempt authentication if no valid session exists
-        if (!Gdn::Session()->IsValid()) {
-            // If authentication is required, authenticate the client
-            if ($Class::$Authenticate) {
-                static::AuthenticateRequest($Request);
-            }
-            // If authentication is optional, only authenticate the client if a
-            // username or an email has been specified in the request
-            else {
-                $Username = GetIncomingValue('username');
-                $Email    = GetIncomingValue('email');
-
-                if ($Username || $Email) static::AuthenticateRequest($Request);
-            }
+        // If the endpoint requires authentication and none has been provided,
+        // throw an error
+        if ($Class::$Authenticate && !Gdn::Session()->IsValid()) {
+            throw new Exception("Authentication required for this endpoint", 401);
         }
 
         $Method      = $Class::$Method;
