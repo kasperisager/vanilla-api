@@ -26,8 +26,6 @@ class ActivitiesAPI extends APIMapper
     {
         static::$Controller = 'Activity';
 
-        ;
-
         if ($ID = val(2, $Path)) {
             static::$Method    = 'Item';
             static::$Arguments = array(

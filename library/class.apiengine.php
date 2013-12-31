@@ -22,39 +22,34 @@ final class APIEngine
     /**
      * Token-based, per-request authentication
      *
-     * This function takes the entire request string and turns the query into an
+     * This method takes the entire request string and turns the query into an
      * array of data. It then uses all the data to generate a signature the same
      * way it got generated on the client. If the server signature and client
      * token match, the client is considered legimate and the request is served.
      *
      * Based on initial work by Diego Zanella
-     * @link    http://careers.stackoverflow.com/diegozanella
+     * @link http://careers.stackoverflow.com/diegozanella
      *
      * @since  0.1.0
      * @access public
+     * @param  object $Request The request to authenticate
      * @throws Exception
      * @static
      */
-    public static function AuthenticateRequest()
+    public static function AuthenticateRequest($Request)
     {
-        $Request      = Gdn::Request();
         $PathAndQuery = $Request->PathAndQuery();
         $ParsedURL    = parse_url($PathAndQuery);
 
-        // Get the values we need for authentication
+        // Get the values we need for authentication (defaults are FALSE)
         $Username  = GetIncomingValue('username');
         $Email     = GetIncomingValue('email');
         $Timestamp = GetIncomingValue('timestamp');
         $Token     = GetIncomingValue('token');
 
-        // Make sure that the query actually contains data
-        if (!isset($ParsedURL['query'])) {
-            throw new Exception("No authentication query defined", 401);
-        }
-
-        // Now that we're sure the query conatins some data, turn this data into
-        // an array which we will later use to analyze each part of the query
-        parse_str($ParsedURL['query'], $Request);
+        // Turn the request query data into an array which we will later use to
+        // analyze each part of the query
+        parse_str(val('query', $ParsedURL, array()), $Request);
 
         // Unset the client token as we don't want to include it when generating
         // the server signature
@@ -65,12 +60,12 @@ final class APIEngine
         unset($Request['DeliveryMethod']);
 
         // Make sure that either a username or an email has been passed
-        if (empty($Username) && empty($Email)) {
+        if (!$Username && !$Email) {
             throw new Exception("Authentication required: Username or email must be specified", 401);
         }
 
         // Make sure that the query contains a timestamp
-        if (empty($Timestamp)) {
+        if (!$Timestamp) {
             throw new Exception("Authentication failed: A timestamp must be specified", 401);
         }
 
@@ -80,7 +75,7 @@ final class APIEngine
         }
 
         // Make sure that the query contains a token
-        if (empty($Token)) {
+        if (!$Token) {
             throw new Exception("Authentication failed: A token must be specified", 401);
         }
 
@@ -88,7 +83,7 @@ final class APIEngine
         $UserID = static::GetUserID($Username, $Email);
 
         // Throw an error if no user was found
-        if (!isset($UserID)) {
+        if (!$UserID) {
             throw new Exception("Authentication failed: The specified user doesn't exist", 401);
         }
 
@@ -109,7 +104,7 @@ final class APIEngine
     }
 
     /**
-     * Generate a signature from a request array
+     * Generate a signature from an array of request data (query strings)
      *
      * This function takes an array of data, sorts the keys alphabetically and
      * generates an HMAC hash using a specified application secret. The hash
@@ -121,26 +116,24 @@ final class APIEngine
      *
      * @since  0.1.0
      * @access public
-     * @param  array $Request Array of request data uesd for generating the
-     *                        signature hash
-     * @return string         An HMAC-SHA256 hash generated from the request
-     *                        data
+     * @param  array $Data Array of request data uesd for generating the hash
+     * @return string      An HMAC-SHA256 hash generated from the request data
      * @static
      */
-    public static function GenerateSignature($Request)
+    public static function GenerateSignature($Data)
     {
         // Get the application secret used for generating the hash
         $Secret = C('API.Secret');
 
         // Sort the data array alphabetically so we always get the same hash no
         // matter how the data was originally sorted
-        ksort($Request, SORT_STRING);
+        ksort($Data, SORT_STRING);
 
         // Generate a signature by taking all the request data values (we're not
         // interested in the keys), delimiting them with a dash (to avoid hash
         // collisions) and making it all lower case as to ensure consistent hash
         // generation
-        $Signature = hash_hmac('sha256', strtolower(implode('-', $Request)), $Secret);
+        $Signature = hash_hmac('sha256', strtolower(implode('-', $Data)), $Secret);
 
         return $Signature;
     }
@@ -148,9 +141,10 @@ final class APIEngine
     /**
      * Generates a Universally Unique Identifier, version 4
      *
+     * @link http://en.wikipedia.org/wiki/UUID
+     * 
      * @since  0.1.0
      * @access public
-     * @link   http://en.wikipedia.org/wiki/UUID
      * @return string A UUID, made up of 32 hex digits and 4 hyphens.
      * @static
      */
@@ -189,10 +183,10 @@ final class APIEngine
      *
      * @since  0.1.0
      * @access public
-     * @param  string $Username  Username of the user whose ID we wish to get
-     * @param  string $Email     Email of the user whose ID we wish to get
-     * @return int|null          User ID if a username or an email has been
-     *                           specified, otherwise NULL
+     * @param  bool|string $Username Username of the user whose ID we wish to get
+     * @param  bool|string $Email    Email of the user whose ID we wish to get
+     * @return bool|int              User ID if a username or an email has been
+     *                               specified, otherwise FALSE
      * @static
      */
     public static function GetUserID($Username, $Email)
@@ -201,72 +195,12 @@ final class APIEngine
         $UserModel = new UserModel();
 
         // Look up the user ID using a username if one has been specified
-        if (isset($Username)) {
-            return $UserModel->GetByUsername($Username)->UserID;
-        }
+        if ($Username) return $UserModel->GetByUsername($Username)->UserID;
 
         // Look up the user ID using an email if one has been specified
-        if (isset($Email)) {
-            return $UserModel->GetByEmail($Email)->UserID;
-        }
+        if ($Email) return $UserModel->GetByEmail($Email)->UserID;
 
-        return NULL;
-    }
-
-    /**
-     * Delegate methods to a specified API class
-     *
-     * This function takes a request URI and an HTTP method and uses these to
-     * delegate an action to the specified API class.
-     *
-     * @since  0.1.0
-     * @access public
-     * @param  Gdn_Request $Request The request object
-     * @param  string      $Method  The request method issued by the client
-     * @param  object      $Class   The class that we wish to delegate an action to
-     * @static
-     */
-    public static function DelegateMethodToClass($Request, $Method, $Class)
-    {
-        $Path = static::TranslateRequestToPath($Request);
-
-        // To be merged with the API arguments
-        $Merge = array();
-
-        switch (strtolower($Method)) {
-            case 'get':
-                $Class::Get($Path);
-                return; // There's nothing more to a GET request
-                break;
-
-            case 'post':
-                $Class::Post($Path);
-                $Merge = $_POST; // Merge in POST data
-                break;
-
-            case 'put':
-                $Class::Put($Path);
-                $Merge = static::ParseFormData(); // Parse and merge in form data
-                break;
-
-            case 'delete':
-                $Class::Delete($Path);
-                break;
-        }
-
-        $Arguments = $Class::$Arguments;
-
-        // Garden can't process PUT and DELETE requests by default, so trick
-        // it into thinking that this is actually a POST no matter what
-        $Request->RequestMethod('post');
-
-        // Set request arguments as merged results on the API arguments as well
-        // as any method-specific arguments that might have been set above
-        $Request->SetRequestArguments(Gdn_Request::INPUT_POST, array_merge($Merge, $Arguments));
-
-        // Set the PHP $_POST variable as the result of any form data picked up
-        // by Garden
-        $_POST = $Request->Post();
+        return FALSE;
     }
 
     /**
@@ -284,6 +218,61 @@ final class APIEngine
         $Path = explode('/', $URI);
 
         return $Path;
+    }
+
+    /**
+     * Delegate methods to a specified API class
+     *
+     * This function takes a request object and uses it to delegate an action to
+     * a specified API class.
+     *
+     * @since  0.1.0
+     * @access public
+     * @param  Gdn_Request $Request The request object
+     * @param  object      $Class   The class that we wish to delegate an action to
+     * @static
+     */
+    public static function DelegateRequestToClass($Request, $Class)
+    {
+        $Path   = static::TranslateRequestToPath($Request);
+        $Method = strtolower($Request->RequestMethod());
+
+        // To be merged with the API arguments
+        $Merge = array();
+
+        switch ($Method) {
+            case 'get':
+                $Class::Get($Path);
+                return; // There's nothing more to a GET request
+                break;
+
+            case 'post':
+                $Class::Post($Path);
+                break;
+
+            case 'put':
+                $Class::Put($Path);
+                $Merge = static::ParseFormData(); // Parse and merge in form data
+                break;
+
+            case 'delete':
+                $Class::Delete($Path);
+                break;
+        }
+
+        // Garden can't process PUT and DELETE requests by default, so trick
+        // it into thinking that this is actually a POST no matter what
+        $Request->RequestMethod('post');
+
+        // Set request arguments as the merged results on the API arguments as
+        // well as any method-specific arguments that might have been set above
+        $Request->SetRequestArguments(Gdn_Request::INPUT_POST, array_merge(
+            $Merge, $Class::$Arguments
+        ));
+
+        // Set the PHP $_POST variable as the result of any form data picked up
+        // by Garden. This is only needed in the case of a PUT request.
+        if ($Method == 'put') $_POST = $Request->Post();
     }
 
     /**
@@ -315,11 +304,8 @@ final class APIEngine
             throw new Exception("APIs must be subclassed from the API Mapper", 401);
         }
 
-        // Get the request method issued by the client
-        $Method = $Request->RequestMethod();
-
-        // Delegate request to an API class based on the HTTP method
-        static::DelegateMethodToClass($Request, $Method, $Class);
+        // Delegate request to an API class
+        static::DelegateRequestToClass($Request, $Class);
 
         // Make sure that the API class returns a controller definition
         if (!$Controller = $Class::$Controller) {
@@ -330,7 +316,7 @@ final class APIEngine
         if (!Gdn::Session()->IsValid()) {
             // If authentication is required, authenticate the client
             if ($Class::$Authenticate) {
-                static::AuthenticateRequest();
+                static::AuthenticateRequest($Request);
             }
             // If authentication is optional, only authenticate the client if a
             // username or an email has been specified in the request
@@ -338,7 +324,7 @@ final class APIEngine
                 $Username = GetIncomingValue('username');
                 $Email    = GetIncomingValue('email');
 
-                if ($Username || $Email) static::AuthenticateRequest();
+                if ($Username || $Email) static::AuthenticateRequest($Request);
             }
         }
 
@@ -363,28 +349,35 @@ final class APIEngine
      */
     public static function SetHeaders($Request)
     {
-        $Arguments = $Request->Export('Arguments');
-
-        // CORS support
+        // CORS support (experimental)
         if (C('API.AllowCORS')) {
             $Headers = 'Origin, X-Requested-With, Content-Type, Accept';
+
             header('Access-Control-Allow-Origin: *');
             header('Access-Control-Allow-Headers: ' . $Headers);
         }
 
-        // Change response format depending on HTTP_ACCEPT
-        $Accept = $Arguments['server']['HTTP_ACCEPT'];
-        $Format = (strtolower($Accept) == 'application/xml') ? 'xml' : 'json';
+        // Allow enabling JSONP using API.AllowJSONP
+        if (C('API.AllowJSONP')) {
+            SaveToConfig('Garden.AllowJSONP', TRUE, FALSE);
+        }
 
+        $Arguments = $Request->Export('Arguments');
+
+        // Only deliver the actual data - no views or other funky stuff
         $Request->WithDeliveryType(DELIVERY_TYPE_DATA);
 
-        switch ($Format) {
-            case 'json':
-                $Request->WithDeliveryMethod(DELIVERY_METHOD_JSON);
+        // Change response format depending on HTTP_ACCEPT
+        switch (strtolower($Arguments['server']['HTTP_ACCEPT'])) {
+            case 'text/xml':
+            case 'application/xml':
+                $Request->WithDeliveryMethod(DELIVERY_METHOD_XML);
                 break;
 
-            case 'xml':
-                $Request->WithDeliveryMethod(DELIVERY_METHOD_XML);
+            case 'application/json':
+            case 'application/javascript': // For JSONP
+            default:
+                $Request->WithDeliveryMethod(DELIVERY_METHOD_JSON);
                 break;
         }
     }
@@ -393,6 +386,9 @@ final class APIEngine
      * Parse raw Form Data and return it as an array
      *
      * @link http://stackoverflow.com/a/9469615/1293026
+     *
+     * @todo This operation seems extremely slow (~100ms) so I was wondering
+     *       if there might be a way to speed things up.
      *
      * @since  0.1.0
      * @access public
@@ -444,12 +440,11 @@ final class APIEngine
                 list(, $Type, $Name) = $Matches;
                 isset($Matches[4]) and $Filename = $Matches[4];
 
-                // Handle your fields here
                 switch ($Name) {
                     // This is a file upload
-                    case 'userfile':
-                        file_put_contents($Filename, $PutBody);
-                        break;
+                    // case 'userfile':
+                    //     file_put_contents($Filename, $PutBody);
+                    //     break;
 
                     // Default for all other files is to populate $PutData
                     default:

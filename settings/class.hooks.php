@@ -53,20 +53,14 @@ class APIHooks implements Gdn_IPlugin
     public function Gdn_Dispatcher_BeforeDispatch_Handler()
     {
         $Request = Gdn::Request();
-        $URI     = strtolower($Request->RequestURI());
-        $Path    = explode('/', $URI);
-
-        // Allow enabling JSONP using API.AllowJSONP
-        if (C('API.AllowJSONP')) {
-            SaveToConfig('Garden.AllowJSONP', TRUE, FALSE);
-        }
+        $Path    = APIEngine::TranslateRequestToPath($Request);
 
         // Set the call and resource paths if they exist
         $Call     = val(0, $Path);
         $Resource = val(1, $Path);
 
         // Abandon the dispatch if this isn't an API call with a valid resource
-        if (!$Call || $Call != 'api' || !$Resource) return;
+        if ($Call != 'api' || !$Resource) return;
 
         APIEngine::SetHeaders($Request);
 

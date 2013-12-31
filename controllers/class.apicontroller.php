@@ -3,7 +3,7 @@
 /**
  * API Controller
  *
- * This controller mainly handles rendering data from the API engine
+ * This controller mainly handles rendering data from the API engine.
  *
  * @package   API
  * @since     0.1.0

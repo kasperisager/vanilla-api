@@ -16,6 +16,8 @@ class DiscussionsAPI extends APIMapper
      *
      * GET /discussions
      * GET /discussions/:id
+     * GET /discussions/bookmarks
+     * GET /discussions/mine
      *
      * @since  0.1.0
      * @access public
@@ -24,21 +26,21 @@ class DiscussionsAPI extends APIMapper
      */
     public static function Get($Path)
     {
-        if ($ID = val(2, $Path)) {
+        static::$Controller = 'Discussions';
 
+        $Arg = val(2, $Path);
+
+        if (is_numeric($Arg)) {
             static::$Controller = 'Discussion';
             static::$Arguments  = array(
-                'DiscussionID' => $ID
+                'DiscussionID' => $Arg
             );
-
-        } else {
-
-            static::$Controller = 'Discussions';
-
-            //static::$Method = 'Bookmarked';
-
-            //static::$Method = 'Mine';
-
+        } else if ($Arg == 'bookmarks') {
+            static::$Method       = 'Bookmarked';
+            static::$Authenticate = TRUE;
+        } else if ($Arg == 'mine') {
+            static::$Method       = 'Mine';
+            static::$Authenticate = TRUE;
         }
     }
 
@@ -56,22 +58,14 @@ class DiscussionsAPI extends APIMapper
     public static function Post($Path)
     {
         static::$Controller = 'Post';
+        static::$Method     = 'Discussion';
 
-        $ID      = val(2, $Path);
-        $Comment = val(3, $Path);
-
-        if ($ID && $Comment && $Comment == 'comments') {
-
+        if ($ID = val(2, $Path) && val(3, $Path) == 'comments') {
             static::$Method    = 'Comment';
             static::$Arguments = array(
                 'DiscussionID' => $ID,
                 'TransientKey' => Gdn::Session()->TransientKey()
             );
-
-        } else {
-
-            static::$Method = 'Discussion';
-
         }
     }
 
@@ -89,9 +83,7 @@ class DiscussionsAPI extends APIMapper
      */
     public static function Put($Path)
     {
-        ;
-
-        if (!$ID = val(2, $Path)) {
+        if (!$Arg = val(2, $Path)) {
             throw new Exception("No ID defined", 401);
         }
 
@@ -100,22 +92,16 @@ class DiscussionsAPI extends APIMapper
             'TransientKey' => Gdn::Session()->TransientKey()
         );
 
-        if ($ID == 'comments') {
-
-            $ID = val(3, $Path);
-
-            static::$Method    = 'EditComment';
-            static::$Arguments = array(
-                'CommentID' => $ID
-            );
-
-        } else {
-
+        if (is_numeric($Arg)) {
             static::$Method    = 'EditDiscussion';
             static::$Arguments = array(
-                'DiscussionID' => $ID
+                'DiscussionID' => $Arg
             );
-
+        } else if ($Arg == 'comments') {
+            static::$Method    = 'EditComment';
+            static::$Arguments = array(
+                'CommentID' => val(3, $Path)
+            );
         }
     }
 
@@ -133,9 +119,7 @@ class DiscussionsAPI extends APIMapper
      */
     public static function Delete($Path)
     {
-        ;
-
-        if (!$ID = val(2, $Path)) {
+        if (!$Arg = val(2, $Path)) {
             throw new Exception("No ID defined", 401);
         }
 
@@ -144,22 +128,16 @@ class DiscussionsAPI extends APIMapper
             'TransientKey' => Gdn::Session()->TransientKey()
         );
 
-        if ($ID == 'comments') {
-
-            $ID = val(3, $Path);
-
-            static::$Method    = 'DeleteComment';
-            static::$Arguments = array(
-                'CommentID'    => $ID,
-            );
-
-        } else {
-
+        if (is_numeric($Arg)) {
             static::$Method    = 'Delete';
             static::$Arguments = array(
-                'DiscussionID' => $ID,
+                'DiscussionID' => $Arg
             );
-
+        } else if ($Arg == 'comments') {
+            static::$Method    = 'DeleteComment';
+            static::$Arguments = array(
+                'CommentID' => val(3, $Path)
+            );
         }
     }
 }

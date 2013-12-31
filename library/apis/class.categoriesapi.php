@@ -27,15 +27,11 @@ class CategoriesAPI extends APIMapper
         static::$Controller = 'Categories';
 
         if ($ID = val(2, $Path)) {
-
             static::$Arguments = array(
                 'CategoryID' => $ID
             );
-
         } else {
-
             static::$Method = 'All';
-
         }
     }
 
@@ -91,8 +87,9 @@ class CategoriesAPI extends APIMapper
      * @access public
      * @param  array $Path
      * @throws Exception
+     * @static
      */
-    public function Delete($Path)
+    public static function Delete($Path)
     {
         if (!$ID = val(2, $Path)) {
             throw new Exception("No ID defined", 401);

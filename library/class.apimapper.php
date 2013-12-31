@@ -17,7 +17,7 @@
 abstract class APIMapper
 {
     /**
-     * Controller to call when requesting the API.
+     * Controller to call when requesting the API (Required).
      *
      * @since  0.1.0
      * @access public
@@ -27,7 +27,7 @@ abstract class APIMapper
     public static $Controller;
 
     /**
-     * Method to call on the controller specified earlier.
+     * Method to call on the controller specified earlier (Optional).
      *
      * @since  0.1.0
      * @access public
@@ -48,13 +48,13 @@ abstract class APIMapper
      *
      * @since  0.1.0
      * @access public
-     * @var    string|null
+     * @var    null|string
      * @static
      */
     public static $Application;
 
     /**
-     * Array of named arguments to pass along to the controller method.
+     * Array of named arguments to pass along to the controller method (Optional).
      *
      * @since  0.1.0
      * @access public
@@ -68,7 +68,7 @@ abstract class APIMapper
      *
      * @since  0.1.0
      * @access public
-     * @var    boolean
+     * @var    bool
      * @static
      */
     public static $Authenticate = FALSE;

@@ -16,22 +16,23 @@ class UsersAPI extends APIMapper
      *
      * GET /users
      * GET /users/:id
-     *
+     * GET /users/summary
+     * 
      * @since  0.1.0
      * @access public
      * @param  array $Path
      */
     public static function Get($Path)
     {
-        $ID = val(2, $Path);
+        $Arg = val(2, $Path);
 
-        if (is_numeric($ID)) {
+        if (is_numeric($Arg)) {
             static::$Controller = 'Profile';
             static::$Arguments  = array(
-                'User'   => $ID,
-                'UserID' => $ID
+                'User'   => $Arg,
+                'UserID' => $Arg
             );
-        } elseif (strtolower($ID) == 'summary') {
+        } else if ($Arg == 'summary') {
             static::$Controller = 'User';
             static::$Method     = 'Summary';
         } else {
