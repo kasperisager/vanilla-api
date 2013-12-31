@@ -23,7 +23,8 @@ class MessagesAPI extends APIMapper
      */
     public static function Get($Path)
     {
-        static::$Controller = 'Messages';
-        static::$Method     = 'All';
+        static::$Controller   = 'Messages';
+        static::$Method       = 'All';
+        static::$Authenticate = TRUE;
     }
 }

@@ -23,7 +23,8 @@ class RolesAPI extends APIMapper
      */
     public static function Get($Path)
     {
-        static::$Controller = 'Role';
+        static::$Controller   = 'Role';
+        static::$Authenticate = TRUE;
     }
 
     /**

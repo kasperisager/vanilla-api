@@ -53,7 +53,7 @@ class APIHooks implements Gdn_IPlugin
     public function Gdn_Dispatcher_BeforeDispatch_Handler()
     {
         $Request = Gdn::Request();
-        $Path    = APIEngine::TranslateRequestToPath($Request);
+        $Path    = APIEngine::GetRequestPathArray();
 
         // Set the call and resource paths if they exist
         $Call     = val(0, $Path);
@@ -62,17 +62,18 @@ class APIHooks implements Gdn_IPlugin
         // Abandon the dispatch if this isn't an API call with a valid resource
         if ($Call != 'api' || !$Resource) return;
 
-        APIEngine::SetHeaders($Request);
+        APIEngine::SetRequestHeaders();
 
         try {
             // Attempt dispatching the API request
-            APIEngine::DispatchRequest($Request);
+            APIEngine::DispatchRequest();
         } catch (Exception $Exception) {
-            // The Exception method will need a code and a message
             // As we can't pass an object to WithControllerMethod(), we extract
-            // the values manually before passing them on.
+            // the values we need manually before passing them on. The exception
+            // message is Base64 encoded as WithControllerMethod() mangles
+            // the formatting.
             $Code    = $Exception->getCode();
-            $Message = $Exception->getMessage();
+            $Message = base64_encode($Exception->getMessage());
 
             // Call the Exception method if an exception is thrown
             $Request->WithControllerMethod('API', 'Exception', array($Code, $Message));

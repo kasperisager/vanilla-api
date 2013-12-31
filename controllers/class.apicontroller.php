@@ -14,12 +14,12 @@
 class APIController extends Gdn_Controller
 {
     /**
-     * Output API exceptions
+     * Render API exceptions
      *
      * @since  0.1.0
      * @access public
      * @param  int|string $Code    Error code
-     * @param  string     $Message Error message
+     * @param  string     $Message Base64-encoded error message
      */
     public function Exception($Code, $Message)
     {
@@ -28,9 +28,9 @@ class APIController extends Gdn_Controller
 
         $this->SetData(array(
             'Code'      => intval($Code),
-            'Exception' => T($Message)
+            'Exception' => base64_decode(htmlspecialchars($Message))
         ));
 
-        $this->Render();
+        $this->RenderData();
     }
 }

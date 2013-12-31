@@ -92,8 +92,6 @@ abstract class APIMapper
      * API class POST operation
      *
      * This method will be run when a POST request is sent to a given API class.
-     * Allows passing along Form Data with the request which will be merged with
-     * any custom arguments set on the API property.
      *
      * @since  0.1.0
      * @access public
@@ -109,8 +107,6 @@ abstract class APIMapper
      * API class PUT operation
      *
      * This method will be run when a PUT request is sent to a given API class.
-     * Allows passing along Form Data with the request which will be merged with
-     * any custom arguments set on the API property.
      *
      * @since  0.1.0
      * @access public
@@ -126,8 +122,6 @@ abstract class APIMapper
      * API class DELETE operation
      *
      * This method will be run when a DELETE request is sent to a given API class.
-     * This method does not allow Form Data so any arguments you wish to pass
-     * along to a given controller method must be set on the API property.
      *
      * @since  0.1.0
      * @access public

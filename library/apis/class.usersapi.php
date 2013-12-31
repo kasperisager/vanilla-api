@@ -27,6 +27,8 @@ class UsersAPI extends APIMapper
     {
         $Arg = val(2, $Path);
 
+        static::$Controller = 'User';
+
         if (is_numeric($Arg)) {
             static::$Controller = 'Profile';
             static::$Arguments  = array(
@@ -34,11 +36,9 @@ class UsersAPI extends APIMapper
                 'UserID' => $Arg
             );
         } else if ($Arg == 'summary') {
-            static::$Controller = 'User';
-            static::$Method     = 'Summary';
+            static::$Method = 'Summary';
         } else {
             static::$Authenticate = TRUE;
-            static::$Controller   = 'User';
         }
     }
 
@@ -94,10 +94,11 @@ class UsersAPI extends APIMapper
      * @since  0.1.0
      * @access public
      * @param  array $Path
+     * @param  array $Data
      * @throws Exception
      * @static
      */
-    public static function Delete($Path)
+    public static function Delete($Path, $Data)
     {
         if (!$ID = val(2, $Path)) {
             throw new Exception("No ID defined", 401);
@@ -107,6 +108,7 @@ class UsersAPI extends APIMapper
         static::$Method     = 'Delete';
         static::$Arguments  = array(
             'UserID'       => $ID,
+            'Method'       => val('Method', $Data),
             'TransientKey' => Gdn::Session()->TransientKey()
         );
     }

@@ -48,7 +48,6 @@ class ActivitiesAPI extends APIMapper
     {
         static::$Controller   = 'Activity';
         static::$Method       = 'Post';
-        static::$Authenticate = TRUE;
     }
 
     /**
@@ -74,6 +73,5 @@ class ActivitiesAPI extends APIMapper
             'DiscussionID' => $ID,
             'TransientKey' => Gdn::Session()->TransientKey()
         );
-        static::$Authenticate = TRUE;
     }
 }
