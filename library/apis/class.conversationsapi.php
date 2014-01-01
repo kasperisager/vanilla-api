@@ -20,7 +20,6 @@ class ConversationsAPI extends APIMapper
      * @since  0.1.0
      * @access public
      * @param  array $Path
-     * @param  array $Data
      * @static
      */
     public static function Get($Path)
@@ -67,6 +66,16 @@ class ConversationsAPI extends APIMapper
         }
     }
 
+    /**
+     * Delete (clear) the message history of a conversation
+     *
+     * DELETE /conversations/:id
+     *
+     * @since  0.1.0
+     * @access public
+     * @param  array $Path
+     * @static
+     */
     public static function Delete($Path)
     {
         $Arg = val(2, $Path);
