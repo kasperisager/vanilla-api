@@ -2,7 +2,7 @@
 
 $ApplicationInfo['API'] = array(
     'Name'        => 'Vanilla API',
-    'Description' => 'Highly extensible RESTful API for Vanilla that responds in JSON or XML and includes support for JSONP and CORS',
+    'Description' => 'Extensible RESTful API shim for Vanilla that operates in JSON or XML. Supports JSONP and CORS',
     'Version'     => '0.0.10-dev',
     'Url'         => 'https://github.com/kasperisager/vanilla-api',
     'Author'      => 'Kasper Kronborg Isager',

@@ -26,9 +26,11 @@ class CategoriesAPI extends APIMapper
     {
         static::$Controller = 'Categories';
 
-        if ($ID = val(2, $Path)) {
+        $Arg = val(2, $Path)
+
+        if (is_numeric($Arg)) {
             static::$Arguments = array(
-                'CategoryID' => $ID
+                'CategoryID' => $Arg
             );
         } else {
             static::$Method = 'All';
@@ -65,7 +67,9 @@ class CategoriesAPI extends APIMapper
      */
     public static function Put($Path)
     {
-        if (!$ID = val(2, $Path)) {
+        $Arg = val(2, $Path)
+
+        if (!is_numeric($Arg)) {
             throw new Exception("No ID defined", 401);
         }
 
@@ -73,7 +77,7 @@ class CategoriesAPI extends APIMapper
         static::$Controller  = 'Settings';
         static::$Method      = 'EditCategory';
         static::$Arguments   = array(
-            'CategoryID'   => $ID,
+            'CategoryID'   => $Arg,
             'TransientKey' => Gdn::Session()->TransientKey()
         );
     }
@@ -91,7 +95,9 @@ class CategoriesAPI extends APIMapper
      */
     public static function Delete($Path)
     {
-        if (!$ID = val(2, $Path)) {
+        $Arg = val(2, $Path)
+
+        if (!is_numeric($Arg)) {
             throw new Exception("No ID defined", 401);
         }
 
@@ -99,7 +105,7 @@ class CategoriesAPI extends APIMapper
         static::$Controller  = 'Settings';
         static::$Method      = 'DeleteCategory';
         static::$Arguments   = array(
-            'CategoryID'   => $ID,
+            'CategoryID'   => $Arg,
             'TransientKey' => Gdn::Session()->TransientKey()
         );
     }

@@ -26,9 +26,11 @@ class RolesAPI extends APIMapper
         static::$Controller   = 'Role';
         static::$Authenticate = TRUE;
 
-        if ($ID = val(2, $Path)) {
+        $Arg = val(2, $Path)
+
+        if (is_numeric($Arg)) {
             static::$Arguments = array(
-                'RoleID' => $ID
+                'RoleID' => $Arg
             );
         }
     }
@@ -65,14 +67,16 @@ class RolesAPI extends APIMapper
      */
     public static function Put($Path)
     {
-        if (!$ID = val(2, $Path)) {
+        $Arg = val(2, $Path)
+
+        if (!is_numeric($Arg)) {
             throw new Exception("No ID defined", 401);
         }
 
         static::$Controller = 'Role';
         static::$Method     = 'Edit';
         static::$Arguments  = array(
-            'RoleID'       => $ID,
+            'RoleID'       => $Arg,
             'TransientKey' => Gdn::Session()->TransientKey()
         );
     }
@@ -90,14 +94,16 @@ class RolesAPI extends APIMapper
      */
     public static function Delete($Path)
     {
-        if (!$ID = val(2, $Path)) {
+        $Arg = val(2, $Path)
+
+        if (!is_numeric($Arg)) {
             throw new Exception("No ID defined", 401);
         }
 
         static::$Controller = 'Role';
         static::$Method     = 'Delete';
         static::$Arguments  = array(
-            'RoleID'       => $ID,
+            'RoleID'       => $Arg,
             'TransientKey' => Gdn::Session()->TransientKey()
         );
     }
