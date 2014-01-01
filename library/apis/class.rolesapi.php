@@ -25,6 +25,12 @@ class RolesAPI extends APIMapper
     {
         static::$Controller   = 'Role';
         static::$Authenticate = TRUE;
+
+        if ($ID = val(2, $Path)) {
+            static::$Arguments = array(
+                'RoleID' => $ID
+            );
+        }
     }
 
     /**

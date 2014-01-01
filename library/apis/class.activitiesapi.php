@@ -26,10 +26,12 @@ class ActivitiesAPI extends APIMapper
     {
         static::$Controller = 'Activity';
 
-        if ($ID = val(2, $Path)) {
+        $Arg = val(2, $Path);
+
+        if (is_numeric($Arg)) {
             static::$Method    = 'Item';
             static::$Arguments = array(
-                'ActivityID' => $ID
+                'ActivityID' => $Arg
             );
         }
     }
@@ -46,8 +48,8 @@ class ActivitiesAPI extends APIMapper
      */
     public static function Post($Path)
     {
-        static::$Controller   = 'Activity';
-        static::$Method       = 'Post';
+        static::$Controller = 'Activity';
+        static::$Method     = 'Post';
     }
 
     /**
@@ -63,14 +65,16 @@ class ActivitiesAPI extends APIMapper
      */
     public static function Delete($Path)
     {
-        if (!$ID = val(2, $Path)) {
+        $Arg = val(2, $Path);
+
+        if (!is_numeric($Arg)) {
             throw new Exception("No ID defined", 401);
         }
 
         static::$Controller = 'Activity';
         static::$Method     = 'Delete';
         static::$Arguments  = array(
-            'DiscussionID' => $ID,
+            'DiscussionID' => $Arg,
             'TransientKey' => Gdn::Session()->TransientKey()
         );
     }

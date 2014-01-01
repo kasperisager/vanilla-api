@@ -210,7 +210,7 @@ final class APIEngine
 
         // Add any API-specific arguments to the requests arguments
         $Request->SetRequestArguments(Gdn_Request::INPUT_POST, array_merge(
-            $Data, $Class::$Arguments
+            $Class::$Arguments, $Data
         ));
 
         // Set the PHP $_POST variable as the result of any form data picked up

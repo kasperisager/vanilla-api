@@ -16,8 +16,8 @@ class DiscussionsAPI extends APIMapper
      *
      * GET /discussions
      * GET /discussions/:id
-     * GET /discussions/bookmarks
      * GET /discussions/mine
+     * GET /discussions/bookmarks
      *
      * @since  0.1.0
      * @access public
@@ -58,14 +58,17 @@ class DiscussionsAPI extends APIMapper
     public static function Post($Path)
     {
         static::$Controller = 'Post';
-        static::$Method     = 'Discussion';
 
-        if ($ID = val(2, $Path) && val(3, $Path) == 'comments') {
+        $Arg = val(2, $Path);
+
+        if (is_numeric($Arg) && val(3, $Path) == 'comments') {
             static::$Method    = 'Comment';
             static::$Arguments = array(
-                'DiscussionID' => $ID,
+                'DiscussionID' => $Arg,
                 'TransientKey' => Gdn::Session()->TransientKey()
             );
+        } else {
+            static::$Method = 'Discussion';
         }
     }
 
@@ -83,9 +86,9 @@ class DiscussionsAPI extends APIMapper
      */
     public static function Put($Path)
     {
-        if (!$Arg = val(2, $Path)) {
-            throw new Exception("No ID defined", 401);
-        }
+        $Arg = val(2, $Path);
+
+        if (!$Arg) throw new Exception("No ID defined", 401);
 
         static::$Controller = 'Post';
         static::$Arguments  = array(
@@ -119,9 +122,9 @@ class DiscussionsAPI extends APIMapper
      */
     public static function Delete($Path)
     {
-        if (!$Arg = val(2, $Path)) {
-            throw new Exception("No ID defined", 401);
-        }
+        $Arg = val(2, $Path);
+
+        if (!$Arg) throw new Exception("No ID defined", 401);
 
         static::$Controller = 'Discussion';
         static::$Arguments  = array(
