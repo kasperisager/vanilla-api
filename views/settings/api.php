@@ -10,43 +10,43 @@
 </style>
 
 <div class="Help Aside">
-    <h2><?php echo T("Need More Help?"); ?></h2>
+    <h2><?php echo t("Need More Help?"); ?></h2>
     <ul>
         <?php
-        echo Wrap(Anchor(T("Read the API documentation"), 'https://github.com/kasperisager/vanilla-api/wiki'), 'li');
+        echo wrap(anchor(t('API.Settings.Documentation'), 'https://github.com/kasperisager/vanilla-api/wiki'), 'li');
         ?>
     </ul>
 </div>
 
-<h1><?php echo T($this->Data('Title')); ?></h1>
+<h1><?php echo t($this->data('Title')); ?></h1>
 
 <?php
-$Form = $this->Form;
-echo $Form->Open();
-echo $Form->Errors();
+$form = $this->Form;
+echo $form->open();
+echo $form->errors();
 ?>
 
 <ul>
     <li>
-        <?php echo $Form->Label(T("Endpoint"), 'Endpoint'); ?>
+        <?php echo $form->label(t('API.Settings.Endpoint.Label'), 'Endpoint'); ?>
         <div class="Info">
-            <p><?php echo T("You can access your forum's Application Interface (API) through this endpoint URL"); ?></p>
+            <p><?php echo t('API.Settings.Endpoint.Description'); ?></p>
         </div>
         <div class="Endpoint">
-            <blockquote><?php echo Gdn::Request()->Domain(); ?>/api/</blockquote>
+            <blockquote><?php echo Gdn::request()->domain(); ?>/api/</blockquote>
         </div>
     </li>
     <li>
-        <?php echo $Form->Label(T("Application Secret"), 'Secret'); ?>
+        <?php echo $form->label(t('API.Settings.Secret.Label'), 'Secret'); ?>
         <div class="Info">
-            <p><?php echo T("This is the Application Secret used for signature based authentication. <b>Keep it secret!</b>"); ?></p>
-            <small><?php echo sprintf(T("Clicking \"Re-generate\" will generate a new UUID v4 key. Please refer to %s for more information"), Anchor(T("this article"), 'http://en.wikipedia.org/wiki/Uuid')); ?></small>
+            <p><?php echo t('API.Settings.Secret.Description'); ?></p>
+            <small><?php echo sprintf(t('API.Settings.Refresh.Description'), anchor(t('API.Settings.Refresh.Link'), 'http://en.wikipedia.org/wiki/Uuid')); ?></small>
         </div>
         <?php
-        echo $Form->TextBox('Secret', array('class' => 'InputBox BigInput', 'readonly' => 'readonly'));
-        echo $Form->Button(T("Re-generate"));
+        echo $form->textBox('Secret', array('class' => 'InputBox BigInput', 'readonly' => 'readonly'));
+        echo $form->button(t('API.Settings.Refresh.Label'));
         ?>
     </li>
 </ul>
 
-<?php echo $Form->Close(); ?>
+<?php echo $form->close(); ?>

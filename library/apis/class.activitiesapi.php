@@ -12,70 +12,41 @@
 class ActivitiesAPI extends APIMapper
 {
     /**
-     * Retrieve activity items
-     *
-     * GET /activities
-     * GET /activities/:id
+     * Register API endpoints
      *
      * @since  0.1.0
      * @access public
-     * @param  array $Path
+     * @param  array $path
+     * @param  array $data
+     * @return void
      * @static
      */
-    public static function Get($Path)
+    public static function register($path, $data)
     {
-        static::$Controller = 'Activity';
+        // GET endpoints
 
-        $Arg = val(2, $Path);
+        static::get('/', array(
+            'controller' => 'Activity'
+        ));
 
-        if (is_numeric($Arg)) {
-            static::$Method    = 'Item';
-            static::$Arguments = array(
-                'ActivityID' => $Arg
-            );
-        }
-    }
+        static::get('/:id', array(
+            'method'    => 'item',
+            'arguments' => array('ActivityID' => ':id')
+        ));
 
-    /**
-     * Post an activity item
-     *
-     * POST /activity
-     *
-     * @since  0.1.0
-     * @access public
-     * @param  array $Path
-     * @static
-     */
-    public static function Post($Path)
-    {
-        static::$Controller = 'Activity';
-        static::$Method     = 'Post';
-    }
+        // POST endpoints
 
-    /**
-     * Remove an activity item
-     *
-     * DELETE /activity/:id
-     *
-     * @since  0.1.0
-     * @access public
-     * @param  array $Path
-     * @throws Exception
-     * @static
-     */
-    public static function Delete($Path)
-    {
-        $Arg = val(2, $Path);
+        static::post('/', array(
+            'controller' => 'Activity',
+            'method'     => 'post'
+        ));
 
-        if (!is_numeric($Arg)) {
-            throw new Exception("No ID defined", 401);
-        }
+        // DELETE endpoints
 
-        static::$Controller = 'Activity';
-        static::$Method     = 'Delete';
-        static::$Arguments  = array(
-            'DiscussionID' => $Arg,
-            'TransientKey' => Gdn::Session()->TransientKey()
-        );
+        static::delete('/:id', array(
+            'controller' => 'Activity',
+            'method'     => 'delete',
+            'arguments'  => array('ActivityID' => ':id')
+        ));
     }
 }

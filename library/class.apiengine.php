@@ -1,14 +1,9 @@
 <?php if (!defined('APPLICATION')) exit;
 
 /**
- * The main API engine
+ * API engine class
  *
- * This class handles authentication and delegation of API requests and their
- * corresponding methods.
- *
- * The API engine itself is currently closed off for subclassing. This will
- * hopefully change in the future once the engine is stable and ready for
- * general consumption and extension.
+ * Handles dispatching API requests and their corresponding methods.
  *
  * @package   API
  * @since     0.1.0
@@ -17,205 +12,281 @@
  * @license   http://opensource.org/licenses/MIT MIT
  * @final
  */
-final class APIEngine
+final class APIEngine extends Gdn_Pluggable implements iSingleton
 {
+    /* Properties */
+
     /**
-     * Token-based, per-request authentication
+     * HTTP methods supported by the API
      *
-     * This method takes the entire request string and turns the query into an
-     * array of data. It then uses all the data to generate a signature the same
-     * way it got generated on the client. If the server signature and client
-     * token match, the client is considered legimate and the request is served.
-     *
-     * Based on initial work by Diego Zanella
-     * @link http://careers.stackoverflow.com/diegozanella
+     * If any other methods are used, the API dispatcher will throw a 405 Method
+     * Not Implement exception.
      *
      * @since  0.1.0
      * @access public
-     * @throws Exception
+     * @var    array
      * @static
      */
-    public static function AuthenticateRequest()
+    public static $supports = array('get', 'post', 'put', 'delete', 'head', 'options');
+
+    /**
+     * Singleton instance of the class
+     *
+     * @since  0.1.0
+     * @access protected
+     * @var    null|APIEngine
+     * @static
+     */
+    protected static $instance;
+
+    protected static $dispatch;
+
+    /**
+     * Exploded request URI
+     *
+     * @since  0.1.0
+     * @access protected
+     * @var    array
+     * @static
+     */
+    protected static $requestURI = array();
+
+    /**
+     * Request method
+     *
+     * @since  0.1.0
+     * @access protected
+     * @var    string
+     * @static
+     */
+    protected static $requestMethod;
+
+    /**
+     * Array of request arguments
+     *
+     * @since  0.1.0
+     * @access protected
+     * @var    null|array
+     * @static
+     */
+    protected static $requestArguments;
+
+    /**
+     * Array of server arguments
+     *
+     * @since  0.1.0
+     * @access protected
+     * @var    null|array
+     * @static
+     */
+    protected static $serverArguments;
+
+    /* Methods */
+
+    /**
+     * Get Singleton instance of this class
+     *
+     * @since  0.1.0
+     * @access public
+     * @return APIEngine The singleton instance
+     * @static
+     */
+    public static function getInstance()
     {
-        $Request      = Gdn::Request();
-        $PathAndQuery = $Request->PathAndQuery();
-        $ParsedURL    = parse_url($PathAndQuery);
-
-        // Get the values we need for authentication (defaults are FALSE)
-        $Username  = GetIncomingValue('username');
-        $Email     = GetIncomingValue('email');
-        $Timestamp = GetIncomingValue('timestamp');
-        $Token     = GetIncomingValue('token');
-
-        // Turn the request query data into an array which we will later use to
-        // analyze each part of the query
-        parse_str(val('query', $ParsedURL, array()), $Request);
-
-        // Unset the client token as we don't want to include it when generating
-        // the server signature
-        unset($Request['token']);
-
-        // Unset DeliveryType and DeliveryMethod
-        unset($Request['DeliveryType']);
-        unset($Request['DeliveryMethod']);
-
-        // Make sure that either a username or an email has been passed
-        if (!$Username && !$Email) {
-            throw new Exception("Authentication failed: Username or email must be specified", 401);
+        if (!static::$instance) {
+            $class = get_class();
+            static::$instance = new $class;
         }
 
-        // Make sure that the query contains a timestamp
-        if (!$Timestamp) {
-            throw new Exception("Authentication failed: A timestamp must be specified", 401);
-        }
-
-        // Make sure that this timestamp is still valid
-        if ((abs($Timestamp - time())) > C('API.Expiration')) {
-            throw new Exception("Authentication failed: The request is no longer valid", 401);
-        }
-
-        // Make sure that the query contains a token
-        if (!$Token) {
-            throw new Exception("Authentication failed: A token must be specified", 401);
-        }
-
-        // Get the ID of the client (user) sending the request
-        $UserID = static::GetUserID($Username, $Email);
-
-        // Throw an error if no user was found
-        if (!$UserID) {
-            throw new Exception("Authentication failed: The specified user doesn't exist", 401);
-        }
-
-        // Generate a signature from the passed data the same way it was
-        // generated on the client
-        $Signature = static::GenerateSignature($Request);
-
-        // Make sure that the client token and the server signature match
-        if ($Token != $Signature) {
-            throw new Exception("Authentication failed: Token and signature do not match", 401);
-        }
-
-        // Now that we've thoroughly verified the client, start a session for the
-        // duration of the request using the User ID we specified earlier
-        if ($Token == $Signature) {
-            Gdn::Session()->Start(intval($UserID), FALSE);
-        }
+        return static::$instance;
     }
 
     /**
-     * Map the API request to the appropriate controller
+     * Map the API request to the corrosponding controller
      *
      * @since  0.1.0
      * @access public
      * @throws Exception
-     * @static
+     * @return void
      */
-    public static function DispatchRequest()
+    public function dispatchRequest()
     {
+        $request = Gdn::request();
+        $path    = static::getRequestPathArray();
+        $method  = static::getRequestMethod();
+
+        // Before we do anything else, let's make sure the request method is
+        // supported. If not, let the client know
+        if (!in_array($method, static::$supports)) {
+            throw new Exception(t('API.Error.MethodNotAllowed'), 405);
+        }
+
         // Attempt authentication if no valid session exists
-        if (!Gdn::Session()->IsValid()) {
-            $Username = GetIncomingValue('username');
-            $Email    = GetIncomingValue('email');
+        if (!Gdn::session()->isValid()) {
+            $username = getIncomingValue('username');
+            $email    = getIncomingValue('email');
 
             // Only authenticate the client if a username or an email has been
             // specified in the request
-            if ($Username || $Email) static::AuthenticateRequest();
+            if ($username || $email) APIAuth::authenticateRequest();
         }
 
         // Get the requested resource
-        $Resource = val(1, static::GetRequestPathArray());
+        $resource = val(1, static::getRequestPathArray());
 
         // Turn requested resource into API class and store it
-        $Class = ucfirst($Resource) . 'API';
+        $class = ucfirst($resource) . 'API';
 
         // Make sure that the requested API class exists
-        if (!class_exists($Class)) {
-            throw new Exception("The requested API was not found", 404);
+        if (!class_exists($class)) {
+            throw new Exception(t('API.Error.Class.Invalid'), 404);
         }
 
-        // Make sure that the requested API class extend the API Mapper class
-        if (!is_subclass_of($Class, 'APIMapper')) {
-            throw new Exception("APIs must be subclassed from the API Mapper", 500);
-        }
+        if (in_array($method, array('post', 'put', 'delete'))) {
+            $this->map($resource, $class, $path, $method, static::getRequestArguments());
 
-        // Delegate request to an API class
-        static::HandleClassRequest($Class);
+            // Authentication is always required for write-methods
+            static::$dispatch['authenticate'] = true;
+
+            // Always attach transient key as last argument for write-methods
+            static::$dispatch['arguments']['TransientKey'] = Gdn::session()->transientKey();
+
+            // As Garden doesn't take PUT and DELETE requests into account when
+            // verifying requests using IsPostBack() and IsAuthencatedPostBack(),
+            // we need to mask PUTs and DELETEs as POSTs.
+            $request->requestMethod('post');
+
+            // Add any API-specific arguments to the requests arguments
+            $request->setRequestArguments(Gdn_Request::INPUT_POST, array_merge(
+                val('arguments', static::$dispatch, array()), static::getRequestArguments()
+            ));
+
+            // Set the PHP $_POST global as the result of any form data picked
+            // up by Garden.
+            $_POST = $request->post();
+        } else {
+            $this->map($resource, $class, $path, $method);
+        }
 
         // Make sure that the API class returns a controller definition
-        if (!$Controller = $Class::$Controller) {
-            throw new Exception("No controller has been defined in the API", 500);
+        if (!$controller = val('controller', static::$dispatch)) {
+            throw new Exception(t('API.Error.Controller.Missing'), 500);
         }
 
         // If the endpoint requires authentication and none has been provided,
         // throw an error
-        if ($Class::$Authenticate && !Gdn::Session()->IsValid()) {
-            throw new Exception("Authentication required for this endpoint", 401);
+        if (val('authenticate', static::$dispatch) && !Gdn::session()->isValid()) {
+            throw new Exception(t('API.Error.AuthRequired'), 401);
         }
 
         // Attach the correct application if one has been set
-        if ($Application = $Class::$Application) {
-            Gdn_Autoloader::AttachApplication($Application);
+        if ($application = val('application', static::$dispatch)) {
+            Gdn_Autoloader::attachApplication($application);
         }
 
+        $method    = val('method', static::$dispatch);
+        $arguments = val('arguments', static::$dispatch);
+
         // Map the request to the specified URI
-        Gdn::Request()->WithControllerMethod($Controller, $Class::$Method, $Class::$Arguments);
+        Gdn::request()->withControllerMethod($controller, $method, $arguments);
     }
 
     /**
-     * Delegate methods to a specified API class
-     *
-     * This function takes a request object and uses it to delegate an action to
-     * a specified API class.
+     * Map a resource to its corresponding controller
      *
      * @since  0.1.0
      * @access public
-     * @param  object $Class The requested API class
-     * @static
+     * @param  array  $path   URI path array
+     * @param  string $method HTTP method
+     * @param  array  $data   Request arguments
+     * @return void
+     * @final
      */
-    public static function HandleClassRequest($Class)
+    final public function map($resource, $class, $path, $method, $data = array())
     {
-        $Request = Gdn::Request();
-        $Path    = static::GetRequestPathArray();
-        $Method  = strtolower($Request->RequestMethod());
-
-        if ($Method == 'get') {
-            $Class::Get($Path);
-            return; // There's nothing more to a GET request
+        // Make sure that the requested API class extends the API Mapper
+        if (!is_subclass_of($class, 'APIMapper')) {
+            throw new Exception(t('API.Error.Mapper'), 500);
         }
 
-        $Data = static::GetRequestInput();
+        // Register all API endpoints
+        $class::register($path, $data);
 
-        switch ($Method) {
-            case 'post':
-                $Class::Post($Path, $Data);
-                break;
-            
-            case 'put':
-                $Class::Put($Path, $Data);
-                break;
+        $this->fireAs($class)->fireEvent('endpoints');
 
-            case 'delete':
-                $Class::Delete($Path, $Data);
-                break;
+        if ($method == 'options') {
+            $supports      = strtoupper(implode(', ', $class::supports()));
+            $documentation = array();
+
+            foreach ($class::endpoints() as $method => $endpoints) {
+                foreach ($endpoints as $endpoint => $data) {
+                    $documentation[$method][] = paths($resource, $endpoint);
+                }
+            }
+
+            $documentation = base64_encode(json_encode($documentation));
+
+            $controller   = 'API';
+            $method       = 'options';
+            $arguments    = array($supports, $documentation);
+            $authenticate = false; // OPTIONS are always public
+        } else {
+            $match = $path;
+
+            foreach ($path as $index => $part) {
+                // Remove the `api` and `[endpoint]` parts from the URI
+                if ($part == 'api' || $part == $resource) unset($match[$index]);
+
+                // If part of the URI is numeric, assume it's a variable `:id`
+                if (is_numeric($part)) $match[$index] = ':id';
+            }
+
+            $match = array_values($match); // Reset array values
+
+            // Get all endpoints for this specific method
+            $endpoints = val(strtoupper($method), $class::endpoints());
+
+            $resource = paths(DS . implode(DS, $match));
+
+            // Get the first available endpoint for this method
+            $first = array_shift(array_values($endpoints));
+
+            // If no endpoint was found, throw a 405 Method Not Implemented
+            if (!$endpoint = val($resource, $endpoints)) {
+                throw new Exception(t('API.Error.MethodNotAllowed'), 405);
+            }
+
+            // If a controller isn't set for this endpoint, assume it uses the
+            // same controller as the first available endpoint
+            $controller = val('controller', $endpoint, val('controller', $first));
+
+            // Set the controller, defaulting it to `index`
+            $method = val('method', $endpoint, 'index');
+
+            // Set optional controller arguments, defaulting to an empty array
+            // if no arguments have been specified
+            $arguments = val('arguments', $endpoint, array());
+
+            // Does this endpoint require authentication?
+            $authenticate = val('authenticate', $endpoint);
+
+            // Replace instances of `:id` with the appropriate value from the
+            // requested URI. I.e. `/foo/:id/bar` would cause the `:id` param
+            // for the `FooID` argument to be set as the second value of the
+            // requested URI.
+            $offset    = 2; // Pop off first two paths (`api` and `[endpoint]`)
+            $position  = array_search(':id', $match);
+            $arguments = array_replace($arguments, array_fill_keys(
+                array_keys($arguments, ':id'), val($offset + $position, $path))
+            );
         }
 
-        // Authentication is always required for POST, PUT and DELETE requests
-        $Class::$Authenticate = TRUE;
-
-        // As Garden doesn't take PUT and DELETE requests into account when
-        // verifying requests using IsPostBack() and IsAuthencatedPostBack(),
-        // we need to mask PUTs and DELETEs as POSTs.
-        $Request->RequestMethod('post');
-
-        // Add any API-specific arguments to the requests arguments
-        $Request->SetRequestArguments(Gdn_Request::INPUT_POST, array_merge(
-            $Class::$Arguments, $Data
-        ));
-
-        // Set the PHP $_POST variable as the result of any form data picked up
-        // by Garden.
-        $_POST = $Request->Post();
+        static::$dispatch = array(
+            'controller'   => $controller,
+            'method'       => $method,
+            'arguments'    => $arguments,
+            'authenticate' => $authenticate
+        );
     }
 
     /**
@@ -223,159 +294,52 @@ final class APIEngine
      *
      * @since  1.0.0
      * @access public
+     * @return void
      * @static
      */
-    public static function SetRequestHeaders()
+    public static function setRequestHeaders()
     {
         // CORS support (experimental)
-        if (C('API.AllowCORS')) {
-            $Headers = 'Origin, X-Requested-With, Content-Type, Accept';
+        if (c('API.AllowCORS')) {
+            $headers = 'Origin, X-Requested-With, Content-Type, Accept';
 
-            header('Access-Control-Allow-Origin: *');
-            header('Access-Control-Allow-Headers: ' . $Headers);
+            header('Access-Control-Allow-Origin: *', true);
+            header('Access-Control-Allow-Headers: ' . $headers, true);
         }
 
         // Allow enabling JSONP using API.AllowJSONP
-        if (C('API.AllowJSONP')) {
-            SaveToConfig('Garden.AllowJSONP', TRUE, FALSE);
+        if (c('API.AllowJSONP')) {
+            saveToConfig('Garden.AllowJSONP', true, false);
         }
 
-        $Request = Gdn::Request();
+        $request = Gdn::request();
 
-        // Only deliver the actual data - no views or other funky stuff
-        $Request->WithDeliveryType(DELIVERY_TYPE_DATA);
+        switch (static::getRequestMethod()) {
+            // If HEAD or DELETE request, only deliver status
+            case 'head':
+            case 'delete':
+                $request->withDeliveryType(DELIVERY_TYPE_BOOL);
+                break;
+
+            // Otherwise, only deliver the actual data
+            default:
+                $request->withDeliveryType(DELIVERY_TYPE_DATA);
+                break;
+        }
 
         // Change response format depending on HTTP_ACCEPT
-        switch (static::GetServerArguments('HTTP_ACCEPT')) {
+        switch (static::getServerArguments('HTTP_ACCEPT')) {
             case 'text/xml':
             case 'application/xml':
-                $Request->WithDeliveryMethod(DELIVERY_METHOD_XML);
+                $request->withDeliveryMethod(DELIVERY_METHOD_XML);
                 break;
 
             case 'application/json':
             case 'application/javascript': // For JSONP
             default:
-                $Request->WithDeliveryMethod(DELIVERY_METHOD_JSON);
+                $request->withDeliveryMethod(DELIVERY_METHOD_JSON);
                 break;
         }
-    }
-
-    /**
-     * Generate a signature from an array of request data (query strings)
-     *
-     * This function takes an array of data, sorts the keys alphabetically and
-     * generates an HMAC hash using a specified application secret. The hash
-     * can then be used to validate incoming API calls as only the client and
-     * server knows the secret key used for creating the hash.
-     *
-     * Based on initial work by Diego Zanella
-     * @link http://careers.stackoverflow.com/diegozanella
-     *
-     * @since  0.1.0
-     * @access public
-     * @param  array $Data Array of request data uesd for generating the hash
-     * @return string      An HMAC-SHA256 hash generated from the request data
-     * @static
-     */
-    public static function GenerateSignature($Data)
-    {
-        // Sort the data array alphabetically so we always get the same hash no
-        // matter how the data was originally sorted
-        ksort($Data, SORT_STRING);
-
-        // Generate a signature by taking all the request data values (we're not
-        // interested in the keys), delimiting them with a dash (to avoid hash
-        // collisions) and making it all lower case as to ensure consistent hash
-        // generation
-        $Signature = hash_hmac('sha256', strtolower(implode('-', $Data)), C('API.Secret'));
-
-        return $Signature;
-    }
-
-    /**
-     * Generates a Universally Unique Identifier, version 4
-     *
-     * @link http://en.wikipedia.org/wiki/UUID
-     * 
-     * @since  0.1.0
-     * @access public
-     * @return string A UUID, made up of 32 hex digits and 4 hyphens.
-     * @static
-     */
-    public static function GenerateUniqueID()
-    {
-        return sprintf( '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
-            // 32 bits for "time_low"
-            mt_rand(0, 0xffff), mt_rand(0, 0xffff),
-
-            // 16 bits for "time_mid"
-            mt_rand(0, 0xffff),
-
-            // 16 bits for "time_hi_and_version",
-            // four most significant bits holds version number 4
-            mt_rand(0, 0x0fff) | 0x4000,
-
-            // 16 bits, 8 bits for "clk_seq_hi_res"
-            // 8 bits for "clk_seq_low"
-            // Two most significant bits holds zero and one for variant DCE1.1
-            mt_rand(0, 0x3fff) | 0x8000,
-
-            // 48 bits for "node"
-            mt_rand(0, 0xffff), mt_rand(0, 0xffff), mt_rand(0, 0xffff)
-        );
-    }
-
-    /**
-     * Get a user ID using either a username or an email
-     *
-     * Note: if both a username and an email are specified, only the username
-     * will be used. This is to prevent abusing of the function by passing two
-     * parameters at a time and hoping to get a User ID.
-     *
-     * Based on initial work by Diego Zanella
-     * @link http://careers.stackoverflow.com/diegozanella
-     *
-     * @since  0.1.0
-     * @access public
-     * @param  bool|string $Username Username of the user whose ID we wish to get
-     * @param  bool|string $Email    Email of the user whose ID we wish to get
-     * @return bool|int              User ID if a username or an email has been
-     *                               specified, otherwise FALSE
-     * @static
-     */
-    public static function GetUserID($Username, $Email)
-    {
-        $UserModel = new UserModel();
-
-        // Look up the user ID using a username if one has been specified
-        if ($Username) return $UserModel->GetByUsername($Username)->UserID;
-
-        // Look up the user ID using an email if one has been specified
-        if ($Email) return $UserModel->GetByEmail($Email)->UserID;
-
-        return FALSE;
-    }
-
-    /**
-     * Convenience method for accessing server arguments
-     * 
-     * Returns either the full list of server arguments ($_SERVER) or the value
-     * of a specific key if one is passed.
-     *
-     * @since  0.1.0
-     * @access public
-     * @param  bool|string $Key The specific key to search for
-     * @return array|mixed Full array of server arguments or specific value
-     * @static
-     */
-    public static function GetServerArguments($Key = FALSE)
-    {
-        // Get the server arguments from the request object
-        $Arguments = Gdn::Request()->GetRequestArguments(Gdn_Request::INPUT_SERVER);
-
-        // If a key was specfici, return the value of that key. Otherwise
-        // return the entire array of server arguments.
-        return ($Key) ? strtolower(val($Key, $Arguments)) : $Arguments;
     }
 
     /**
@@ -383,56 +347,103 @@ final class APIEngine
      *
      * I.e. "/foo/bar" would result in the following array: array('foo', 'bar')
      *
-     * This is a simple convenience method used throughout the application.
-     *
      * @since  0.1.0
      * @access public
      * @return array The full URI path array
      * @static
      */
-    public static function GetRequestPathArray()
+    public static function getRequestPathArray()
     {
-        return explode('/', strtolower(Gdn::Request()->RequestURI()));
+        if (!static::$requestURI) {
+            $URI = Gdn::request()->requestURI();
+            static::$requestURI = explode('/', strtolower($URI));
+        }
+
+        return static::$requestURI;
     }
 
     /**
-     * Get and handle any request input
-     * 
-     * This get the contensts of php://input and turn them into an associative
-     * array that can be used in PHP.
+     * Get the Request method
      *
-     * THIS CAN ONLY BE CALLED ONCE PER REQUEST!
+     * @since  0.1.0
+     * @access public
+     * @return string The Request method
+     * @static
+     */
+    public static function getRequestMethod()
+    {
+        if (!static::$requestMethod) {
+            $method = Gdn::request()->requestMethod();
+            static::$requestMethod = strtolower($method);
+        }
+
+        return static::$requestMethod;
+    }
+
+    /**
+     * Get and parse any request input
      *
      * @todo Add optional support for form-data when doing POSTs and this is
      *       required in the case of binary uploads
-     * 
+     *
      * @since  0.1.0
      * @access public
-     * @return array The contents of php://input as an array
+     * @return array The arguments sent along with the request
      * @static
      */
-    public static function GetRequestInput()
+    public static function getRequestArguments()
     {
-        $Data = array();
+        if (static::$requestArguments === null) {
+            $data = file_get_contents('php://input');
+            $type = static::getServerArguments('HTTP_CONTENT_TYPE');
 
-        if ($Data = file_get_contents('php://input')) {
-            switch (static::GetServerArguments('HTTP_CONTENT_TYPE')) {
+            switch ($type) {
                 case 'text/xml':
                 case 'application/xml':
-                    $XML  = (array) simplexml_load_string($Data);
-                    $Data = json_decode(json_encode($XML), TRUE);
+                    $XML  = (array) simplexml_load_string($data);
+                    $data = json_decode(json_encode($XML), true);
                     break;
-                
+
                 case 'application/json':
-                    $Data = json_decode($Data, TRUE);
+                    $data = json_decode($data, true);
                     break;
 
                 default:
-                    throw new Exception("Unsupported content type: ${Type}", 400);
+                    throw new Exception(t('API.Error.ContentType') . $type, 400);
                     break;
             }
+
+            static::$requestArguments = $data;
         }
 
-        return $Data;
+        return static::$requestArguments;
+    }
+
+    /**
+     * Convenience method for accessing server arguments
+     *
+     * Returns either the full list of server arguments ($_SERVER) or the value
+     * of a specific key if one is passed.
+     *
+     * @since  0.1.0
+     * @access public
+     * @param  bool|string $key The specific key to search for
+     * @return array|mixed Full array of server arguments or specific value
+     * @static
+     */
+    public static function getServerArguments($key = false)
+    {
+        $request = Gdn::request();
+        $Server  = Gdn_Request::INPUT_SERVER;
+
+        if (static::$serverArguments === null) {
+            static::$serverArguments = $request->getRequestArguments($Server);
+        }
+
+        $arguments = static::$serverArguments;
+
+        // If a key was specified, return the value of that key. Otherwise
+        // return the entire array of server arguments.
+        return ($key) ? strtolower(val($key, $arguments)) : $arguments;
     }
 }

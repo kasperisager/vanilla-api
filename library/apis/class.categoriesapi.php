@@ -12,101 +12,52 @@
 class CategoriesAPI extends APIMapper
 {
     /**
-     * Retrieve categories
-     *
-     * GET /categories
-     * GET /categories/:id
+     * Register API endpoints
      *
      * @since  0.1.0
      * @access public
-     * @param  array $Path
+     * @param  array $path
+     * @param  array $data
+     * @return void
      * @static
      */
-    public static function Get($Path)
+    public static function register($path, $data)
     {
-        static::$Controller = 'Categories';
+        // GET endpoints
 
-        $Arg = val(2, $Path)
+        static::get('/', array(
+            'controller' => 'Categories',
+            'method'     => 'all'
+        ));
 
-        if (is_numeric($Arg)) {
-            static::$Arguments = array(
-                'CategoryID' => $Arg
-            );
-        } else {
-            static::$Method = 'All';
-        }
-    }
+        static::get('/:id', array(
+            'arguments' => array('CategoryID' => ':id')
+        ));
 
-    /**
-     * Create categories
-     *
-     * POST /categories
-     *
-     * @since  0.1.0
-     * @access public
-     * @param  array $Path
-     * @static
-     */
-    public static function Post($Path)
-    {
-        static::$Application = 'Vanilla';
-        static::$Controller  = 'Settings';
-        static::$Method      = 'AddCategory';
-    }
+        // POST endpoints
 
-    /**
-     * Update categories
-     *
-     * PUT /categories/:id
-     *
-     * @since  0.1.0
-     * @access public
-     * @param  array $Path
-     * @throws Exception
-     * @static
-     */
-    public static function Put($Path)
-    {
-        $Arg = val(2, $Path)
+        static::post('/', array(
+            'application' => 'Vanilla',
+            'controller'  => 'Settings',
+            'method'      => 'addCategory'
+        ));
 
-        if (!is_numeric($Arg)) {
-            throw new Exception("No ID defined", 401);
-        }
+        // PUT endpoints
 
-        static::$Application = 'Vanilla';
-        static::$Controller  = 'Settings';
-        static::$Method      = 'EditCategory';
-        static::$Arguments   = array(
-            'CategoryID'   => $Arg,
-            'TransientKey' => Gdn::Session()->TransientKey()
-        );
-    }
+        static::put('/:id', array(
+            'application' => 'Vanilla',
+            'controller'  => 'Settings',
+            'method'      => 'addCategory',
+            'arguments'   => array('CategoryID' => ':id')
+        ));
 
-    /**
-     * Remove categories
-     *
-     * DELETE /categories/:id
-     *
-     * @since  0.1.0
-     * @access public
-     * @param  array $Path
-     * @throws Exception
-     * @static
-     */
-    public static function Delete($Path)
-    {
-        $Arg = val(2, $Path)
+        // DELETE endpoints
 
-        if (!is_numeric($Arg)) {
-            throw new Exception("No ID defined", 401);
-        }
-
-        static::$Application = 'Vanilla';
-        static::$Controller  = 'Settings';
-        static::$Method      = 'DeleteCategory';
-        static::$Arguments   = array(
-            'CategoryID'   => $Arg,
-            'TransientKey' => Gdn::Session()->TransientKey()
-        );
+        static::delete('/:id', array(
+            'application' => 'Vanilla',
+            'controller'  => 'Settings',
+            'method'      => 'deleteCategory',
+            'arguments'   => array('CategoryID' => ':id')
+        ));
     }
 }

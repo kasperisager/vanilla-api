@@ -12,20 +12,24 @@
 class ConfigurationAPI extends APIMapper
 {
     /**
-     * Retrieve Vanilla configuration
-     *
-     * GET /configuration
+     * Register API endpoints
      *
      * @since  0.1.0
      * @access public
-     * @param  array $Path
+     * @param  array $path
+     * @param  array $data
+     * @return void
      * @static
      */
-    public static function Get($Path)
+    public static function register($path, $data)
     {
-        static::$Application  = 'Dashboard';
-        static::$Controller   = 'Settings';
-        static::$Method       = 'Configuration';
-        static::$Authenticate = TRUE;
+        // GET endpoints
+
+        static::get('/', array(
+            'application'  => 'Dashboard',
+            'controller'   => 'Settings',
+            'method'       => 'configuration',
+            'authenticate' => true
+        ));
     }
 }

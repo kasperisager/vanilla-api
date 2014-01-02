@@ -12,81 +12,48 @@
 class ConversationsAPI extends APIMapper
 {
     /**
-     * Retrieve messages
-     *
-     * GET /messages
-     * GET /messages/:id
+     * Register API endpoints
      *
      * @since  0.1.0
      * @access public
-     * @param  array $Path
+     * @param  array $path
+     * @param  array $data
+     * @return void
      * @static
      */
-    public static function Get($Path)
+    public static function register($path, $data)
     {
-        static::$Controller   = 'Messages';
-        static::$Authenticate = TRUE;
+        // GET endpoints
 
-        $Arg = val(2, $Path);
+        static::get('/', array(
+            'controller'   => 'Messages',
+            'method'       => 'all',
+            'authenticate' => true
+        ));
 
-        if (is_numeric($Arg)) {
-            static::$Arguments = array(
-                'ConversationID' => $Arg
-            );
-        } else {
-            static::$Method = 'All';
-        }
-    }
+        static::get('/:id', array(
+            'arguments'    => array('ConversationID' => ':id'),
+            'authenticate' => true
+        ));
 
-    /**
-     * Create conversations and messages
-     *
-     * POST /conversations
-     * POST /conversation/:id/messages
-     *
-     * @since  0.1.0
-     * @access public
-     * @param  array $Path
-     * @static
-     */
-    public static function Post($Path)
-    {
-        static::$Controller = 'Messages';
-        static::$Arguments  = array(
-            'TransientKey' => Gdn::Session()->TransientKey()
-        );
+        // POST endpoints
 
-        $Arg = val(2, $Path);
+        static::post('/', array(
+            'controller' => 'Messages',
+            'method'     => 'add'
+        ));
 
-        if (is_numeric($Arg) && val(3, $Path) == 'messages') {
-            static::$Method = 'AddMessage';
-            static::$Arguments['ConversationID'] = $Arg;
-        } else {
-            static::$Method = 'Add';
-        }
-    }
+        static::post('/:id/messages', array(
+            'method'    => 'addMessage',
+            'arguments' => array('ConversationID' => ':id')
+        ));
 
-    /**
-     * Delete (clear) the message history of a conversation
-     *
-     * DELETE /conversations/:id
-     *
-     * @since  0.1.0
-     * @access public
-     * @param  array $Path
-     * @static
-     */
-    public static function Delete($Path)
-    {
-        $Arg = val(2, $Path);
+        // DELETE endpoints
 
-        if (!$Arg) throw new Exception("No ID defined", 401);
-
-        static::$Controller = 'Messages';
-        static::$Method     = 'Clear';
-        static::$Arguments  = array(
-            'ConversationID' => $Arg,
-            'TransientKey'   => Gdn::Session()->TransientKey()
-        );
+        static::delete('/:id', array(
+            'controller' => 'Messages',
+            'method'     => 'clear',
+            'arguments'  => array('ConversationID' => ':id')
+        ));
     }
 }

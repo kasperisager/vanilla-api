@@ -14,15 +14,14 @@ When you've done this, make sure the newly created folder is named `api` and not
 
 ## How does it work?
 
-Vanilla API is a shim that implements a RESTful URI scheme upon with you can invoke different methods using the standard GET, POST, PUT and DELETE HTTP verbs. The API then translates and redirects your request to the appropriate application controller which in return caries out the requested method.
+Vanilla API is a shim that implements a RESTful URI scheme upon with you can invoke different methods using the standard GET, POST, PUT and DELETE HTTP verbs. The API then translates and redirects your request to the corrosponding application controller which in return caries out the requested method.
 
 
 ## Documentation
 
 You can find documentation on how to use, configure and extend Vanilla API in the [Wiki](https://github.com/kasperisager/vanilla-api/wiki).
 
-A [Postman](http://getpostman.com) Collection containing all the available endpoints as well as the arguments they take (required + some optional) can be found here: [__Vanilla API Collection__](https://www.getpostman.com/collections/88c667ea752bc4f0186e)  
-_Make sure to update it every now and then!_
+A [Postman](http://getpostman.com) Collection containing all the available endpoints as well as the arguments they take (required + some optional) can be found here: [__Vanilla API Collection__](https://www.getpostman.com/collections/88c667ea752bc4f0186e). _Make sure to update it every now and then!_
 
 
 ## [Issue tracking](https://github.com/kasperisager/vanilla-api/issues)

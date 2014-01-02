@@ -21,16 +21,32 @@ class APIController extends Gdn_Controller
      * @param  int|string $Code    Error code
      * @param  string     $Message Base64-encoded error message
      */
-    public function Exception($Code, $Message)
+    public function exception($code, $message)
     {
-        // Set the header depending on the exception code
-        header("HTTP/1.0 $Code", TRUE, $Code);
+        header("HTTP/1.0 ${code}", true, $code);
 
-        $this->SetData(array(
-            'Code'      => intval($Code),
-            'Exception' => base64_decode(htmlspecialchars($Message))
+        $this->setData(array(
+            'Code'      => intval($code),
+            'Exception' => base64_decode(htmlspecialchars($message))
         ));
 
-        $this->RenderData();
+        $this->renderData();
+    }
+
+    /**
+     * Render API OPTIONS requests
+     *
+     * @since  0.1.0
+     * @access public
+     * @param  string $methods       Comma-separated string of allowed methods
+     * @param  string $documentation API documentation (Base64 encoded JSON)
+     */
+    public function options($methods, $documentation)
+    {
+        header("Allow: ${methods}", true);
+
+        $this->setData(json_decode(base64_decode($documentation), true));
+
+        $this->renderData();
     }
 }

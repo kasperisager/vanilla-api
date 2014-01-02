@@ -8,5 +8,6 @@ $ApplicationInfo['API'] = array(
     'Author'      => 'Kasper Kronborg Isager',
     'AuthorEmail' => 'kasperisager@gmail.com',
     'AuthorUrl'   => 'https://webhutt.com',
-    'License'     => 'MIT'
+    'License'     => 'MIT',
+    'SettingsUrl' => 'dashboard/settings/api'
 );

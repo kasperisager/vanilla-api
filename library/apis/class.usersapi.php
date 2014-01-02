@@ -12,108 +12,61 @@
 class UsersAPI extends APIMapper
 {
     /**
-     * Retrieve users
-     *
-     * GET /users
-     * GET /users/:id
-     * GET /users/summary
-     * 
-     * @since  0.1.0
-     * @access public
-     * @param  array $Path
-     * @static
-     */
-    public static function Get($Path)
-    {
-        $Arg = val(2, $Path);
-
-        static::$Controller = 'User';
-
-        if (is_numeric($Arg)) {
-            static::$Controller = 'Profile';
-            static::$Arguments  = array(
-                'User'   => $Arg,
-                'UserID' => $Arg
-            );
-        } else if ($Arg == 'summary') {
-            static::$Method = 'Summary';
-        } else {
-            static::$Authenticate = TRUE;
-        }
-    }
-
-    /**
-     * Create a new user
-     *
-     * POST /users
+     * Register API endpoints
      *
      * @since  0.1.0
      * @access public
-     * @param  array $Path
+     * @param  array $path
+     * @param  array $data
+     * @return void
      * @static
      */
-    public static function Post($Path)
+    public static function register($path, $data)
     {
-        static::$Controller = 'User';
-        static::$Method     = 'Add';
-        static::$Arguments  = array(
-            'TransientKey' => Gdn::Session()->TransientKey()
-        );
-    }
+        // GET endpoints
 
-    /**
-     * Update an existing user
-     *
-     * PUT /users/:id
-     *
-     * @since  0.1.0
-     * @access public
-     * @param  array $Path
-     * @throws Exception
-     * @static
-     */
-    public static function Put($Path)
-    {
-        $Arg = val(2, $Path)
+        static::get('/', array(
+            'controller'   => 'User',
+            'authenticate' => true
 
-        if (!is_numeric($Arg)) {
-            throw new Exception("No ID defined", 401);
-        }
+        ));
 
-        static::$Controller = 'User';
-        static::$Method     = 'Edit';
-        static::$Arguments  = array(
-            'UserID'       => $Arg,
-            'TransientKey' => Gdn::Session()->TransientKey()
-        );
-    }
+        static::get('/:id', array(
+            'controller' => 'Profile',
+            'arguments'  => array(
+                'User'   => ':id',
+                'UserID' => ':id'
+            )
+        ));
 
-    /**
-     * Delete an existing user
-     *
-     * DELETE /users/:id
-     *
-     * @since  0.1.0
-     * @access public
-     * @param  array $Path
-     * @param  array $Data
-     * @throws Exception
-     * @static
-     */
-    public static function Delete($Path, $Data)
-    {
-        $Arg = val(2, $Path)
+        static::get('/summary', array(
+            'method' => 'summary'
+        ));
 
-        if (!is_numeric($Arg)) {
-            throw new Exception("No ID defined", 401);
-        }
+        // POST endpoints
 
-        static::$Controller = 'User';
-        static::$Method     = 'Delete';
-        static::$Arguments  = array(
-            'UserID'       => $Arg,
-            'Method'       => val('Method', $Data),
-            'TransientKey' => Gdn::Session()->TransientKey()
-        );
+        static::post('/', array(
+            'controller' => 'User',
+            'method'     => 'add'
+        ));
+
+        // PUT endpoints
+
+        static::put('/:id', array(
+            'controller' => 'User',
+            'method'     => 'edit',
+            'arguments'  => array('UserID' => ':id')
+        ));
+
+        // DELETE endpoints
+
+        static::delete('/:id', array(
+            'controller' => 'User',
+            'method'     => 'delete',
+            'arguments'  => array(
+                'UserID' => ':id',
+                'Method' => val('Method', $data)
+            )
+        ));
     }
 }

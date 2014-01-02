@@ -1,11 +1,7 @@
 <?php if (!defined('APPLICATION')) exit;
 
 /**
- * Mapper class for defining APIs
- *
- * By extending this class, API classes can define their own GET, POST, PUT and
- * DELETE operations. If a given method is not extended by the API class, a 501
- * Method Not Implemented error will simply be thrown.
+ * Mapper class providing common methods for defining APIs
  *
  * @package   API
  * @since     0.1.0
@@ -14,122 +10,148 @@
  * @license   http://opensource.org/licenses/MIT MIT
  * @abstract
  */
-abstract class APIMapper
+abstract class APIMapper implements iAPI
 {
-    /**
-     * Controller to call when requesting the API (Required).
-     *
-     * @since  0.1.0
-     * @access public
-     * @var    string|null
-     * @static
-     */
-    public static $Controller;
+    /* Properties */
 
     /**
-     * Method to call on the controller specified earlier (Optional).
+     * Endpoints supported by the API
      *
      * @since  0.1.0
-     * @access public
-     * @var    string
-     * @static
-     */
-    public static $Method = 'Index';
-
-    /**
-     * Application in which the controller can be found (Optional).
-     *
-     * Useful for when dealing with non-uniquely named controller such as the
-     * "Settings" controller that exists in both the "Vanilla" and "Dashboard"
-     * applications.
-     *
-     * In case no application is explicitly specified, Garden will simply look
-     * for whichever application that contains the specified controller.
-     *
-     * @since  0.1.0
-     * @access public
-     * @var    null|string
-     * @static
-     */
-    public static $Application;
-
-    /**
-     * Array of named arguments to pass along to the controller method (Optional).
-     *
-     * @since  0.1.0
-     * @access public
+     * @access protected
      * @var    array
      * @static
      */
-    public static $Arguments = array();
+    protected static $endpoints = array();
 
     /**
-     * Whether or not to force user authentication.
+     * Methods supported by the API
+     *
+     * The OPTIONS and HEAD methods are always supported.
+     *
+     * @since  0.1.0
+     * @access protected
+     * @var    array
+     * @static
+     */
+    protected static $supports = array('options', 'head');
+
+    /* Methods */
+
+    /**
+     * Provide read-only access to the available endpoints
      *
      * @since  0.1.0
      * @access public
-     * @var    bool
+     * @return array Array of available endpoints
+     * @final
      * @static
      */
-    public static $Authenticate = FALSE;
-
-    /**
-     * API class GET operation
-     *
-     * This method will be run when a GET request is sent to a given API class.
-     *
-     * @since  0.1.0
-     * @access public
-     * @throws Exception
-     * @static
-     */
-    public static function Get()
+    final public static function endpoints()
     {
-        throw new Exception("Method Not Implemented", 501);
+        return static::$endpoints;
     }
 
     /**
-     * API class POST operation
-     *
-     * This method will be run when a POST request is sent to a given API class.
+     * Find and return methods supported by the called endpoint
      *
      * @since  0.1.0
      * @access public
-     * @throws Exception
+     * @return array
+     * @final
      * @static
      */
-    public static function Post()
+    final public static function supports()
     {
-        throw new Exception("Method Not Implemented", 501);
+        // Check if these methods are supported
+        $check = array('get', 'post', 'put', 'delete');
+
+        foreach (static::$endpoints as $method => $endpoints) {
+            $method   = strtolower($method);
+            $supports = static::$supports;
+
+            // Make sure the method is valid and not already marked as being
+            // supported, and if so then add it to the list
+            if (in_array($method, $check) || !in_array($method, $supports)) {
+                static::$supports[] = $method;
+            }
+        }
+
+        return static::$supports;
     }
 
     /**
-     * API class PUT operation
-     *
-     * This method will be run when a PUT request is sent to a given API class.
+     * Method for registering an API GET endpoint
      *
      * @since  0.1.0
      * @access public
-     * @throws Exception
+     * @param  stirng $endpoint The endpoint to register
+     * @param  array  $data     Endpoint mapping data
+     * @return void
+     * @final
      * @static
      */
-    public static function Put()
+    final public static function get($endpoint, $data)
     {
-        throw new Exception("Method Not Implemented", 501);
+        static::endpoint('GET', $endpoint, $data);
     }
 
     /**
-     * API class DELETE operation
-     *
-     * This method will be run when a DELETE request is sent to a given API class.
+     * Method for registering an API POST endpoint
      *
      * @since  0.1.0
      * @access public
-     * @throws Exception
+     * @return void
+     * @final
      * @static
      */
-    public static function Delete()
+    final public static function post($endpoint, $data)
     {
-        throw new Exception("Method Not Implemented", 501);
+        static::endpoint('POST', $endpoint, $data);
+    }
+
+    /**
+     * Method for registering and API PUT endpoint
+     *
+     * @since  0.1.0
+     * @access public
+     * @return void
+     * @final
+     * @static
+     */
+    final public static function put($endpoint, $data)
+    {
+        static::endpoint('PUT', $endpoint, $data);
+    }
+
+    /**
+     * Method for registering an API DELETE endpoint
+     *
+     * @since  0.1.0
+     * @access public
+     * @return void
+     * @final
+     * @static
+     */
+    final public static function delete($endpoint, $data)
+    {
+        static::endpoint('DELETE', $endpoint, $data);
+    }
+
+    /**
+     * Register an API endpoint
+     *
+     * @since  0.1.0
+     * @access public
+     * @param  string $method   HTTP method
+     * @param  string $endpoint Endpoint to register
+     * @param  array  $data     Endpoint mapping data (controller, etc.)
+     * @return void
+     * @final
+     * @static
+     */
+    final protected static function endpoint($method, $endpoint, $data)
+    {
+        static::$endpoints[$method][$endpoint] = $data;
     }
 }

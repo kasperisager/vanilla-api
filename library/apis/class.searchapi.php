@@ -12,17 +12,21 @@
 class SearchAPI extends APIMapper
 {
     /**
-     * Get search results
-     *
-     * GET /search
+     * Register API endpoints
      *
      * @since  0.1.0
      * @access public
-     * @param  array $Path
+     * @param  array $path
+     * @param  array $data
+     * @return void
      * @static
      */
-    public static function Get($Path)
+    public static function register($path, $data)
     {
-        static::$Controller = 'Search';
+        // GET endpoints
+
+        static::get('/', array(
+            'controller' => 'Search'
+        ));
     }
 }
