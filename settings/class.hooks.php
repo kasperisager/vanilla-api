@@ -54,9 +54,7 @@ class APIHooks implements Gdn_IPlugin
      */
     public function Gdn_Dispatcher_beforeDispatch_handler()
     {
-        $dispatcher = APIEngine::getInstance();
-
-        $path = $dispatcher::getRequestPathArray();
+        $path = APIEngine::getRequestURI();
 
         // Set the call and resource paths if they exist
         $call     = val(0, $path);
@@ -65,11 +63,11 @@ class APIHooks implements Gdn_IPlugin
         // Abandon the dispatch if this isn't an API call with a valid resource
         if ($call != 'api' || !$resource) return;
 
-        $dispatcher::setRequestHeaders();
+        APIEngine::setRequestHeaders();
 
         try {
             // Attempt dispatching the API request
-            $dispatcher->dispatchRequest();
+            APIEngine::dispatchRequest();
         } catch (Exception $exception) {
             // As we can't pass an object to WithControllerMethod(), we extract
             // the values we need manually before passing them on. The exception

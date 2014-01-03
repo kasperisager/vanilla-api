@@ -10,7 +10,7 @@
  * @license   http://opensource.org/licenses/MIT MIT
  * @abstract
  */
-abstract class APIMapper implements iAPI
+abstract class APIMapper extends Gdn_Pluggable implements iAPI
 {
     /* Properties */
 
@@ -19,10 +19,10 @@ abstract class APIMapper implements iAPI
      *
      * @since  0.1.0
      * @access protected
-     * @var    array
+     * @var    null|array
      * @static
      */
-    protected static $endpoints = array();
+    protected static $endpoints;
 
     /**
      * Methods supported by the API
@@ -45,10 +45,18 @@ abstract class APIMapper implements iAPI
      * @access public
      * @return array Array of available endpoints
      * @final
-     * @static
      */
-    final public static function endpoints()
+    final public function endpoints($path, $data)
     {
+        if (static::$endpoints === null) {
+            // Register API endpoints specific by the API class
+            static::register($path, $data);
+
+            // Fire event to allow overriding and registering new endpoints
+            // outside the API class itself
+            $this->fireAs(get_called_class())->fireEvent('register');
+        }
+
         return static::$endpoints;
     }
 

@@ -12,7 +12,7 @@
  * @license   http://opensource.org/licenses/MIT MIT
  * @final
  */
-final class APIEngine extends Gdn_Pluggable implements iSingleton
+final class APIEngine
 {
     /* Properties */
 
@@ -30,33 +30,21 @@ final class APIEngine extends Gdn_Pluggable implements iSingleton
     public static $supports = array('get', 'post', 'put', 'delete', 'head', 'options');
 
     /**
-     * Singleton instance of the class
-     *
-     * @since  0.1.0
-     * @access protected
-     * @var    null|APIEngine
-     * @static
-     */
-    protected static $instance;
-
-    protected static $dispatch;
-
-    /**
      * Exploded request URI
      *
      * @since  0.1.0
      * @access protected
-     * @var    array
+     * @var    null|array
      * @static
      */
-    protected static $requestURI = array();
+    protected static $requestUri;
 
     /**
      * Request method
      *
      * @since  0.1.0
      * @access protected
-     * @var    string
+     * @var    null|string
      * @static
      */
     protected static $requestMethod;
@@ -84,35 +72,18 @@ final class APIEngine extends Gdn_Pluggable implements iSingleton
     /* Methods */
 
     /**
-     * Get Singleton instance of this class
-     *
-     * @since  0.1.0
-     * @access public
-     * @return APIEngine The singleton instance
-     * @static
-     */
-    public static function getInstance()
-    {
-        if (!static::$instance) {
-            $class = get_class();
-            static::$instance = new $class;
-        }
-
-        return static::$instance;
-    }
-
-    /**
      * Map the API request to the corrosponding controller
      *
      * @since  0.1.0
      * @access public
      * @throws Exception
      * @return void
+     * @static
      */
-    public function dispatchRequest()
+    public static function dispatchRequest()
     {
         $request = Gdn::request();
-        $path    = static::getRequestPathArray();
+        $path    = static::getRequestUri();
         $method  = static::getRequestMethod();
 
         // Before we do anything else, let's make sure the request method is
@@ -132,7 +103,7 @@ final class APIEngine extends Gdn_Pluggable implements iSingleton
         }
 
         // Get the requested resource
-        $resource = val(1, static::getRequestPathArray());
+        $resource = val(1, $path);
 
         // Turn requested resource into API class and store it
         $class = ucfirst($resource) . 'API';
@@ -142,14 +113,28 @@ final class APIEngine extends Gdn_Pluggable implements iSingleton
             throw new Exception(t('API.Error.Class.Invalid'), 404);
         }
 
-        if (in_array($method, array('post', 'put', 'delete'))) {
-            $this->map($resource, $class, $path, $method, static::getRequestArguments());
+        // Make sure that the requested API class extends the API Mapper
+        if (!is_subclass_of($class, 'APIMapper')) {
+            throw new Exception(t('API.Error.Mapper'), 500);
+        }
 
+        // Instantiate the API class
+        $class = new $class;
+
+        // Is this a write-method?
+        $write = in_array($method, array('post', 'put', 'delete'));
+
+        // If write-method, get request arguments sent by client
+        $data = ($write) ? static::getRequestArguments() : array();
+
+        $dispatch = static::map($resource, $class, $path, $method, $data);
+
+        if ($write) {
             // Authentication is always required for write-methods
-            static::$dispatch['authenticate'] = true;
+            $dispatch['authenticate'] = true;
 
             // Always attach transient key as last argument for write-methods
-            static::$dispatch['arguments']['TransientKey'] = Gdn::session()->transientKey();
+            $dispatch['arguments']['TransientKey'] = Gdn::session()->transientKey();
 
             // As Garden doesn't take PUT and DELETE requests into account when
             // verifying requests using IsPostBack() and IsAuthencatedPostBack(),
@@ -158,34 +143,32 @@ final class APIEngine extends Gdn_Pluggable implements iSingleton
 
             // Add any API-specific arguments to the requests arguments
             $request->setRequestArguments(Gdn_Request::INPUT_POST, array_merge(
-                val('arguments', static::$dispatch, array()), static::getRequestArguments()
+                val('arguments', $dispatch, array()), static::getRequestArguments()
             ));
 
             // Set the PHP $_POST global as the result of any form data picked
             // up by Garden.
             $_POST = $request->post();
-        } else {
-            $this->map($resource, $class, $path, $method);
         }
 
         // Make sure that the API class returns a controller definition
-        if (!$controller = val('controller', static::$dispatch)) {
+        if (!$controller = val('controller', $dispatch)) {
             throw new Exception(t('API.Error.Controller.Missing'), 500);
         }
 
         // If the endpoint requires authentication and none has been provided,
         // throw an error
-        if (val('authenticate', static::$dispatch) && !Gdn::session()->isValid()) {
+        if (val('authenticate', $dispatch) && !Gdn::session()->isValid()) {
             throw new Exception(t('API.Error.AuthRequired'), 401);
         }
 
         // Attach the correct application if one has been set
-        if ($application = val('application', static::$dispatch)) {
+        if ($application = val('application', $dispatch)) {
             Gdn_Autoloader::attachApplication($application);
         }
 
-        $method    = val('method', static::$dispatch);
-        $arguments = val('arguments', static::$dispatch);
+        $method    = val('method', $dispatch);
+        $arguments = val('arguments', $dispatch);
 
         // Map the request to the specified URI
         Gdn::request()->withControllerMethod($controller, $method, $arguments);
@@ -199,26 +182,20 @@ final class APIEngine extends Gdn_Pluggable implements iSingleton
      * @param  array  $path   URI path array
      * @param  string $method HTTP method
      * @param  array  $data   Request arguments
-     * @return void
+     * @return array
      * @final
+     * @static
      */
-    final public function map($resource, $class, $path, $method, $data = array())
+    final public static function map($resource, $class, $path, $method, $data)
     {
-        // Make sure that the requested API class extends the API Mapper
-        if (!is_subclass_of($class, 'APIMapper')) {
-            throw new Exception(t('API.Error.Mapper'), 500);
-        }
-
-        // Register all API endpoints
-        $class::register($path, $data);
-
-        $this->fireAs($class)->fireEvent('endpoints');
+        // Get all API endpoints
+        $endpoints = $class->endpoints($path, $data);
 
         if ($method == 'options') {
             $supports      = strtoupper(implode(', ', $class::supports()));
             $documentation = array();
 
-            foreach ($class::endpoints() as $method => $endpoints) {
+            foreach ($endpoints as $method => $endpoints) {
                 foreach ($endpoints as $endpoint => $data) {
                     $documentation[$method][] = paths($resource, $endpoint);
                 }
@@ -244,7 +221,7 @@ final class APIEngine extends Gdn_Pluggable implements iSingleton
             $match = array_values($match); // Reset array values
 
             // Get all endpoints for this specific method
-            $endpoints = val(strtoupper($method), $class::endpoints());
+            $endpoints = val(strtoupper($method), $endpoints);
 
             $resource = paths(DS . implode(DS, $match));
 
@@ -281,7 +258,7 @@ final class APIEngine extends Gdn_Pluggable implements iSingleton
             );
         }
 
-        static::$dispatch = array(
+        return array(
             'controller'   => $controller,
             'method'       => $method,
             'arguments'    => $arguments,
@@ -352,14 +329,14 @@ final class APIEngine extends Gdn_Pluggable implements iSingleton
      * @return array The full URI path array
      * @static
      */
-    public static function getRequestPathArray()
+    public static function getRequestUri()
     {
-        if (!static::$requestURI) {
-            $URI = Gdn::request()->requestURI();
-            static::$requestURI = explode('/', strtolower($URI));
+        if (static::$requestUri === null) {
+            $Uri = Gdn::request()->requestUri();
+            static::$requestUri = explode('/', strtolower($Uri));
         }
 
-        return static::$requestURI;
+        return static::$requestUri;
     }
 
     /**
@@ -372,7 +349,7 @@ final class APIEngine extends Gdn_Pluggable implements iSingleton
      */
     public static function getRequestMethod()
     {
-        if (!static::$requestMethod) {
+        if (static::$requestMethod === null) {
             $method = Gdn::request()->requestMethod();
             static::$requestMethod = strtolower($method);
         }
@@ -394,7 +371,11 @@ final class APIEngine extends Gdn_Pluggable implements iSingleton
     public static function getRequestArguments()
     {
         if (static::$requestArguments === null) {
+            // Read the PHP input buffer. This can only be done ONCE, so we need
+            // to make sure that we store the data
             $data = file_get_contents('php://input');
+
+            // Get the content type of the input
             $type = static::getServerArguments('HTTP_CONTENT_TYPE');
 
             switch ($type) {
