@@ -1,39 +1,52 @@
-<?php if (!defined('APPLICATION')) exit();
+<?php if (!defined('APPLICATION')) exit;
 
 /**
  * Activities API
  *
- * @package    API
- * @since      0.1.0
- * @author     Kasper Kronborg Isager <kasperisager@gmail.com>
- * @copyright  Copyright 2013 © Kasper Kronborg Isager
- * @license    http://opensource.org/licenses/MIT MIT
+ * @package   API
+ * @since     0.1.0
+ * @author    Kasper Kronborg Isager <kasperisager@gmail.com>
+ * @copyright Copyright 2013 © Kasper Kronborg Isager
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 class ActivitiesAPI extends APIMapper
 {
-   /**
-    * Retrieve activity items
-    *
-    * GET /activities
-    * GET /activities/:id
-    *
-    * @since   0.1.0
-    * @access  public
-    * @param   array $Path
-    */
-   public function Get($Path)
-   {
-      $this->API['Controller'] = 'Activity';
+    /**
+     * Register API endpoints
+     *
+     * @since  0.1.0
+     * @access public
+     * @param  array $path
+     * @param  array $data
+     * @return void
+     * @static
+     */
+    public static function register($path, $data)
+    {
+        // GET endpoints
 
-      $ID = (isset($Path[2])) ? $Path[2] : FALSE;
+        static::get('/', array(
+            'controller' => 'Activity'
+        ));
 
-      if ($ID) {
+        static::get('/:id', array(
+            'method'    => 'item',
+            'arguments' => array('ActivityID' => ':id')
+        ));
 
-         $this->API['Method']    = 'Item';
-         $this->API['Arguments'] = array(
-            'ActivityID' => $ID
-         );
+        // POST endpoints
 
-      }
-   }
+        static::post('/', array(
+            'controller' => 'Activity',
+            'method'     => 'post'
+        ));
+
+        // DELETE endpoints
+
+        static::delete('/:id', array(
+            'controller' => 'Activity',
+            'method'     => 'delete',
+            'arguments'  => array('ActivityID' => ':id')
+        ));
+    }
 }

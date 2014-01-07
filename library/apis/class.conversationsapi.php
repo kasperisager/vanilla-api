@@ -1,7 +1,7 @@
 <?php if (!defined('APPLICATION')) exit;
 
 /**
- * Users API
+ * Conversations API
  *
  * @package   API
  * @since     0.1.0
@@ -9,7 +9,7 @@
  * @copyright Copyright 2013 © Kasper Kronborg Isager
  * @license   http://opensource.org/licenses/MIT MIT
  */
-class UsersAPI extends APIMapper
+class ConversationsAPI extends APIMapper
 {
     /**
      * Register API endpoints
@@ -26,47 +26,34 @@ class UsersAPI extends APIMapper
         // GET endpoints
 
         static::get('/', array(
-            'controller'   => 'User',
+            'controller'   => 'Messages',
+            'method'       => 'all',
             'authenticate' => true
-
         ));
 
         static::get('/:id', array(
-            'controller' => 'Profile',
-            'arguments'  => array(
-                'User'   => ':id',
-                'UserID' => ':id'
-            )
-        ));
-
-        static::get('/summary', array(
-            'method' => 'summary'
+            'arguments'    => array('ConversationID' => ':id'),
+            'authenticate' => true
         ));
 
         // POST endpoints
 
         static::post('/', array(
-            'controller' => 'User',
+            'controller' => 'Messages',
             'method'     => 'add'
         ));
 
-        // PUT endpoints
-
-        static::put('/:id', array(
-            'controller' => 'User',
-            'method'     => 'edit',
-            'arguments'  => array('UserID' => ':id')
+        static::post('/:id/messages', array(
+            'method'    => 'addMessage',
+            'arguments' => array('ConversationID' => ':id')
         ));
 
         // DELETE endpoints
 
         static::delete('/:id', array(
-            'controller' => 'User',
-            'method'     => 'delete',
-            'arguments'  => array(
-                'UserID' => ':id',
-                'Method' => val('Method', $data)
-            )
+            'controller' => 'Messages',
+            'method'     => 'clear',
+            'arguments'  => array('ConversationID' => ':id')
         ));
     }
 }

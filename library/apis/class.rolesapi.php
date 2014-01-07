@@ -1,97 +1,61 @@
-<?php if (!defined('APPLICATION')) exit();
+<?php if (!defined('APPLICATION')) exit;
 
 /**
  * Roles API
  *
- * @package    API
- * @since      0.1.0
- * @author     Kasper Kronborg Isager <kasperisager@gmail.com>
- * @copyright  Copyright 2013 © Kasper Kronborg Isager
- * @license    http://opensource.org/licenses/MIT MIT
+ * @package   API
+ * @since     0.1.0
+ * @author    Kasper Kronborg Isager <kasperisager@gmail.com>
+ * @copyright Copyright 2013 © Kasper Kronborg Isager
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 class RolesAPI extends APIMapper
 {
-   /**
-    * Retrieve roles
-    *
-    * GET /roles
-    *
-    * @since   0.1.0
-    * @access  public
-    * @param   array $Path
-    */
-   public function Get($Path)
-   {
-      $this->API['Controller'] = 'Role';
-   }
+    /**
+     * Register API endpoints
+     *
+     * @since  0.1.0
+     * @access public
+     * @param  array $path
+     * @param  array $data
+     * @return void
+     * @static
+     */
+    public static function register($path, $data)
+    {
+        // GET endpoints
 
-   /**
-    * Create roles
-    *
-    * POST /roles
-    *
-    * @since   0.1.0
-    * @access  public
-    * @param   array $Path
-    */
-   public function Post($Path)
-   {
-      $this->API['Controller'] = 'Role';
-      $this->API['Method']     = 'Add';
-      $this->API['Arguments']  = array(
-         'TransientKey' => Gdn::Session()->TransientKey()
-      );
-   }
+        static::get('/', array(
+            'controller'   => 'Role',
+            'authenticate' => true
+        ));
 
-   /**
-    * Update an existing role
-    *
-    * PUT /roles/:id
-    *
-    * @since   0.1.0
-    * @access  public
-    * @param   array $Path
-    * @throws  Exception
-    */
-   public function Put($Path)
-   {
-      $ID = (isset($Path[2])) ? $Path[2] : FALSE;
+        static::get('/:id', array(
+            'arguments'    => array('RoleID' => ':id'),
+            'authenticate' => true
+        ));
 
-      if (!$ID) {
-         throw new Exception("No ID defined", 401);
-      }
+        // POST endpoints
 
-      $this->API['Controller'] = 'Role';
-      $this->API['Method']     = 'Edit';
-      $this->API['Arguments']  = array(
-         'RoleID'       => $ID,
-         'TransientKey' => Gdn::Session()->TransientKey()
-      );
-   }
+        static::post('/', array(
+            'controller' => 'Role',
+            'method'     => 'add'
+        ));
 
-   /**
-    * Delete an existing role
-    *
-    * DELETE /roles/:id
-    *
-    * @since   0.1.0
-    * @access  public
-    * @param   array $Path
-    * @throws  Exception
-    */
-   public function Delete($Path)
-   {
-      $ID = (isset($Path[2])) ? $Path[2] : FALSE;
+        // PUT endpoints
 
-      if (!$ID) {
-         throw new Exception("No ID defined", 401);
-      }
+        static::put('/:id', array(
+            'controller' => 'Role',
+            'method'     => 'edit',
+            'arguments'  => array('RoleID' => ':id')
+        ));
 
-      $this->API['Controller'] = 'Role';
-      $this->API['Method']     = 'Delete';
-      $this->API['Arguments']  = array(
-         'RoleID'       => $ID,
-         'TransientKey' => Gdn::Session()->TransientKey()
-      );
-   }
+        // DELETE endpoints
+
+        static::delete('/:id', array(
+            'controller' => 'Role',
+            'method'     => 'delete',
+            'arguments'  => array('RoleID' => ':id')
+        ));
+    }
 }

@@ -1,94 +1,165 @@
-<?php if (!defined('APPLICATION')) exit();
+<?php if (!defined('APPLICATION')) exit;
 
 /**
- * Mapper class for defining APIs
+ * Mapper class providing common methods for defining APIs
  *
- * By extending this class, API classes can define their own GET, POST, PUT and
- * DELETE operations. If a given method is not extended by the API class, a 501
- * Method Not Implemented error will simply be thrown.
- *
- * @todo Create helper functions for dealing with query paths in API classes
- *       E.g. $Value = (isset($Path[n])) ? $Path[n] : FALSE;
- *
- * @package    API
- * @since      0.1.0
- * @author     Kasper Kronborg Isager <kasperisager@gmail.com>
- * @copyright  Copyright 2013 © Kasper Kronborg Isager
- * @license    http://opensource.org/licenses/MIT MIT
+ * @package   API
+ * @since     0.1.0
+ * @author    Kasper Kronborg Isager <kasperisager@gmail.com>
+ * @copyright Copyright 2013 © Kasper Kronborg Isager
+ * @license   http://opensource.org/licenses/MIT MIT
+ * @abstract
  */
-class APIMapper extends APIEngine
+abstract class APIMapper extends Gdn_Pluggable implements iAPI
 {
-   /**
-    * API property containing information about the API called by the client
-    *
-    * @since   0.1.0
-    * @access  protected
-    * @var     object
-    */
-   protected $API;
+    /* Properties */
 
-   /**
-    * API class GET operation
-    *
-    * This method will be run when a GET request is sent to a given API class.
-    * The GET method only allows returning an API controller and method.
-    *
-    * @since   0.1.0
-    * @access  public
-    * @throws  Exception
-    */
-   public function Get()
-   {
-      throw new Exception("Method Not Implemented", 501);
-   }
+    /**
+     * Endpoints supported by the API
+     *
+     * @since  0.1.0
+     * @access protected
+     * @var    null|array
+     * @static
+     */
+    protected static $endpoints;
 
-   /**
-    * API class POST operation
-    *
-    * This method will be run when a POST request is sent to a given API class.
-    * The POST method allows you to return an array of custom arguments which
-    * will be included with the rest of the Form Data sent in the request body.
-    *
-    * @since   0.1.0
-    * @access  public
-    * @throws  Exception
-    */
-   public function Post()
-   {
-      throw new Exception("Method Not Implemented", 501);
-   }
+    /**
+     * Methods supported by the API
+     *
+     * The OPTIONS and HEAD methods are always supported.
+     *
+     * @since  0.1.0
+     * @access protected
+     * @var    array
+     * @static
+     */
+    protected static $supports = array('options', 'head');
 
-   /**
-    * API class PUT operation
-    *
-    * This method will be run when a PUT request is sent to a given API class.
-    * The PUT method allows you to return an array of custom arguments which
-    * will be included with the rest of the Form Data sent in the request body.
-    *
-    * @since   0.1.0
-    * @access  public
-    * @throws  Exception
-    */
-   public function Put()
-   {
-      throw new Exception("Method Not Implemented", 501);
-   }
+    /* Methods */
 
-   /**
-    * API class DELETE operation
-    *
-    * This method will be run when a DELETE request is sent to a given API class.
-    * The DELETE method allows you to return an array of custom arguments but
-    * doesn't allow for sending any Form Data directly in the request body
-    * meaning that all data required for processing the request will have to be
-    * included in the custom request arguments.
-    *
-    * @since   0.1.0
-    * @access  public
-    * @throws  Exception
-    */
-   public function Delete()
-   {
-      throw new Exception("Method Not Implemented", 501);
-   }
+    /**
+     * Provide read-only access to the available endpoints
+     *
+     * @since  0.1.0
+     * @access public
+     * @return array Array of available endpoints
+     * @final
+     */
+    final public function endpoints($path, $data)
+    {
+        if (static::$endpoints === null) {
+            // Register API endpoints specific by the API class
+            static::register($path, $data);
+
+            // Fire event to allow overriding and registering new endpoints
+            // outside the API class itself
+            $this->fireAs(get_called_class())->fireEvent('register');
+        }
+
+        return static::$endpoints;
+    }
+
+    /**
+     * Find and return methods supported by the called endpoint
+     *
+     * @since  0.1.0
+     * @access public
+     * @return array
+     * @final
+     * @static
+     */
+    final public static function supports()
+    {
+        // Check if these methods are supported
+        $check = array('get', 'post', 'put', 'delete');
+
+        foreach (static::$endpoints as $method => $endpoints) {
+            $method   = strtolower($method);
+            $supports = static::$supports;
+
+            // Make sure the method is valid and not already marked as being
+            // supported, and if so then add it to the list
+            if (in_array($method, $check) || !in_array($method, $supports)) {
+                static::$supports[] = $method;
+            }
+        }
+
+        return static::$supports;
+    }
+
+    /**
+     * Method for registering an API GET endpoint
+     *
+     * @since  0.1.0
+     * @access public
+     * @param  stirng $endpoint The endpoint to register
+     * @param  array  $data     Endpoint mapping data
+     * @return void
+     * @final
+     * @static
+     */
+    final public static function get($endpoint, $data)
+    {
+        static::endpoint('GET', $endpoint, $data);
+    }
+
+    /**
+     * Method for registering an API POST endpoint
+     *
+     * @since  0.1.0
+     * @access public
+     * @return void
+     * @final
+     * @static
+     */
+    final public static function post($endpoint, $data)
+    {
+        static::endpoint('POST', $endpoint, $data);
+    }
+
+    /**
+     * Method for registering and API PUT endpoint
+     *
+     * @since  0.1.0
+     * @access public
+     * @return void
+     * @final
+     * @static
+     */
+    final public static function put($endpoint, $data)
+    {
+        static::endpoint('PUT', $endpoint, $data);
+    }
+
+    /**
+     * Method for registering an API DELETE endpoint
+     *
+     * @since  0.1.0
+     * @access public
+     * @return void
+     * @final
+     * @static
+     */
+    final public static function delete($endpoint, $data)
+    {
+        static::endpoint('DELETE', $endpoint, $data);
+    }
+
+    /**
+     * Register an API endpoint
+     *
+     * @since  0.1.0
+     * @access public
+     * @param  string $method   HTTP method
+     * @param  string $endpoint Endpoint to register
+     * @param  array  $data     Endpoint mapping data (controller, etc.)
+     * @return void
+     * @final
+     * @static
+     */
+    final protected static function endpoint($method, $endpoint, $data)
+    {
+        static::$endpoints[$method][$endpoint] = $data;
+    }
 }
