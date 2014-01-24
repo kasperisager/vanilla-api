@@ -97,16 +97,18 @@ class APIHooks implements Gdn_IPlugin
     {
         $sender->permission('Garden.Settings.Manage');
 
-        if ($sender->Form->authenticatedPostBack()) {
+        $form = $sender->Form;
+
+        if ($form->authenticatedPostBack()) {
             $secret = c('API.Secret');
-            $regen  = $sender->Form->buttonExists(t('API.Settings.Refresh.Label'));
+            $regen  = $form->buttonExists(t('API.Settings.Refresh.Label'));
 
             if ($regen) $secret = APIAuth::generateUniqueID();
 
             $save = array();
             $save['API.Secret'] = $secret;
 
-            if ($sender->Form->errorCount() == 0) {
+            if ($form->errorCount() == 0) {
                 saveToConfig($save);
 
                 if ($regen) {
@@ -120,7 +122,7 @@ class APIHooks implements Gdn_IPlugin
         } else {
             $data = array();
             $data['Secret'] = c('API.Secret');
-            $sender->Form->setData($data);
+            $form->setData($data);
         }
 
         $sender->addSideMenu();
