@@ -2,11 +2,11 @@
 
 To get started using Vanilla API, either:
 
-* [__Download the latest release__](https://github.com/kasperisager/vanilla-api/releases)
-* Clone the repository directly into your Vanilla `applications` directory:
+- [__Download the latest release__](https://github.com/kasperisager/vanilla-api/releases)
+- Clone the repository directly into your Vanilla `applications` directory:
 
 ```sh
-$ git clone git://github.com/kasperisager/vanilla-api.git api
+$ git clone kasperisager/vanilla-api api
 ```
 
 When you've done this, make sure the newly created folder is named `api` and not `vanilla-api`. Now simply go to your dashboard, enable Vanilla API in the "Applications" menu and you're all set!
@@ -31,4 +31,4 @@ If you come across any bugs or if you have a feature request, please file an iss
 
 ---
 
-Copyright 2014 © [__Kasper Kronborg Isager__](http://kasperisager.github.io). Licensed under the terms of the [__MIT License__](LICENSE.md)
+Copyright 2014 © [Kasper Kronborg Isager](http://kasperisager.github.io). Licensed under the terms of the [MIT License](LICENSE.md)
