@@ -31,4 +31,4 @@ If you come across any bugs or if you have a feature request, please file an iss
 
 ---
 
-Copyright 2013 © [__Kasper Kronborg Isager__](http://webhutt.com). Licensed under the terms of the [__MIT License__](LICENSE.md)
+Copyright 2014 © [__Kasper Kronborg Isager__](http://kasperisager.github.io). Licensed under the terms of the [__MIT License__](LICENSE.md)
