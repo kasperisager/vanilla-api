@@ -31,7 +31,7 @@ class RolesAPI extends APIMapper
         ));
 
         static::get('/:id', array(
-            'arguments'    => array('RoleID' => ':id'),
+            'arguments'    => array(':id'),
             'authenticate' => true
         ));
 
@@ -47,7 +47,7 @@ class RolesAPI extends APIMapper
         static::put('/:id', array(
             'controller' => 'Role',
             'method'     => 'edit',
-            'arguments'  => array('RoleID' => ':id')
+            'arguments'  => array(':id')
         ));
 
         // DELETE endpoints
@@ -55,7 +55,7 @@ class RolesAPI extends APIMapper
         static::delete('/:id', array(
             'controller' => 'Role',
             'method'     => 'delete',
-            'arguments'  => array('RoleID' => ':id')
+            'arguments'  => array(':id')
         ));
     }
 }

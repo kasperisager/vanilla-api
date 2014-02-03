@@ -31,7 +31,7 @@ class DiscussionsAPI extends APIMapper
 
         static::get('/:id', array(
             'controller' => 'Discussion',
-            'arguments'  => array('DiscussionID' => ':id')
+            'arguments'  => array(':id')
         ));
 
         static::get('/bookmarks', array(
@@ -53,7 +53,7 @@ class DiscussionsAPI extends APIMapper
 
         static::post('/:id/comments', array(
             'method'    => 'comment',
-            'arguments' => array('DiscussionID' => ':id')
+            'arguments' => array(':id')
         ));
 
         // PUT endpoints
@@ -72,12 +72,12 @@ class DiscussionsAPI extends APIMapper
         static::delete('/:id', array(
             'controller' => 'Discussion',
             'method'     => 'delete',
-            'arguments'  => array('DiscussionID' => ':id')
+            'arguments'  => array(':id')
         ));
 
         static::delete('/comments/:id', array(
             'method'    => 'deleteComment',
-            'arguments' => array('CommentID' => ':id')
+            'arguments' => array(':id')
         ));
     }
 }

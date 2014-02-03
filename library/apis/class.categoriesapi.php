@@ -31,7 +31,7 @@ class CategoriesAPI extends APIMapper
         ));
 
         static::get('/:id', array(
-            'arguments' => array('CategoryID' => ':id')
+            'arguments' => array(':id')
         ));
 
         // POST endpoints
@@ -48,7 +48,7 @@ class CategoriesAPI extends APIMapper
             'application' => 'Vanilla',
             'controller'  => 'Settings',
             'method'      => 'addCategory',
-            'arguments'   => array('CategoryID' => ':id')
+            'arguments'   => array(':id')
         ));
 
         // DELETE endpoints
@@ -57,7 +57,7 @@ class CategoriesAPI extends APIMapper
             'application' => 'Vanilla',
             'controller'  => 'Settings',
             'method'      => 'deleteCategory',
-            'arguments'   => array('CategoryID' => ':id')
+            'arguments'   => array(':id')
         ));
     }
 }

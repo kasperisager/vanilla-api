@@ -33,10 +33,7 @@ class UsersAPI extends APIMapper
 
         static::get('/:id', array(
             'controller' => 'Profile',
-            'arguments'  => array(
-                'User'   => ':id',
-                'UserID' => ':id'
-            )
+            'arguments'  => array(':id', ':id')
         ));
 
         static::get('/summary', array(
@@ -55,7 +52,7 @@ class UsersAPI extends APIMapper
         static::put('/:id', array(
             'controller' => 'User',
             'method'     => 'edit',
-            'arguments'  => array('UserID' => ':id')
+            'arguments'  => array(':id')
         ));
 
         // DELETE endpoints
@@ -63,10 +60,7 @@ class UsersAPI extends APIMapper
         static::delete('/:id', array(
             'controller' => 'User',
             'method'     => 'delete',
-            'arguments'  => array(
-                'UserID' => ':id',
-                'Method' => val('Method', $data)
-            )
+            'arguments'  => array(':id', val('Method', $data))
         ));
     }
 }

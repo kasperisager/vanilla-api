@@ -31,7 +31,7 @@ class ActivitiesAPI extends APIMapper
 
         static::get('/:id', array(
             'method'    => 'item',
-            'arguments' => array('ActivityID' => ':id')
+            'arguments' => array(':id')
         ));
 
         // POST endpoints
@@ -46,7 +46,7 @@ class ActivitiesAPI extends APIMapper
         static::delete('/:id', array(
             'controller' => 'Activity',
             'method'     => 'delete',
-            'arguments'  => array('ActivityID' => ':id')
+            'arguments'  => array(':id')
         ));
     }
 }
