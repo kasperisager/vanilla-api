@@ -141,7 +141,7 @@ final class APIAuth
     /**
      * Get a user ID using either a username or an email
      *
-     * Note: if both a username and an email are specified, only the username
+     * Note: If both a username and an email are specified, only the username
      * will be used. This is to prevent abusing of the function by passing two
      * parameters at a time and hoping to get a User ID.
      *
