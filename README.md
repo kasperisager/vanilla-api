@@ -8,11 +8,11 @@ Extensible RESTful API shim for Vanilla that operates in JSON or XML. Supports [
 
 To get started using Vanilla API, either:
 
-* [__Download the latest release__](https://github.com/kasperisager/vanilla-api/archive/master.zip)
-* Clone the repository directly into your Vanilla `applications` directory:
+- [__Download the latest release__](https://github.com/kasperisager/vanilla-api/releases)
+- Clone the repository directly into your Vanilla `applications` directory:
 
 ```sh
-$ git clone git://github.com/kasperisager/vanilla-api.git api
+$ git clone kasperisager/vanilla-api api
 ```
 
 When you've done this, make sure the newly created folder is named `api` and not `vanilla-api`. Now simply go to your dashboard, enable Vanilla API in the "Applications" menu and you're all set!
@@ -31,10 +31,10 @@ A [Postman](http://getpostman.com) Collection containing all the available endpo
 
 
 ## [Issue tracking](https://github.com/kasperisager/vanilla-api/issues)
-If you come across any bugs or if you have a feature request, please file an issue using the Github Issue tracker. Vanilla API won't be supported through http://vanillaforums.org so please stick to using Github for inquires about bugs and feature requests. Thanks!
+If you come across any bugs or if you have a feature request, please file an issue using the Github Issue tracker. Vanilla API won't be supported through http://vanillaforums.org so please stick to using Github for inquiries about bugs and feature requests. Thanks!
 
 [__File a new issue or feature request__](https://github.com/kasperisager/vanilla-api/issues/new)
 
 ---
 
-Copyright 2013 © [__Kasper Kronborg Isager__](http://webhutt.com). Licensed under the terms of the [__MIT License__](LICENSE.md)
+Copyright 2014 © [Kasper Kronborg Isager](http://kasperisager.github.io). Licensed under the terms of the [MIT License](LICENSE.md)
