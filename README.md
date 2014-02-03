@@ -4,6 +4,7 @@
 
 Extensible RESTful API shim for Vanilla that operates in JSON or XML. Supports [JSONP](http://en.wikipedia.org/wiki/JSONP) and [CORS](http://en.wikipedia.org/wiki/Cross-origin_resource_sharing)
 
+
 ## Getting started
 
 To get started using Vanilla API, either:
@@ -31,6 +32,7 @@ A [Postman](http://getpostman.com) Collection containing all the available endpo
 
 
 ## [Issue tracking](https://github.com/kasperisager/vanilla-api/issues)
+
 If you come across any bugs or if you have a feature request, please file an issue using the Github Issue tracker. Vanilla API won't be supported through http://vanillaforums.org so please stick to using Github for inquiries about bugs and feature requests. Thanks!
 
 [__File a new issue or feature request__](https://github.com/kasperisager/vanilla-api/issues/new)
