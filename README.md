@@ -2,6 +2,8 @@
 
 # Vanilla API
 
+[![GitHub version](https://badge.fury.io/gh/kasperisager%2Fvanilla-api.png)](http://badge.fury.io/gh/kasperisager%2Fvanilla-api)
+
 Extensible RESTful API shim for Vanilla that operates in JSON or XML. Supports [JSONP](http://en.wikipedia.org/wiki/JSONP) and [CORS](http://en.wikipedia.org/wiki/Cross-origin_resource_sharing)
 
 
