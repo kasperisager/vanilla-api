@@ -1,3 +1,9 @@
+![](icon.png)
+
+# Vanilla API
+
+Extensible RESTful API shim for Vanilla that operates in JSON or XML. Supports [JSONP](http://en.wikipedia.org/wiki/JSONP) and [CORS](http://en.wikipedia.org/wiki/Cross-origin_resource_sharing)
+
 ## Getting started
 
 To get started using Vanilla API, either:
