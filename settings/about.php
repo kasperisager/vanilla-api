@@ -9,5 +9,6 @@ $ApplicationInfo['api'] = array(
     'AuthorEmail' => 'kasperisager@gmail.com',
     'AuthorUrl'   => 'https://webhutt.com',
     'License'     => 'MIT',
-    'SettingsUrl' => 'dashboard/settings/api'
+    'SettingsUrl' => 'dashboard/settings/api',
+    'RequiredApplications' => array('Vanilla' => '2.2.x')
 );
