@@ -33,7 +33,7 @@ echo $form->errors();
             <p><?php echo t('API.Settings.Endpoint.Description'); ?></p>
         </div>
         <div class="Endpoint">
-            <blockquote><?php echo Gdn::request()->domain(); ?>/api/</blockquote>
+            <blockquote><?php echo Gdn::request()->url('api', true); ?></blockquote>
         </div>
     </li>
     <li>
