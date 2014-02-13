@@ -1,4 +1,4 @@
-[![Vanilla API](icon.png)](https://github.com/kasperisager/vanilla-api)
+[![Vanilla API](https://rawgithub.com/kasperisager/vanilla-api/master/icon.svg)](https://github.com/kasperisager/vanilla-api)
 
 # Vanilla API
 
