@@ -1,4 +1,4 @@
-![](icon.png)
+[![Vanilla API](icon.png)](https://github.com/kasperisager/vanilla-api)
 
 # Vanilla API
 
