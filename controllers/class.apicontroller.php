@@ -18,8 +18,8 @@ class APIController extends Gdn_Controller
      *
      * @since  0.1.0
      * @access public
-     * @param  int|string $Code    Error code
-     * @param  string     $Message Base64-encoded error message
+     * @param  int|string $code    Error code
+     * @param  string     $message Base64-encoded error message
      */
     public function exception($code, $message)
     {
