@@ -12,7 +12,7 @@
  */
 final class APIAuth
 {
-	/**
+    /**
      * Token-based, per-request authentication
      *
      * This method takes the entire request string and turns the query into an
