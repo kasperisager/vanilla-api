@@ -183,10 +183,9 @@ final class APIEngine
      * @param  string $method HTTP method
      * @param  array  $data   Request arguments
      * @return array
-     * @final
      * @static
      */
-    final public static function map($resource, $class, $path, $method, $data)
+    public static function map($resource, $class, $path, $method, $data)
     {
         // Get all API endpoints
         $endpoints = $class->endpoints($path, $data);
