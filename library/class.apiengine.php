@@ -20,7 +20,7 @@ final class APIEngine
      * HTTP methods supported by the API
      *
      * If any other methods are used, the API dispatcher will throw a 405 Method
-     * Not Implement exception.
+     * Not Implemented exception.
      *
      * @since  0.1.0
      * @access public
