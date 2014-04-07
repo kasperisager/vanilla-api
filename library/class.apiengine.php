@@ -375,7 +375,7 @@ final class APIEngine
             $data = file_get_contents('php://input');
 
             // Get the content type of the input
-            $type = static::getServerArguments('HTTP_CONTENT_TYPE');
+            $type = static::getServerArguments('CONTENT_TYPE');
 
             switch ($type) {
                 case 'text/xml':
