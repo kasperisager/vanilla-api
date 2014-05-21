@@ -52,7 +52,7 @@ class APIHooks implements Gdn_IPlugin
      * @access public
      * @return void
      */
-    public function Gdn_Dispatcher_beforeDispatch_handler()
+    public function Gdn_Dispatcher_beforeDispatch_handler($sender)
     {
         $path = APIEngine::getRequestURI();
 
@@ -66,6 +66,9 @@ class APIHooks implements Gdn_IPlugin
         APIEngine::setRequestHeaders();
 
         try {
+            // Mark the dispatch with the API version
+            $sender->API = C('API.Version', 'Undefined');
+            
             // Attempt dispatching the API request
             APIEngine::dispatchRequest();
         } catch (Exception $exception) {
