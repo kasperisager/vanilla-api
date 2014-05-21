@@ -32,12 +32,12 @@ class APIHooks implements Gdn_IPlugin
         }
 
         // Empty fallback array
-        $applicationInfo = array();
+        $ApplicationInfo = array();
 
         // Load the API application info
         include paths(PATH_APPLICATIONS, 'api/settings/about.php');
 
-        $info    = val('API', $applicationInfo, array());
+        $info    = val('API', $ApplicationInfo, array());
         $version = val('Version', $info, 'Undefined');
 
         saveToConfig('API.Version', $version);
