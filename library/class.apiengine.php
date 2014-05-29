@@ -389,7 +389,9 @@ final class APIEngine
                     break;
 
                 default:
-                    throw new Exception(t('API.Error.ContentType') . $type, 400);
+                    if (!empty($data)) {
+                      throw new Exception(t('API.Error.ContentType') . $type, 400);                      
+                    }
                     break;
             }
 
