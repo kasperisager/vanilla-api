@@ -1,0 +1,17 @@
+{
+    "name": "kasperisager/vanilla-api",
+    "description": "RESTful API shim for Vanilla",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Kasper Isager",
+            "email": "kasperisager@gmail.com"
+        }
+    ],
+    "require": {
+        "altorouter/altorouter": "1.0.x"
+    },
+    "config": {
+        "vendor-dir": "library/vendors"
+    }
+}
