@@ -31,13 +31,13 @@ class UsersAPI extends APIMapper
 
         ));
 
-        static::get('/:id', array(
-            'controller' => 'Profile',
-            'arguments'  => array(':id', ':id')
+        static::get('/[i:id]', array(
+            'controller' => 'Profile'
         ));
 
         static::get('/summary', array(
-            'method' => 'summary'
+            'controller' => 'Profile',
+            'method'     => 'summary'
         ));
 
         // POST endpoints
@@ -49,18 +49,16 @@ class UsersAPI extends APIMapper
 
         // PUT endpoints
 
-        static::put('/:id', array(
+        static::put('/[i:id]', array(
             'controller' => 'User',
             'method'     => 'edit',
-            'arguments'  => array(':id')
         ));
 
         // DELETE endpoints
 
-        static::delete('/:id', array(
+        static::delete('/[i:id]/[a:method]', array(
             'controller' => 'User',
-            'method'     => 'delete',
-            'arguments'  => array(':id', val('Method', $data))
+            'method'     => 'delete'
         ));
     }
 }

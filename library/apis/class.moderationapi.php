@@ -32,18 +32,16 @@ class ModerationAPI extends APIMapper
 
         // POST endpoints
         
-        static::post('/bans', array(
+        static::post('/bans/[a:add]', array(
             'controller' => 'Settings',
-            'method'     => 'bans',
-            'arguments'  => array('add')
+            'method'     => 'bans'
         ));
 
         // PUT endpoints
         
-        static::put('/bans/:id', array(
+        static::put('/bans/[i:id]', array(
             'controller' => 'Settings',
-            'method'     => 'bans',
-            'arguments'  => array('edit', '0', '0', ':id')
+            'method'     => 'bans'
         ));
     }
 }

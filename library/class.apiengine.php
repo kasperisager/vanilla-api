@@ -1,5 +1,8 @@
 <?php if (!defined('APPLICATION')) exit;
 
+// Include Composer autoloader
+require_once 'vendors/autoload.php';
+
 /**
  * API engine class
  *
@@ -187,6 +190,9 @@ final class APIEngine
      */
     public static function map($resource, $class, $path, $method, $data)
     {
+        $router = new AltoRouter();
+        $router->setBasePath('/api');
+
         // Get all API endpoints
         $endpoints = $class->endpoints($path, $data);
 
@@ -207,54 +213,35 @@ final class APIEngine
             $arguments    = array($supports, $documentation);
             $authenticate = false; // OPTIONS are always public
         } else {
-            $match = $path;
-
-            foreach ($path as $index => $part) {
-                // Remove the `api` and `[endpoint]` parts from the URI
-                if ($part == 'api' || $part == $resource) unset($match[$index]);
-
-                // If part of the URI is numeric, assume it's a variable `:id`
-                if (is_numeric($part)) $match[$index] = ':id';
+            // Register all endpoints in the router
+            foreach ($endpoints as $method => $endpoints) {
+                foreach ($endpoints as $endpoint => $data) {
+                    $endpoint = '/' . $resource . rtrim($endpoint, '/');
+                    
+                    $router->map($method, $endpoint, $data);
+                }
             }
 
-            $match = array_values($match); // Reset array values
+            $match = $router->match('/' . rtrim(join('/', $path), '/'));
 
-            // Get all endpoints for this specific method
-            $endpoints = val(strtoupper($method), $endpoints);
-
-            $resource = paths(DS . implode(DS, $match));
-
-            // Get the first available endpoint for this method
-            $first = array_shift(array_values($endpoints));
-
-            // If no endpoint was found, throw a 405 Method Not Implemented
-            if (!$endpoint = val($resource, $endpoints)) {
+            // If no match was found, throw a 405 Method Not Implemented
+            if (!$match) {
                 throw new Exception(t('API.Error.MethodNotAllowed'), 405);
             }
 
-            // If a controller isn't set for this endpoint, assume it uses the
-            // same controller as the first available endpoint
-            $controller = val('controller', $endpoint, val('controller', $first));
+            $target = val('target', $match);
 
-            // Set the controller, defaulting it to `index`
-            $method = val('method', $endpoint, 'index');
+            $controller = val('controller', $target);
+
+            // Set the controller method, defaulting it to `index`
+            $method = val('method', $target, 'index');
+
+            // Does this endpoint require authentication?
+            $authenticate = val('authenticate', $target);
 
             // Set optional controller arguments, defaulting to an empty array
             // if no arguments have been specified
-            $arguments = val('arguments', $endpoint, array());
-
-            // Does this endpoint require authentication?
-            $authenticate = val('authenticate', $endpoint);
-
-            // Replace instances of `:id` with the appropriate value from the
-            // requested URI. I.e. `/foo/:id/bar` would cause the `:id` param
-            // for the `FooID` argument to be set as the second value of the
-            // requested URI.
-            $offset    = 2; // Pop off first two paths (`api` and `[endpoint]`)
-            $position  = array_search(':id', $match);
-            $arguments = array_replace($arguments, array_fill_keys(
-                array_keys($arguments, ':id'), val($offset + $position, $path))
-            );
+            $arguments = array_values(val('params', $match, array()));
         }
 
         return array(

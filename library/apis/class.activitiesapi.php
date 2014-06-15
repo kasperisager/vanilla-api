@@ -29,9 +29,9 @@ class ActivitiesAPI extends APIMapper
             'controller' => 'Activity'
         ));
 
-        static::get('/:id', array(
-            'method'    => 'item',
-            'arguments' => array(':id')
+        static::get('/[i:id]', array(
+            'controller' => 'Activity'
+            'method'     => 'item'
         ));
 
         // POST endpoints
@@ -43,10 +43,9 @@ class ActivitiesAPI extends APIMapper
 
         // DELETE endpoints
 
-        static::delete('/:id', array(
+        static::delete('/[i:id]', array(
             'controller' => 'Activity',
-            'method'     => 'delete',
-            'arguments'  => array(':id')
+            'method'     => 'delete'
         ));
     }
 }

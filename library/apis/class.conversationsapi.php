@@ -31,8 +31,8 @@ class ConversationsAPI extends APIMapper
             'authenticate' => true
         ));
 
-        static::get('/:id', array(
-            'arguments'    => array(':id'),
+        static::get('/[:id]', array(
+            'controller'   => 'Messages',
             'authenticate' => true
         ));
 
@@ -43,17 +43,16 @@ class ConversationsAPI extends APIMapper
             'method'     => 'add'
         ));
 
-        static::post('/:id/messages', array(
-            'method'    => 'addMessage',
-            'arguments' => array(':id')
+        static::post('/[i:id]/messages', array(
+            'controller' => 'Messages',
+            'method'     => 'addMessage',
         ));
 
         // DELETE endpoints
 
-        static::delete('/:id', array(
+        static::delete('/[i:id]', array(
             'controller' => 'Messages',
             'method'     => 'clear',
-            'arguments'  => array(':id')
         ));
     }
 }

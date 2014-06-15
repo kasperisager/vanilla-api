@@ -29,17 +29,18 @@ class DiscussionsAPI extends APIMapper
             'controller' => 'Discussions'
         ));
 
-        static::get('/:id', array(
-            'controller' => 'Discussion',
-            'arguments'  => array(':id')
+        static::get('/[i:id]', array(
+            'controller' => 'Discussion'
         ));
 
         static::get('/bookmarks', array(
+            'controller'   => 'Discussion',
             'method'       => 'bookmarked',
             'authenticate' => true
         ));
 
         static::get('/mine', array(
+            'controller'   => 'Discussion',
             'method'       => 'mine',
             'authenticate' => true
         ));
@@ -51,33 +52,33 @@ class DiscussionsAPI extends APIMapper
             'method'     => 'discussion'
         ));
 
-        static::post('/:id/comments', array(
-            'method'    => 'comment',
-            'arguments' => array(':id')
+        static::post('/[i:id]/comments', array(
+            'controller' => 'Post',
+            'method'     => 'comment'
         ));
 
         // PUT endpoints
 
-        static::put('/:id', array(
+        static::put('/[i:id]', array(
             'controller' => 'Post',
             'method'     => 'editDiscussion'
         ));
 
-        static::put('/comments/:id', array(
-            'method' => 'editComment'
+        static::put('/comments/[i:id]', array(
+            'controller' => 'Post',
+            'method'     => 'editComment'
         ));
 
         // DELETE endpoints
 
-        static::delete('/:id', array(
+        static::delete('/[i:id]', array(
             'controller' => 'Discussion',
-            'method'     => 'delete',
-            'arguments'  => array(':id')
+            'method'     => 'delete'
         ));
 
-        static::delete('/comments/:id', array(
-            'method'    => 'deleteComment',
-            'arguments' => array(':id')
+        static::delete('/comments/[i:id]', array(
+            'controller' => 'Discussion',
+            'method'     => 'deleteComment'
         ));
     }
 }

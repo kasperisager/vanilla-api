@@ -30,8 +30,8 @@ class CategoriesAPI extends APIMapper
             'method'     => 'all'
         ));
 
-        static::get('/:id', array(
-            'arguments' => array(':id')
+        static::get('/[i:id]', array(
+            'controller' => 'Categories'
         ));
 
         // POST endpoints
@@ -44,20 +44,18 @@ class CategoriesAPI extends APIMapper
 
         // PUT endpoints
 
-        static::put('/:id', array(
+        static::put('/[i:id]', array(
             'application' => 'Vanilla',
             'controller'  => 'Settings',
-            'method'      => 'addCategory',
-            'arguments'   => array(':id')
+            'method'      => 'addCategory'
         ));
 
         // DELETE endpoints
 
-        static::delete('/:id', array(
+        static::delete('/[i:id]', array(
             'application' => 'Vanilla',
             'controller'  => 'Settings',
-            'method'      => 'deleteCategory',
-            'arguments'   => array(':id')
+            'method'      => 'deleteCategory'
         ));
     }
 }
