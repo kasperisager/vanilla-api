@@ -217,7 +217,7 @@ final class APIEngine
             foreach ($endpoints as $method => $endpoints) {
                 foreach ($endpoints as $endpoint => $data) {
                     $endpoint = '/' . $resource . rtrim($endpoint, '/');
-                    
+
                     $router->map($method, $endpoint, $data);
                 }
             }
@@ -377,7 +377,7 @@ final class APIEngine
 
                 default:
                     if (!empty($data)) {
-                        throw new Exception(t('API.Error.ContentType') . $type, 400);                      
+                        throw new Exception(t('API.Error.ContentType') . $type, 400);
                     }
                     break;
             }
