@@ -1,4 +1,4 @@
-<?php if (!defined('APPLICATION')) exit;
+<?php
 
 $ApplicationInfo['api'] = array(
     'Name'        => 'Vanilla API',

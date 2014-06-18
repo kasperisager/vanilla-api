@@ -67,7 +67,7 @@ class APIHooks implements Gdn_IPlugin
 
         try {
             // Mark the dispatch with the API version
-            $sender->API = C('API.Version', 'Undefined');
+            $sender->API = c('API.Version', 'Undefined');
             
             // Attempt dispatching the API request
             APIEngine::dispatchRequest();
