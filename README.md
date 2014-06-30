@@ -2,7 +2,7 @@
 
 # Vanilla API
 
-[![GitHub version](https://badge.fury.io/gh/kasperisager%2Fvanilla-api.png)](http://badge.fury.io/gh/kasperisager%2Fvanilla-api) [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/kasperisager/vanilla-api/badges/quality-score.png?s=b5a28e4b1e13a28df59f7bc6635a2b06d5955ae0)](https://scrutinizer-ci.com/g/kasperisager/vanilla-api/)
+[![Release](http://img.shields.io/github/release/kasperisager/vanilla-api.svg?style=flat)](https://github.com/kasperisager/vanilla-api/releases) [![Code Climate](http://img.shields.io/codeclimate/github/kasperisager/vanilla-api.svg?style=flat)](https://codeclimate.com/github/kasperisager/vanilla-api)
 
 Extensible RESTful API shim for Vanilla that operates in JSON or XML. Supports [JSONP](http://en.wikipedia.org/wiki/JSONP) and [CORS](http://en.wikipedia.org/wiki/Cross-origin_resource_sharing)
 
