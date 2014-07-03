@@ -208,6 +208,7 @@ final class APIEngine
 
             $documentation = base64_encode(json_encode($documentation));
 
+            $application  = 'API';
             $controller   = 'API';
             $method       = 'options';
             $arguments    = array($supports, $documentation);
@@ -231,6 +232,8 @@ final class APIEngine
 
             $target = val('target', $match);
 
+            $application = val('application', $target, false);
+
             $controller = val('controller', $target);
 
             // Set the controller method, defaulting it to `index`
@@ -245,6 +248,7 @@ final class APIEngine
         }
 
         return array(
+            'application'  => $application,
             'controller'   => $controller,
             'method'       => $method,
             'arguments'    => $arguments,
