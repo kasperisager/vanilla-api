@@ -7,7 +7,7 @@ $ApplicationInfo['api'] = array(
     'Url'         => 'https://github.com/kasperisager/vanilla-api',
     'Author'      => 'Kasper Kronborg Isager',
     'AuthorEmail' => 'kasperisager@gmail.com',
-    'AuthorUrl'   => 'https://webhutt.com',
+    'AuthorUrl'   => 'https://github.com/kasperisager',
     'License'     => 'MIT',
     'SettingsUrl' => 'dashboard/settings/api',
     'RequiredApplications' => array('Vanilla' => '2.2.x')
