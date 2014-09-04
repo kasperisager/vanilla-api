@@ -66,7 +66,7 @@ class DiscussionsAPI extends APIMapper
 
         static::put('/comments/[i:id]', array(
             'controller' => 'Post',
-            'method'     => 'comment'
+            'method'     => 'editComment'
         ));
 
         // DELETE endpoints
