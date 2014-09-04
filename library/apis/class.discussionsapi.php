@@ -34,13 +34,13 @@ class DiscussionsAPI extends APIMapper
         ));
 
         static::get('/bookmarks', array(
-            'controller'   => 'Discussion',
+            'controller'   => 'Discussions',
             'method'       => 'bookmarked',
             'authenticate' => true
         ));
 
         static::get('/mine', array(
-            'controller'   => 'Discussion',
+            'controller'   => 'Discussions',
             'method'       => 'mine',
             'authenticate' => true
         ));
