@@ -376,6 +376,7 @@ final class APIEngine
                     break;
 
                 case 'application/json':
+		case 'application/javascript': // For JSONP
                     $data = json_decode($data, true);
                     break;
 
