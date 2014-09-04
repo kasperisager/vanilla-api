@@ -70,7 +70,9 @@ final class APIAuth
 
         // Now that the client has been thoroughly verified, start a session for
         // the duration of the request using the User ID specified earlier
-        if ($token == $signature) Gdn::session()->start(intval($userID), false);
+        if ($token == $signature) {
+            Gdn::session()->start(intval($userID), false);
+        }
     }
 
     /**
@@ -161,10 +163,14 @@ final class APIAuth
         $userModel = new UserModel();
 
         // Look up the user ID using a username if one has been specified
-        if ($username) return $userModel->getByUsername($username)->UserID;
+        if ($username) {
+            return $userModel->getByUsername($username)->UserID;
+        }
 
         // Look up the user ID using an email if one has been specified
-        if ($email) return $userModel->getByEmail($email)->UserID;
+        if ($email) {
+            return $userModel->getByEmail($email)->UserID;
+        }
 
         return false;
     }

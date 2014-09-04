@@ -102,7 +102,9 @@ final class APIEngine
 
             // Only authenticate the client if a username or an email has been
             // specified in the request
-            if ($username || $email) APIAuth::authenticateRequest();
+            if ($username || $email) {
+                APIAuth::authenticateRequest();
+            }
         }
 
         // Get the requested resource
@@ -376,7 +378,7 @@ final class APIEngine
                     break;
 
                 case 'application/json':
-		case 'application/javascript': // For JSONP
+                case 'application/javascript': // For JSONP
                     $data = json_decode($data, true);
                     break;
 
