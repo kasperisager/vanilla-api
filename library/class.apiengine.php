@@ -89,19 +89,14 @@ final class APIEngine
         $path    = static::getRequestUri();
         $method  = static::getRequestMethod();
 
-        // Before we do anything else, let's make sure the request method is
-        // supported. If not, let the client know
         if (!in_array($method, static::$supports)) {
             throw new Exception(t('API.Error.MethodNotAllowed'), 405);
         }
 
-        // Attempt authentication if no valid session exists
         if (!Gdn::session()->isValid()) {
             $username = getIncomingValue('username');
             $email    = getIncomingValue('email');
 
-            // Only authenticate the client if a username or an email has been
-            // specified in the request
             if ($username || $email) {
                 APIAuth::authenticateRequest();
             }
@@ -123,7 +118,6 @@ final class APIEngine
             throw new Exception(t('API.Error.Mapper'), 500);
         }
 
-        // Instantiate the API class
         $class = new $class;
 
         // Is this a write-method?
@@ -178,7 +172,6 @@ final class APIEngine
         $method    = $dispatch['method'];
         $arguments = $dispatch['arguments'];
 
-        // Map the request to the specified URI
         Gdn::request()->withControllerMethod($controller, $method, $arguments);
     }
 
@@ -198,7 +191,6 @@ final class APIEngine
         $router = new AltoRouter();
         $router->setBasePath('/api');
 
-        // Get all API endpoints
         $endpoints = $class->endpoints($data);
 
         if ($method == 'options') {
@@ -232,19 +224,23 @@ final class APIEngine
 
             $match = $router->match('/' . rtrim(join('/', $path), '/'));
 
-            // If no match was found, throw a 405 Method Not Implemented
             if (!$match) {
                 throw new Exception(t('API.Error.MethodNotAllowed'), 405);
             }
 
             $target = val('target', $match);
 
+            $arguments = array_merge(
+                val('params', $match, []),
+                val('arguments', $target, [])
+            );
+
             return [
                 'application'  => val('application', $target, false),
                 'controller'   => val('controller', $target),
                 'method'       => val('method', $target, 'index'),
-                'arguments'    => val('params', $match, []),
-                'authenticate' => val('authenticate', $target)
+                'authenticate' => val('authenticate', $target),
+                'arguments'    => $arguments
             ];
         }
     }

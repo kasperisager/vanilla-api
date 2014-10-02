@@ -52,7 +52,10 @@ class ConversationsAPI extends APIMapper
 
         static::delete('/[i:ConversationID]', [
             'controller' => 'Messages',
-            'method'     => 'clear'
+            'method'     => 'clear',
+            'arguments'  => [
+                'TransientKey' => Gdn::session()->transientKey()
+            ]
         ]);
     }
 }
