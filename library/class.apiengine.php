@@ -1,8 +1,5 @@
 <?php if (!defined('APPLICATION')) exit;
 
-// Include Composer autoloader
-require_once 'vendors/autoload.php';
-
 /**
  * API engine class
  *
