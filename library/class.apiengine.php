@@ -30,7 +30,7 @@ final class APIEngine
      * @var    array
      * @static
      */
-    public static $supports = array('get', 'post', 'put', 'delete', 'head', 'options');
+    public static $supports = ['get', 'post', 'put', 'delete', 'head', 'options'];
 
     /**
      * Exploded request URI
@@ -127,16 +127,21 @@ final class APIEngine
         $class = new $class;
 
         // Is this a write-method?
-        $write = in_array($method, array('post', 'put', 'delete'));
+	$write = in_array($method, ['post', 'put', 'delete']);
 
         // If write-method, get request arguments sent by client
-        $data = ($write) ? static::getRequestArguments() : array();
+	$data = ($write) ? static::getRequestArguments() : [];
 
         $dispatch = static::map($resource, $class, $path, $method, $data);
 
         if ($write) {
             // Authentication is always required for write-methods
             $dispatch['authenticate'] = true;
+
+	    // Merge API specific request arguments with client arguments
+	    $dispatch['arguments'] = array_merge(
+		$dispatch['arguments'], static::getRequestArguments()
+	    );
 
             // Always attach transient key as last argument for write-methods
             $dispatch['arguments']['TransientKey'] = Gdn::session()->transientKey();
@@ -147,9 +152,7 @@ final class APIEngine
             $request->requestMethod('post');
 
             // Add any API-specific arguments to the requests arguments
-            $request->setRequestArguments(Gdn_Request::INPUT_POST, array_merge(
-                val('arguments', $dispatch, array()), static::getRequestArguments()
-            ));
+	    $request->setRequestArguments(Gdn_Request::INPUT_POST, $dispatch['arguments']);
 
             // Set the PHP $_POST global as the result of any form data picked
             // up by Garden.
@@ -367,6 +370,10 @@ final class APIEngine
             // to make sure that we store the data
             $data = file_get_contents('php://input');
 
+	    if (empty($data)) {
+		return static::$requestArguments = [];
+	    }
+
             // Get the content type of the input
             $type = static::getServerArguments('CONTENT_TYPE');
 
@@ -383,9 +390,7 @@ final class APIEngine
                     break;
 
                 default:
-                    if (!empty($data)) {
-                        throw new Exception(t('API.Error.ContentType') . $type, 400);
-                    }
+		    throw new Exception(t('API.Error.ContentType') . $type, 400);
                     break;
             }
 
