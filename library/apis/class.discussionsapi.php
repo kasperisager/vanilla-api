@@ -22,8 +22,6 @@ class DiscussionsAPI extends APIMapper
      */
     public static function register($data)
     {
-        // GET endpoints
-
         static::get('/', [
             'controller' => 'Discussions',
             'arguments'  => [
@@ -41,7 +39,7 @@ class DiscussionsAPI extends APIMapper
         static::get('/bookmarks', [
             'controller'   => 'Discussions',
             'method'       => 'bookmarked',
-            'authenticate' => true
+            'authenticate' => true,
             'arguments'    => [
                 'Page' => val('Page', $data)
             ]
@@ -50,20 +48,16 @@ class DiscussionsAPI extends APIMapper
         static::get('/mine', [
             'controller'   => 'Discussions',
             'method'       => 'mine',
-            'authenticate' => true
+            'authenticate' => true,
             'arguments'    => [
                 'Page' => val('Page', $data)
             ]
         ]);
 
-        // POST endpoints
-
         static::post('/[i:DiscussionID]/comments', [
             'controller' => 'Post',
             'method'     => 'comment'
         ]);
-
-        // PUT endpoints
 
         static::put('/[i:DiscussionID]', [
             'controller' => 'Post',
@@ -74,8 +68,6 @@ class DiscussionsAPI extends APIMapper
             'controller' => 'Post',
             'method'     => 'editComment'
         ]);
-
-        // DELETE endpoints
 
         static::delete('/[i:DiscussionID]', [
             'controller' => 'Discussion',
