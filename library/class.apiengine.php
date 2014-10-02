@@ -132,6 +132,9 @@ final class APIEngine
         // If write-method, get request arguments sent by client
         $data = ($write) ? static::getRequestArguments() : [];
 
+        // Set the trasient key
+        $data['TransientKey'] = Gdn::session()->transientKey();
+
         $dispatch = static::map($resource, $class, $path, $method, $data);
 
         if ($write) {
