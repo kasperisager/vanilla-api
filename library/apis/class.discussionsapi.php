@@ -61,7 +61,7 @@ class DiscussionsAPI extends APIMapper
 
         static::put('/[i:id]', array(
             'controller' => 'Post',
-            'method'     => 'discussion'
+            'method'     => 'editDiscussion'
         ));
 
         static::put('/comments/[i:id]', array(
