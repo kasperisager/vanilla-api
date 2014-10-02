@@ -16,43 +16,43 @@ class ConversationsAPI extends APIMapper
      *
      * @since  0.1.0
      * @access public
-     * @param  array $path
      * @param  array $data
      * @return void
      * @static
      */
-    public static function register($path, $data)
+    public static function register($data)
     {
-        // GET endpoints
-
-        static::get('/', array(
+        static::get('/', [
             'controller'   => 'Messages',
             'method'       => 'all',
-            'authenticate' => true
-        ));
+            'authenticate' => true,
+            'arguments'    => [
+                'Page' => val('Page', $data)
+            ]
+        ]);
 
-        static::get('/[:id]', array(
+        static::get('/[i:ConversationID]', [
             'controller'   => 'Messages',
-            'authenticate' => true
-        ));
+            'authenticate' => true,
+            'arguments'    => [
+                'Offset' => val('Offset', $data),
+                'Limit'  => val('Limit', $data)
+            ]
+        ]);
 
-        // POST endpoints
-
-        static::post('/', array(
+        static::post('/', [
             'controller' => 'Messages',
             'method'     => 'add'
-        ));
+        ]);
 
-        static::post('/[i:id]/messages', array(
+        static::post('/[i:ConversationID]/messages', [
             'controller' => 'Messages',
-            'method'     => 'addMessage',
-        ));
+            'method'     => 'addMessage'
+        ]);
 
-        // DELETE endpoints
-
-        static::delete('/[i:id]', array(
+        static::delete('/[i:ConversationID]', [
             'controller' => 'Messages',
-            'method'     => 'clear',
-        ));
+            'method'     => 'clear'
+        ]);
     }
 }

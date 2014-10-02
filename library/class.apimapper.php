@@ -46,11 +46,11 @@ abstract class APIMapper extends Gdn_Pluggable implements iAPI
      * @return array Array of available endpoints
      * @final
      */
-    final public function endpoints($path, $data)
+    final public function endpoints($data)
     {
         if (static::$endpoints === null) {
             // Register API endpoints specific by the API class
-            static::register($path, $data);
+            static::register($data);
 
             // Fire event to allow overriding and registering new endpoints
             // outside the API class itself

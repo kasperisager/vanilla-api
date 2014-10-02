@@ -25,10 +25,9 @@ interface iAPI
      *
      * @since  0.1.0
      * @access public
-     * @param  array $path The Request URI in array format
      * @param  array $data Request arguments sent by the client
      * @return void
      * @static
      */
-    public static function register($path, $data);
+    public static function register($data);
 }

@@ -132,12 +132,17 @@ final class APIEngine
         // If write-method, get request arguments sent by client
         $data = ($write) ? static::getRequestArguments() : [];
 
-        // Set the transient key
-        $data['TransientKey'] = Gdn::session()->transientKey();
-
+        // Perform the router dispatch
         $dispatch = static::map($resource, $class, $path, $method, $data);
 
+        // Merge request and dispatch arguments
+        $data = array_merge($data, $dispatch['arguments']);
+
         if ($write) {
+            // Set the transient key since we no longer have a front-end that
+            // takes care of doing it for us
+            $data['TransientKey'] = Gdn::session()->transientKey();
+
             // Authentication is always required for write-methods
             $dispatch['authenticate'] = true;
 
@@ -155,23 +160,23 @@ final class APIEngine
         }
 
         // Make sure that the API class returns a controller definition
-        if (!$controller = val('controller', $dispatch)) {
+        if (!$controller = $dispatch['controller']) {
             throw new Exception(t('API.Error.Controller.Missing'), 500);
         }
 
         // If the endpoint requires authentication and none has been provided,
         // throw an error
-        if (val('authenticate', $dispatch) && !Gdn::session()->isValid()) {
+        if ($dispatch['authenticate'] && !Gdn::session()->isValid()) {
             throw new Exception(t('API.Error.AuthRequired'), 401);
         }
 
         // Attach the correct application if one has been set
-        if ($application = val('application', $dispatch)) {
+        if ($application = $dispatch['application']) {
             Gdn_Autoloader::attachApplication($application);
         }
 
-        $method    = val('method', $dispatch);
-        $arguments = val('arguments', $dispatch);
+        $method    = $dispatch['method'];
+        $arguments = $dispatch['arguments'];
 
         // Map the request to the specified URI
         Gdn::request()->withControllerMethod($controller, $method, $arguments);
@@ -194,7 +199,7 @@ final class APIEngine
         $router->setBasePath('/api');
 
         // Get all API endpoints
-        $endpoints = $class->endpoints($path, $data);
+        $endpoints = $class->endpoints($data);
 
         if ($method == 'options') {
             $supports      = strtoupper(implode(', ', $class::supports()));
@@ -238,7 +243,7 @@ final class APIEngine
                 'application'  => val('application', $target, false),
                 'controller'   => val('controller', $target),
                 'method'       => val('method', $target, 'index'),
-                'arguments'    => array_values(val('params', $match, [])),
+                'arguments'    => val('params', $match, []),
                 'authenticate' => val('authenticate', $target)
             ];
         }

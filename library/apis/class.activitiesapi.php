@@ -16,36 +16,36 @@ class ActivitiesAPI extends APIMapper
      *
      * @since  0.1.0
      * @access public
-     * @param  array $path
      * @param  array $data
      * @return void
      * @static
      */
-    public static function register($path, $data)
+    public static function register($data)
     {
-        // GET endpoints
-
-        static::get('/', array(
-            'controller' => 'Activity'
-        ));
-
-        static::get('/[i:id]', array(
-            'controller' => 'Activity'
-            'method'     => 'item'
-        ));
-
-        // POST endpoints
-
-        static::post('/', array(
+        static::get('/', [
             'controller' => 'Activity',
-            'method'     => 'post'
-        ));
+            'arguments'  => [
+                'Filter' => val('Filter', $data),
+                'Page'   => val('Page', $data)
+            ]
+        ]);
 
-        // DELETE endpoints
+        static::get('/[i:ActivityID]', [
+            'controller' => 'Activity',
+            'method'     => 'item'
+        ]);
 
-        static::delete('/[i:id]', array(
+        static::post('/', [
+            'controller' => 'Activity',
+            'method'     => 'post',
+            'arguments'  => [
+                'Notify' => val('Notify', $data)
+            ]
+        ]);
+
+        static::delete('/[i:ActivityID]', [
             'controller' => 'Activity',
             'method'     => 'delete'
-        ));
+        ]);
     }
 }

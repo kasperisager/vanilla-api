@@ -16,32 +16,42 @@ class ModerationAPI extends APIMapper
      *
      * @since  0.1.0
      * @access public
-     * @param  array $path
      * @param  array $data
      * @return void
      * @static
      */
-    public static function register($path, $data)
+    public static function register($data)
     {
-        // GET endpoints
-
-        static::get('/bans', array(
+        static::get('/bans', [
             'controller' => 'Settings',
-            'method'     => 'bans'
-        ));
+            'method'     => 'bans',
+            'arguments'  => [
+                'Page'   => val('Page', $data)
+            ]
+        ]);
 
-        // POST endpoints
-        
-        static::post('/bans/[a:add]', array(
+        static::post('/bans', [
             'controller' => 'Settings',
-            'method'     => 'bans'
-        ));
+            'method'     => 'bans',
+            'arguments'  => [
+                'Action' => 'add'
+            ]
+        ]);
 
-        // PUT endpoints
-        
-        static::put('/bans/[i:id]', array(
+        static::put('/bans/[i:ID]', [
             'controller' => 'Settings',
-            'method'     => 'bans'
-        ));
+            'method'     => 'bans',
+            'arguments'  => [
+                'Action' => 'edit'
+            ]
+        ]);
+
+        static::delete('/bans/[i:ID]', [
+            'controller' => 'Settings',
+            'method'     => 'bans',
+            'arguments'  => [
+                'Action' => 'delete'
+            ]
+        ]);
     }
 }

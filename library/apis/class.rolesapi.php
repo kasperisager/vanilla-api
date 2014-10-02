@@ -16,44 +16,35 @@ class RolesAPI extends APIMapper
      *
      * @since  0.1.0
      * @access public
-     * @param  array $path
      * @param  array $data
      * @return void
      * @static
      */
-    public static function register($path, $data)
+    public static function register($data)
     {
-        // GET endpoints
-
-        static::get('/', array(
+        static::get('/', [
             'controller'   => 'Role',
             'authenticate' => true
-        ));
+        ]);
 
-        static::get('/[i:id]', array(
+        static::get('/[i:RoleID]', [
             'controller'   => 'Role',
             'authenticate' => true
-        ));
+        ]);
 
-        // POST endpoints
-
-        static::post('/', array(
+        static::post('/', [
             'controller' => 'Role',
             'method'     => 'add'
-        ));
+        ]);
 
-        // PUT endpoints
-
-        static::put('/[i:id]', array(
+        static::put('/[i:RoleID]', [
             'controller' => 'Role',
             'method'     => 'edit'
-        ));
+        ]);
 
-        // DELETE endpoints
-
-        static::delete('/[i:id]', array(
+        static::delete('/[i:RoleID]', [
             'controller' => 'Role',
             'method'     => 'delete'
-        ));
+        ]);
     }
 }

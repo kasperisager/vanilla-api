@@ -16,69 +16,75 @@ class DiscussionsAPI extends APIMapper
      *
      * @since  0.1.0
      * @access public
-     * @param  array $path
      * @param  array $data
-     * @return void
+     * @return voDiscussionID
      * @static
      */
-    public static function register($path, $data)
+    public static function register($data)
     {
         // GET endpoints
 
-        static::get('/', array(
-            'controller' => 'Discussions'
-        ));
+        static::get('/', [
+            'controller' => 'Discussions',
+            'arguments'  => [
+                'Page' => val('Page', $data)
+            ]
+        ]);
 
-        static::get('/[i:id]', array(
-            'controller' => 'Discussion'
-        ));
+        static::get('/[i:DiscussionID]', [
+            'controller' => 'Discussion',
+            'arguments'  => [
+                'Page' => val('Page', $data)
+            ]
+        ]);
 
-        static::get('/bookmarks', array(
+        static::get('/bookmarks', [
             'controller'   => 'Discussions',
             'method'       => 'bookmarked',
             'authenticate' => true
-        ));
+            'arguments'    => [
+                'Page' => val('Page', $data)
+            ]
+        ]);
 
-        static::get('/mine', array(
+        static::get('/mine', [
             'controller'   => 'Discussions',
             'method'       => 'mine',
             'authenticate' => true
-        ));
+            'arguments'    => [
+                'Page' => val('Page', $data)
+            ]
+        ]);
 
         // POST endpoints
 
-        static::post('/', array(
-            'controller' => 'Post',
-            'method'     => 'discussion'
-        ));
-
-        static::post('/[i:id]/comments', array(
+        static::post('/[i:DiscussionID]/comments', [
             'controller' => 'Post',
             'method'     => 'comment'
-        ));
+        ]);
 
         // PUT endpoints
 
-        static::put('/[i:id]', array(
+        static::put('/[i:DiscussionID]', [
             'controller' => 'Post',
             'method'     => 'editDiscussion'
-        ));
+        ]);
 
-        static::put('/comments/[i:id]', array(
+        static::put('/comments/[i:DiscussionID]', [
             'controller' => 'Post',
             'method'     => 'editComment'
-        ));
+        ]);
 
         // DELETE endpoints
 
-        static::delete('/[i:id]', array(
+        static::delete('/[i:DiscussionID]', [
             'controller' => 'Discussion',
             'method'     => 'delete'
-        ));
+        ]);
 
-        static::delete('/comments/[i:id]', array(
+        static::delete('/comments/[i:DiscussionID]', [
             'controller' => 'Discussion',
             'method'     => 'deleteComment'
-        ));
+        ]);
     }
 }

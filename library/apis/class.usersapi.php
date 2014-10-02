@@ -16,51 +16,45 @@ class UsersAPI extends APIMapper
      *
      * @since  0.1.0
      * @access public
-     * @param  array $path
      * @param  array $data
      * @return void
      * @static
      */
-    public static function register($path, $data)
+    public static function register($data)
     {
-        // GET endpoints
-
-        static::get('/', array(
+        static::get('/', [
             'controller'   => 'User',
-            'authenticate' => true
-        ));
+            'authenticate' => true,
+            'arguments'    => [
+                'Page' => val('Page', $data)
+            ]
+        ]);
 
-        static::get('/[i:id]', array(
+        static::get('/[i:UserID]', [
             'controller' => 'Profile'
-        ));
+        ]);
 
-        static::get('/summary', array(
-            'controller' => 'Profile',
+        static::get('/summary', [
+            'controller' => 'User',
             'method'     => 'summary'
-        ));
+        ]);
 
-        // POST endpoints
-
-        static::post('/', array(
+        static::post('/', [
             'controller' => 'User',
             'method'     => 'add'
-        ));
+        ]);
 
-        // PUT endpoints
-
-        static::put('/[i:id]', array(
+        static::put('/[i:UserID]', [
             'controller' => 'User',
-            'method'     => 'edit',
-        ));
+            'method'     => 'edit'
+        ]);
 
-        // DELETE endpoints
-
-        static::delete('/[i:id]', array(
+        static::delete('/[i:UserID]', [
             'controller' => 'User',
             'method'     => 'delete',
             'arguments'  => [
                 'Method' => val('Method', $data)
             ]
-        ));
+        ]);
     }
 }

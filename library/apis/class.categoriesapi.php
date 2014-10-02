@@ -16,46 +16,42 @@ class CategoriesAPI extends APIMapper
      *
      * @since  0.1.0
      * @access public
-     * @param  array $path
      * @param  array $data
      * @return void
      * @static
      */
-    public static function register($path, $data)
+    public static function register($data)
     {
-        // GET endpoints
-
-        static::get('/', array(
+        static::get('/', [
             'controller' => 'Categories',
             'method'     => 'all'
-        ));
+        ]);
 
-        static::get('/[i:id]', array(
+        static::get('/[i:CategoryIdentifier]', [
             'controller' => 'Categories'
-        ));
+        ]);
 
-        // POST endpoints
-
-        static::post('/', array(
+        static::post('/', [
             'application' => 'Vanilla',
             'controller'  => 'Settings',
             'method'      => 'addCategory'
-        ));
+        ]);
 
-        // PUT endpoints
+        static::post('/[i:CategoryID]/discussions', [
+            'controller' => 'Post',
+            'method'     => 'discussion'
+        ]);
 
-        static::put('/[i:id]', array(
+        static::put('/[i:CategoryID]', [
             'application' => 'Vanilla',
             'controller'  => 'Settings',
             'method'      => 'editCategory'
-        ));
+        ]);
 
-        // DELETE endpoints
-
-        static::delete('/[i:id]', array(
+        static::delete('/[i:CategoryID]', [
             'application' => 'Vanilla',
             'controller'  => 'Settings',
             'method'      => 'deleteCategory'
-        ));
+        ]);
     }
 }
