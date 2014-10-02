@@ -47,7 +47,7 @@ class CategoriesAPI extends APIMapper
         static::put('/[i:id]', array(
             'application' => 'Vanilla',
             'controller'  => 'Settings',
-	    'method'      => 'editCategory'
+            'method'      => 'editCategory'
         ));
 
         // DELETE endpoints
