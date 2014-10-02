@@ -127,10 +127,10 @@ final class APIEngine
         $class = new $class;
 
         // Is this a write-method?
-	$write = in_array($method, ['post', 'put', 'delete']);
+        $write = in_array($method, ['post', 'put', 'delete']);
 
         // If write-method, get request arguments sent by client
-	$data = ($write) ? static::getRequestArguments() : [];
+        $data = ($write) ? static::getRequestArguments() : [];
 
         $dispatch = static::map($resource, $class, $path, $method, $data);
 
@@ -138,21 +138,13 @@ final class APIEngine
             // Authentication is always required for write-methods
             $dispatch['authenticate'] = true;
 
-	    // Merge API specific request arguments with client arguments
-	    $dispatch['arguments'] = array_merge(
-		$dispatch['arguments'], static::getRequestArguments()
-	    );
-
-            // Always attach transient key as last argument for write-methods
-            $dispatch['arguments']['TransientKey'] = Gdn::session()->transientKey();
-
             // As Garden doesn't take PUT and DELETE requests into account when
             // verifying requests using IsPostBack() and IsAuthencatedPostBack(),
             // we need to mask PUTs and DELETEs as POSTs.
             $request->requestMethod('post');
 
             // Add any API-specific arguments to the requests arguments
-	    $request->setRequestArguments(Gdn_Request::INPUT_POST, $dispatch['arguments']);
+            $request->setRequestArguments(Gdn_Request::INPUT_POST, $data);
 
             // Set the PHP $_POST global as the result of any form data picked
             // up by Garden.
@@ -190,7 +182,7 @@ final class APIEngine
      * @param  array  $path   URI path array
      * @param  string $method HTTP method
      * @param  array  $data   Request arguments
-     * @return array
+     * @return array          Dispatch instruction for Garden.
      * @static
      */
     public static function map($resource, $class, $path, $method, $data)
@@ -203,7 +195,7 @@ final class APIEngine
 
         if ($method == 'options') {
             $supports      = strtoupper(implode(', ', $class::supports()));
-            $documentation = array();
+            $documentation = [];
 
             foreach ($endpoints as $method => $endpoints) {
                 foreach ($endpoints as $endpoint => $data) {
@@ -213,11 +205,13 @@ final class APIEngine
 
             $documentation = base64_encode(json_encode($documentation));
 
-            $application  = 'API';
-            $controller   = 'API';
-            $method       = 'options';
-            $arguments    = array($supports, $documentation);
-            $authenticate = false; // OPTIONS are always public
+            return [
+                'application'  => 'API',
+                'controller'   => 'API',
+                'method'       => 'options',
+                'arguments'    => [$supports, $documentation],
+                'authenticate' => false
+            ];
         } else {
             // Register all endpoints in the router
             foreach ($endpoints as $method => $endpoints) {
@@ -237,28 +231,14 @@ final class APIEngine
 
             $target = val('target', $match);
 
-            $application = val('application', $target, false);
-
-            $controller = val('controller', $target);
-
-            // Set the controller method, defaulting it to `index`
-            $method = val('method', $target, 'index');
-
-            // Does this endpoint require authentication?
-            $authenticate = val('authenticate', $target);
-
-            // Set optional controller arguments, defaulting to an empty array
-            // if no arguments have been specified
-            $arguments = array_values(val('params', $match, array()));
+            return [
+                'application'  => val('application', $target, false),
+                'controller'   => val('controller', $target),
+                'method'       => val('method', $target, 'index'),
+                'arguments'    => array_values(val('params', $match, [])),
+                'authenticate' => val('authenticate', $target)
+            ];
         }
-
-        return array(
-            'application'  => $application,
-            'controller'   => $controller,
-            'method'       => $method,
-            'arguments'    => $arguments,
-            'authenticate' => $authenticate
-        );
     }
 
     /**
@@ -370,9 +350,9 @@ final class APIEngine
             // to make sure that we store the data
             $data = file_get_contents('php://input');
 
-	    if (empty($data)) {
-		return static::$requestArguments = [];
-	    }
+            if (empty($data)) {
+                return static::$requestArguments = [];
+            }
 
             // Get the content type of the input
             $type = static::getServerArguments('CONTENT_TYPE');
@@ -390,7 +370,7 @@ final class APIEngine
                     break;
 
                 default:
-		    throw new Exception(t('API.Error.ContentType') . $type, 400);
+                    throw new Exception(t('API.Error.ContentType') . $type, 400);
                     break;
             }
 
