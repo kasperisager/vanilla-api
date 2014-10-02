@@ -17,7 +17,7 @@ class DiscussionsAPI extends APIMapper
      * @since  0.1.0
      * @access public
      * @param  array $data
-     * @return voDiscussionID
+     * @return void
      * @static
      */
     public static function register($data)
@@ -64,19 +64,9 @@ class DiscussionsAPI extends APIMapper
             'method'     => 'editDiscussion'
         ]);
 
-        static::put('/comments/[i:DiscussionID]', [
-            'controller' => 'Post',
-            'method'     => 'editComment'
-        ]);
-
         static::delete('/[i:DiscussionID]', [
             'controller' => 'Discussion',
             'method'     => 'delete'
-        ]);
-
-        static::delete('/comments/[i:DiscussionID]', [
-            'controller' => 'Discussion',
-            'method'     => 'deleteComment'
         ]);
     }
 }
