@@ -28,7 +28,6 @@ class UsersAPI extends APIMapper
         static::get('/', array(
             'controller'   => 'User',
             'authenticate' => true
-
         ));
 
         static::get('/[i:id]', array(
@@ -56,9 +55,12 @@ class UsersAPI extends APIMapper
 
         // DELETE endpoints
 
-        static::delete('/[i:id]/[a:method]', array(
+        static::delete('/[i:id]', array(
             'controller' => 'User',
-            'method'     => 'delete'
+            'method'     => 'delete',
+            'arguments'  => [
+                'Method' => val('Method', $data)
+            ]
         ));
     }
 }
