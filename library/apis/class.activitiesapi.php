@@ -45,7 +45,10 @@ class ActivitiesAPI extends APIMapper
 
         static::delete('/[i:ActivityID]', [
             'controller' => 'Activity',
-            'method'     => 'delete'
+            'method'     => 'delete',
+            'arguments'  => [
+                'TransientKey' => Gdn::session()->transientKey()
+            ]
         ]);
     }
 }
