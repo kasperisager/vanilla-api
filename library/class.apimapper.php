@@ -10,7 +10,7 @@
  * @license   http://opensource.org/licenses/MIT MIT
  * @abstract
  */
-abstract class APIMapper extends Gdn_Pluggable implements iAPI
+abstract class APIMapper extends Gdn_Pluggable
 {
     /* Properties */
 
@@ -162,4 +162,23 @@ abstract class APIMapper extends Gdn_Pluggable implements iAPI
     {
         static::$endpoints[$method][$endpoint] = $data;
     }
+
+    /**
+     * Register API endpoints
+     *
+     * Endpoints are registered using the get(), post(), put() and delete()
+     * methods defined in the API Mapper:
+     *
+     *     static::get('/bar/[i:fooID]', [
+     *         'controller' => 'foo',
+     *         'method'     => 'bar'
+     *     ]);
+     *
+     * @since  0.1.0
+     * @access public
+     * @param  array $data Request arguments sent by the client
+     * @return void
+     * @static
+     */
+    abstract public static function register($data);
 }
