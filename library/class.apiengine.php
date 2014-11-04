@@ -362,7 +362,6 @@ final class APIEngine
 
                 default:
                     throw new Exception(t('API.Error.ContentType') . $type, 400);
-                    break;
             }
 
             static::$requestArguments = $data;
