@@ -34,7 +34,7 @@ abstract class APIMapper extends Gdn_Pluggable
      * @var    array
      * @static
      */
-    protected static $supports = array('options', 'head');
+    protected static $supports = ['options', 'head'];
 
     /* Methods */
 
@@ -72,7 +72,7 @@ abstract class APIMapper extends Gdn_Pluggable
     final public static function supports()
     {
         // Check if these methods are supported
-        $check = array('get', 'post', 'put', 'delete');
+        $check = ['get', 'post', 'put', 'delete'];
 
         foreach (static::$endpoints as $method => $endpoints) {
             $method   = strtolower($method);

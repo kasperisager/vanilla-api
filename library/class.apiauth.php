@@ -59,7 +59,7 @@ final class APIAuth
 
         // Turn the request query data into an array to be used in the token
         // generation
-        parse_str(val('query', $parsedUrl, array()), $data);
+        parse_str(val('query', $parsedUrl, []), $data);
 
         // Unset the values we don't want to include in the token generation
         unset($data['token'], $data['DeliveryType'], $data['DeliveryMethod']);

@@ -43,7 +43,7 @@ echo $form->errors();
             <small><?php echo sprintf(t('API.Settings.Refresh.Description'), anchor(t('API.Settings.Refresh.Link'), 'http://en.wikipedia.org/wiki/Uuid')); ?></small>
         </div>
         <?php
-        echo $form->textBox('Secret', array('class' => 'InputBox BigInput', 'readonly' => 'readonly'));
+        echo $form->textBox('Secret', ['class' => 'InputBox BigInput', 'readonly' => 'readonly']);
         echo $form->button(t('API.Settings.Refresh.Label'));
         ?>
     </li>

@@ -290,7 +290,7 @@ final class APIEngine
     /**
      * Get the full Request URI path array
      *
-     * I.e. "/foo/bar" would result in the following array: array('foo', 'bar')
+     * I.e. "/foo/bar" would result in the following array: ['foo', 'bar']
      *
      * @since  0.1.0
      * @access public

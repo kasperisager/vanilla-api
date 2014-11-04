@@ -1,6 +1,6 @@
 <?php
 
-$ApplicationInfo['api'] = array(
+$ApplicationInfo['api'] = [
     'Name'        => 'Vanilla API',
     'Description' => 'Extensible RESTful API shim for Vanilla that operates in JSON or XML. Supports JSONP and CORS',
     'Version'     => '0.2.0',
@@ -10,5 +10,5 @@ $ApplicationInfo['api'] = array(
     'AuthorUrl'   => 'https://github.com/kasperisager',
     'License'     => 'MIT',
     'SettingsUrl' => 'dashboard/settings/api',
-    'RequiredApplications' => array('Vanilla' => '2.2.x')
-);
+    'RequiredApplications' => ['Vanilla' => '2.2.x']
+];

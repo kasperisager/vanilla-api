@@ -32,12 +32,12 @@ class APIHooks implements Gdn_IPlugin
         }
 
         // Empty fallback array
-        $ApplicationInfo = array();
+        $ApplicationInfo = [];
 
         // Load the API application info
         include paths(PATH_APPLICATIONS, 'api/settings/about.php');
 
-        $info    = val('api', $ApplicationInfo, array());
+        $info    = val('api', $ApplicationInfo, []);
         $version = val('Version', $info, 'Undefined');
 
         saveToConfig('API.Version', $version);
@@ -68,7 +68,7 @@ class APIHooks implements Gdn_IPlugin
         try {
             // Mark the dispatch with the API version
             $sender->API = c('API.Version', 'Undefined');
-            
+
             // Attempt dispatching the API request
             APIEngine::dispatchRequest();
         } catch (Exception $exception) {
@@ -78,7 +78,7 @@ class APIHooks implements Gdn_IPlugin
             // the formatting.
             $code      = $exception->getCode();
             $message   = base64_encode($exception->getMessage());
-            $arguments = array($code, $message);
+            $arguments = [$code, $message];
 
             // Call the Exception method if an exception is thrown
             Gdn::request()->withControllerMethod('API', 'Exception', $arguments);
@@ -108,7 +108,7 @@ class APIHooks implements Gdn_IPlugin
 
             if ($regen) $secret = APIAuth::generateUniqueID();
 
-            $save = array();
+            $save = [];
             $save['API.Secret'] = $secret;
 
             if ($form->errorCount() == 0) {
@@ -123,7 +123,7 @@ class APIHooks implements Gdn_IPlugin
                 }
             }
         } else {
-            $data = array();
+            $data = [];
             $data['Secret'] = c('API.Secret');
             $form->setData($data);
         }
