@@ -27,7 +27,7 @@ final class APIEngine
      * @var    array
      * @static
      */
-    public static $supports = ['get', 'post', 'put', 'delete', 'head', 'options'];
+    public static $supportedMethods = ['get', 'post', 'put', 'delete', 'head', 'options'];
 
     /**
      * Exploded request URI
@@ -82,11 +82,11 @@ final class APIEngine
      */
     public static function dispatchRequest()
     {
-        $request = Gdn::request();
-        $path    = static::getRequestUri();
-        $method  = static::getRequestMethod();
+	$request       = Gdn::request();
+	$requestUri    = static::getRequestUri();
+	$requestMethod = static::getRequestMethod();
 
-        if (!in_array($method, static::$supports)) {
+	if (!in_array($requestMethod, static::$supportedMethods)) {
             throw new Exception(t('API.Error.MethodNotAllowed'), 405);
         }
 
@@ -99,40 +99,38 @@ final class APIEngine
             }
         }
 
-        // Get the requested resource
-        $resource = val(1, $path);
+	$resource = val(1, $requestUri);
 
-        // Turn requested resource into API class and store it
-        $class = ucfirst($resource) . 'API';
+	$apiClass = ucfirst($resource) . 'API';
 
-        // Make sure that the requested API class exists
-        if (!class_exists($class)) {
+	if (!class_exists($apiClass)) {
             throw new Exception(t('API.Error.Class.Invalid'), 404);
         }
 
-        // Make sure that the requested API class extends the API Mapper
-        if (!is_subclass_of($class, 'APIMapper')) {
+	if (!is_subclass_of($apiClass, 'APIMapper')) {
             throw new Exception(t('API.Error.Mapper'), 500);
         }
 
-        $class = new $class;
+	$apiClass = new $apiClass;
 
-        // Is this a write-method?
-        $write = in_array($method, ['post', 'put', 'delete']);
+	$isWriteMethod = in_array($requestMethod, ['post', 'put', 'delete']);
 
-        // If write-method, get request arguments sent by client
-        $data = ($write) ? static::getRequestArguments() : [];
+	$requestArguments = ($isWriteMethod) ? static::getRequestArguments() : [];
 
-        // Perform the router dispatch
-        $dispatch = static::map($resource, $class, $path, $method, $data);
+	$dispatch = static::map($resource, $apiClass, $requestUri, $requestMethod, $requestArguments);
 
-        // Merge request and dispatch arguments
-        $data = array_merge($data, $dispatch['arguments']);
+	$controller = $dispatch['controller'];
 
-        if ($write) {
+	if (!$controller) {
+	    throw new Exception(t('API.Error.Controller.Missing'), 500);
+	}
+
+	$inputData = array_merge($requestArguments, $dispatch['arguments']);
+
+	if ($isWriteMethod) {
             // Set the transient key since we no longer have a front-end that
             // takes care of doing it for us
-            $data['TransientKey'] = Gdn::session()->transientKey();
+	    $inputData['TransientKey'] = Gdn::session()->transientKey();
 
             // Authentication is always required for write-methods
             $dispatch['authenticate'] = true;
@@ -143,26 +141,20 @@ final class APIEngine
             $request->requestMethod('post');
 
             // Add any API-specific arguments to the requests arguments
-            $request->setRequestArguments(Gdn_Request::INPUT_POST, $data);
+	    $request->setRequestArguments(Gdn_Request::INPUT_POST, $inputData);
 
             // Set the PHP $_POST global as the result of any form data picked
             // up by Garden.
             $_POST = $request->post();
         }
 
-        // Make sure that the API class returns a controller definition
-        if (!$controller = $dispatch['controller']) {
-            throw new Exception(t('API.Error.Controller.Missing'), 500);
-        }
-
-        // If the endpoint requires authentication and none has been provided,
-        // throw an error
         if ($dispatch['authenticate'] && !Gdn::session()->isValid()) {
             throw new Exception(t('API.Error.AuthRequired'), 401);
         }
 
-        // Attach the correct application if one has been set
-        if ($application = $dispatch['application']) {
+	$application = $dispatch['application'];
+
+	if ($application) {
             Gdn_Autoloader::attachApplication($application);
         }
 
