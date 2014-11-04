@@ -269,7 +269,6 @@ final class APIEngine
             // Otherwise, only deliver the actual data
             default:
                 $request->withDeliveryType(DELIVERY_TYPE_DATA);
-                break;
         }
 
         // Change response format depending on HTTP_ACCEPT
@@ -283,7 +282,6 @@ final class APIEngine
             case 'application/javascript': // For JSONP
             default:
                 $request->withDeliveryMethod(DELIVERY_METHOD_JSON);
-                break;
         }
     }
 
