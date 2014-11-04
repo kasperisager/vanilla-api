@@ -102,6 +102,7 @@ abstract class APIMapper extends Gdn_Pluggable
     final public static function get($endpoint, $data)
     {
         static::endpoint('GET', $endpoint, $data);
+        static::endpoint('HEAD', $endpoint, $data);
     }
 
     /**
