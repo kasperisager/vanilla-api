@@ -82,11 +82,11 @@ final class APIEngine
      */
     public static function dispatchRequest()
     {
-	$request       = Gdn::request();
-	$requestUri    = static::getRequestUri();
-	$requestMethod = static::getRequestMethod();
+        $request       = Gdn::request();
+        $requestUri    = static::getRequestUri();
+        $requestMethod = static::getRequestMethod();
 
-	if (!in_array($requestMethod, static::$supportedMethods)) {
+        if (!in_array($requestMethod, static::$supportedMethods)) {
             throw new Exception(t('API.Error.MethodNotAllowed'), 405);
         }
 
@@ -99,38 +99,38 @@ final class APIEngine
             }
         }
 
-	$resource = val(1, $requestUri);
+        $resource = val(1, $requestUri);
 
-	$apiClass = ucfirst($resource) . 'API';
+        $apiClass = ucfirst($resource) . 'API';
 
-	if (!class_exists($apiClass)) {
+        if (!class_exists($apiClass)) {
             throw new Exception(t('API.Error.Class.Invalid'), 404);
         }
 
-	if (!is_subclass_of($apiClass, 'APIMapper')) {
+        if (!is_subclass_of($apiClass, 'APIMapper')) {
             throw new Exception(t('API.Error.Mapper'), 500);
         }
 
-	$apiClass = new $apiClass;
+        $apiClass = new $apiClass;
 
-	$isWriteMethod = in_array($requestMethod, ['post', 'put', 'delete']);
+        $isWriteMethod = in_array($requestMethod, ['post', 'put', 'delete']);
 
-	$requestArguments = ($isWriteMethod) ? static::getRequestArguments() : [];
+        $requestArguments = ($isWriteMethod) ? static::getRequestArguments() : [];
 
-	$dispatch = static::map($resource, $apiClass, $requestUri, $requestMethod, $requestArguments);
+        $dispatch = static::map($resource, $apiClass, $requestUri, $requestMethod, $requestArguments);
 
-	$controller = $dispatch['controller'];
+        $controller = $dispatch['controller'];
 
-	if (!$controller) {
-	    throw new Exception(t('API.Error.Controller.Missing'), 500);
-	}
+        if (!$controller) {
+            throw new Exception(t('API.Error.Controller.Missing'), 500);
+        }
 
-	$inputData = array_merge($requestArguments, $dispatch['arguments']);
+        $inputData = array_merge($requestArguments, $dispatch['arguments']);
 
-	if ($isWriteMethod) {
+        if ($isWriteMethod) {
             // Set the transient key since we no longer have a front-end that
             // takes care of doing it for us
-	    $inputData['TransientKey'] = Gdn::session()->transientKey();
+            $inputData['TransientKey'] = Gdn::session()->transientKey();
 
             // Authentication is always required for write-methods
             $dispatch['authenticate'] = true;
@@ -141,7 +141,7 @@ final class APIEngine
             $request->requestMethod('post');
 
             // Add any API-specific arguments to the requests arguments
-	    $request->setRequestArguments(Gdn_Request::INPUT_POST, $inputData);
+            $request->setRequestArguments(Gdn_Request::INPUT_POST, $inputData);
 
             // Set the PHP $_POST global as the result of any form data picked
             // up by Garden.
@@ -152,9 +152,9 @@ final class APIEngine
             throw new Exception(t('API.Error.AuthRequired'), 401);
         }
 
-	$application = $dispatch['application'];
+        $application = $dispatch['application'];
 
-	if ($application) {
+        if ($application) {
             Gdn_Autoloader::attachApplication($application);
         }
 
