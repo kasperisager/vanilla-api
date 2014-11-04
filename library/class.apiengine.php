@@ -388,10 +388,10 @@ final class APIEngine
     public static function getServerArguments($key = false)
     {
         $request = Gdn::request();
-        $Server  = Gdn_Request::INPUT_SERVER;
+        $server  = Gdn_Request::INPUT_SERVER;
 
         if (static::$serverArguments === null) {
-            static::$serverArguments = $request->getRequestArguments($Server);
+            static::$serverArguments = $request->getRequestArguments($server);
         }
 
         $arguments = static::$serverArguments;
