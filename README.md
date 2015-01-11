@@ -41,4 +41,4 @@ If you come across any bugs or if you have a feature request, please file an iss
 
 ---
 
-Copyright &copy; 2015 [Kasper Kronborg Isager](http://kasperisager.github.io). Licensed under the terms of the [MIT License](LICENSE.md)
+Copyright &copy; 2014-2015 [Kasper Kronborg Isager](http://kasperisager.github.io). Licensed under the terms of the [MIT License](LICENSE.md)
