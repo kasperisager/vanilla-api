@@ -1,7 +1,7 @@
 <?php
 
 $ApplicationInfo['api'] = [
-    'Name'        => 'Vanilla API',
+    'Name'        => 'API',
     'Description' => 'Extensible RESTful API shim for Vanilla that operates in JSON or XML. Supports JSONP and CORS',
     'Version'     => '0.3.0',
     'Url'         => 'https://github.com/kasperisager/vanilla-api',
