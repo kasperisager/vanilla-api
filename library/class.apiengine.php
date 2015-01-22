@@ -361,7 +361,10 @@ final class APIEngine
                     break;
 
                 default:
-                    throw new Exception(t('API.Error.ContentType') . $type, 400);
+                    throw new Exception(
+                        sprintf(t('API.Error.ContentType'), $type),
+                        400
+                    );
             }
 
             static::$requestArguments = $data;
