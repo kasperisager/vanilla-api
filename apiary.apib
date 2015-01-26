@@ -260,6 +260,10 @@ This documentation is for the open source API shim for Vanilla (https://github.c
 + Response 200 (application/json)
     + Body
         {
+            "CountDiscussions": "123",
+            "Discussions": [
+                ...
+            ]
         }
 
 # Group Activities
@@ -292,6 +296,12 @@ This documentation is for the open source API shim for Vanilla (https://github.c
 ### Find all conversations [GET]
 
 + Response 200 (application/json)
+    + Body
+        {
+            "Conversations": [
+                ...
+            ]
+        }
 
 ### Create a new conversation [POST]
 
@@ -310,6 +320,15 @@ This documentation is for the open source API shim for Vanilla (https://github.c
 ### Find an existing conversation [GET]
 
 + Response 200 (application/json)
+    + Body
+        {
+            "Conversation": {
+                ...
+            },
+            "Messages": [
+                ...
+            ]
+        }
 
 ### Remove an existing conversation [DELETE]
 
@@ -329,6 +348,17 @@ This documentation is for the open source API shim for Vanilla (https://github.c
 
 ## All [/users]
 
+### Find all users [GET]
+
++ Response 200 (application/json)
+    + Body
+        {
+            "RecordCount": "123",
+            "Users": [
+                ...
+            ]
+        }
+
 ### Create a new user [POST]
 
 + Request
@@ -344,7 +374,50 @@ This documentation is for the open source API shim for Vanilla (https://github.c
 
 ## Single [/users/{user_id}]
 
+### Find an existing user [GET]
+
++ Reponse 200 (application/json)
+    + Body
+        {
+            "Activities": [
+                ...
+            ],
+            "Profile": {
+                ...
+            },
+            "UserRoles": [
+                ...
+            ]
+        }
+
+### Update an existing user [PUT]
+
++ Request
+    + Body
+        {
+            "Name": "",
+            "Email": "",
+            "Password": "",
+            "RoleID": [0]
+        }
+
++ Response 200 (application/json)
+
+### Remove an existing user [DELETE]
+
++ Response 200 (application/json)
+
 ## Summary [/users/summary]
+
+### Get a summary of all users [GET]
+
++ Response 200 (application/json)
+    + Body
+        {
+            "UserData": [
+                ...
+            ]
+        }
 
 # Group Roles
 
@@ -368,6 +441,14 @@ This documentation is for the open source API shim for Vanilla (https://github.c
 ## All [/moderation/bans]
 
 ### Find all bans [GET]
+
++ Response 200 (application/json)
+    + Body
+        {
+            "Bans": [
+                ...
+            ]
+        }
 
 ### Create a new ban [POST]
 
