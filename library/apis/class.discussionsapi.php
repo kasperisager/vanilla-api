@@ -106,6 +106,24 @@ class DiscussionsAPI extends APIMapper
             ]
         ]);
 
+        static::post('/[i:DiscussionID]/close', [
+            'controller'   => 'Discussion',
+            'method'       => 'close',
+            'authenticate' => true,
+            'arguments'    => [
+                'Close' => 1
+            ]
+        ]);
+
+        static::post('/[i:DiscussionID]/open', [
+            'controller'   => 'Discussion',
+            'method'       => 'close',
+            'authenticate' => true,
+            'arguments'    => [
+                'Close' => 0
+            ]
+        ]);
+
         static::put('/[i:DiscussionID]', [
             'controller' => 'Post',
             'method'     => 'editDiscussion'
