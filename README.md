@@ -6,7 +6,6 @@
 
 Extensible RESTful API shim for Vanilla that operates in JSON or XML. Supports [JSONP](http://en.wikipedia.org/wiki/JSONP) and [CORS](http://en.wikipedia.org/wiki/Cross-origin_resource_sharing)
 
-
 ## Getting started
 
 To get started using Vanilla API, either:
@@ -20,18 +19,13 @@ $ git clone kasperisager/vanilla-api api
 
 When you've done this, make sure the newly created folder is named `api` and not `vanilla-api`. Now simply go to your dashboard, enable Vanilla API in the "Applications" menu and you're all set!
 
-
 ## How does it work?
 
 Vanilla API is a shim that implements a RESTful URI scheme upon with you can invoke different methods using the standard GET, POST, PUT and DELETE HTTP verbs. The API then translates and redirects your request to the corrosponding application controller which in return caries out the requested method.
 
-
 ## Documentation
 
 You can find documentation on how to use, configure and extend Vanilla API in the [Wiki](https://github.com/kasperisager/vanilla-api/wiki).
-
-A [Postman](http://getpostman.com) Collection containing all the available endpoints as well as the arguments they take (required + some optional) can be found here: [__Vanilla API Collection__](https://www.getpostman.com/collections/88c667ea752bc4f0186e). _Make sure to update it every now and then!_
-
 
 ## [Issue tracking](https://github.com/kasperisager/vanilla-api/issues)
 
