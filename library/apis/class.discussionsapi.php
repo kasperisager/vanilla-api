@@ -93,22 +93,22 @@ class DiscussionsAPI extends APIMapper
             'method'     => 'editDiscussion'
         ]);
 
-	static::put('/[i:DiscussionID]/comments/[i:CommentID]', [
-	    'controller' => 'Post',
-	    'method'     => 'editComment'
-	]);
+        static::put('/[i:DiscussionID]/comments/[i:CommentID]', [
+            'controller' => 'Post',
+            'method'     => 'editComment'
+        ]);
 
         static::delete('/[i:DiscussionID]', [
             'controller' => 'Discussion',
             'method'     => 'delete'
         ]);
 
-	static::delete('/[i:DiscussionID]/comments/[i:CommentID]', [
-	    'controller' => 'Discussion',
-	    'method'     => 'deleteComment',
-	    'arguments'  => [
-		'TransientKey' => Gdn::session()->transientKey()
-	    ]
-	]);
+        static::delete('/[i:DiscussionID]/comments/[i:CommentID]', [
+            'controller' => 'Discussion',
+            'method'     => 'deleteComment',
+            'arguments'  => [
+                'TransientKey' => Gdn::session()->transientKey()
+            ]
+        ]);
     }
 }
