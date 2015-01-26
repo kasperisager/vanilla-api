@@ -48,7 +48,7 @@ class CategoriesAPI extends APIMapper
             'authenticate' => true,
             'arguments'    => [
                 'Value' => 1,
-                'TKey'  => Gdn::Session()->transientKey()
+                'TKey'  => Gdn::session()->transientKey()
             ]
         ]);
 
@@ -58,7 +58,7 @@ class CategoriesAPI extends APIMapper
             'authenticate' => true,
             'arguments'    => [
                 'Value' => 0,
-                'TKey'  => Gdn::Session()->transientKey()
+                'TKey'  => Gdn::session()->transientKey()
             ]
         ]);
 
