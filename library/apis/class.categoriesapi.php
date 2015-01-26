@@ -37,11 +37,6 @@ class CategoriesAPI extends APIMapper
             'method'      => 'addCategory'
         ]);
 
-        static::post('/[i:CategoryID]/discussions', [
-            'controller' => 'Post',
-            'method'     => 'discussion'
-        ]);
-
         static::post('/[i:CategoryID]/follow', [
             'controller'   => 'Category',
             'method'       => 'follow',
