@@ -33,5 +33,5 @@ $Definition['API.Error.Timestamp.Invalid']  = "Authentication failed: The reques
 $Definition['API.Error.Token.Missing']      = "Authentication failed: A token must be specified";
 $Definition['API.Error.Token.Invalid']      = "Authentication failed: Token and signature do not match";
 
-$Definition['API.Error.Class.Invalid']      = "The requested API was not found";
+$Definition['API.Error.Class.Invalid']      = "The requested %s was not found";
 $Definition['API.Error.Controller.Missing'] = "No controller has been defined in the API";

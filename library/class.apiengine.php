@@ -104,7 +104,10 @@ final class APIEngine
         $apiClass = ucfirst($resource) . 'API';
 
         if (!class_exists($apiClass)) {
-            throw new Exception(t('API.Error.Class.Invalid'), 404);
+            throw new Exception(
+                sprintf(t('API.Error.Class.Invalid'), $apiClass),
+                404
+            );
         }
 
         if (!is_subclass_of($apiClass, 'APIMapper')) {
