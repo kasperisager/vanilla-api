@@ -64,6 +64,12 @@ class DiscussionsAPI extends APIMapper
             'method'     => 'comment'
         ]);
 
+        static::post('/[i:DiscussionID]/dismiss', [
+            'controller'   => 'Discussion',
+            'method'       => 'dismissAnnouncement',
+            'authenticate' => true
+        ]);
+
         static::put('/[i:DiscussionID]', [
             'controller' => 'Post',
             'method'     => 'editDiscussion'
