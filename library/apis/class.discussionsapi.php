@@ -88,6 +88,24 @@ class DiscussionsAPI extends APIMapper
             'authenticate' => true
         ]);
 
+        static::post('/[i:DiscussionID]/sink', [
+            'controller'   => 'Discussion',
+            'method'       => 'sink',
+            'authenticate' => true,
+            'arguments'    => [
+                'Sink' => 1
+            ]
+        ]);
+
+        static::post('/[i:DiscussionID]/unsink', [
+            'controller'   => 'Discussion',
+            'method'       => 'sink',
+            'authenticate' => true,
+            'arguments'    => [
+                'Sink' => 0
+            ]
+        ]);
+
         static::put('/[i:DiscussionID]', [
             'controller' => 'Post',
             'method'     => 'editDiscussion'
