@@ -31,26 +31,6 @@ class CategoriesAPI extends APIMapper
             'controller' => 'Categories'
         ]);
 
-        static::get('/[i:CategoryID]/follow', [
-            'controller'   => 'Category',
-            'method'       => 'follow',
-            'authenticate' => true,
-            'arguments'    => [
-                'Value' => 1,
-                'TKey'  => Gdn::Session()->transientKey()
-            ]
-        ]);
-
-        static::get('/[i:CategoryID]/unfollow', [
-            'controller'   => 'Category',
-            'method'       => 'follow',
-            'authenticate' => true,
-            'arguments'    => [
-                'Value' => 0,
-                'TKey'  => Gdn::Session()->transientKey()
-            ]
-        ]);
-
         static::post('/', [
             'application' => 'Vanilla',
             'controller'  => 'Settings',
@@ -60,6 +40,26 @@ class CategoriesAPI extends APIMapper
         static::post('/[i:CategoryID]/discussions', [
             'controller' => 'Post',
             'method'     => 'discussion'
+        ]);
+
+        static::post('/[i:CategoryID]/follow', [
+            'controller'   => 'Category',
+            'method'       => 'follow',
+            'authenticate' => true,
+            'arguments'    => [
+                'Value' => 1,
+                'TKey'  => Gdn::Session()->transientKey()
+            ]
+        ]);
+
+        static::post('/[i:CategoryID]/unfollow', [
+            'controller'   => 'Category',
+            'method'       => 'follow',
+            'authenticate' => true,
+            'arguments'    => [
+                'Value' => 0,
+                'TKey'  => Gdn::Session()->transientKey()
+            ]
         ]);
 
         static::put('/[i:CategoryID]', [
