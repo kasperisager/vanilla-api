@@ -124,6 +124,24 @@ class DiscussionsAPI extends APIMapper
             ]
         ]);
 
+        static::post('/[i:DiscussionID]/bookmark', [
+            'controller'   => 'Discussion',
+            'method'       => 'bookmark',
+            'authenticate' => true,
+            'arguments'    => [
+                'Bookmark' => 1
+            ]
+        ]);
+
+        static::post('/[i:DiscussionID]/unbookmark', [
+            'controller'   => 'Discussion',
+            'method'       => 'bookmark',
+            'authenticate' => true,
+            'arguments'    => [
+                'Bookmark' => 0
+            ]
+        ]);
+
         static::put('/[i:DiscussionID]', [
             'controller' => 'Post',
             'method'     => 'editDiscussion'
