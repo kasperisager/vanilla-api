@@ -21,7 +21,7 @@ When you've done this, make sure the newly created folder is named `api` and not
 
 ## How does it work?
 
-Vanilla API is a shim that implements a RESTful URI scheme upon with you can invoke different methods using the standard GET, POST, PUT and DELETE HTTP verbs. The API then translates and redirects your request to the corrosponding application controller which in return caries out the requested method.
+Vanilla API is a shim that implements a RESTful URI scheme upon with you can invoke different methods using the standard GET, POST, PUT and DELETE HTTP verbs. The API then translates and redirects your request to the corresponding application controller which in return caries out the requested method.
 
 ## Documentation
 
