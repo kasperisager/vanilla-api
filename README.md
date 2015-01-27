@@ -10,7 +10,7 @@ Extensible RESTful API shim for Vanilla that operates in JSON or XML. Supports [
 
 To get started using Vanilla API, either:
 
-- [__Download the latest release__](https://github.com/kasperisager/vanilla-api/releases)
+- [__Download the latest release__](https://github.com/kasperisager/vanilla-api/releases/latest)
 - Clone the repository directly into your Vanilla `applications` directory:
 
 ```sh
