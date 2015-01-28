@@ -147,7 +147,7 @@ class DiscussionsAPI extends APIMapper
             'method'     => 'editDiscussion'
         ]);
 
-        static::put('/[i:DiscussionID]/comments/[i:CommentID]', [
+        static::put('/comments/[i:CommentID]', [
             'controller' => 'Post',
             'method'     => 'editComment'
         ]);
@@ -157,7 +157,7 @@ class DiscussionsAPI extends APIMapper
             'method'     => 'delete'
         ]);
 
-        static::delete('/[i:DiscussionID]/comments/[i:CommentID]', [
+        static::delete('/comments/[i:CommentID]', [
             'controller' => 'Discussion',
             'method'     => 'deleteComment',
             'arguments'  => [
