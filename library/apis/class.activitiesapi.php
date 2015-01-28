@@ -23,11 +23,7 @@ class ActivitiesAPI extends APIMapper
     public static function register($data)
     {
         static::get('/', [
-            'controller' => 'Activity',
-            'arguments'  => [
-                'Filter' => val('Filter', $data),
-                'Page'   => val('Page', $data)
-            ]
+            'controller' => 'Activity'
         ]);
 
         static::get('/[i:ActivityID]', [
@@ -43,11 +39,24 @@ class ActivitiesAPI extends APIMapper
             ]
         ]);
 
+        static::post('/[i:ActivityID]/comments', [
+            'controller' => 'Activity',
+            'method'     => 'comment'
+        ]);
+
         static::delete('/[i:ActivityID]', [
             'controller' => 'Activity',
             'method'     => 'delete',
             'arguments'  => [
                 'TransientKey' => Gdn::session()->transientKey()
+            ]
+        ]);
+
+        static::delete('/comments/[i:ID]', [
+            'controller' => 'Activity',
+            'method'     => 'deleteComment',
+            'arguments'  => [
+                'TK' => Gdn::session()->transientKey()
             ]
         ]);
     }
