@@ -301,7 +301,7 @@ final class APIEngine
     public static function getRequestUri()
     {
         if (static::$requestUri === null) {
-            $Uri = Gdn::request()->requestUri();
+            $Uri = Gdn::request()->RequestURI();
             static::$requestUri = explode('/', strtolower($Uri));
         }
 
