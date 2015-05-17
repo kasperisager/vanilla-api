@@ -1,4 +1,4 @@
-<?php if (!defined('APPLICATION')) exit;
+<?php if (!defined("APPLICATION")) exit;
 
 /**
  * API engine class
@@ -26,7 +26,7 @@ final class APIEngine {
      * @var    array
      * @static
      */
-    public static $supportedMethods = ['get', 'post', 'put', 'delete', 'head', 'options'];
+    public static $supportedMethods = ["get", "post", "put", "delete", "head", "options"];
 
     /**
      * Exploded request URI
@@ -85,12 +85,12 @@ final class APIEngine {
         $requestMethod = static::getRequestMethod();
 
         if (!in_array($requestMethod, static::$supportedMethods)) {
-            throw new Exception(t('API.Error.MethodNotAllowed'), 405);
+            throw new Exception(t("API.Error.MethodNotAllowed"), 405);
         }
 
         if (!Gdn::session()->isValid()) {
-            $username = getIncomingValue('username');
-            $email    = getIncomingValue('email');
+            $username = getIncomingValue("username");
+            $email    = getIncomingValue("email");
 
             if ($username || $email) {
                 APIAuth::authenticateRequest();
@@ -99,47 +99,47 @@ final class APIEngine {
 
         $resource = val(1, $requestUri);
 
-        $apiClass = ucfirst($resource) . 'API';
+        $apiClass = ucfirst($resource) . "API";
 
         if (!class_exists($apiClass)) {
             throw new Exception(
-                sprintf(t('API.Error.Class.Invalid'), $apiClass),
+                sprintf(t("API.Error.Class.Invalid"), $apiClass),
                 404
             );
         }
 
-        if (!is_subclass_of($apiClass, 'APIMapper')) {
-            throw new Exception(t('API.Error.Mapper'), 500);
+        if (!is_subclass_of($apiClass, "APIMapper")) {
+            throw new Exception(t("API.Error.Mapper"), 500);
         }
 
         $apiClass = new $apiClass;
 
-        $isWriteMethod = in_array($requestMethod, ['post', 'put', 'delete']);
+        $isWriteMethod = in_array($requestMethod, ["post", "put", "delete"]);
 
         $requestArguments = ($isWriteMethod) ? static::getRequestArguments() : [];
 
         $dispatch = static::map($resource, $apiClass, $requestUri, $requestMethod, $requestArguments);
 
-        $controller = $dispatch['controller'];
+        $controller = $dispatch["controller"];
 
         if (!$controller) {
-            throw new Exception(t('API.Error.Controller.Missing'), 500);
+            throw new Exception(t("API.Error.Controller.Missing"), 500);
         }
 
-        $inputData = array_merge($requestArguments, $dispatch['arguments']);
+        $inputData = array_merge($requestArguments, $dispatch["arguments"]);
 
         if ($isWriteMethod) {
             // Set the transient key since we no longer have a front-end that
             // takes care of doing it for us
-            $inputData['TransientKey'] = Gdn::session()->transientKey();
+            $inputData["TransientKey"] = Gdn::session()->transientKey();
 
             // Authentication is always required for write-methods
-            $dispatch['authenticate'] = true;
+            $dispatch["authenticate"] = true;
 
-            // As Garden doesn't take PUT and DELETE requests into account when
+            // As Garden doesn"t take PUT and DELETE requests into account when
             // verifying requests using IsPostBack() and IsAuthencatedPostBack(),
             // we need to mask PUTs and DELETEs as POSTs.
-            $request->requestMethod('post');
+            $request->requestMethod("post");
 
             // Add any API-specific arguments to the requests arguments
             $request->setRequestArguments(Gdn_Request::INPUT_POST, $inputData);
@@ -149,18 +149,18 @@ final class APIEngine {
             $_POST = $request->post();
         }
 
-        if ($dispatch['authenticate'] && !Gdn::session()->isValid()) {
-            throw new Exception(t('API.Error.AuthRequired'), 401);
+        if ($dispatch["authenticate"] && !Gdn::session()->isValid()) {
+            throw new Exception(t("API.Error.AuthRequired"), 401);
         }
 
-        $application = $dispatch['application'];
+        $application = $dispatch["application"];
 
         if ($application) {
             Gdn_Autoloader::attachApplication($application);
         }
 
-        $method    = $dispatch['method'];
-        $arguments = $dispatch['arguments'];
+        $method    = $dispatch["method"];
+        $arguments = $dispatch["arguments"];
 
         Gdn::request()->withControllerMethod($controller, $method, $arguments);
     }
@@ -178,12 +178,12 @@ final class APIEngine {
      */
     public static function map($resource, $class, $path, $method, $data) {
         $router = new AltoRouter();
-        $router->setBasePath('/api');
+        $router->setBasePath("/api");
 
         $endpoints = $class->endpoints($data);
 
-        if ($method == 'options') {
-            $supports      = strtoupper(implode(', ', $class::supports()));
+        if ($method == "options") {
+            $supports      = strtoupper(implode(", ", $class::supports()));
             $documentation = [];
 
             foreach ($endpoints as $method => $endpoints) {
@@ -195,47 +195,47 @@ final class APIEngine {
             $documentation = base64_encode(json_encode($documentation));
 
             return [
-                'application'  => 'API',
-                'controller'   => 'API',
-                'method'       => 'options',
-                'arguments'    => [$supports, $documentation],
-                'authenticate' => false
+                "application"  => "API",
+                "controller"   => "API",
+                "method"       => "options",
+                "arguments"    => [$supports, $documentation],
+                "authenticate" => false
             ];
         } else {
             // Register all endpoints in the router
             foreach ($endpoints as $method => $endpoints) {
                 foreach ($endpoints as $endpoint => $data) {
-                    $endpoint = '/' . $resource . rtrim($endpoint, '/');
+                    $endpoint = "/" . $resource . rtrim($endpoint, "/");
 
                     $router->map($method, $endpoint, $data);
                 }
             }
 
-            $match = $router->match('/' . rtrim(join('/', $path), '/'));
+            $match = $router->match("/" . rtrim(join("/", $path), "/"));
 
             if (!$match) {
-                throw new Exception(t('API.Error.MethodNotAllowed'), 405);
+                throw new Exception(t("API.Error.MethodNotAllowed"), 405);
             }
 
-            $target = val('target', $match);
+            $target = val("target", $match);
 
             $arguments = array_merge(
-                val('params', $match, []),
-                val('arguments', $target, [])
+                val("params", $match, []),
+                val("arguments", $target, [])
             );
 
             return [
-                'application'  => val('application', $target, false),
-                'controller'   => val('controller', $target),
-                'method'       => val('method', $target, 'index'),
-                'authenticate' => val('authenticate', $target),
-                'arguments'    => $arguments
+                "application"  => val("application", $target, false),
+                "controller"   => val("controller", $target),
+                "method"       => val("method", $target, "index"),
+                "authenticate" => val("authenticate", $target),
+                "arguments"    => $arguments
             ];
         }
     }
 
     /**
-     * Set the header format based on the Request object's HTTP_ACCEPT header
+     * Set the header format based on the Request object"s HTTP_ACCEPT header
      *
      * @since  1.0.0
      * @access public
@@ -244,24 +244,24 @@ final class APIEngine {
      */
     public static function setRequestHeaders() {
         // CORS support (experimental)
-        if (c('API.AllowCORS')) {
-            $headers = 'Origin, X-Requested-With, Content-Type, Accept';
+        if (c("API.AllowCORS")) {
+            $headers = "Origin, X-Requested-With, Content-Type, Accept";
 
-            header('Access-Control-Allow-Origin: *', true);
-            header('Access-Control-Allow-Headers: ' . $headers, true);
+            header("Access-Control-Allow-Origin: *", true);
+            header("Access-Control-Allow-Headers: " . $headers, true);
         }
 
         // Allow enabling JSONP using API.AllowJSONP
-        if (c('API.AllowJSONP')) {
-            saveToConfig('Garden.AllowJSONP', true, false);
+        if (c("API.AllowJSONP")) {
+            saveToConfig("Garden.AllowJSONP", true, false);
         }
 
         $request = Gdn::request();
 
         switch (static::getRequestMethod()) {
             // If HEAD or DELETE request, only deliver status
-            case 'head':
-            case 'delete':
+            case "head":
+            case "delete":
                 $request->withDeliveryType(DELIVERY_TYPE_BOOL);
                 break;
 
@@ -271,14 +271,14 @@ final class APIEngine {
         }
 
         // Change response format depending on HTTP_ACCEPT
-        switch (static::getServerArguments('HTTP_ACCEPT')) {
-            case 'text/xml':
-            case 'application/xml':
+        switch (static::getServerArguments("HTTP_ACCEPT")) {
+            case "text/xml":
+            case "application/xml":
                 $request->withDeliveryMethod(DELIVERY_METHOD_XML);
                 break;
 
-            case 'application/json':
-            case 'application/javascript': // For JSONP
+            case "application/json":
+            case "application/javascript": // For JSONP
             default:
                 $request->withDeliveryMethod(DELIVERY_METHOD_JSON);
         }
@@ -287,7 +287,7 @@ final class APIEngine {
     /**
      * Get the full Request URI path array
      *
-     * I.e. "/foo/bar" would result in the following array: ['foo', 'bar']
+     * I.e. "/foo/bar" would result in the following array: ["foo", "bar"]
      *
      * @since  0.1.0
      * @access public
@@ -297,7 +297,7 @@ final class APIEngine {
     public static function getRequestUri() {
         if (static::$requestUri === null) {
             $Uri = Gdn::request()->requestUri();
-            static::$requestUri = explode('/', strtolower($Uri));
+            static::$requestUri = explode("/", strtolower($Uri));
         }
 
         return static::$requestUri;
@@ -335,30 +335,30 @@ final class APIEngine {
         if (static::$requestArguments === null) {
             // Read the PHP input buffer. This can only be done ONCE, so we need
             // to make sure that we store the data
-            $data = file_get_contents('php://input');
+            $data = file_get_contents("php://input");
 
             if (empty($data)) {
                 return static::$requestArguments = [];
             }
 
             // Get the content type of the input
-            $type = static::getServerArguments('CONTENT_TYPE');
+            $type = static::getServerArguments("CONTENT_TYPE");
 
             switch ($type) {
-                case 'text/xml':
-                case 'application/xml':
+                case "text/xml":
+                case "application/xml":
                     $XML  = (array) simplexml_load_string($data);
                     $data = json_decode(json_encode($XML), true);
                     break;
 
-                case 'application/json':
-                case 'application/javascript': // For JSONP
+                case "application/json":
+                case "application/javascript": // For JSONP
                     $data = json_decode($data, true);
                     break;
 
                 default:
                     throw new Exception(
-                        sprintf(t('API.Error.ContentType'), $type),
+                        sprintf(t("API.Error.ContentType"), $type),
                         400
                     );
             }

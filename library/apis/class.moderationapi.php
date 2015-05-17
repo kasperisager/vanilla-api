@@ -1,4 +1,4 @@
-<?php if (!defined('APPLICATION')) exit;
+<?php if (!defined("APPLICATION")) exit;
 
 /**
  * Moderation API
@@ -20,35 +20,35 @@ final class ModerationAPI extends APIMapper {
      * @static
      */
     public static function register($data) {
-        static::get('/bans', [
-            'controller' => 'Settings',
-            'method'     => 'bans',
-            'arguments'  => [
-                'Page'   => val('Page', $data)
+        static::get("/bans", [
+            "controller" => "Settings",
+            "method"     => "bans",
+            "arguments"  => [
+                "Page"   => val("Page", $data)
             ]
         ]);
 
-        static::post('/bans', [
-            'controller' => 'Settings',
-            'method'     => 'bans',
-            'arguments'  => [
-                'Action' => 'add'
+        static::post("/bans", [
+            "controller" => "Settings",
+            "method"     => "bans",
+            "arguments"  => [
+                "Action" => "add"
             ]
         ]);
 
-        static::put('/bans/[i:ID]', [
-            'controller' => 'Settings',
-            'method'     => 'bans',
-            'arguments'  => [
-                'Action' => 'edit'
+        static::put("/bans/[i:ID]", [
+            "controller" => "Settings",
+            "method"     => "bans",
+            "arguments"  => [
+                "Action" => "edit"
             ]
         ]);
 
-        static::delete('/bans/[i:ID]', [
-            'controller' => 'Settings',
-            'method'     => 'bans',
-            'arguments'  => [
-                'Action' => 'delete'
+        static::delete("/bans/[i:ID]", [
+            "controller" => "Settings",
+            "method"     => "bans",
+            "arguments"  => [
+                "Action" => "delete"
             ]
         ]);
     }

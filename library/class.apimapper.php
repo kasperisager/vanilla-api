@@ -1,4 +1,4 @@
-<?php if (!defined('APPLICATION')) exit;
+<?php if (!defined("APPLICATION")) exit;
 
 /**
  * Mapper class providing common methods for defining APIs
@@ -33,7 +33,7 @@ abstract class APIMapper extends Gdn_Pluggable {
      * @var    array
      * @static
      */
-    protected static $supports = ['options', 'head'];
+    protected static $supports = ["options", "head"];
 
     /* Methods */
 
@@ -52,7 +52,7 @@ abstract class APIMapper extends Gdn_Pluggable {
 
             // Fire event to allow overriding and registering new endpoints
             // outside the API class itself
-            $this->fireAs(get_called_class())->fireEvent('register');
+            $this->fireAs(get_called_class())->fireEvent("register");
         }
 
         return static::$endpoints;
@@ -69,7 +69,7 @@ abstract class APIMapper extends Gdn_Pluggable {
      */
     final public static function supports() {
         // Check if these methods are supported
-        $check = ['get', 'post', 'put', 'delete'];
+        $check = ["get", "post", "put", "delete"];
 
         foreach (static::$endpoints as $method => $endpoints) {
             $method   = strtolower($method);
@@ -97,8 +97,8 @@ abstract class APIMapper extends Gdn_Pluggable {
      * @static
      */
     final public static function get($endpoint, $data) {
-        static::endpoint('GET', $endpoint, $data);
-        static::endpoint('HEAD', $endpoint, $data);
+        static::endpoint("GET", $endpoint, $data);
+        static::endpoint("HEAD", $endpoint, $data);
     }
 
     /**
@@ -111,7 +111,7 @@ abstract class APIMapper extends Gdn_Pluggable {
      * @static
      */
     final public static function post($endpoint, $data) {
-        static::endpoint('POST', $endpoint, $data);
+        static::endpoint("POST", $endpoint, $data);
     }
 
     /**
@@ -124,7 +124,7 @@ abstract class APIMapper extends Gdn_Pluggable {
      * @static
      */
     final public static function put($endpoint, $data) {
-        static::endpoint('PUT', $endpoint, $data);
+        static::endpoint("PUT", $endpoint, $data);
     }
 
     /**
@@ -137,7 +137,7 @@ abstract class APIMapper extends Gdn_Pluggable {
      * @static
      */
     final public static function delete($endpoint, $data) {
-        static::endpoint('DELETE', $endpoint, $data);
+        static::endpoint("DELETE", $endpoint, $data);
     }
 
     /**
@@ -162,9 +162,9 @@ abstract class APIMapper extends Gdn_Pluggable {
      * Endpoints are registered using the get(), post(), put() and delete()
      * methods defined in the API Mapper:
      *
-     *     static::get('/bar/[i:fooID]', [
-     *         'controller' => 'foo',
-     *         'method'     => 'bar'
+     *     static::get("/bar/[i:fooID]", [
+     *         "controller" => "foo",
+     *         "method"     => "bar"
      *     ]);
      *
      * @since  0.1.0

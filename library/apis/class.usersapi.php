@@ -1,4 +1,4 @@
-<?php if (!defined('APPLICATION')) exit;
+<?php if (!defined("APPLICATION")) exit;
 
 /**
  * Users API
@@ -20,38 +20,38 @@ final class UsersAPI extends APIMapper {
      * @static
      */
     public static function register($data) {
-        static::get('/', [
-            'controller'   => 'User',
-            'authenticate' => true,
-            'arguments'    => [
-                'Page' => val('Page', $data)
+        static::get("/", [
+            "controller"   => "User",
+            "authenticate" => true,
+            "arguments"    => [
+                "Page" => val("Page", $data)
             ]
         ]);
 
-        static::get('/[i:UserID]', [
-            'controller' => 'Profile'
+        static::get("/[i:UserID]", [
+            "controller" => "Profile"
         ]);
 
-        static::get('/summary', [
-            'controller' => 'User',
-            'method'     => 'summary'
+        static::get("/summary", [
+            "controller" => "User",
+            "method"     => "summary"
         ]);
 
-        static::post('/', [
-            'controller' => 'User',
-            'method'     => 'add'
+        static::post("/", [
+            "controller" => "User",
+            "method"     => "add"
         ]);
 
-        static::put('/[i:UserID]', [
-            'controller' => 'User',
-            'method'     => 'edit'
+        static::put("/[i:UserID]", [
+            "controller" => "User",
+            "method"     => "edit"
         ]);
 
-        static::delete('/[i:UserID]', [
-            'controller' => 'User',
-            'method'     => 'delete',
-            'arguments'  => [
-                'Method' => val('Method', $data)
+        static::delete("/[i:UserID]", [
+            "controller" => "User",
+            "method"     => "delete",
+            "arguments"  => [
+                "Method" => val("Method", $data)
             ]
         ]);
     }

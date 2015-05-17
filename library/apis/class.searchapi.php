@@ -1,4 +1,4 @@
-<?php if (!defined('APPLICATION')) exit;
+<?php if (!defined("APPLICATION")) exit;
 
 /**
  * Search API
@@ -20,8 +20,8 @@ final class SearchAPI extends APIMapper {
      * @static
      */
     public static function register($data) {
-        static::get('/', [
-            'controller' => 'Search'
+        static::get("/", [
+            "controller" => "Search"
         ]);
     }
 }

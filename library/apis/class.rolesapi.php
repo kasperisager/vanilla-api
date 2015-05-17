@@ -1,4 +1,4 @@
-<?php if (!defined('APPLICATION')) exit;
+<?php if (!defined("APPLICATION")) exit;
 
 /**
  * Roles API
@@ -20,29 +20,29 @@ final class RolesAPI extends APIMapper {
      * @static
      */
     public static function register($data) {
-        static::get('/', [
-            'controller'   => 'Role',
-            'authenticate' => true
+        static::get("/", [
+            "controller"   => "Role",
+            "authenticate" => true
         ]);
 
-        static::get('/[i:RoleID]', [
-            'controller'   => 'Role',
-            'authenticate' => true
+        static::get("/[i:RoleID]", [
+            "controller"   => "Role",
+            "authenticate" => true
         ]);
 
-        static::post('/', [
-            'controller' => 'Role',
-            'method'     => 'add'
+        static::post("/", [
+            "controller" => "Role",
+            "method"     => "add"
         ]);
 
-        static::put('/[i:RoleID]', [
-            'controller' => 'Role',
-            'method'     => 'edit'
+        static::put("/[i:RoleID]", [
+            "controller" => "Role",
+            "method"     => "edit"
         ]);
 
-        static::delete('/[i:RoleID]', [
-            'controller' => 'Role',
-            'method'     => 'delete'
+        static::delete("/[i:RoleID]", [
+            "controller" => "Role",
+            "method"     => "delete"
         ]);
     }
 }

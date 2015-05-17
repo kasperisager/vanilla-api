@@ -1,4 +1,4 @@
-<?php if (!defined('APPLICATION')) exit;
+<?php if (!defined("APPLICATION")) exit;
 
 /**
  * Configuration API
@@ -20,11 +20,11 @@ final class ConfigurationAPI extends APIMapper {
      * @static
      */
     public static function register($data) {
-        static::get('/', [
-            'application'  => 'Dashboard',
-            'controller'   => 'Settings',
-            'method'       => 'configuration',
-            'authenticate' => true
+        static::get("/", [
+            "application"  => "Dashboard",
+            "controller"   => "Settings",
+            "method"       => "configuration",
+            "authenticate" => true
         ]);
     }
 }
