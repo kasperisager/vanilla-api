@@ -10,21 +10,21 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 final class ConfigurationAPI extends APIMapper {
-    /**
-     * Register API endpoints
-     *
-     * @since  0.1.0
-     * @access public
-     * @param  array $data
-     * @return void
-     * @static
-     */
-    public static function register($data) {
-        static::get("/", [
-            "application"  => "Dashboard",
-            "controller"   => "Settings",
-            "method"       => "configuration",
-            "authenticate" => true
-        ]);
-    }
+  /**
+   * Register API endpoints
+   *
+   * @since  0.1.0
+   * @access public
+   * @param  array $data
+   * @return void
+   * @static
+   */
+  public static function register($data) {
+    static::get("/", [
+      "application"  => "Dashboard",
+      "controller"   => "Settings",
+      "method"       => "configuration",
+      "authenticate" => true
+    ]);
+  }
 }

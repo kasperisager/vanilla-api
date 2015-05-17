@@ -10,46 +10,46 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 final class ModerationAPI extends APIMapper {
-    /**
-     * Register API endpoints
-     *
-     * @since  0.1.0
-     * @access public
-     * @param  array $data
-     * @return void
-     * @static
-     */
-    public static function register($data) {
-        static::get("/bans", [
-            "controller" => "Settings",
-            "method"     => "bans",
-            "arguments"  => [
-                "Page"   => val("Page", $data)
-            ]
-        ]);
+  /**
+   * Register API endpoints
+   *
+   * @since  0.1.0
+   * @access public
+   * @param  array $data
+   * @return void
+   * @static
+   */
+  public static function register($data) {
+    static::get("/bans", [
+      "controller" => "Settings",
+      "method"     => "bans",
+      "arguments"  => [
+        "Page"   => val("Page", $data)
+      ]
+    ]);
 
-        static::post("/bans", [
-            "controller" => "Settings",
-            "method"     => "bans",
-            "arguments"  => [
-                "Action" => "add"
-            ]
-        ]);
+    static::post("/bans", [
+      "controller" => "Settings",
+      "method"     => "bans",
+      "arguments"  => [
+        "Action" => "add"
+      ]
+    ]);
 
-        static::put("/bans/[i:ID]", [
-            "controller" => "Settings",
-            "method"     => "bans",
-            "arguments"  => [
-                "Action" => "edit"
-            ]
-        ]);
+    static::put("/bans/[i:ID]", [
+      "controller" => "Settings",
+      "method"     => "bans",
+      "arguments"  => [
+        "Action" => "edit"
+      ]
+    ]);
 
-        static::delete("/bans/[i:ID]", [
-            "controller" => "Settings",
-            "method"     => "bans",
-            "arguments"  => [
-                "Action" => "delete"
-            ]
-        ]);
-    }
+    static::delete("/bans/[i:ID]", [
+      "controller" => "Settings",
+      "method"     => "bans",
+      "arguments"  => [
+        "Action" => "delete"
+      ]
+    ]);
+  }
 }

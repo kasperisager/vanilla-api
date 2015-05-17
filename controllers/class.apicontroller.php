@@ -12,38 +12,38 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 final class APIController extends Gdn_Controller {
-    /**
-     * Render API exceptions
-     *
-     * @since  0.1.0
-     * @access public
-     * @param  int|string $code    Error code
-     * @param  string     $message Base64-encoded error message
-     */
-    public function exception($code, $message) {
-        header("HTTP/1.0 ${code}", true, $code);
+  /**
+   * Render API exceptions
+   *
+   * @since  0.1.0
+   * @access public
+   * @param  int|string $code    Error code
+   * @param  string     $message Base64-encoded error message
+   */
+  public function exception($code, $message) {
+    header("HTTP/1.0 ${code}", true, $code);
 
-        $this->setData([
-            "Code"      => intval($code),
-            "Exception" => base64_decode(htmlspecialchars($message))
-        ]);
+    $this->setData([
+      "Code"      => intval($code),
+      "Exception" => base64_decode(htmlspecialchars($message))
+    ]);
 
-        $this->renderData();
-    }
+    $this->renderData();
+  }
 
-    /**
-     * Render API OPTIONS requests
-     *
-     * @since  0.1.0
-     * @access public
-     * @param  string $methods       Comma-separated string of allowed methods
-     * @param  string $documentation API documentation (Base64 encoded JSON)
-     */
-    public function options($methods, $documentation) {
-        header("Allow: ${methods}", true);
+  /**
+   * Render API OPTIONS requests
+   *
+   * @since  0.1.0
+   * @access public
+   * @param  string $methods       Comma-separated string of allowed methods
+   * @param  string $documentation API documentation (Base64 encoded JSON)
+   */
+  public function options($methods, $documentation) {
+    header("Allow: ${methods}", true);
 
-        $this->setData(json_decode(base64_decode($documentation), true));
+    $this->setData(json_decode(base64_decode($documentation), true));
 
-        $this->renderData();
-    }
+    $this->renderData();
+  }
 }
