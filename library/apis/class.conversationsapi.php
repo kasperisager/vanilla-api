@@ -9,7 +9,7 @@
  * @copyright Copyright (c) 2013-2015 Kasper Kronborg Isager
  * @license   http://opensource.org/licenses/MIT MIT
  */
-class ConversationsAPI extends APIMapper {
+final class ConversationsAPI extends APIMapper {
     /**
      * Register API endpoints
      *

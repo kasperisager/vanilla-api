@@ -11,7 +11,7 @@
  * @copyright Copyright (c) 2013-2015 Kasper Kronborg Isager
  * @license   http://opensource.org/licenses/MIT MIT
  */
-class APIController extends Gdn_Controller {
+final class APIController extends Gdn_Controller {
     /**
      * Render API exceptions
      *

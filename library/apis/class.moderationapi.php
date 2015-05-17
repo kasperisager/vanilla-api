@@ -9,7 +9,7 @@
  * @copyright Copyright (c) 2013-2015 Kasper Kronborg Isager
  * @license   http://opensource.org/licenses/MIT MIT
  */
-class ModerationAPI extends APIMapper {
+final class ModerationAPI extends APIMapper {
     /**
      * Register API endpoints
      *

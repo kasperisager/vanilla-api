@@ -9,7 +9,7 @@
  * @copyright Copyright (c) 2013-2015 Kasper Kronborg Isager
  * @license   http://opensource.org/licenses/MIT MIT
  */
-class RolesAPI extends APIMapper {
+final class RolesAPI extends APIMapper {
     /**
      * Register API endpoints
      *
