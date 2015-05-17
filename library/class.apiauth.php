@@ -30,7 +30,7 @@ final class APIAuth {
    */
   public static function authenticateRequest() {
     $username = getIncomingValue("username");
-    $email    = getIncomingValue("email");
+    $email = getIncomingValue("email");
 
     if (!$username && !$email) {
       throw new Exception(t("API.Error.User.Missing"), 401);
@@ -117,22 +117,22 @@ final class APIAuth {
   public static function generateUniqueID() {
     return sprintf( "%04x%04x-%04x-%04x-%04x-%04x%04x%04x",
       // 32 bits for "time_low"
-      mt_rand(0, 0xffff), mt_rand(0, 0xffff),
+      mt_rand(0, 0xffff), mt_rand(0, 0xffff)
 
       // 16 bits for "time_mid"
-      mt_rand(0, 0xffff),
+    , mt_rand(0, 0xffff)
 
       // 16 bits for "time_hi_and_version",
       // four most significant bits holds version number 4
-      mt_rand(0, 0x0fff) | 0x4000,
+    , mt_rand(0, 0x0fff) | 0x4000
 
       // 16 bits, 8 bits for "clk_seq_hi_res"
       // 8 bits for "clk_seq_low"
       // Two most significant bits holds zero and one for variant DCE1.1
-      mt_rand(0, 0x3fff) | 0x8000,
+    , mt_rand(0, 0x3fff) | 0x8000
 
       // 48 bits for "node"
-      mt_rand(0, 0xffff), mt_rand(0, 0xffff), mt_rand(0, 0xffff)
+    , mt_rand(0, 0xffff), mt_rand(0, 0xffff), mt_rand(0, 0xffff)
     );
   }
 

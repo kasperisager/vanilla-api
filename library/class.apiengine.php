@@ -80,8 +80,8 @@ final class APIEngine {
    * @static
    */
   public static function dispatchRequest() {
-    $request       = Gdn::request();
-    $requestUri    = static::getRequestUri();
+    $request = Gdn::request();
+    $requestUri = static::getRequestUri();
     $requestMethod = static::getRequestMethod();
 
     if (!in_array($requestMethod, static::$supportedMethods)) {
@@ -90,7 +90,7 @@ final class APIEngine {
 
     if (!Gdn::session()->isValid()) {
       $username = getIncomingValue("username");
-      $email    = getIncomingValue("email");
+      $email = getIncomingValue("email");
 
       if ($username || $email) {
         APIAuth::authenticateRequest();
@@ -98,14 +98,10 @@ final class APIEngine {
     }
 
     $resource = val(1, $requestUri);
-
     $apiClass = ucfirst($resource) . "API";
 
     if (!class_exists($apiClass)) {
-      throw new Exception(
-        sprintf(t("API.Error.Class.Invalid"), $apiClass),
-        404
-      );
+      throw new Exception(sprintf(t("API.Error.Class.Invalid"), $apiClass), 404);
     }
 
     if (!is_subclass_of($apiClass, "APIMapper")) {
@@ -159,7 +155,7 @@ final class APIEngine {
       Gdn_Autoloader::attachApplication($application);
     }
 
-    $method    = $dispatch["method"];
+    $method = $dispatch["method"];
     $arguments = $dispatch["arguments"];
 
     Gdn::request()->withControllerMethod($controller, $method, $arguments);
@@ -183,7 +179,7 @@ final class APIEngine {
     $endpoints = $class->endpoints($data);
 
     if ($method == "options") {
-      $supports      = strtoupper(implode(", ", $class::supports()));
+      $supports = strtoupper(implode(", ", $class::supports()));
       $documentation = [];
 
       foreach ($endpoints as $method => $endpoints) {
@@ -220,16 +216,16 @@ final class APIEngine {
       $target = val("target", $match);
 
       $arguments = array_merge(
-        val("params", $match, []),
-        val("arguments", $target, [])
+        val("params", $match, [])
+      , val("arguments", $target, [])
       );
 
       return [
-        "application"  => val("application", $target, false),
-        "controller"   => val("controller", $target),
-        "method"       => val("method", $target, "index"),
-        "authenticate" => val("authenticate", $target),
-        "arguments"    => $arguments
+        "application" => val("application", $target, false)
+      , "controller" => val("controller", $target)
+      , "method" => val("method", $target, "index")
+      , "authenticate" => val("authenticate", $target)
+      , "arguments" => $arguments
       ];
     }
   }
@@ -347,7 +343,7 @@ final class APIEngine {
       switch ($type) {
         case "text/xml":
         case "application/xml":
-          $XML  = (array) simplexml_load_string($data);
+          $XML = (array) simplexml_load_string($data);
           $data = json_decode(json_encode($XML), true);
           break;
 
@@ -357,10 +353,7 @@ final class APIEngine {
           break;
 
         default:
-          throw new Exception(
-            sprintf(t("API.Error.ContentType"), $type),
-            400
-          );
+          throw new Exception(sprintf(t("API.Error.ContentType"), $type), 400);
       }
 
       static::$requestArguments = $data;
@@ -383,7 +376,7 @@ final class APIEngine {
    */
   public static function getServerArguments($key = false) {
     $request = Gdn::request();
-    $server  = Gdn_Request::INPUT_SERVER;
+    $server = Gdn_Request::INPUT_SERVER;
 
     if (static::$serverArguments === null) {
       static::$serverArguments = $request->getRequestArguments($server);

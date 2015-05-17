@@ -21,9 +21,9 @@ final class UsersAPI extends APIMapper {
    */
   public static function register($data) {
     static::get("/", [
-      "controller"   => "User",
-      "authenticate" => true,
-      "arguments"    => [
+      "controller" => "User"
+    , "authenticate" => true
+    , "arguments" => [
         "Page" => val("Page", $data)
       ]
     ]);
@@ -33,24 +33,24 @@ final class UsersAPI extends APIMapper {
     ]);
 
     static::get("/summary", [
-      "controller" => "User",
-      "method"     => "summary"
+      "controller" => "User"
+    , "method" => "summary"
     ]);
 
     static::post("/", [
-      "controller" => "User",
-      "method"     => "add"
+      "controller" => "User"
+    , "method" => "add"
     ]);
 
     static::put("/[i:UserID]", [
-      "controller" => "User",
-      "method"     => "edit"
+      "controller" => "User"
+    , "method" => "edit"
     ]);
 
     static::delete("/[i:UserID]", [
-      "controller" => "User",
-      "method"     => "delete",
-      "arguments"  => [
+      "controller" => "User"
+    , "method" => "delete"
+    , "arguments" => [
         "Method" => val("Method", $data)
       ]
     ]);

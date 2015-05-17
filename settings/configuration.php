@@ -5,4 +5,4 @@
 
 $Configuration["API"]["Expiration"] = strtotime("5 minutes", 0);
 $Configuration["API"]["AllowJSONP"] = false;
-$Configuration["API"]["AllowCORS"]  = false;
+$Configuration["API"]["AllowCORS"] = false;

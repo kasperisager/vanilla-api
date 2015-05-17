@@ -72,7 +72,7 @@ abstract class APIMapper extends Gdn_Pluggable {
     $check = ["get", "post", "put", "delete"];
 
     foreach (static::$endpoints as $method => $endpoints) {
-      $method   = strtolower($method);
+      $method = strtolower($method);
       $supports = static::$supports;
 
       // Make sure the method is valid and not already marked as being

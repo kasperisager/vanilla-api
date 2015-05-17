@@ -21,10 +21,10 @@ final class ConfigurationAPI extends APIMapper {
    */
   public static function register($data) {
     static::get("/", [
-      "application"  => "Dashboard",
-      "controller"   => "Settings",
-      "method"       => "configuration",
-      "authenticate" => true
+      "application" => "Dashboard"
+    , "controller" => "Settings"
+    , "method" => "configuration"
+    , "authenticate" => true
     ]);
   }
 }

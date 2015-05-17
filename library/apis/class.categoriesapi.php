@@ -21,8 +21,8 @@ final class CategoriesAPI extends APIMapper {
    */
   public static function register($data) {
     static::get("/", [
-      "controller" => "Categories",
-      "method"     => "all"
+      "controller" => "Categories"
+    , "method" => "all"
     ]);
 
     static::get("/[i:CategoryIdentifier]", [
@@ -30,41 +30,41 @@ final class CategoriesAPI extends APIMapper {
     ]);
 
     static::post("/", [
-      "application" => "Vanilla",
-      "controller"  => "Settings",
-      "method"      => "addCategory"
+      "application" => "Vanilla"
+    , "controller" => "Settings"
+    , "method" => "addCategory"
     ]);
 
     static::post("/[i:CategoryID]/follow", [
-      "controller"   => "Category",
-      "method"       => "follow",
-      "authenticate" => true,
-      "arguments"    => [
-        "Value" => 1,
-        "TKey"  => Gdn::session()->transientKey()
+      "controller" => "Category"
+    , "method" => "follow"
+    , "authenticate" => true
+    , "arguments" => [
+        "Value" => 1
+      , "TKey" => Gdn::session()->transientKey()
       ]
     ]);
 
     static::post("/[i:CategoryID]/unfollow", [
-      "controller"   => "Category",
-      "method"       => "follow",
-      "authenticate" => true,
-      "arguments"    => [
-        "Value" => 0,
-        "TKey"  => Gdn::session()->transientKey()
+      "controller" => "Category"
+    , "method" => "follow"
+    , "authenticate" => true
+    , "arguments" => [
+        "Value" => 0
+      , "TKey" => Gdn::session()->transientKey()
       ]
     ]);
 
     static::put("/[i:CategoryID]", [
-      "application" => "Vanilla",
-      "controller"  => "Settings",
-      "method"      => "editCategory"
+      "application" => "Vanilla"
+    , "controller" => "Settings"
+    , "method" => "editCategory"
     ]);
 
     static::delete("/[i:CategoryID]", [
-      "application" => "Vanilla",
-      "controller"  => "Settings",
-      "method"      => "deleteCategory"
+      "application" => "Vanilla"
+    , "controller" => "Settings"
+    , "method" => "deleteCategory"
     ]);
   }
 }

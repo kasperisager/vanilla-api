@@ -35,7 +35,7 @@ final class APIHooks implements Gdn_IPlugin {
     // Load the API application info
     include paths(PATH_APPLICATIONS, "api/settings/about.php");
 
-    $info    = val("api", $ApplicationInfo, []);
+    $info = val("api", $ApplicationInfo, []);
     $version = val("Version", $info, "Undefined");
 
     saveToConfig("API.Version", $version);
@@ -54,7 +54,7 @@ final class APIHooks implements Gdn_IPlugin {
     $path = APIEngine::getRequestURI();
 
     // Set the call and resource paths if they exist
-    $call     = val(0, $path);
+    $call = val(0, $path);
     $resource = val(1, $path);
 
     // Abandon the dispatch if this isn"t an API call with a valid resource
@@ -73,8 +73,8 @@ final class APIHooks implements Gdn_IPlugin {
       // the values we need manually before passing them on. The exception
       // message is Base64 encoded as WithControllerMethod() mangles
       // the formatting.
-      $code      = $exception->getCode();
-      $message   = base64_encode($exception->getMessage());
+      $code = $exception->getCode();
+      $message = base64_encode($exception->getMessage());
       $arguments = [$code, $message];
 
       // Call the Exception method if an exception is thrown
@@ -100,7 +100,7 @@ final class APIHooks implements Gdn_IPlugin {
 
     if ($form->authenticatedPostBack()) {
       $secret = c("API.Secret");
-      $regen  = $form->buttonExists(t("API.Settings.Refresh.Label"));
+      $regen = $form->buttonExists(t("API.Settings.Refresh.Label"));
 
       if ($regen) $secret = APIAuth::generateUniqueID();
 
@@ -111,8 +111,8 @@ final class APIHooks implements Gdn_IPlugin {
         saveToConfig($save);
 
         if ($regen) {
-          $icon  = "<span class=\"InformSprite Refresh\"></span>";
-          $text  = t("API.Settings.Refresh.Notification");
+          $icon = "<span class=\"InformSprite Refresh\"></span>";
+          $text = t("API.Settings.Refresh.Notification");
           $class = "Dismissable HasSprite";
 
           $sender->informMessage($icon . $text, $class);

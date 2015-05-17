@@ -21,28 +21,28 @@ final class RolesAPI extends APIMapper {
    */
   public static function register($data) {
     static::get("/", [
-      "controller"   => "Role",
-      "authenticate" => true
+      "controller" => "Role"
+    , "authenticate" => true
     ]);
 
     static::get("/[i:RoleID]", [
-      "controller"   => "Role",
-      "authenticate" => true
+      "controller" => "Role"
+    , "authenticate" => true
     ]);
 
     static::post("/", [
-      "controller" => "Role",
-      "method"     => "add"
+      "controller" => "Role"
+    , "method" => "add"
     ]);
 
     static::put("/[i:RoleID]", [
-      "controller" => "Role",
-      "method"     => "edit"
+      "controller" => "Role"
+    , "method" => "edit"
     ]);
 
     static::delete("/[i:RoleID]", [
-      "controller" => "Role",
-      "method"     => "delete"
+      "controller" => "Role"
+    , "method" => "delete"
     ]);
   }
 }

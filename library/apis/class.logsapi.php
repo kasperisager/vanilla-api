@@ -21,21 +21,21 @@ final class LogsAPI extends APIMapper {
    */
   public static function register($data) {
     static::get("/spam", [
-      "controller"   => "Log",
-      "method"       => "spam",
-      "authenticate" => true
+      "controller" => "Log"
+    , "method" => "spam"
+    , "authenticate" => true
     ]);
 
     static::get("/moderation", [
-      "controller"   => "Log",
-      "method"       => "moderation",
-      "authenticate" => true
+      "controller" => "Log"
+    , "method" => "moderation"
+    , "authenticate" => true
     ]);
 
     static::get("/edits", [
-      "controller"   => "Log",
-      "method"       => "edits",
-      "authenticate" => true
+      "controller" => "Log"
+    , "method" => "edits"
+    , "authenticate" => true
     ]);
   }
 }

@@ -21,33 +21,33 @@ final class ModerationAPI extends APIMapper {
    */
   public static function register($data) {
     static::get("/bans", [
-      "controller" => "Settings",
-      "method"     => "bans",
-      "arguments"  => [
-        "Page"   => val("Page", $data)
+      "controller" => "Settings"
+    , "method" => "bans"
+    , "arguments" => [
+        "Page" => val("Page", $data)
       ]
     ]);
 
     static::post("/bans", [
-      "controller" => "Settings",
-      "method"     => "bans",
-      "arguments"  => [
+      "controller" => "Settings"
+    , "method" => "bans"
+    , "arguments" => [
         "Action" => "add"
       ]
     ]);
 
     static::put("/bans/[i:ID]", [
-      "controller" => "Settings",
-      "method"     => "bans",
-      "arguments"  => [
+      "controller" => "Settings"
+    , "method" => "bans"
+    , "arguments" => [
         "Action" => "edit"
       ]
     ]);
 
     static::delete("/bans/[i:ID]", [
-      "controller" => "Settings",
-      "method"     => "bans",
-      "arguments"  => [
+      "controller" => "Settings"
+    , "method" => "bans"
+    , "arguments" => [
         "Action" => "delete"
       ]
     ]);

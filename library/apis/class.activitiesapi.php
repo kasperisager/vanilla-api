@@ -25,35 +25,35 @@ final class ActivitiesAPI extends APIMapper {
     ]);
 
     static::get("/[i:ActivityID]", [
-      "controller" => "Activity",
-      "method"     => "item"
+      "controller" => "Activity"
+    , "method" => "item"
     ]);
 
     static::post("/", [
-      "controller" => "Activity",
-      "method"     => "post",
-      "arguments"  => [
+      "controller" => "Activity"
+    , "method" => "post"
+    , "arguments" => [
         "Notify" => val("Notify", $data)
       ]
     ]);
 
     static::post("/[i:ActivityID]/comments", [
-      "controller" => "Activity",
-      "method"     => "comment"
+      "controller" => "Activity"
+    , "method" => "comment"
     ]);
 
     static::delete("/[i:ActivityID]", [
-      "controller" => "Activity",
-      "method"     => "delete",
-      "arguments"  => [
+      "controller" => "Activity"
+    , "method" => "delete"
+    , "arguments" => [
         "TransientKey" => Gdn::session()->transientKey()
       ]
     ]);
 
     static::delete("/comments/[i:ID]", [
-      "controller" => "Activity",
-      "method"     => "deleteComment",
-      "arguments"  => [
+      "controller" => "Activity"
+    , "method" => "deleteComment"
+    , "arguments" => [
         "TK" => Gdn::session()->transientKey()
       ]
     ]);
