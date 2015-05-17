@@ -10,8 +10,7 @@
  * @license   http://opensource.org/licenses/MIT MIT
  * @final
  */
-final class APIAuth
-{
+final class APIAuth {
     /**
      * Token-based, per-request authentication
      *
@@ -29,8 +28,7 @@ final class APIAuth
      * @return void
      * @static
      */
-    public static function authenticateRequest()
-    {
+    public static function authenticateRequest() {
         $username = getIncomingValue('username');
         $email    = getIncomingValue('email');
 
@@ -92,8 +90,7 @@ final class APIAuth
      * @return string      An HMAC-SHA256 hash generated from the request data
      * @static
      */
-    public static function generateSignature($data)
-    {
+    public static function generateSignature($data) {
         // Sort the data array alphabetically so we always get the same hash no
         // matter how the data was originally sorted
         ksort($data, SORT_STRING);
@@ -117,8 +114,7 @@ final class APIAuth
      * @return string A UUID, made up of 32 hex digits and 4 hyphens.
      * @static
      */
-    public static function generateUniqueID()
-    {
+    public static function generateUniqueID() {
         return sprintf( '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
             // 32 bits for "time_low"
             mt_rand(0, 0xffff), mt_rand(0, 0xffff),
@@ -158,8 +154,7 @@ final class APIAuth
      *                               specified, otherwise false
      * @static
      */
-    public static function getUserID($username, $email)
-    {
+    public static function getUserID($username, $email) {
         $userModel = new UserModel();
 
         // Look up the user ID using a username if one has been specified

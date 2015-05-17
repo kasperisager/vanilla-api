@@ -10,8 +10,7 @@
  * @license   http://opensource.org/licenses/MIT MIT
  * @abstract
  */
-abstract class APIMapper extends Gdn_Pluggable
-{
+abstract class APIMapper extends Gdn_Pluggable {
     /* Properties */
 
     /**
@@ -46,8 +45,7 @@ abstract class APIMapper extends Gdn_Pluggable
      * @return array Array of available endpoints
      * @final
      */
-    final public function endpoints($data)
-    {
+    final public function endpoints($data) {
         if (static::$endpoints === null) {
             // Register API endpoints specific by the API class
             static::register($data);
@@ -69,8 +67,7 @@ abstract class APIMapper extends Gdn_Pluggable
      * @final
      * @static
      */
-    final public static function supports()
-    {
+    final public static function supports() {
         // Check if these methods are supported
         $check = ['get', 'post', 'put', 'delete'];
 
@@ -99,8 +96,7 @@ abstract class APIMapper extends Gdn_Pluggable
      * @final
      * @static
      */
-    final public static function get($endpoint, $data)
-    {
+    final public static function get($endpoint, $data) {
         static::endpoint('GET', $endpoint, $data);
         static::endpoint('HEAD', $endpoint, $data);
     }
@@ -114,8 +110,7 @@ abstract class APIMapper extends Gdn_Pluggable
      * @final
      * @static
      */
-    final public static function post($endpoint, $data)
-    {
+    final public static function post($endpoint, $data) {
         static::endpoint('POST', $endpoint, $data);
     }
 
@@ -128,8 +123,7 @@ abstract class APIMapper extends Gdn_Pluggable
      * @final
      * @static
      */
-    final public static function put($endpoint, $data)
-    {
+    final public static function put($endpoint, $data) {
         static::endpoint('PUT', $endpoint, $data);
     }
 
@@ -142,8 +136,7 @@ abstract class APIMapper extends Gdn_Pluggable
      * @final
      * @static
      */
-    final public static function delete($endpoint, $data)
-    {
+    final public static function delete($endpoint, $data) {
         static::endpoint('DELETE', $endpoint, $data);
     }
 
@@ -159,8 +152,7 @@ abstract class APIMapper extends Gdn_Pluggable
      * @final
      * @static
      */
-    final protected static function endpoint($method, $endpoint, $data)
-    {
+    final protected static function endpoint($method, $endpoint, $data) {
         static::$endpoints[$method][$endpoint] = $data;
     }
 

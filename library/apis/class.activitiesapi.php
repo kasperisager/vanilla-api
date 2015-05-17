@@ -9,8 +9,7 @@
  * @copyright Copyright (c) 2013-2015 Kasper Kronborg Isager
  * @license   http://opensource.org/licenses/MIT MIT
  */
-class ActivitiesAPI extends APIMapper
-{
+class ActivitiesAPI extends APIMapper {
     /**
      * Register API endpoints
      *
@@ -20,8 +19,7 @@ class ActivitiesAPI extends APIMapper
      * @return void
      * @static
      */
-    public static function register($data)
-    {
+    public static function register($data) {
         static::get('/', [
             'controller' => 'Activity'
         ]);

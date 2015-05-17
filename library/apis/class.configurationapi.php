@@ -9,8 +9,7 @@
  * @copyright Copyright (c) 2013-2015 Kasper Kronborg Isager
  * @license   http://opensource.org/licenses/MIT MIT
  */
-class ConfigurationAPI extends APIMapper
-{
+class ConfigurationAPI extends APIMapper {
     /**
      * Register API endpoints
      *
@@ -20,8 +19,7 @@ class ConfigurationAPI extends APIMapper
      * @return void
      * @static
      */
-    public static function register($data)
-    {
+    public static function register($data) {
         static::get('/', [
             'application'  => 'Dashboard',
             'controller'   => 'Settings',

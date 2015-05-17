@@ -14,8 +14,7 @@
  * @copyright Copyright (c) 2013-2015 Kasper Kronborg Isager
  * @license   http://opensource.org/licenses/MIT MIT
  */
-class APIHooks implements Gdn_IPlugin
-{
+class APIHooks implements Gdn_IPlugin {
     /* Methods */
 
     /**
@@ -25,8 +24,7 @@ class APIHooks implements Gdn_IPlugin
      * @access public
      * @return void
      */
-    public function setup()
-    {
+    public function setup() {
         if (!c('API.Secret')) {
             saveToConfig('API.Secret', APIAuth::generateUniqueID());
         }
@@ -52,8 +50,7 @@ class APIHooks implements Gdn_IPlugin
      * @access public
      * @return void
      */
-    public function Gdn_Dispatcher_beforeDispatch_handler($sender)
-    {
+    public function Gdn_Dispatcher_beforeDispatch_handler($sender) {
         $path = APIEngine::getRequestURI();
 
         // Set the call and resource paths if they exist
@@ -96,8 +93,7 @@ class APIHooks implements Gdn_IPlugin
      * @param  SettingsController $sender
      * @return void
      */
-    public function SettingsController_API_create($sender)
-    {
+    public function SettingsController_API_create($sender) {
         $sender->permission('Garden.Settings.Manage');
 
         $form = $sender->Form;
@@ -141,8 +137,7 @@ class APIHooks implements Gdn_IPlugin
      * @param  Gdn_Controller $sender
      * @return void
      */
-    public function Base_getAppSettingsMenuItems_handler($sender)
-    {
+    public function Base_getAppSettingsMenuItems_handler($sender) {
         $menu = $sender->EventArguments['SideMenu'];
         $menu->addLink('Site Settings', t('API.Settings.Title'),
             'dashboard/settings/api', 'Garden.Settings.Manage'

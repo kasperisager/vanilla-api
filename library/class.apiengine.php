@@ -12,8 +12,7 @@
  * @license   http://opensource.org/licenses/MIT MIT
  * @final
  */
-final class APIEngine
-{
+final class APIEngine {
     /* Properties */
 
     /**
@@ -80,8 +79,7 @@ final class APIEngine
      * @return void
      * @static
      */
-    public static function dispatchRequest()
-    {
+    public static function dispatchRequest() {
         $request       = Gdn::request();
         $requestUri    = static::getRequestUri();
         $requestMethod = static::getRequestMethod();
@@ -178,8 +176,7 @@ final class APIEngine
      * @return array          Dispatch instruction for Garden.
      * @static
      */
-    public static function map($resource, $class, $path, $method, $data)
-    {
+    public static function map($resource, $class, $path, $method, $data) {
         $router = new AltoRouter();
         $router->setBasePath('/api');
 
@@ -245,8 +242,7 @@ final class APIEngine
      * @return void
      * @static
      */
-    public static function setRequestHeaders()
-    {
+    public static function setRequestHeaders() {
         // CORS support (experimental)
         if (c('API.AllowCORS')) {
             $headers = 'Origin, X-Requested-With, Content-Type, Accept';
@@ -298,8 +294,7 @@ final class APIEngine
      * @return array The full URI path array
      * @static
      */
-    public static function getRequestUri()
-    {
+    public static function getRequestUri() {
         if (static::$requestUri === null) {
             $Uri = Gdn::request()->requestUri();
             static::$requestUri = explode('/', strtolower($Uri));
@@ -316,8 +311,7 @@ final class APIEngine
      * @return string The Request method
      * @static
      */
-    public static function getRequestMethod()
-    {
+    public static function getRequestMethod() {
         if (static::$requestMethod === null) {
             $method = Gdn::request()->requestMethod();
             static::$requestMethod = strtolower($method);
@@ -337,8 +331,7 @@ final class APIEngine
      * @return array The arguments sent along with the request
      * @static
      */
-    public static function getRequestArguments()
-    {
+    public static function getRequestArguments() {
         if (static::$requestArguments === null) {
             // Read the PHP input buffer. This can only be done ONCE, so we need
             // to make sure that we store the data
@@ -388,8 +381,7 @@ final class APIEngine
      * @return array|mixed Full array of server arguments or specific value
      * @static
      */
-    public static function getServerArguments($key = false)
-    {
+    public static function getServerArguments($key = false) {
         $request = Gdn::request();
         $server  = Gdn_Request::INPUT_SERVER;
 

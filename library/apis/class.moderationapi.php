@@ -9,8 +9,7 @@
  * @copyright Copyright (c) 2013-2015 Kasper Kronborg Isager
  * @license   http://opensource.org/licenses/MIT MIT
  */
-class ModerationAPI extends APIMapper
-{
+class ModerationAPI extends APIMapper {
     /**
      * Register API endpoints
      *
@@ -20,8 +19,7 @@ class ModerationAPI extends APIMapper
      * @return void
      * @static
      */
-    public static function register($data)
-    {
+    public static function register($data) {
         static::get('/bans', [
             'controller' => 'Settings',
             'method'     => 'bans',

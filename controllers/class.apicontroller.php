@@ -11,8 +11,7 @@
  * @copyright Copyright (c) 2013-2015 Kasper Kronborg Isager
  * @license   http://opensource.org/licenses/MIT MIT
  */
-class APIController extends Gdn_Controller
-{
+class APIController extends Gdn_Controller {
     /**
      * Render API exceptions
      *
@@ -21,8 +20,7 @@ class APIController extends Gdn_Controller
      * @param  int|string $code    Error code
      * @param  string     $message Base64-encoded error message
      */
-    public function exception($code, $message)
-    {
+    public function exception($code, $message) {
         header("HTTP/1.0 ${code}", true, $code);
 
         $this->setData([
@@ -41,8 +39,7 @@ class APIController extends Gdn_Controller
      * @param  string $methods       Comma-separated string of allowed methods
      * @param  string $documentation API documentation (Base64 encoded JSON)
      */
-    public function options($methods, $documentation)
-    {
+    public function options($methods, $documentation) {
         header("Allow: ${methods}", true);
 
         $this->setData(json_decode(base64_decode($documentation), true));
