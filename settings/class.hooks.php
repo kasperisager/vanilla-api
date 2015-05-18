@@ -1,7 +1,7 @@
 <?php if (!defined("APPLICATION")) exit;
 
 /**
- * API hooks for hooking into Garden and its applications
+ * API hooks for hooking into Garden and its applications.
  *
  * The API hooks handles hooking into different events throughout Garden and its
  * applications. More specifically, this class hooks into the dispatcher to
@@ -15,8 +15,6 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 final class APIHooks implements Gdn_IPlugin {
-  /* Methods */
-
   /**
    * Code to be run upon enabling the API
    *
@@ -40,8 +38,6 @@ final class APIHooks implements Gdn_IPlugin {
 
     saveToConfig("API.Version", $version);
   }
-
-  /* Event Handlers */
 
   /**
    * Map an API request to a resource
@@ -139,8 +135,11 @@ final class APIHooks implements Gdn_IPlugin {
    */
   public function Base_getAppSettingsMenuItems_handler($sender) {
     $menu = $sender->EventArguments["SideMenu"];
-    $menu->addLink("Site Settings", t("API.Settings.Title"),
-      "dashboard/settings/api", "Garden.Settings.Manage"
+    $menu->addLink(
+      "Site Settings"
+    , t("API.Settings.Title")
+    , "dashboard/settings/api"
+    , "Garden.Settings.Manage"
     );
   }
 }

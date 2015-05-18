@@ -1,12 +1,14 @@
 <?php if (!defined("APPLICATION")) exit;
 
-$map = Gdn_Autoloader::MAP_LIBRARY;
-$context = Gdn_Autoloader::CONTEXT_APPLICATION;
-$path = PATH_APPLICATIONS . DS . "api/library";
-$options = ["Extension" => "api"];
+$path = paths(PATH_APPLICATIONS, "api/library");
 
 // Register API library with the Garden Autoloader
-Gdn_Autoloader::registerMap($map, $context, $path, $options);
+Gdn_Autoloader::registerMap(
+  Gdn_Autoloader::MAP_LIBRARY
+, Gdn_Autoloader::CONTEXT_APPLICATION
+, $path
+, ["Extension" => "api"]
+);
 
 // Include Composer autoloader
-require_once $path . DS . "vendors/autoload.php";
+require_once paths($path, "vendors/autoload.php");

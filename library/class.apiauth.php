@@ -1,7 +1,7 @@
 <?php if (!defined("APPLICATION")) exit;
 
 /**
- * API authentication class
+ * API authentication class.
  *
  * @package   API
  * @since     0.1.0
@@ -115,7 +115,7 @@ final class APIAuth {
    * @static
    */
   public static function generateUniqueID() {
-    return sprintf( "%04x%04x-%04x-%04x-%04x-%04x%04x%04x",
+    return sprintf("%04x%04x-%04x-%04x-%04x-%04x%04x%04x",
       // 32 bits for "time_low"
       mt_rand(0, 0xffff), mt_rand(0, 0xffff)
 

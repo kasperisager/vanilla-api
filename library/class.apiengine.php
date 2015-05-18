@@ -1,9 +1,7 @@
 <?php if (!defined("APPLICATION")) exit;
 
 /**
- * API engine class
- *
- * Handles dispatching API requests and their corresponding methods.
+ * API engine for dispatching API requests and their corresponding methods.
  *
  * @package   API
  * @since     0.1.0
@@ -13,8 +11,6 @@
  * @final
  */
 final class APIEngine {
-  /* Properties */
-
   /**
    * HTTP methods supported by the API
    *
@@ -22,53 +18,51 @@ final class APIEngine {
    * Not Implemented exception.
    *
    * @since  0.1.0
-   * @access public
+   * @access private
    * @var    array
    * @static
    */
-  public static $supportedMethods = ["get", "post", "put", "delete", "head", "options"];
+  private static $supportedMethods = ["get", "post", "put", "delete", "head", "options"];
 
   /**
    * Exploded request URI
    *
    * @since  0.1.0
-   * @access protected
+   * @access private
    * @var    null|array
    * @static
    */
-  protected static $requestUri;
+  private static $requestUri;
 
   /**
    * Request method
    *
    * @since  0.1.0
-   * @access protected
+   * @access private
    * @var    null|string
    * @static
    */
-  protected static $requestMethod;
+  private static $requestMethod;
 
   /**
    * Array of request arguments
    *
    * @since  0.1.0
-   * @access protected
+   * @access private
    * @var    null|array
    * @static
    */
-  protected static $requestArguments;
+  private static $requestArguments;
 
   /**
    * Array of server arguments
    *
    * @since  0.1.0
-   * @access protected
+   * @access private
    * @var    null|array
    * @static
    */
-  protected static $serverArguments;
-
-  /* Methods */
+  private static $serverArguments;
 
   /**
    * Map the API request to the corrosponding controller
