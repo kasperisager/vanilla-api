@@ -44,6 +44,7 @@ final class APIHooks implements Gdn_IPlugin {
    *
    * @since  0.1.0
    * @access public
+   * @param  Gdn_Dispatcher $sender
    * @return void
    */
   public function Gdn_Dispatcher_beforeDispatch_handler($sender) {
@@ -53,7 +54,7 @@ final class APIHooks implements Gdn_IPlugin {
     $call = val(0, $path);
     $resource = val(1, $path);
 
-    // Abandon the dispatch if this isn"t an API call with a valid resource
+    // Abandon the dispatch if this isn't an API call with a valid resource
     if ($call != "api" || !$resource) return;
 
     APIEngine::setRequestHeaders();
