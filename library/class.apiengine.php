@@ -195,9 +195,12 @@ final class APIEngine {
       // Register all endpoints in the router
       foreach ($endpoints as $method => $endpoints) {
         foreach ($endpoints as $endpoint => $data) {
-          $endpoint = "/" . $resource . rtrim($endpoint, "/");
 
-          $router->map($method, $endpoint, $data);
+          $endpoint = "/" . $resource . rtrim($endpoint, "/");
+          // Check if route is enabled
+          if (!c("API.DisabledRoutes.".strtoupper($method).' '.$endpoint)) {
+            $router->map($method, $endpoint, $data);
+          }
         }
       }
 
