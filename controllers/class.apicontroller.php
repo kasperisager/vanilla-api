@@ -26,8 +26,8 @@ final class APIController extends Gdn_Controller
         header("HTTP/1.0 ${code}", true, $code);
 
         $this->setData([
-            "Code" => intval($code)
-        , "Exception" => base64_decode(htmlspecialchars($message))
+            "Code" => intval($code),
+            "Exception" => base64_decode(htmlspecialchars($message))
         ]);
 
         $this->renderData();
