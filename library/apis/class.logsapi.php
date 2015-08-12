@@ -1,4 +1,4 @@
-<?php if (!defined("APPLICATION")) exit;
+<?php
 
 /**
  * Logs API
@@ -9,33 +9,35 @@
  * @copyright Copyright (c) 2013-2015 Kasper Kronborg Isager
  * @license   http://opensource.org/licenses/MIT MIT
  */
-final class LogsAPI extends APIMapper {
-  /**
-   * Register API endpoints
-   *
-   * @since  0.4.0
-   * @access public
-   * @param  array $data
-   * @return void
-   * @static
-   */
-  public static function register($data) {
-    static::get("/spam", [
-      "controller" => "Log"
-    , "method" => "spam"
-    , "authenticate" => true
-    ]);
+final class LogsAPI extends APIMapper
+{
+    /**
+     * Register API endpoints
+     *
+     * @since  0.4.0
+     * @access public
+     * @param  array $data
+     * @return void
+     * @static
+     */
+    public static function register($data)
+    {
+        static::get("/spam", [
+            "controller" => "Log",
+            "method" => "spam",
+            "authenticate" => true
+        ]);
 
-    static::get("/moderation", [
-      "controller" => "Log"
-    , "method" => "moderation"
-    , "authenticate" => true
-    ]);
+        static::get("/moderation", [
+            "controller" => "Log",
+            "method" => "moderation",
+            "authenticate" => true
+        ]);
 
-    static::get("/edits", [
-      "controller" => "Log"
-    , "method" => "edits"
-    , "authenticate" => true
-    ]);
-  }
+        static::get("/edits", [
+            "controller" => "Log",
+            "method" => "edits",
+            "authenticate" => true
+        ]);
+    }
 }

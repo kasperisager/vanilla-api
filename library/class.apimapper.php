@@ -1,4 +1,4 @@
-<?php if (!defined("APPLICATION")) exit;
+<?php
 
 /**
  * Mapper class providing common methods for defining APIs.
@@ -10,164 +10,172 @@
  * @license   http://opensource.org/licenses/MIT MIT
  * @abstract
  */
-abstract class APIMapper extends Gdn_Pluggable {
-  /**
-   * Endpoints supported by the API
-   *
-   * @since  0.1.0
-   * @access protected
-   * @var    null|array
-   * @static
-   */
-  protected static $endpoints;
+abstract class APIMapper extends Gdn_Pluggable
+{
+    /**
+     * Endpoints supported by the API
+     *
+     * @since  0.1.0
+     * @access protected
+     * @var    null|array
+     * @static
+     */
+    protected static $endpoints;
 
-  /**
-   * Methods supported by the API
-   *
-   * The OPTIONS and HEAD methods are always supported.
-   *
-   * @since  0.1.0
-   * @access private
-   * @var    array
-   * @static
-   */
-  private static $supports = ["options", "head"];
+    /**
+     * Methods supported by the API
+     *
+     * The OPTIONS and HEAD methods are always supported.
+     *
+     * @since  0.1.0
+     * @access private
+     * @var    array
+     * @static
+     */
+    private static $supports = ["options", "head"];
 
-  /**
-   * Provide read-only access to the available endpoints
-   *
-   * @since  0.1.0
-   * @access public
-   * @return array Array of available endpoints
-   * @final
-   */
-  public final function endpoints($data) {
-    if (static::$endpoints === null) {
-      // Register API endpoints specific by the API class
-      static::register($data);
+    /**
+     * Provide read-only access to the available endpoints
+     *
+     * @since  0.1.0
+     * @access public
+     * @return array Array of available endpoints
+     * @final
+     */
+    final public function endpoints($data)
+    {
+        if (static::$endpoints === null) {
+            // Register API endpoints specific by the API class
+            static::register($data);
 
-      // Fire event to allow overriding and registering new endpoints
-      // outside the API class itself
-      $this->fireAs(get_called_class())->fireEvent("register");
+            // Fire event to allow overriding and registering new endpoints
+            // outside the API class itself
+            $this->fireAs(get_called_class())->fireEvent("register");
+        }
+
+        return static::$endpoints;
     }
 
-    return static::$endpoints;
-  }
+    /**
+     * Find and return methods supported by the called endpoint
+     *
+     * @since  0.1.0
+     * @access public
+     * @return array
+     * @static
+     * @final
+     */
+    final public static function supports()
+    {
+        // Check if these methods are supported
+        $check = ["get", "post", "put", "delete"];
 
-  /**
-   * Find and return methods supported by the called endpoint
-   *
-   * @since  0.1.0
-   * @access public
-   * @return array
-   * @static
-   * @final
-   */
-  public static final function supports() {
-    // Check if these methods are supported
-    $check = ["get", "post", "put", "delete"];
+        foreach (static::$endpoints as $method => $endpoints) {
+            $method = strtolower($method);
+            $supports = static::$supports;
 
-    foreach (static::$endpoints as $method => $endpoints) {
-      $method = strtolower($method);
-      $supports = static::$supports;
+            // Make sure the method is valid and not already marked as being
+            // supported, and if so then add it to the list
+            if (in_array($method, $check) || !in_array($method, $supports)) {
+                static::$supports[] = $method;
+            }
+        }
 
-      // Make sure the method is valid and not already marked as being
-      // supported, and if so then add it to the list
-      if (in_array($method, $check) || !in_array($method, $supports)) {
-        static::$supports[] = $method;
-      }
+        return static::$supports;
     }
 
-    return static::$supports;
-  }
+    /**
+     * Method for registering an API GET endpoint
+     *
+     * @since  0.1.0
+     * @access public
+     * @param  stirng $endpoint The endpoint to register
+     * @param  array  $data     Endpoint mapping data
+     * @return void
+     * @static
+     * @final
+     */
+    final public static function get($endpoint, $data)
+    {
+        static::endpoint("GET", $endpoint, $data);
+        static::endpoint("HEAD", $endpoint, $data);
+    }
 
-  /**
-   * Method for registering an API GET endpoint
-   *
-   * @since  0.1.0
-   * @access public
-   * @param  stirng $endpoint The endpoint to register
-   * @param  array  $data     Endpoint mapping data
-   * @return void
-   * @static
-   * @final
-   */
-  public static final function get($endpoint, $data) {
-    static::endpoint("GET", $endpoint, $data);
-    static::endpoint("HEAD", $endpoint, $data);
-  }
+    /**
+     * Method for registering an API POST endpoint
+     *
+     * @since  0.1.0
+     * @access public
+     * @return void
+     * @static
+     * @final
+     */
+    final public static function post($endpoint, $data)
+    {
+        static::endpoint("POST", $endpoint, $data);
+    }
 
-  /**
-   * Method for registering an API POST endpoint
-   *
-   * @since  0.1.0
-   * @access public
-   * @return void
-   * @static
-   * @final
-   */
-  public static final function post($endpoint, $data) {
-    static::endpoint("POST", $endpoint, $data);
-  }
+    /**
+     * Method for registering and API PUT endpoint
+     *
+     * @since  0.1.0
+     * @access public
+     * @return void
+     * @static
+     * @final
+     */
+    final public static function put($endpoint, $data)
+    {
+        static::endpoint("PUT", $endpoint, $data);
+    }
 
-  /**
-   * Method for registering and API PUT endpoint
-   *
-   * @since  0.1.0
-   * @access public
-   * @return void
-   * @static
-   * @final
-   */
-  public static final function put($endpoint, $data) {
-    static::endpoint("PUT", $endpoint, $data);
-  }
+    /**
+     * Method for registering an API DELETE endpoint
+     *
+     * @since  0.1.0
+     * @access public
+     * @return void
+     * @static
+     * @final
+     */
+    final public static function delete($endpoint, $data)
+    {
+        static::endpoint("DELETE", $endpoint, $data);
+    }
 
-  /**
-   * Method for registering an API DELETE endpoint
-   *
-   * @since  0.1.0
-   * @access public
-   * @return void
-   * @static
-   * @final
-   */
-  public static final function delete($endpoint, $data) {
-    static::endpoint("DELETE", $endpoint, $data);
-  }
+    /**
+     * Register an API endpoint
+     *
+     * @since  0.1.0
+     * @access private
+     * @param  string $method   HTTP method
+     * @param  string $endpoint Endpoint to register
+     * @param  array  $data     Endpoint mapping data (controller, etc.)
+     * @return void
+     * @static
+     * @final
+     */
+    private static function endpoint($method, $endpoint, $data)
+    {
+        static::$endpoints[$method][$endpoint] = $data;
+    }
 
-  /**
-   * Register an API endpoint
-   *
-   * @since  0.1.0
-   * @access private
-   * @param  string $method   HTTP method
-   * @param  string $endpoint Endpoint to register
-   * @param  array  $data     Endpoint mapping data (controller, etc.)
-   * @return void
-   * @static
-   * @final
-   */
-  private static final function endpoint($method, $endpoint, $data) {
-    static::$endpoints[$method][$endpoint] = $data;
-  }
-
-  /**
-   * Register API endpoints
-   *
-   * Endpoints are registered using the get(), post(), put() and delete()
-   * methods defined in the API Mapper:
-   *
-   *     static::get("/bar/[i:fooID]", [
-   *         "controller" => "foo",
-   *         "method"     => "bar"
-   *     ]);
-   *
-   * @since  0.1.0
-   * @access public
-   * @param  array $data Request arguments sent by the client
-   * @return void
-   * @static
-   */
-  abstract public static function register($data);
+    /**
+     * Register API endpoints
+     *
+     * Endpoints are registered using the get(), post(), put() and delete()
+     * methods defined in the API Mapper:
+     *
+     *     static::get("/bar/[i:fooID]", [
+     *         "controller" => "foo",
+     *         "method"     => "bar"
+     *     ]);
+     *
+     * @since  0.1.0
+     * @access public
+     * @param  array $data Request arguments sent by the client
+     * @return void
+     * @static
+     */
+    abstract public static function register($data);
 }

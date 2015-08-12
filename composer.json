@@ -1,17 +1,23 @@
 {
-  "name": "kasperisager/vanilla-api",
-  "description": "RESTful API shim for Vanilla",
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "Kasper Isager",
-      "email": "kasperisager@gmail.com"
+    "name": "kasperisager/vanilla-api",
+    "description": "RESTful API shim for Vanilla",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Kasper Isager",
+            "email": "kasperisager@gmail.com"
+        }
+    ],
+    "require": {
+        "altorouter/altorouter": "1.0.x"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "2.3.x"
+    },
+    "config": {
+        "vendor-dir": "library/vendors"
+    },
+    "scripts": {
+        "test": "phpcs --standard=psr2 --ignore=*/vendors ."
     }
-  ],
-  "require": {
-    "altorouter/altorouter": "1.0.x"
-  },
-  "config": {
-    "vendor-dir": "library/vendors"
-  }
 }

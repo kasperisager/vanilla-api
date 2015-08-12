@@ -1,4 +1,4 @@
-<?php if (!defined("APPLICATION")) exit();
+<?php
 
 // Settings page
 
@@ -6,13 +6,16 @@ $Definition["API.Settings.Title"] = "API";
 $Definition["API.Settings.Documentation"] = "Read the API documentation";
 
 $Definition["API.Settings.Endpoint.Label"] = "Endpoint";
-$Definition["API.Settings.Endpoint.Description"] = "You can access your forum's Application Programming Interface (API) through this endpoint URL";
+$Definition["API.Settings.Endpoint.Description"] = "You can access your forum's Application Programming Interface (API)"
++ " through this endpoint URL";
 
 $Definition["API.Settings.Secret.Label"] = "Application Secret";
-$Definition["API.Settings.Secret.Description"] = "This is the Application Secret used for signature based authentication. <b>Keep it secret!</b>";
+$Definition["API.Settings.Secret.Description"] = "This is the Application Secret used for signature based"
++ " authentication. <b>Keep it secret!</b>";
 
 $Definition["API.Settings.Refresh.Label"] = "Re-generate";
-$Definition["API.Settings.Refresh.Description"] = "Clicking \"Re-generate\" will generate a new UUID v4 key. Please refer to %s for more information.";
+$Definition["API.Settings.Refresh.Description"] = "Clicking \"Re-generate\" will generate a new UUID v4 key. Please"
++ " refer to %s for more information.";
 $Definition["API.Settings.Refresh.Link"] = "this article";
 $Definition["API.Settings.Refresh.Notification"] = "Refresh the page to see the new Application Secret.";
 
