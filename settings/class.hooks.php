@@ -62,16 +62,16 @@ final class APIHooks implements Gdn_IPlugin
             return;
         }
 
-        APIEngine::setRequestHeaders();
-
         try {
             // Mark the dispatch with the API version
             $sender->API = c("API.Version", "Undefined");
 
+            APIEngine::setRequestHeaders();
+
             // Attempt dispatching the API request
             APIEngine::dispatchRequest();
         } catch (Exception $exception) {
-            // As we can"t pass an object to WithControllerMethod(), we extract
+            // As we can't pass an object to WithControllerMethod(), we extract
             // the values we need manually before passing them on. The exception
             // message is Base64 encoded as WithControllerMethod() mangles
             // the formatting.
