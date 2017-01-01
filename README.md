@@ -4,8 +4,6 @@
 
 > Extensible RESTful API shim for Vanilla that operates in JSON or XML. Supports [JSONP](http://en.wikipedia.org/wiki/JSONP) and [CORS](http://en.wikipedia.org/wiki/Cross-origin_resource_sharing).
 
-[![Release](http://img.shields.io/github/tag/kasperisager/vanilla-api.svg?style=flat)](https://github.com/kasperisager/vanilla-api/releases) [![Code Climate](http://img.shields.io/codeclimate/github/kasperisager/vanilla-api.svg?style=flat)](https://codeclimate.com/github/kasperisager/vanilla-api)
-
 ## Getting started
 
 To get started using Vanilla API, either:
