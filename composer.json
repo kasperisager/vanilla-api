@@ -8,6 +8,11 @@
             "email": "kasperisager@gmail.com"
         }
     ],
+    "autoload": {
+        "classmap": [
+            "library/apis"
+        ]
+    },
     "require": {
         "altorouter/altorouter": "1.0.x"
     },
