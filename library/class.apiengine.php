@@ -299,8 +299,8 @@ final class APIEngine
     public static function getRequestUri()
     {
         if (static::$requestUri === null) {
-            $Uri = Gdn::request()->requestUri();
-            static::$requestUri = explode("/", strtolower($Uri));
+            $uri = Gdn::request()->requestUri();
+            static::$requestUri = preg_split("/\\//", strtolower($uri), -1, PREG_SPLIT_NO_EMPTY);
         }
 
         return static::$requestUri;
