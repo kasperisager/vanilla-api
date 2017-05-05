@@ -27,7 +27,7 @@ final class CategoriesAPI extends APIMapper
             "method" => "all"
         ]);
 
-        static::get("/[i:CategoryIdentifier]", [
+        static::get("/[*:CategoryIdentifier]", [
             "controller" => "Categories"
         ]);
 
