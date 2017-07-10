@@ -12,7 +12,7 @@ To get started using Vanilla API, either:
 - Clone the repository directly into your Vanilla `applications` directory:
 
 ```console
-$ git clone kasperisager/vanilla-api api
+$ git clone https://github.com/kasperisager/vanilla-api.git api
 ```
 
 When you've done this, make sure the newly created folder is named `api` and not `vanilla-api`. Now simply go to your dashboard, enable Vanilla API in the "Applications" menu and you're all set!
